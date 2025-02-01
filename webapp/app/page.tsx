@@ -1,5 +1,5 @@
 //import Image from "next/image";
-import Map from "@/components/Map";
+import MainMap from "@/components/Map";
 
 export default function Home() {
   return (
@@ -11,7 +11,7 @@ export default function Home() {
       </header>
 
       <main className="flex-1">
-        <Map />
+        <MainMap />
       </main>
 
       <footer className="p-4 bg-gray-100 text-center text-sm">

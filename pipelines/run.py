@@ -41,7 +41,7 @@ def run(task_name):
         logging.info(f"Starting task {task_name}...")
         task_func()
         logging.info(f"Task {task_name} completed.")
-    except (ModuleNotFoundError, AttributeError) as e:
+    except (ModuleNotFoundError, AttributeError):
         logging.error(f"Task {task_name} not found.")
         sys.exit(1)
 

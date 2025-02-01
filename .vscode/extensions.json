@@ -2,6 +2,7 @@
   "recommendations": [
     "ms-python.python",
     "ms-toolsai.jupyter",
-    "charliermarsh.ruff"
+    "charliermarsh.ruff",
+    "github.vscode-pull-request-github"
   ]
 }

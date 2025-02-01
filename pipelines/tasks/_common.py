@@ -1,5 +1,5 @@
 import os
-import glob
+import shutil
 
 
 ROOT_FOLDER = os.path.abspath(os.path.join(os.path.dirname(__file__), "../.."))
@@ -13,5 +13,5 @@ os.makedirs(DATABASE_FOLDER, exist_ok=True)
 
 def clear_cache():
     """Clear the cache folder."""
-    for file in glob.glob(os.path.join(CACHE_FOLDER, "*")):
-        os.remove(file)
+    shutil.rmtree(CACHE_FOLDER)
+

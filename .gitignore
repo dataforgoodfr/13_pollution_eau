@@ -5,6 +5,7 @@ __pycache__/
 .mypy_cache/
 .ipynb_checkpoints/
 .venv/
+.idea
 
 # JavaScript/Node
 node_modules/

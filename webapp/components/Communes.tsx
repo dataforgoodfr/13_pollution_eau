@@ -1,13 +1,12 @@
 
 import { useEffect, useState } from "react";
-import { Marker } from "maplibre-gl";
 
 export interface CommuneType{
   nom:string,
   CP:string,
   _geopoint:string,
-  Centroid:Centroid
-  Marker:Marker
+  Centroid:Centroid,
+  INSEE:string,
 }
 
 export interface Centroid{
@@ -17,32 +16,30 @@ export interface Centroid{
 }
 
 interface CommunesProps{
-  DisplayedCommunesListChanged:(CommuneList:CommuneType[])=>void
+  DisplayedCommunesListChanged:(CommuneList:CommuneType[],Fstring:string)=>void,
+  CommunesData: CommuneType[]
 }
 
 export default function Communes(Props:CommunesProps) 
 {
   const [SearchString,SetSearchString]=useState("")
-  const [CommunesNames,SetCommuneNames]=useState<string[]>([])
-  const [CommunesData,SetCommuneData]=useState<CommuneType[]>([])
+  const [CommunesNames, SetCommunesNames]=useState<string[]>([])
+  const [CommunesData,SetCommunesData]=useState<CommuneType[]>(Props.CommunesData)
   
   useEffect(()=>{
-    const fetchData = async () => {
-      const response = await fetch('/api/CommunesServer');
-      const jsonData = await response.json();
-      SetCommuneNames(LoadCommunesList(jsonData));
-      SetCommuneData(jsonData);
-    };
-
-    fetchData();
-  },[])
+  if (CommunesData?.length!==Props.CommunesData?.length)
+  {
+    SetCommunesData(Props.CommunesData)
+    SetCommunesNames(LoadCommunesList(CommunesData))
+  }
+  }, [CommunesData,CommunesNames, Props.CommunesData])
 
   useEffect(()=>
-    {
+    {      
       const NewList = GetCommunesSubSet(CommunesData, SearchString)
       if (Props.DisplayedCommunesListChanged)
       {
-        Props.DisplayedCommunesListChanged(NewList)
+        Props.DisplayedCommunesListChanged(NewList,SearchString)
       }
     }
     ,[SearchString, CommunesData,Props]
@@ -63,15 +60,19 @@ export default function Communes(Props:CommunesProps)
 
 function LoadCommunesList(CommunesList:Array<CommuneType>):string[]
 {
+  if (!CommunesList)
+  {
+    return []
+  }
   const Communes=CommunesList?.map((x)=>{
     return x.nom
-  })
+  }) 
   return Communes
 }
 
 function GetCommunesSubSet(CommunesList:CommuneType[], SearchString: string):CommuneType[]
 {
-  if (!CommunesList)
+  if (!CommunesList || !CommunesList.length)
   {
     return [] as CommuneType[]
   }

@@ -3,10 +3,19 @@ import { NextResponse } from 'next/server';
 import path from 'path';
 
 
+let CommuneList = ""
 export async function GET() {
   const filePath = path.join(process.cwd(), 'public', 'Communes.json');
-  const fileContent = fs.readFileSync(filePath, 'utf-8');
+  
+  if (CommuneList==="")
+  {
+    CommuneList = JSON.parse( fs.readFileSync(filePath, 'utf-8'));
+  }
 
-  console.log(fileContent.length)
-  return NextResponse.json(JSON.parse(fileContent))
+  // Keep for later use
+  //const {searchParams} = new URL(req.url);
+  //const qparam = searchParams.get("q");
+  return NextResponse.json( CommuneList)
+
 }
+

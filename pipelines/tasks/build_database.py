@@ -169,11 +169,19 @@ def process_edc_datasets(
         years_to_update = available_years[-1:]
     elif refresh_type == "custom":
         if custom_years:
-            years_to_update = list(set(custom_years).intersection(available_years))
+            # Check if every year provided are available
+            invalid_years = set(custom_years) - set(available_years)
+            if invalid_years:
+                raise ValueError(
+                    f"Invalid years provided: {sorted(invalid_years)}. Years must be among: {available_years}"
+                )
+            # Filtering and sorting of valid years
+            years_to_update = sorted(list(set(custom_years).intersection(available_years)))
         else:
             raise ValueError(
                 """ custom_years parameter needs to be specified if refresh_type="custom" """
             )
+
     else:
         raise ValueError(
             f""" refresh_type needs to be one of ["all", "last", "custom"], it can't be: {refresh_type}"""
@@ -189,5 +197,11 @@ def process_edc_datasets(
     return True
 
 
-def execute():
-    process_edc_datasets()
+def execute(refresh_type: str = "all", custom_years: List[str] = None):
+    """
+    Execute the EDC dataset processing with specified parameters.
+    
+    :param refresh_type: Type of refresh to perform ("all", "last", or "custom")
+    :param custom_years: List of years to process when refresh_type is "custom"
+    """
+    process_edc_datasets(refresh_type=refresh_type, custom_years=custom_years)

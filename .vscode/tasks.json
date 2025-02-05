@@ -18,6 +18,9 @@
       "label": "Run Evidence",
       "type": "shell",
       "command": "if command -v npm > /dev/null 2>&1; then cd analytics/evidence && npm install && npm run sources && npm run dev -- --host 0.0.0.0; else echo 'NPM not installed'; fi",
+      "windows": {
+        "command": "cd analytics\\evidence; npm install; npm run sources; npm run dev -- --host 0.0.0.0"
+      },
       "group": "none",
       "icon": {
         "id": "run"

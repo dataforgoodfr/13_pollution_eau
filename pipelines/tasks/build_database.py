@@ -1,10 +1,13 @@
 """
-Consolidate data into the database.
+Consolidate data into the database.\n
+Args:
+    - refresh-type (str): Type of refresh to perform ("all", "last", or "custom")
+    - custom-years (list[str]): List of years to process when refresh_type is "custom"
 """
 
 import logging
 import os
-from typing import Dict, List, Literal
+from typing import List, Literal
 from zipfile import ZipFile
 
 import duckdb
@@ -31,7 +34,6 @@ def check_table_existence(conn: duckdb.DuckDBPyConnection, table_name: str) -> b
         """
     conn.execute(query)
     return list(conn.fetchone())[0] == 1
-
 
 
 def download_extract_insert_yearly_edc_data(year: str):
@@ -134,7 +136,9 @@ def process_edc_datasets(
                     f"Invalid years provided: {sorted(invalid_years)}. Years must be among: {available_years}"
                 )
             # Filtering and sorting of valid years
-            years_to_update = sorted(list(set(custom_years).intersection(available_years)))
+            years_to_update = sorted(
+                list(set(custom_years).intersection(available_years))
+            )
         else:
             raise ValueError(
                 """ custom_years parameter needs to be specified if refresh_type="custom" """
@@ -153,10 +157,11 @@ def process_edc_datasets(
     clear_cache(recreate_folder=False)
     return True
 
+
 def execute(refresh_type: str = "all", custom_years: List[str] = None):
     """
     Execute the EDC dataset processing with specified parameters.
-    
+
     :param refresh_type: Type of refresh to perform ("all", "last", or "custom")
     :param custom_years: List of years to process when refresh_type is "custom"
     """

@@ -1440,30 +1440,38 @@ dependencies = [
     { name = "ipython" },
     { name = "ipython-sql" },
     { name = "jupysql" },
-    { name = "jupyter" },
     { name = "matplotlib" },
     { name = "pandas" },
-    { name = "pre-commit" },
     { name = "python-dotenv" },
     { name = "requests" },
 ]
 
+[package.dev-dependencies]
+dev = [
+    { name = "jupyter" },
+    { name = "pre-commit" },
+]
+
 [package.metadata]
 requires-dist = [
-    { name = "boto3", specifier = "==1.34.11" },
-    { name = "click", specifier = ">=8.1.8" },
-    { name = "duckdb", specifier = ">=1.1.3" },
-    { name = "duckdb-engine", specifier = ">=0.15.0" },
-    { name = "ipykernel", specifier = ">=6.29.5" },
-    { name = "ipython", specifier = ">=8.31.0" },
-    { name = "ipython-sql", specifier = ">=0.5.0" },
-    { name = "jupysql", specifier = ">=0.10.17" },
-    { name = "jupyter", specifier = ">=1.1.0" },
-    { name = "matplotlib", specifier = ">=3.10.0" },
-    { name = "pandas", specifier = ">=2.2.3" },
-    { name = "pre-commit", specifier = ">=4.1.0" },
-    { name = "python-dotenv", specifier = ">=1.0.1" },
-    { name = "requests", specifier = ">=2.32.3" },
+    { name = "boto3", specifier = "==1.34.11,<2" },
+    { name = "click", specifier = ">=8.1.8,<9" },
+    { name = "duckdb", specifier = ">=1.1.3,<2" },
+    { name = "duckdb-engine", specifier = ">=0.15.0,<1" },
+    { name = "ipykernel", specifier = ">=6.29.5,<7" },
+    { name = "ipython", specifier = ">=8.31.0,<9" },
+    { name = "ipython-sql", specifier = ">=0.5.0,<1" },
+    { name = "jupysql", specifier = ">=0.10.17,<1" },
+    { name = "matplotlib", specifier = ">=3.10.0,<4" },
+    { name = "pandas", specifier = ">=2.2.3,<3" },
+    { name = "python-dotenv", specifier = ">=1.0.1,<2" },
+    { name = "requests", specifier = ">=2.32.3,<3" },
+]
+
+[package.metadata.requires-dev]
+dev = [
+    { name = "jupyter", specifier = ">=1.1.0,<2" },
+    { name = "pre-commit", specifier = ">=4.1.0,<5" },
 ]
 
 [[package]]

@@ -1570,27 +1570,38 @@ dependencies = [
     { name = "duckdb" },
     { name = "duckdb-engine" },
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
     { name = "folium" },
     { name = "geojson" },
     { name = "geopandas" },
 >>>>>>> 87e8f46 (suite analyse pfas)
+=======
+    { name = "folium" },
+    { name = "geojson" },
+    { name = "geopandas" },
+>>>>>>> 67b3a154f5514f1552fe3c7aac29a8409f9b65f0
     { name = "ipykernel" },
     { name = "ipython" },
     { name = "ipython-sql" },
     { name = "jupysql" },
     { name = "matplotlib" },
     { name = "pandas" },
+    { name = "pandasql" },
     { name = "pre-commit" },
+    { name = "pyproj" },
     { name = "python-dotenv" },
     { name = "requests" },
     { name = "shapely" },
+<<<<<<< HEAD
 ]
 
 [package.dev-dependencies]
 dev = [
     { name = "jupyter" },
     { name = "pre-commit" },
+=======
+>>>>>>> 67b3a154f5514f1552fe3c7aac29a8409f9b65f0
 ]
 
 [package.metadata]
@@ -1600,11 +1611,17 @@ requires-dist = [
     { name = "duckdb", specifier = ">=1.1.3" },
     { name = "duckdb-engine", specifier = ">=0.15.0" },
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
     { name = "folium", specifier = ">=0.19.4" },
     { name = "geojson", specifier = ">=3.2.0" },
     { name = "geopandas", specifier = ">=1.0.1" },
 >>>>>>> 87e8f46 (suite analyse pfas)
+=======
+    { name = "folium", specifier = ">=0.19.4" },
+    { name = "geojson", specifier = ">=3.2.0" },
+    { name = "geopandas", specifier = ">=1.0.1" },
+>>>>>>> 67b3a154f5514f1552fe3c7aac29a8409f9b65f0
     { name = "ipykernel", specifier = ">=6.29.5" },
     { name = "ipython", specifier = ">=8.31.0" },
     { name = "ipython-sql", specifier = ">=0.5.0" },
@@ -1612,9 +1629,12 @@ requires-dist = [
     { name = "jupyter", specifier = ">=1.1.0" },
     { name = "matplotlib", specifier = ">=3.10.0" },
     { name = "pandas", specifier = ">=2.2.3" },
+    { name = "pandasql", specifier = ">=0.7.3" },
     { name = "pre-commit", specifier = ">=4.1.0" },
+    { name = "pyproj", specifier = ">=3.7.0" },
     { name = "python-dotenv", specifier = ">=1.0.1" },
     { name = "requests", specifier = ">=2.32.3" },
+    { name = "shapely", specifier = ">=2.0.6" },
 ]
 
 [[package]]

@@ -20,14 +20,20 @@ dependencies = [
     "python-dotenv>=1.0.1",
     "pre-commit>=4.1.0",
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 67b3a154f5514f1552fe3c7aac29a8409f9b65f0
     "shapely>=2.0.6",
     "geopandas>=1.0.1",
     "folium>=0.19.4",
     "pyproj>=3.7.0",
     "pandasql>=0.7.3",
     "geojson>=3.2.0",
+<<<<<<< HEAD
 >>>>>>> 87e8f46 (suite analyse pfas)
+=======
+>>>>>>> 67b3a154f5514f1552fe3c7aac29a8409f9b65f0
 ]
 
 

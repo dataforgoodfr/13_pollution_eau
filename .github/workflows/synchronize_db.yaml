@@ -1,0 +1,44 @@
+name: 🔄 Synchronize Production DB to storage
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'pipelines/**'
+      - 'database/**'
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+env:
+  ENV: prod
+  SCW_ACCESS_KEY: ${{ secrets.SCW_ACCESS_KEY }}
+  SCW_SECRET_KEY: ${{ secrets.SCW_SECRET_KEY }}
+
+jobs:
+  sync_prod_database:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Install a specific version of uv
+      uses: astral-sh/setup-uv@v5
+      with:
+        version: ">=0.4.0"
+
+    - name: Install dependencies
+      run: uv sync 
+
+    - name: Download production database from Storage
+      run: |
+        uv run pipelines/run.py run download_database
+
+    - name: Update production database
+      run: |
+        uv run pipelines/run.py run build_database
+
+    - name: Upload production database to Storage
+      run: |
+        uv run pipelines/run.py run upload_database

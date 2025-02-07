@@ -1,8 +1,14 @@
 """
-Consolidate data into the database.\n
+Consolidate data into the database.
+
 Args:
     - refresh-type (str): Type of refresh to perform ("all", "last", or "custom")
-    - custom-years (list[str]): List of years to process when refresh_type is "custom"
+    - custom-years (str): List of years to process when refresh_type is "custom"
+
+Examples:
+    - build_database --refresh-type all : Process all years
+    - build_database --refresh-type last : Process last year only
+    - build_database --refresh-type custom --custom-years 2018,2024 : Process only the years 2018 and 2024
 """
 
 import logging

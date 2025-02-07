@@ -80,10 +80,22 @@ Tout le code dans pipelines sera installé en tant que package python automatiqu
 ### Comment construire la database
 
 Une fois l'environnement python setup avec uv, vous pouvez lancer data_pipeline/run.py pour remplir la database
-Il suffit de lancer
+
+Le téléchargement des données peut se faire de plusieurs manières :
+* 1. Téléchargement des données de la dernière année (par défaut)
+```bash
+uv run pipelines/run.py run build_database --refresh-type last
+```
+
+* 2. Téléchargement de toutes les données
 
 ```bash
-uv run pipelines/run.py run build_database
+uv run pipelines/run.py run build_database --refresh-type all
+```
+
+* 3. Téléchargement de données d'années spécifiques
+```bash
+uv run pipelines/run.py run build_database --refresh-type custom --custom-years 2018,2024,...
 ```
 
 ### Comment télécharger la database depuis S3

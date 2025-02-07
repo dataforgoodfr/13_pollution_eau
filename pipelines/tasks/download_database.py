@@ -1,3 +1,14 @@
+"""
+Download database from S3 storage.
+
+Args:
+    - env (str): Environment to download from ("dev" or "prod")
+
+Examples:
+    - download_database --env prod : Download database from production environment
+    - download_database --env dev  : Download database from development environment
+"""
+
 import logging
 
 from pipelines.config.config import get_environment, get_s3_path

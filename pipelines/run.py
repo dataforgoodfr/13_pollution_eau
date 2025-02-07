@@ -1,7 +1,6 @@
 import importlib
 import logging
 import os
-import sys
 
 import click
 
@@ -44,40 +43,64 @@ def list():
                 click.echo(f"    {line}")
 
 
-@cli.command()
-@click.argument("task_name")
+@cli.group()
+def run():
+    """Run tasks."""
+    pass
+
+
+@run.command("build_database")
 @click.option(
     "--refresh-type",
     type=click.Choice(["all", "last", "custom"]),
     default="all",
     help="Type of refresh to perform",
-    hidden=True,
 )
 @click.option(
     "--custom-years",
     type=str,
     help="Comma-separated list of years to process (for custom refresh type)",
-    hidden=True,
 )
-def run(task_name, refresh_type, custom_years):
-    """Run a specified task."""
-    try:
-        module = importlib.import_module(f"tasks.{task_name}")
-        task_func = getattr(module, "execute")
-        logging.info(f"Starting task {task_name}...")
+def run_build_database(refresh_type, custom_years):
+    """Run build_database task."""
+    module = importlib.import_module("tasks.build_database")
+    task_func = getattr(module, "execute")
 
-        # Parse custom years if provided
-        custom_years_list = None
-        if custom_years:
-            custom_years_list = [year.strip() for year in custom_years.split(",")]
+    custom_years_list = None
+    if custom_years:
+        custom_years_list = [year.strip() for year in custom_years.split(",")]
 
-        # Call the task function with parameters
-        task_func(refresh_type=refresh_type, custom_years=custom_years_list)
+    task_func(refresh_type=refresh_type, custom_years=custom_years_list)
 
-        logging.info(f"Task {task_name} completed.")
-    except (ModuleNotFoundError, AttributeError):
-        logging.error(f"Task {task_name} not found.")
-        sys.exit(1)
+
+@run.command("download_database")
+@click.option(
+    "--env",
+    type=click.Choice(["dev", "prod"]),
+    default="prod",
+    help="Environment to download from",
+)
+def run_download_database(env):
+    """Download database from S3."""
+    os.environ["ENVIRONMENT"] = env
+    module = importlib.import_module("tasks.download_database")
+    task_func = getattr(module, "execute")
+    task_func()
+
+
+@run.command("upload_database")
+@click.option(
+    "--env",
+    type=click.Choice(["dev", "prod"]),
+    default="dev",
+    help="Environment to upload to",
+)
+def run_upload_database(env):
+    """Upload database to S3."""
+    os.environ["ENVIRONMENT"] = env
+    module = importlib.import_module("tasks.upload_database")
+    task_func = getattr(module, "execute")
+    task_func()
 
 
 if __name__ == "__main__":

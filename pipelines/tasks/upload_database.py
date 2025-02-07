@@ -1,3 +1,14 @@
+"""
+Upload database to S3 storage.
+
+Args:
+    - env (str): Environment to upload to ("dev" or "prod")
+
+Examples:
+    - upload_database --env dev  : Upload database to development environment
+    - upload_database --env prod : Upload database to production environment
+"""
+
 import logging
 
 from pipelines.config.config import get_environment, get_s3_path

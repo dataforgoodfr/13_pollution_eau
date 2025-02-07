@@ -5,6 +5,11 @@ import sys
 
 import click
 
+# Importer et charger les variables d'environnement depuis config.py
+from pipelines.config.config import load_env_variables
+
+load_env_variables()
+
 # Configure logging
 logging.basicConfig(
     level=logging.INFO,

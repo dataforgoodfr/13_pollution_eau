@@ -86,6 +86,16 @@ Il suffit de lancer
 uv run pipelines/run.py run build_database
 ```
 
+### Comment télécharger la database depuis S3
+
+Des versions de dev et de production de la db sont à disposition sur le storage object.
+Il faut bien configurer ses credentials et son env via le fichier .env.
+Ensuite il suffit de lancer
+
+```bash
+uv run pipelines/run.py run download_database
+```
+
 ### Connection a Scaleway via boto3 pour stockage cloud
 
 Un utils a été créé dans [storage_client.py](pipelines%2Futils%2Fstorage_client.py) pour faciliter la connection au S3 hébergé sur Scaleway.

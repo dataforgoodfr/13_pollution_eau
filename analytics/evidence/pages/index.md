@@ -7,7 +7,7 @@ Cette page est un exemple de tableau de bord Evidence.
 ## Liste des communes
 
 ```sql communes
-  SELECT * FROM "local_duckdb"."sise_communes"
+  SELECT * FROM "local_duckdb"."edc_communes"
 ```
 
 <DataTable data={communes} />
@@ -18,7 +18,7 @@ Nombre de prélèvement par jour
 
 ```sql prelevements_par_jour
   SELECT dateprel, count(*) as nb_prelevements
-  FROM "local_duckdb"."sise_prelevements"
+  FROM "local_duckdb"."edc_prelevements"
   GROUP BY dateprel
 ```
 
@@ -40,7 +40,7 @@ Nombre de prélèvement par jour
 ```sql prelevements_commune
   SELECT
     *
-  FROM "local_duckdb"."sise_prelevements"
+  FROM "local_duckdb"."edc_prelevements"
   WHERE LOWER(nomcommuneprinc) = LOWER('${inputs.name_of_input}')
 ```
 

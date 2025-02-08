@@ -80,10 +80,32 @@ Tout le code dans pipelines sera installé en tant que package python automatiqu
 ### Comment construire la database
 
 Une fois l'environnement python setup avec uv, vous pouvez lancer data_pipeline/run.py pour remplir la database
-Il suffit de lancer
+
+Le téléchargement des données peut se faire de plusieurs manières :
+* 1. Téléchargement des données de la dernière année (par défaut)
+```bash
+uv run pipelines/run.py run build_database --refresh-type last
+```
+
+* 2. Téléchargement de toutes les données
 
 ```bash
-uv run pipelines/run.py run build_database
+uv run pipelines/run.py run build_database --refresh-type all
+```
+
+* 3. Téléchargement de données d'années spécifiques
+```bash
+uv run pipelines/run.py run build_database --refresh-type custom --custom-years 2018,2024,...
+```
+
+### Comment télécharger la database depuis S3
+
+Des versions de dev et de production de la db sont à disposition sur le storage object.
+Il faut bien configurer ses credentials et son env via le fichier .env.
+Ensuite il suffit de lancer
+
+```bash
+uv run pipelines/run.py run download_database
 ```
 
 ### Connection a Scaleway via boto3 pour stockage cloud
@@ -120,3 +142,18 @@ Lancer la commande suivante pour s'assurer que le code satisfait bien tous les p
 ```ba*sh
 pre-commit run --all-files
 ```
+
+## How to contribute
+Pour contribuer, il est recommandé d'utiliser un fork du projet. Cela permet d'éviter la gestion des demandes d'accès au dépôt principal.
+
+* Dans un premier temps, cliquez sur Fork pour récupérer le projet dans votre espace GitHub.
+* Créez votre branche de travail à partir de la branche main, en respectant la nomenclature suivante :
+  * feature/nom_de_la_feature pour une nouvelle fonctionnalité
+  * hotfix/nom_du_hotfix pour une correction rapide
+* Poussez votre code vers votre dépôt distant.
+* Créez une pull request en spécifiant :
+  * Base repository : dataforgood/13_pollution_eau/main
+  * Head repository : YourGithubAccount/13_pollution_eau/your_branch
+* Pour faciliter la revue de la pull request :
+  * Liez la pull request à un ticket NocoDB en ajoutant le lien du ticket dans la description.
+  * Rédigez une description détaillée de la pull request afin de fournir un maximum d’informations sur les modifications apportées.

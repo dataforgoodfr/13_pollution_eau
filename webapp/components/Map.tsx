@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import maplibregl, { GeoJSONSourceSpecification, LngLat, Map, MapMouseEvent } from "maplibre-gl";
+import maplibregl, { Feature, GeoJSONSourceSpecification, LngLat, Map, MapGeoJSONFeature, MapMouseEvent } from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 import Communes,{CommuneType} from "./Communes";
 import { Protocol } from 'pmtiles';
@@ -9,9 +9,10 @@ import { Protocol } from 'pmtiles';
 
 
 const MAP_SOURCES_COMMUNES_GEOJSON = "CommuneData"
-const MAP_SOURCES_COMMUNES_PMTILES ="CommunesPMTiles"
+const MAP_SOURCES_COMMUNES_PMTILES ="PMTiles_Communes"
 const MAP_LAYER_COMMUNES_DOTS = 'CommunesDotsLayer'
 const MAP_LAYER_COMMUNES_POLYGONS = 'CommunesPolygonsLayer'
+const MAP_LAYER_COMMUNES_POLYGONS_SEARCH = 'CommunesPolygonsLayer_SearchFilter'
 
 const GeoJsonSpecs:GeoJSONSourceSpecification={
   type: 'geojson',
@@ -50,7 +51,7 @@ export default function MainMap() {
       style: {
         version: 8,
         sources: {
-          "protomaps": {
+          "PMTiles_Communes": {
             type: 'vector',
             //tiles: ['http://10.35.0.15:3000/api/Map/{z}/{x}/{y}.mvt'] // Protomaps tile URL
             "url": "pmtiles://http:/api/Map",
@@ -86,11 +87,22 @@ export default function MainMap() {
           {
             id: MAP_LAYER_COMMUNES_POLYGONS,
             type: 'line',
-            source: 'protomaps',
+            source: MAP_SOURCES_COMMUNES_PMTILES,
             'source-layer': 'Communes',
             paint: {
-              'line-width':2,
+              'line-width':0.8,
               'line-color': '#9090e0' // Water color
+            }
+          },
+          {
+            id: MAP_LAYER_COMMUNES_POLYGONS_SEARCH,
+            type: 'fill',
+            filter:['in',['get','nom'],["literal",[]]],
+            source: MAP_SOURCES_COMMUNES_PMTILES,
+            'source-layer': 'Communes',
+            paint: {
+              'fill-color': '#ff0000' ,
+              'fill-opacity':0.2
             }
           },
           
@@ -140,7 +152,7 @@ useEffect(()=>{
       {
         return
       }
-      const Features = GetCommunesFeatures(CommunesBaseData,FilterString,RollIndex)
+      /*const Features = GetCommunesFeatures(CommunesBaseData,FilterString,RollIndex)
       GeoJsonSpecs.data.features=Features   
       const Src = map.current.getSource(MAP_SOURCES_COMMUNES_GEOJSON)
       if (Src)
@@ -156,17 +168,36 @@ useEffect(()=>{
         setTimeout(() => {
           SetRollIndex(RollIndex+1)
         },2000); 
-      }
+      }*/
+     const L = map.current?.getLayer(MAP_LAYER_COMMUNES_POLYGONS_SEARCH)
+     const S = map.current?.getSource(MAP_SOURCES_COMMUNES_PMTILES)
+     const QS = map.current?.queryRenderedFeatures(MAP_SOURCES_COMMUNES_PMTILES,{
+                  sourceLayer: MAP_LAYER_COMMUNES_POLYGONS , filter:["all"]   })
+     const CList:string[]=[]
+
+     if (QS && QS.length)
+     {
+      QS.map((x:MapGeoJSONFeature)=>{
+        if (x.properties.nom?.toUpperCase().includes(FilterString?.toUpperCase()))
+        {
+          CList.push(x.properties.nom)
+        }
+      })
+     }
+
+     
+
+     map.current?.setFilter(MAP_LAYER_COMMUNES_POLYGONS_SEARCH,["in",['get','nom'],["literal",CList]])
     
   },[FilterString, CommunesBaseData,RollIndex,Animate])
 
-  function UpdateDisplatedCommunes(CList:CommuneType[], FString:string)
+  function UpdateDisplayedCommunes(CList:CommuneType[], FString:string)
   {
     SetFilterString(FString)
   }
 //
   return <div>
-          <Communes CommunesData={CommunesBaseData} DisplayedCommunesListChanged={UpdateDisplatedCommunes}/>
+          <Communes CommunesData={CommunesBaseData} DisplayedCommunesListChanged={UpdateDisplayedCommunes}/>
           
           <div ref={mapContainer} className="w-full h-[calc(100vh-9rem)]" />
         </div>;
@@ -175,7 +206,7 @@ useEffect(()=>{
 
 function InitCommunesLayer(_map: maplibregl.Map, SetPopupObjectFn) 
 {
-
+return
   console.log("Initing Map", _map)
   
   const src = _map.getSource(MAP_SOURCES_COMMUNES_GEOJSON)
@@ -223,7 +254,13 @@ function InitCommunesLayer(_map: maplibregl.Map, SetPopupObjectFn)
     // Change the cursor style as a UI indicator.
     _map.getCanvas().style.cursor = 'pointer';
 
-    const coordinates = e.lngLat //.features[0].geometry.coordinates.slice()
+    let Lon=0
+    let Lat=0
+    const NbPts=e.features[0].geometry.coordinates[0].length
+    e.features[0]?.geometry?.coordinates[0]?.map((x:LngLat)=>{Lon+=x[0]; Lat+=x[1]})
+
+    const coordinates:LngLat=new LngLat(Lon/NbPts,Lat/NbPts)
+
     const description = e.features[0].properties.nom //+ ' ' + e.features[0].properties.color
 
     // Ensure that if the map is zoomed out such that multiple

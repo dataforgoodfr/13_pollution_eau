@@ -95,20 +95,24 @@ function GetCommunesSubSet(CommunesList:CommuneType[], SearchString: string):Com
     return [] as CommuneType[]
   }
   const RetArray:CommuneType[]=[]
+  const TmpArray:CommuneType[]=[]
+  
   CommunesList.map((x:CommuneType)=>
   {
-    if (x?.n.includes(SearchString.toUpperCase())|| x.C==SearchString)
+    if (x?.n.includes(SearchString?.toUpperCase())|| x.C==SearchString)
     {
       if (x.G && !x.Centroid)
       {
         const coords = x.G.split(',').map(num => parseFloat(num));
         x.Centroid={Lon:coords[1],Lat:coords[0]}
       }
-      RetArray.push(x)
+      TmpArray[x.I]=x
+      
     }
     
   })
 
+  TmpArray.map((x:CommuneType)=>{RetArray.push(x)})
   return RetArray
 }
 

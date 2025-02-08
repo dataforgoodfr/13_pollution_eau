@@ -1,12 +1,13 @@
 
+import { Combobox, ComboboxInput, ComboboxOption, ComboboxOptions } from "@headlessui/react";
 import { useEffect, useState } from "react";
 
 export interface CommuneType{
-  nom:string,
-  CP:string,
-  _geopoint:string,
+  n:string,
+  C:string,
+  G:string,
   Centroid:Centroid,
-  INSEE:string,
+  I:string,
 }
 
 export interface Centroid{
@@ -25,6 +26,7 @@ export default function Communes(Props:CommunesProps)
   const [SearchString,SetSearchString]=useState("")
   const [CommunesNames, SetCommunesNames]=useState<string[]>([])
   const [CommunesData,SetCommunesData]=useState<CommuneType[]>(Props.CommunesData)
+  const [SearchCommunes,SetSearchedCommunes]=useState<CommuneType[]>([])
   
   useEffect(()=>{
   if (CommunesData?.length!==Props.CommunesData?.length)
@@ -41,18 +43,34 @@ export default function Communes(Props:CommunesProps)
       {
         Props.DisplayedCommunesListChanged(NewList,SearchString)
       }
+
+      if (NewList?.length<=42)
+      {
+        SetSearchedCommunes(NewList)
+      }
+      else
+      {
+        SetSearchedCommunes([])
+      }
     }
     ,[SearchString, CommunesData,Props]
   )
-  
-  function HandleSearchStringChange (event: React.ChangeEvent<HTMLInputElement>)
-  {
-    SetSearchString(event.target.value)
-  }
-  
-  
+   
   return <div>
-    <input type="text" value={SearchString} onChange={HandleSearchStringChange} />
+    <Combobox  value={SearchString} onChange={(x:string)=>{ SetSearchString(x)}} >
+      <ComboboxInput
+        aria-label="Assignee"
+        displayValue={(C:CommuneType) => C?.n}
+        onChange={(event) => SetSearchString(event.target.value)}
+      />
+      <ComboboxOptions anchor="bottom" className="border empty:invisible">
+        {SearchCommunes.map((C:CommuneType) => (
+          <ComboboxOption key={C.I} value={C} className="data-[focus]:bg-blue-100">
+            {C.n}
+          </ComboboxOption>
+        ))}
+      </ComboboxOptions>
+    </Combobox>
     <span>{CommunesNames.length} Nom de communes en mémoire</span>
   </div>
 }
@@ -65,7 +83,7 @@ function LoadCommunesList(CommunesList:Array<CommuneType>):string[]
     return []
   }
   const Communes=CommunesList?.map((x)=>{
-    return x.nom
+    return x.n
   }) 
   return Communes
 }
@@ -79,11 +97,11 @@ function GetCommunesSubSet(CommunesList:CommuneType[], SearchString: string):Com
   const RetArray:CommuneType[]=[]
   CommunesList.map((x:CommuneType)=>
   {
-    if (x?.nom.includes(SearchString.toUpperCase())|| x.CP==SearchString)
+    if (x?.n.includes(SearchString.toUpperCase())|| x.C==SearchString)
     {
-      if (x._geopoint && !x.Centroid)
+      if (x.G && !x.Centroid)
       {
-        const coords = x._geopoint.split(',').map(num => parseFloat(num));
+        const coords = x.G.split(',').map(num => parseFloat(num));
         x.Centroid={Lon:coords[1],Lat:coords[0]}
       }
       RetArray.push(x)

@@ -9,8 +9,15 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@headlessui/react": "^2.2.0",
+    "bootstrap": "^5.3.3",
+    "http-proxy-middleware": "^3.0.3",
     "maplibre-gl": "^5.0.1",
     "next": "15.1.6",
+    "next-http-proxy-middleware": "^1.2.6",
+    "node": "^18.20.6",
+    "npm": "^9.9.4",
+    "pmtiles": "^4.2.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },

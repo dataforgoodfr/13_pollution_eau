@@ -1,4 +1,4 @@
-//import Image from "next/image";
+import 'bootstrap/dist/css/bootstrap.css'
 import MainMap from "@/components/Map";
 
 export default function Home() {
@@ -11,7 +11,7 @@ export default function Home() {
       </header>
 
       <main className="flex-1">
-        <MainMap />
+       <MainMap />          
       </main>
 
       <footer className="p-4 bg-gray-100 text-center text-sm">

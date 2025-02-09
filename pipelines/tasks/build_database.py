@@ -13,14 +13,15 @@ Examples:
 
 import logging
 import os
+import subprocess
 from typing import List, Literal
 from zipfile import ZipFile
 
 import duckdb
 import requests
 
-from ._common import CACHE_FOLDER, DUCKDB_FILE, clear_cache
-from ._config_edc import get_edc_config, create_edc_yearly_filename
+from ._common import CACHE_FOLDER, DUCKDB_FILE, ROOT_FOLDER, clear_cache
+from ._config_edc import create_edc_yearly_filename, get_edc_config
 
 logger = logging.getLogger(__name__)
 edc_config = get_edc_config()
@@ -171,4 +172,36 @@ def execute(refresh_type: str = "all", custom_years: List[str] = None):
     :param refresh_type: Type of refresh to perform ("all", "last", or "custom")
     :param custom_years: List of years to process when refresh_type is "custom"
     """
+    # Build database
     process_edc_datasets(refresh_type=refresh_type, custom_years=custom_years)
+
+    dbt_path = os.path.join(ROOT_FOLDER, "dbt_")
+
+    # Install dbt dependencies
+    logger.info("🔄 Installation des dépendances dbt...")
+    try:
+        subprocess.run(["uv", "run","dbt", "deps"], cwd=dbt_path, check=True)
+        logger.info("✅ Dépendances dbt installées avec succès")
+    except subprocess.CalledProcessError as e:
+        logger.error(f"❌ Erreur lors de l'installation des dépendances dbt: {str(e)}")
+        raise
+
+    # Build data models
+    logger.info("🔄 Lancement de dbt build...")
+    try:
+        subprocess.run(["uv", "run", "dbt", "build"], cwd=dbt_path, check=True)
+        logger.info("✅ dbt build terminé avec succès")
+    except subprocess.CalledProcessError as e:
+        logger.error(f"❌ Erreur lors de l'exécution de dbt build: {str(e)}")
+        raise
+
+    # Geenerate documentation
+    logger.info("🔄 Génération de la documentation dbt...")
+    try:
+        subprocess.run(["uv", "run", "dbt", "docs", "generate"], cwd=dbt_path, check=True)
+        logger.info("✅ Documentation dbt générée avec succès")
+    except subprocess.CalledProcessError as e:
+        logger.error(
+            f"❌ Erreur lors de la génération de la documentation dbt: {str(e)}"
+        )
+        raise

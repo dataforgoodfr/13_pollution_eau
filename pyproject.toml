@@ -20,6 +20,11 @@ dependencies = [
     "boto3==1.34.11,<2",
     "python-dotenv>=1.0.1,<2",
     "ibis-framework[duckdb]>=9.5.0,<10",
+    "folium>=0.19.4",
+    "pandasql>=0.7.3",
+    "pyproj>=3.7.0",
+    "shapely>=2.0.7",
+    "geopandas>=1.0.1",
 ]
 
 [dependency-groups]

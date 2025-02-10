@@ -12,6 +12,10 @@ if (!fs.existsSync(dbFilePath)) {
 
 //TODO: need to handle hot reload in dev mode
 console.log("Create DB instance...");
-const db = await DuckDBInstance.create(dbFilePath);
+// next build needs access to the file and can't if not using read_only because the file gets locked - @see https://duckdb.org/docs/connect/concurrency
+// it may be possible without it if we use the database differently or configure next (maybe ?), but as we are only reading in the db it should be better like this
+const db = await DuckDBInstance.create(dbFilePath, {
+  access_mode: "READ_ONLY",
+});
 
 export default db;

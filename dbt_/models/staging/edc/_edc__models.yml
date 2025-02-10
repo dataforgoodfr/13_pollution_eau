@@ -29,7 +29,7 @@ models:
         type: VARCHAR
 
       - name: de_partition
-        description: "Année de récupération des données"
+        description: Année de récupération des données. Ceci est un champ ajouté automatiquement lors de l'ingestion des données.
         type: SMALLINT
         tests:
           - dbt_utils.expression_is_true:

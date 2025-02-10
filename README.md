@@ -101,15 +101,15 @@ uv run pipelines/run.py run build_database --refresh-type custom --custom-years 
 #### 1. Commandes a exécuter
 La librarie dbt est celle choisie pour une construction rapide et simple de modèles de données optimisé pour l'analytics.
 
-La commande `dbt deps` permet de télécharger les dépendances du projet dbt.
-Exécutée lors de la création de la base de données, la commande `dbt build` est une commande qui permet de réaliser l'ensemble des actions suivantes :
+🚩**Remarque** : Pour lancer chaque commande individuellement, veillez à bien vous placer dans le dossier dbt_ (`cd dbt_`) avant de lancer les commandes.
+
+La commande `uv run dbt deps` permet de télécharger les dépendances du projet dbt.
+Exécutée lors de la création de la base de données, la commande `uv run dbt build` est une commande qui permet de réaliser l'ensemble des actions suivantes :
 * Lancer la création des tables issues des données brutes (`uv run dbt run`)
 * Réaliser les test de qualité des données (`uv run dbt test`)
 * Mettre sous forme de table les fichiers csv ajoutés dans le dossiers seeds (`uv run dbt seed`)
 
 Une autre commande `uv run dbt docs generate` permet de générer la documentation des modèles de données renseignée dans les fichiers `_xxx__models.yml` au format html. L'utilisation de la commande `uv run dbt docs serve` permet de lancer un serveur local pour visualiser la documentation.
-
-🚩**Remarque** : Pour lancer chaque commande individuellement, veillez à bien vous placer dans le dossier dbt_ (`cd dbt_`) avant de lancer les commandes.
 
 Pour plus d'informations concernant la manière d'organiser un projet dbt, se référer à la [documentation officielle](https://docs.getdbt.com/docs/introduction) et notamment à la section .
 

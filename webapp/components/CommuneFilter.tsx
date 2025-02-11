@@ -40,14 +40,14 @@ export default function CommuneFilter()
 
   return <div>
     <Combobox value={FilterString} onChange={SelectCommuneChanged} >
-      <ComboboxInput
+      <ComboboxInput className="bg-white-500 border-blue-500"
         aria-label="Communes"
         displayValue={(c:Feature) => c?.properties?.toponym}
         onChange={HandleFilterChange}
       />
-      <ComboboxOptions anchor="bottom" className="border empty:invisible">
+      <ComboboxOptions  anchor="bottom" className="border empty:invisible">
         {CommunesList.map((C:Feature) => (
-          <ComboboxOption key={C.properties.extrafields.cleabs} value={C} className="data-[focus]:bg-blue-100">
+          <ComboboxOption key={C.properties.extrafields.cleabs} value={C} className="data-[focus]:bg-blue-100 bg-white">
             {C?.properties.toponym}
           </ComboboxOption>
         ))}

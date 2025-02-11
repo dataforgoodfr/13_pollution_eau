@@ -1,30 +1,13 @@
 "use client"
 import { Combobox, ComboboxInput, ComboboxOption, ComboboxOptions } from "@headlessui/react";
-import { ChangeEventHandler, useEffect, useState } from "react";
+import { Feature } from "maplibre-gl";
+import { Dispatch, SetStateAction, useState } from "react";
 
 export default function CommuneFilter() 
 {
   const [FilterString,SetFilterString]=useState('')
-  const [DelayHandler, SetDelayHandler]=useState(null)
+  const [DelayHandler, SetDelayHandler]=useState<NodeJS.Timeout|null>(null )
   const [CommunesList, SetCommunesList]=useState([])
-
-  useEffect(()=>{
-    function CallFilter()
-    {
-      const Data=fetch("/api/CommuneFilter?q="+FilterString)
-      console.log("returned ",Data)
-    }
-
-    if (DelayHandler)
-    {
-      clearTimeout(DelayHandler)
-    }
-
-    //SetDelayHandler(setTimeout(CallFilter),100)
-    console.log("Current FilterString",FilterString)
-  },[FilterString, DelayHandler])
-
-
 
   async function  HandleFilterChange(e:React.ChangeEvent<HTMLInputElement>)
   {
@@ -32,40 +15,38 @@ export default function CommuneFilter()
     {
       SetFilterString('')
       SetCommunesList([])
+      console.log("no filter")
       return
     }
-    const data=await fetch("api/CommuneFilter?q="+e.target.value)
-                        .then((response)=>
-                        {
-                          return response.json()  
-                        })
-    console.log("changing",e.target.value, data)
-    SetFilterString(e.target.value)
-    if (data?.features)
+
+    if (DelayHandler)
     {
-      SetCommunesList(data?.features)
+      console.log("delay canceled")  
+      clearTimeout(DelayHandler)
     }
-    else
-    {
-      SetCommunesList([])
-    }
+
+    SetFilterString(e.target.value);
+  
+    SetDelayHandler(setTimeout(()=>{
+        console.log("delayed perform")
+        PerformSearch(e.target.value, SetCommunesList)
+      },200))
     
   }
 
-  function SetSelected(event: ChangeEvent<HTMLInputElement>): void 
-  {
-    
+  function SelectCommuneChanged(value: string | null): void {
+    throw new Error("Function not implemented.");
   }
 
   return <div>
-    <Combobox value={FilterString} onChange={HandleFilterChange} >
+    <Combobox value={FilterString} onChange={SelectCommuneChanged} >
       <ComboboxInput
         aria-label="Communes"
-        displayValue={(c) => c?.properties?.toponym}
+        displayValue={(c:Feature) => c?.properties?.toponym}
         onChange={HandleFilterChange}
       />
       <ComboboxOptions anchor="bottom" className="border empty:invisible">
-        {CommunesList.map((C) => (
+        {CommunesList.map((C:Feature) => (
           <ComboboxOption key={C.properties.extrafields.cleabs} value={C} className="data-[focus]:bg-blue-100">
             {C?.properties.toponym}
           </ComboboxOption>
@@ -73,4 +54,20 @@ export default function CommuneFilter()
       </ComboboxOptions>
     </Combobox>
   </div>
+}
+
+async function PerformSearch(FilterString:string, SetCommunesListCallback:Dispatch<SetStateAction<never[]>>) 
+{
+  const data = await fetch("api/CommuneFilter?q=" + FilterString)
+    .then((response) => {
+      return response.json();
+    });
+  console.log("Requested", FilterString, data);
+  if (data?.features) {
+    SetCommunesListCallback(data?.features);
+  }
+
+  else {
+    SetCommunesListCallback([]);
+  }
 }

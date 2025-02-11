@@ -15,20 +15,17 @@ export default function CommuneFilter()
     {
       SetFilterString('')
       SetCommunesList([])
-      console.log("no filter")
       return
     }
 
     if (DelayHandler)
     {
-      console.log("delay canceled")  
       clearTimeout(DelayHandler)
     }
 
     SetFilterString(e.target.value);
   
     SetDelayHandler(setTimeout(()=>{
-        console.log("delayed perform")
         PerformSearch(e.target.value, SetCommunesList)
       },200))
     
@@ -62,7 +59,6 @@ async function PerformSearch(FilterString:string, SetCommunesListCallback:Dispat
     .then((response) => {
       return response.json();
     });
-  console.log("Requested", FilterString, data);
   if (data?.features) {
     SetCommunesListCallback(data?.features);
   }

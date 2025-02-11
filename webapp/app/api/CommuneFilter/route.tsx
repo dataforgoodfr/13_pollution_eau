@@ -1,13 +1,11 @@
-import { RequestContext } from "next/dist/server/base-server"
-import { NextResponse } from "next/server"
+import { NextRequest, NextResponse } from "next/server"
 
-export async function GET(req:RequestContext)
+export async function GET(req:NextRequest)
 {
   const q = new URL(req.url).searchParams.get('q')
   
   if (!q)
   {
-    console.log("!q")
     return NextResponse.json(null)
   }
   else

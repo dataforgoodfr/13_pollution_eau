@@ -147,27 +147,37 @@ SCW_ACCESS_KEY={ACCESS_KEY}
 SCW_SECRET_KEY={SECRET_KEY}
 ```
 
-Vous trouverez un example avec le fichier [.env.example](pipelines%2Fconfig%2F.env.example)
+Vous trouverez un exemple avec le fichier [.env.example](pipelines%2Fconfig%2F.env.example)
 
-> ⚠ **Attention:** Ne jamais commir les access key et secret key.
+> ⚠ **Attention:** Ne jamais commit les access key et secret key.
 
-Un vaultwarden va être setup pour récupérer les secrets pour les personnes qui en ont besoin
+Un vaultwarden va être setup pour récupérer les secrets pour les personnes qui en ont besoin.
 
-Le notebook [test_storage_utils.ipynb](pipelines%2Fnotebooks%2Ftest_storage_utils.ipynb) montre un example d'utilisation de l'utils pour charger et lire des csv sur le bucket S3 du projet
+Le notebook [test_storage_utils.ipynb](pipelines%2Fnotebooks%2Ftest_storage_utils.ipynb) montre un exemple d'utilisation de l'utils pour charger et lire des csv sur le bucket S3 du projet.
 
 ### Data analysis
 
-Les analyses ce font via jupyter notebook
+Les analyses se font via jupyter notebook
 
 ```bash
 uv run jupyter notebook
 ```
 
+## Tests
+
+Pour lancer les tests, il suffit de lancer la commande suivante à la racine du projet:
+
+```bash
+uv run pytest -s
+```
+
+L'option `-s` permet d'afficher les prints dans le terminal.
+
 ## Pre Commit
 
 Lancer la commande suivante pour s'assurer que le code satisfait bien tous les pre commit avant de créer votre pull request
 
-```ba*sh
+```bash
 pre-commit run --all-files
 ```
 

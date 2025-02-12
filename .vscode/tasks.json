@@ -30,6 +30,19 @@
         "reveal": "always",
         "panel": "new"
       }
+    },
+    {
+      "label": "Download database",
+      "type": "shell",
+      "command": "uv run pipelines/run.py run download_database",
+      "group": "none",
+      "icon": {
+        "id": "cloud-download"
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "new"
+      }
     }
-  ]
+  ],
 }

@@ -15,6 +15,8 @@ logging.basicConfig(
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
 )
 
+logger = logging.getLogger(__name__)
+
 
 @click.group()
 def cli():
@@ -96,6 +98,7 @@ def run_download_database(env):
     if env is not None:
         os.environ["ENV"] = env
     env = get_environment(default="prod")
+    logger.info(f"Running on env {env}")
     module = importlib.import_module("tasks.download_database")
     task_func = getattr(module, "execute")
     task_func(env)
@@ -113,6 +116,7 @@ def run_upload_database(env):
     if env is not None:
         os.environ["ENV"] = env
     env = get_environment(default="dev")
+    logger.info(f"Running on env {env}")
     module = importlib.import_module("tasks.upload_database")
     task_func = getattr(module, "execute")
     task_func(env)

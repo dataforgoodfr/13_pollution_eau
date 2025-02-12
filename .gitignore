@@ -22,6 +22,7 @@ dist/
 *.sqlite3
 *.db
 *.duckdb
+*.duckdb.*
 *.csv
 *.parquet
 *.xlsx

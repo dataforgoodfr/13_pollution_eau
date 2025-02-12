@@ -54,7 +54,7 @@ def run():
 @run.command("build_database")
 @click.option(
     "--refresh-type",
-    type=click.Choice(["all", "last", "custom"]),
+    type=click.Choice(["all", "on_change", "last", "custom"]),
     default="all",
     help="Type of refresh to perform",
 )

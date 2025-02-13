@@ -5,28 +5,28 @@ import { Dispatch, SetStateAction, useState } from "react";
 
 export default function CommuneFilter() 
 {
-  const [FilterString,SetFilterString]=useState('')
-  const [DelayHandler, SetDelayHandler]=useState<NodeJS.Timeout|null>(null )
-  const [CommunesList, SetCommunesList]=useState([])
+  const [filterString,setFilterString]=useState('')
+  const [delayHandler, setDelayHandler]=useState<NodeJS.Timeout|null>(null )
+  const [communesList, setCommunesList]=useState([])
 
   async function  HandleFilterChange(e:React.ChangeEvent<HTMLInputElement>)
   {
     if (!e?.target?.value)
     {
-      SetFilterString('')
-      SetCommunesList([])
+      setFilterString('')
+      setCommunesList([])
       return
     }
 
-    if (DelayHandler)
+    if (delayHandler)
     {
-      clearTimeout(DelayHandler)
+      clearTimeout(delayHandler)
     }
 
-    SetFilterString(e.target.value);
+    setFilterString(e.target.value);
   
-    SetDelayHandler(setTimeout(()=>{
-        PerformSearch(e.target.value, SetCommunesList)
+    setDelayHandler(setTimeout(()=>{
+        PerformSearch(e.target.value, setCommunesList)
       },200))
     
   }
@@ -36,14 +36,14 @@ export default function CommuneFilter()
   }
 
   return <div>
-    <Combobox value={FilterString} onChange={SelectCommuneChanged} >
+    <Combobox value={filterString} onChange={SelectCommuneChanged} >
       <ComboboxInput className="bg-white-500 border-blue-500"
         aria-label="Communes"
         displayValue={(c:Feature) => c?.properties?.toponym}
         onChange={HandleFilterChange}
       />
       <ComboboxOptions  anchor="bottom" className="border empty:invisible">
-        {CommunesList.map((C:Feature) => (
+        {communesList.map((C:Feature) => (
           <ComboboxOption key={C.properties.extrafields.cleabs} value={C} className="data-[focus]:bg-blue-100 bg-white">
             {C?.properties.toponym}
           </ComboboxOption>

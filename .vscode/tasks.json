@@ -21,7 +21,7 @@
     {
       "label": "Download database",
       "type": "shell",
-      "command": "uv run pipelines/run.py run download_database",
+      "command": "uv run pipelines/run.py run download_database_https --env prod",
       "group": "none",
       "icon": {
         "id": "cloud-download"

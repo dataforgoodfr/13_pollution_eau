@@ -11,7 +11,7 @@ import duckdb
 import requests
 
 from ._common import CACHE_FOLDER, DUCKDB_FILE, clear_cache
-from ._config_edc import get_edc_config, create_edc_yearly_filename
+from ._config_edc import create_edc_yearly_filename, get_edc_config
 
 logger = logging.getLogger(__name__)
 edc_config = get_edc_config()
@@ -107,8 +107,8 @@ def download_extract_insert_yearly_edc_data(year: str):
 
 
 def process_edc_datasets(
-    refresh_type: Literal["all", "last", "custom"] = "last",
-    custom_years: List[str] = None,
+    refresh_type: Literal["all", "last", "custom"] = "custom",
+    custom_years: List[str] = ["2020", "2021", "2022", "2023", "2024"],
 ):
     """
     Process the EDC datasets.

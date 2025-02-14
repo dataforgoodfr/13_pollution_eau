@@ -1,4 +1,5 @@
 //import Image from "next/image";
+import CommuneFilter from "@/components/CommuneFilter";
 import Map from "@/components/Map";
 
 export default function Home() {
@@ -11,6 +12,7 @@ export default function Home() {
       </header>
 
       <main className="flex-1">
+        <CommuneFilter />
         <Map />
       </main>
 

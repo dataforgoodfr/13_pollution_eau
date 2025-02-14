@@ -18,17 +18,16 @@ from typing import List, Literal
 from zipfile import ZipFile
 
 import duckdb
+from tqdm import tqdm
 
 from ._common import (
     CACHE_FOLDER,
     DUCKDB_FILE,
-    tqdm_common,
     clear_cache,
     download_file_from_https,
+    tqdm_common,
 )
 from ._config_edc import create_edc_yearly_filename, get_edc_config
-from tqdm import tqdm
-
 
 logger = logging.getLogger(__name__)
 edc_config = get_edc_config()

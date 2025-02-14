@@ -1,0 +1,284 @@
+version: 2
+
+models:
+  - name: stg_edc__communes
+    description: "Liste des communes et leurs unités de distribution"
+    columns:
+      - name: inseecommune
+        description: "Code INSEE de la commune du point de surveillance"
+        type: VARCHAR(5)
+      
+      - name: nomcommune
+        description: "Nom de la commune alimentée par le réseau"
+        type: VARCHAR
+
+      - name: quartier
+        description: "Quartier alimenté par le réseau"
+        type: VARCHAR
+      
+      - name: cdreseau
+        description: "Code de l'installation (unité de distribution)"
+        type: VARCHAR(9)
+
+      - name: nomreseau
+        description: "Nom du l'installation"
+        type: VARCHAR
+      
+      - name: debutalim
+        description: "Date de début d'alimentation du quartier"
+        type: VARCHAR
+
+      - name: de_partition
+        description: Année de récupération des données. Ceci est un champ ajouté automatiquement lors de l'ingestion des données.
+        type: SMALLINT
+        tests:
+          - dbt_utils.expression_is_true:
+              expression: ">= 2016"
+    
+  - name: stg_edc__resultats
+    description: "Liste des communes et leurs prélévements"
+    columns:
+      - name: cddept
+        description: "Département gestionnaire (DD-ARS)"
+        type: VARCHAR(3)
+      
+      - name: referenceprel
+        description: "Code SISE-Eaux du prélèvement"
+        type: VARCHAR(11)
+      
+      - name: cdparametresiseeaux
+        description: >
+          Le code SISE-Eaux du paramètre est un identifiant alphanumérique sur 7 positions maximum, associé à chaque
+          paramètre. Lorsque c'est possible, le symbole chimique est retenu comme identifiant (NO3, AS...) pour le rendre
+          signifiant.
+        type: VARCHAR(10)
+
+      - name: cdparametre
+        description: >
+          Le code SANDRE du paramètre est l'identifiant numérique attribué par le Service d’administration nationale des
+          données et référentiels sur l’eau (SANDRE) à chaque paramètre enregistré par le SANDRE
+        type: INTEGER
+
+      - name: libmajparametre
+        description: "Nom du paramètre en majuscule"
+        type: VARCHAR
+      
+      - name: libminparametre
+        description: "Nom du paramètre en minuscule"
+        type: VARCHAR
+      
+      - name: libwebparametre
+        description: "Nom du paramètre 'grand public'"
+        type: VARCHAR
+      
+      - name: qualitparam
+        description: >
+          Nature du paramètre :
+            - Paramètre qualitatif -> O
+            - Paramètre quantitatif -> N
+        type: VARCHAR(1)
+        tests:
+          - accepted_values:
+              values: ["O", "N"]
+
+      - name: insituana
+        description: "Type de résultat Terrain ou Laboratoire"
+        type: VARCHAR(1)
+        description: >
+          Attribut du résultat d'analyse indiquant si la mesure du paramètre a été effectuée sur le terrain (T) ou au laboratoire (L)
+        tests:
+          - accepted_values:
+              values: ["T", "L"]
+
+      - name: rqana
+        description: >
+          Le résultat de l’analyse physico-chimique ou microbiologique d’un paramètre est soit la valeur du résultat du paramètre
+          quantitatif, soit le code de la valeur possible du paramètre qualitatif. Il résulte de la mesure du paramètre soit in situ
+          par le préleveur, soit par un laboratoire sur un échantillon du prélèvement.
+          Il s’agit du résultat « brut » de la mesure, exprimé en caractères alphanumériques (ex : traces, <0.02, 500…).
+        type: VARCHAR(8)
+
+      - name: cdunitereferencesiseeaux
+        description: >
+          L'unité de mesure du paramètre est l'unité (mg, μg/L,NFU) définie pour ce paramètre par la réglementation des eaux
+          d'alimentation en vigueur.
+        type: VARCHAR(7)
+      
+      - name: cdunitereference
+        description: Le code SANDRE de l'unité du paramètre est l'identifiant numérique attribué par le SANDRE à l'unité de référence
+        type: VARCHAR
+
+      - name: limitequal
+        description: Limite(s) de qualité du paramètre concerné en vigueur au moment du prélèvement pour le type d’eau considéré.
+        type: VARCHAR
+
+      - name: refqual
+        description: Référence(s) de qualité du paramètre concerné en vigueur au moment du prélèvement pour le type d’eau considéré
+        type: VARCHAR
+
+      - name: valtraduite
+        description: '{{ doc("val_traduite_docs") }}'
+        type: NUMERIC
+
+      - name: casparam
+        description: > 
+          Code CAS (Chemical Abstract Service) du paramètre : code international des produits 
+          chimiques et matières dangereuses.
+        type: NUMERIC
+
+      - name: referenceanl
+        description: >
+          Identifiant de l’analyse réalisée en laboratoire ; il s’agit d’un numéro attribué par le système garantissant son unicité.
+          Un prélèvement peut faire l’objet d’une analyse sur le terrain (InSituAna=T) et/ou d’une ou plusieurs analyses en
+          laboratoire (InSituAna=L).
+          Un même paramètre peut donc être analysé sur le terrain, et dans le cadre d’une ou plusieurs analyses par des
+          laboratoires différents.
+        type: VARCHAR
+
+  - name: stg_edc__prevelevements
+    description: "Liste des prélèvements"
+    columns:
+      - name: cddept
+        description: Département gestionnaire de l’installation et du prélèvement.
+        type: VARCHAR(3)
+
+      - name: cdreseau
+        description: Code SISE-Eaux de l’installation (unité de distribution)
+        type: VARCHAR(9)
+
+      - name: inseecommuneprinc
+        description: Code INSEE de la commune où se trouve le point de surveillance sur lequel le prélèvement a eu lieu
+        type: VARCHAR(5)
+      
+      - name: nomcommuneprinc
+        description: Nom de la commune où se trouve le point de surveillance sur lequel le prélèvement a eu lieu.
+        type: VARCHAR(5)
+      
+      - name: cdreseauamont
+        description: >
+          Code de l’installation se trouvant en amont (niveau 1) de l’unité de distribution (cdreseau). Il s’agit généralement d’une
+          installation de traitement, transport ou production d’eau.
+          Cette donnée n’est renseignée que si le prélevement a été effectivement réalisé sur un point de surveillance d’une
+          installation amont.
+        type: VARCHAR(9)
+      
+      - name: nomreseauamont
+        description: >
+          Nom de l’installation amont.
+          Cette donnée n’est renseignée que si le prélevement a été effectivement réalisé sur un point de surveillance d’une
+          installation amont.
+        type: VARCHAR
+      
+      - name: pourcentdebit
+        description: >
+          Caractérisation du lien entre l’installation amont (cdreseauamont) et l’unité de distribution (cdreseau), permettant
+          d'indiquer la participation de l’installation amont (en %) au débit de l’installation aval.
+          Cette donnée n’est renseignée que si le prélevement est fait sur un point de surveillance d’une installation amont.
+        type: TINYINT
+      
+      - name: referenceprel
+        description: Identifiant du prélèvement ; il s’agit d’un numéro attribué par le système garantissant son unicité.
+        type: VARCHAR(11)
+      
+      - name: dateprel
+        description: > 
+          Date du prélèvement correspondant la date à laquelle le prélèvement d’échantillon a été réalisé. 
+          Dans le cas où il n’y a pas constitution d’échantillon (mesures in situ), il s’agit de la date de la visite.
+        type: DATE
+      
+      - name: heureprel
+        description: Heure et minute à laquelle le prélèvement a été effectué
+        type: VARCHAR
+      
+      - name: conclusionprel
+        description: >
+          Conclusion sanitaire du prélèvement regroupant l’ensemble des recommandations et conclusions sanitaires de l’ARS
+          sur l'ensemble des observations, mesures de terrain et résultats d'analyses de laboratoire associés à un prélèvement.
+        type: VARCHAR
+      
+      - name: ugelib
+        description: >
+          Libellé de l’unité de gestion (service public de distribution). Une UGE (Unité de gestion et d’exploitation) correspond à
+          un couple Maître d’ouvrage - Exploitant et par extension définit un ensemble d'installations gérées par un même maître
+          d'ouvrage et un même exploitant. Une UGE est caractérisée par le mode d’exploitation des installations qui la
+          composent : la gestion peut être soit assurée par la collectivité (régie directe), soit confiée à un délégataire public ou
+          privé (concession, affermage...).
+
+          Dans SISE-Eaux, une UGE est a minima définie par :
+            - le libellé de l’UGE,
+            - le mode d’exploitation,
+            - le maître d’ouvrage,
+            - l’exploitant.
+        type: VARCHAR
+      
+      - name: distrlib
+        description: Organisme auquel est confiée l’exploitation de l’installation.
+        type: VARCHAR
+      
+      - name: moalib
+        description: Organisme auquel appartiennent les installations de l'UGE
+        type: VARCHAR
+      
+      - name: plvconformitebacterio
+        description: >
+          Indicateur de la conformité des paramètres microbiologiques aux limites de qualité en vigueur au moment du
+          prélèvement pour le type d’eau considéré.
+          Valeurs possibles : 
+            - blanc 
+            - C : conforme
+            - N : non conforme
+            - S : sans objet lorsqu'aucun paramètre microbio n'a été mesuré.
+        type: VARCHAR(1)
+        tests:
+          - accepted_values:
+              values: ["blanc", "C", "N", "S"]
+      
+      - name: plvconformitechimique
+        description: >
+          Indicateur de la conformité des paramètres chimiques aux limites de qualité en vigueur au moment du prélèvement
+          pour le type d’eau considéré (et en prenant en compte les dérogations éventuelles en cours pour l'installation
+          concernée).
+          
+          Valeurs possibles : 
+            - blanc 
+            - C : conforme
+            - N : non conforme
+            - D : conforme dans le cadre d’une dérogation
+            - S : sans objet lorsqu'aucun paramètre microbio n'a été mesuré.
+        type: VARCHAR(1)
+        tests:
+          - accepted_values:
+              values: ["blanc", "C", "N", "D", "S"]
+      
+      - name: plvconformitereferencebact
+        description: >
+          Indicateur de la conformité des paramètres microbiologiques aux références de qualité en vigueur au moment du
+          prélèvement pour le type d’eau considéré.
+
+          Valeurs possibles : 
+            - blanc 
+            - C : conforme
+            - N : non conforme
+            - S : sans objet lorsqu'aucun paramètre microbio n'a été mesuré.
+        type: VARCHAR(1)
+        tests:
+          - accepted_values:
+              values: ["blanc", "C", "N", "S"]
+      
+      - name: plvconformitereferencechim
+        description: >
+          Indicateur de la conformité des paramètres chimiques aux références de qualité en vigueur au moment du prélèvement
+          pour le type d’eau considéré.
+
+          Valeurs possibles : 
+            - blanc 
+            - C : conforme
+            - N : non conforme
+            - S : sans objet lorsqu'aucun paramètre microbio n'a été mesuré.
+        type: VARCHAR(1)
+        tests:
+          - accepted_values:
+              values: ["blanc", "C", "N", "S"]
+      
+      
+  

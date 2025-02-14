@@ -126,6 +126,8 @@ Les modèles de données sont organisés dans le dossier `dbt_/models`. La struc
 uv run pipelines/run.py run build_database --refresh-type last --drop-tables
 ```
 
+#### Documentation
+La documentation du projet dbt est disponible sur le lien suivant: [documentation dbt](https://dataforgood.fr/13_pollution_eau/#!/overview)
 
 ### Comment télécharger la database depuis S3
 Des versions de dev et de production de la db sont à disposition sur le storage object.

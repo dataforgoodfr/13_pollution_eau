@@ -1,0 +1,20 @@
+SELECT
+    cddept::VARCHAR(3) as cddept,
+    cdreseau::VARCHAR(9) as cdreseau,
+    inseecommuneprinc::VARCHAR(5) as inseecommuneprinc,
+    nomcommuneprinc::VARCHAR as nomcommuneprinc,
+    cdreseauamont::VARCHAR(9) as cdreseauamont,
+    nomreseauamont::VARCHAR as nomreseauamont,
+    REPLACE(pourcentdebit, ' %', '')::TINYINT AS pourcentdebit,
+    referenceprel::VARCHAR(11) as referenceprel,
+    dateprel::DATE as dateprel,
+    heureprel::VARCHAR as heureprel,
+    conclusionprel::VARCHAR as conclusionprel,
+    ugelib::VARCHAR as ugelib,
+    distrlib::VARCHAR as distrlib,
+    moalib::VARCHAR as moalib,
+    plvconformitebacterio::VARCHAR(1) as plvconformitebacterio,
+    plvconformitechimique::VARCHAR(1) as plvconformitechimique,
+    plvconformitereferencebact::VARCHAR(1) as plvconformitereferencebact,
+    plvconformitereferencechim::VARCHAR(1) as plvconformitereferencechim
+FROM {{ source('edc', 'edc_prelevements') }}

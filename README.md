@@ -115,9 +115,9 @@ Pour plus d'informations concernant la manière d'organiser un projet dbt, se r�
 
 #### 2. Structure des données
 
-Les modèles de données sont organisés dans le dossier `dbt_/models`. La structure suit les recommandations de la [documentation officielle](https://docs.getdbt.com/best-practices/how-we-structure/1-guide-overview). Il est conseillé prendre le temps la lire afin de bien comprendre la structure du projet: 
+Les modèles de données sont organisés dans le dossier `dbt_/models`. La structure suit les recommandations de la [documentation officielle](https://docs.getdbt.com/best-practices/how-we-structure/1-guide-overview). Il est conseillé prendre le temps la lire afin de bien comprendre la structure du projet:
 
-* **models/staging/** : Modèles de données avec des transformation basiques (TRIM, REPLACE, typage, ...). Cette couche est surtout utilisée pour faire un état des données existantes, les documenter et tester la qualité. 
+* **models/staging/** : Modèles de données avec des transformation basiques (TRIM, REPLACE, typage, ...). Cette couche est surtout utilisée pour faire un état des données existantes, les documenter et tester la qualité.
 * **models/intermediate/** : Modèles de données avec des transformation plus complexes (GROUP BY, JOIN, WHERE, ...). Cette couche est surtout utile pour faire une jointure entre les différentes tables et faire un premier filtrage des données. Celle-ci est très utile pour de l'analyse de données
 * **models/analytics/** : Modèles de données final, qui est requêter par le site web pour construire les visualisations. Cette donnée est propre et la schématisation des données est optimisée pour le chargement des visualisations.
 
@@ -126,9 +126,10 @@ Les modèles de données sont organisés dans le dossier `dbt_/models`. La struc
 uv run pipelines/run.py run build_database --refresh-type last --drop-tables
 ```
 
+#### Documentation
+La documentation du projet dbt est disponible sur le lien suivant: [documentation dbt](https://dataforgood.fr/13_pollution_eau/#!/overview)
+
 ### Comment télécharger la database depuis S3
-
-
 Des versions de dev et de production de la db sont à disposition sur le storage object.
 Les deux façons de télécharger les databases suivantes existent.
 

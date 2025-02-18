@@ -40,7 +40,7 @@ jobs:
 
     - name: Update production database
       run: |
-        uv run pipelines/run.py run build_database
+        uv run pipelines/run.py run build_database --refresh-type all --check-update
 
     - name: Upload production database to Storage
       run: |

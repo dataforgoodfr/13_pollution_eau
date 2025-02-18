@@ -70,7 +70,14 @@ def run():
     default=False,
     help="Drop and re-create edc tables in the database before data insertion.",
 )
-def run_build_database(refresh_type, custom_years, drop_tables):
+@click.option(
+    "--check-update",
+    is_flag=True,
+    show_default=True,
+    default=False,
+    help="Apply refresh-type only on the years whose data has been modified from the source.",
+)
+def run_build_database(refresh_type, custom_years, drop_tables, check_update):
     """Run build_database task."""
     module = importlib.import_module("tasks.build_database")
     task_func = getattr(module, "execute")
@@ -83,6 +90,7 @@ def run_build_database(refresh_type, custom_years, drop_tables):
         refresh_type=refresh_type,
         custom_years=custom_years_list,
         drop_tables=drop_tables,
+        check_update=check_update,
     )
 
 

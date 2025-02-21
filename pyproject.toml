@@ -22,6 +22,7 @@ dependencies = [
     "dbt-core>=1.9.2,<2",
     "dbt-duckdb>=1.9.1,<2",
     "tqdm>=4.67.1,<5",
+    "pytest>=8.3.4,<9",
 ]
 
 [dependency-groups]

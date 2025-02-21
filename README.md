@@ -183,6 +183,14 @@ Lancer la commande suivante pour s'assurer que le code satisfait bien tous les p
 pre-commit run --all-files
 ```
 
+## Testings
+
+Pour lancer les tests, il suffit de lancer la commande suivante :
+
+```sh
+uv run pytest
+```
+
 ## How to contribute
 Pour contribuer, il est recommandé d'utiliser un fork du projet. Cela permet d'éviter la gestion des demandes d'accès au dépôt principal.
 

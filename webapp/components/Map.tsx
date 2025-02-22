@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import maplibregl, { Feature, GeoJSONSourceSpecification, LngLat, Map, MapGeoJSONFeature, MapMouseEvent } from "maplibre-gl";
+import maplibregl, { GeoJSONSourceSpecification, LngLat, Map, MapGeoJSONFeature, MapMouseEvent } from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 import Communes,{CommuneType} from "./Communes";
 import { Protocol } from 'pmtiles';
@@ -10,6 +10,7 @@ import { Protocol } from 'pmtiles';
 
 const MAP_SOURCES_COMMUNES_GEOJSON = "CommuneData"
 const MAP_SOURCES_COMMUNES_PMTILES ="PMTiles_Communes"
+const MAP_SOURCES_PFAS_PMTILES ="PFAS_Communes"
 const MAP_LAYER_COMMUNES_DOTS = 'CommunesDotsLayer'
 const MAP_LAYER_COMMUNES_POLYGONS = 'CommunesPolygonsLayer'
 const MAP_LAYER_COMMUNES_POLYGONS_SEARCH = 'CommunesPolygonsLayer_SearchFilter'
@@ -51,10 +52,17 @@ export default function MainMap() {
       style: {
         version: 8,
         sources: {
-          "PMTiles_Communes": {
+          "PMTiles_Communes": 
+          {
             type: 'vector',
             //tiles: ['http://10.35.0.15:3000/api/Map/{z}/{x}/{y}.mvt'] // Protomaps tile URL
-            "url": "pmtiles://http:/api/Map",
+            "url": "pmtiles://http:/api/Map/Contours",
+          },
+          "PFAS_Communes": 
+          {
+            type: 'vector',
+            //tiles: ['http://10.35.0.15:3000/api/Map/{z}/{x}/{y}.mvt'] // Protomaps tile URL
+            "url": "pmtiles://http:/api/Map/PFAS",
           },
           'raster-tiles': {
             'type': 'raster',
@@ -77,21 +85,33 @@ export default function MainMap() {
               'background-color': '#ffffff' // Background color
             }
           },
-          {
+          /*{
             'id': 'simple-tiles',
             'type': 'raster',
             'source': 'raster-tiles',
             'minzoom': 0,
-            'maxzoom': 22
-          },
+            'maxzoom': 22,
+            
+          },*/
           {
             id: MAP_LAYER_COMMUNES_POLYGONS,
             type: 'line',
             source: MAP_SOURCES_COMMUNES_PMTILES,
             'source-layer': 'Communes',
             paint: {
-              'line-width':0.8,
-              'line-color': '#9090e0' // Water color
+              'line-width': 0.1,
+              'line-color': '#9090e0', // Water color
+              'line-opacity':0.5
+            }
+          },
+          {
+            id: MAP_LAYER_COMMUNES_DOTS,
+            type: "circle",
+            source: MAP_SOURCES_PFAS_PMTILES,
+            'source-layer': 'PFAS',
+            paint: {
+              'circle-radius':['get','radius'],
+              'circle-color': ['get','color'], //'#9090e0' // Water color
             }
           },
           {

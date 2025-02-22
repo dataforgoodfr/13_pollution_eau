@@ -3,13 +3,31 @@ import path from "path";
 import fs from 'fs';
 import { headers } from "next/headers";
 import { Buffer } from 'node:buffer';
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-let buf:Buffer<ArrayBuffer>=null
 
- export async function GET() {
+ export async function GET(req:NextRequest) {
 
-  const filePath = path.join(process.cwd(), 'public', 'communes-full.pmtiles');
+  const Url = new URL(req.url)
+  
+  let filePath = ""
+  let buf
+  switch (Url.pathname)
+  {
+    case "/api/Map/Contours":
+       filePath = path.join(process.cwd(), 'public', 'communes-full.pmtiles')
+       
+      break
+    case "/api/Map/PFAS":
+       filePath = path.join(process.cwd(), 'public', 'PFAS.pmtiles')
+      break
+    
+    default:
+      console.log("Unknown Tile Call")
+      return null
+
+  }
+  
   
   const H = await( headers())
   const Range:string=H.get('range')||''
@@ -35,7 +53,7 @@ let buf:Buffer<ArrayBuffer>=null
 
   }
 
-  if (!buf)
+  //if (!buf)
   {const data= fs.readFileSync(filePath)
   
    buf = Buffer.from(data);

@@ -1,6 +1,7 @@
 import 'bootstrap/dist/css/bootstrap.css'
 import MainMap from "@/components/Map";
 
+
 export default function Home() {
   return (
     <div className="flex flex-col min-h-screen">
@@ -20,3 +21,4 @@ export default function Home() {
     </div>
   );
 }
+

@@ -1,4 +1,5 @@
 
+import { PFASInfo } from "@/app/api/CommunesServer/route";
 import { Combobox, ComboboxInput, ComboboxOption, ComboboxOptions } from "@headlessui/react";
 import { useEffect, useState } from "react";
 
@@ -8,6 +9,7 @@ export interface CommuneType{
   G:string,
   Centroid:Centroid,
   I:string,
+  PFAS:PFASInfo[]
 }
 
 export interface Centroid{

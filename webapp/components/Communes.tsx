@@ -1,6 +1,5 @@
 
 import { PFASInfo } from "@/app/api/CommunesServer/route";
-import { Combobox, ComboboxInput, ComboboxOption, ComboboxOptions } from "@headlessui/react";
 import { useEffect, useState } from "react";
 
 export interface CommuneType{
@@ -57,8 +56,7 @@ export default function Communes(Props:CommunesProps)
     }
     ,[SearchString, CommunesData,Props]
   )
-   
-  return <div>
+   /* Remove with headlessui dep.
     <Combobox  value={SearchString} onChange={(x:string)=>{ SetSearchString(x)}} >
       <ComboboxInput
         aria-label="Assignee"
@@ -73,6 +71,8 @@ export default function Communes(Props:CommunesProps)
         ))}
       </ComboboxOptions>
     </Combobox>
+    */
+  return <div>
     <span>{CommunesNames.length} Nom de communes en mémoire</span>
   </div>
 }

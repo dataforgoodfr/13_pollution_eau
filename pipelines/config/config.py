@@ -1,8 +1,22 @@
-from dotenv import load_dotenv
 import os
+
+from dotenv import load_dotenv
+
 current_dir = os.path.dirname(os.path.abspath(__file__))
 # Construct the path to the .env file
-dotenv_path = os.path.join(current_dir, '.env')
+dotenv_path = os.path.join(current_dir, ".env")
 
-# Load the .env file
-load_dotenv(dotenv_path)
+
+def load_env_variables():
+    load_dotenv(dotenv_path)
+
+
+def get_environment(default="prod"):
+    env = os.getenv("ENV", default)
+    if env not in ["dev", "prod"]:
+        raise ValueError(f"Invalid environment: {env}. Must be 'dev' or 'prod'.")
+    return env
+
+
+def get_s3_path(env, filename="data.duckdb"):
+    return f"{env}/database/{filename}"

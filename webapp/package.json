@@ -9,7 +9,6 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "bootstrap": "^5.3.3",
     "maplibre-gl": "^5.0.1",
     "next": "15.1.6",
     "next-http-proxy-middleware": "^1.2.6",

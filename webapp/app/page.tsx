@@ -1,4 +1,3 @@
-import 'bootstrap/dist/css/bootstrap.css'
 import MainMap from "@/components/Map";
 
 

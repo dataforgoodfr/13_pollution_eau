@@ -1,62 +1,56 @@
-
 import { PFASInfo } from "@/app/api/CommunesServer/route";
 import { useEffect, useState } from "react";
 
-export interface CommuneType{
-  n:string,
-  C:string,
-  G:string,
-  Centroid:Centroid,
-  I:string,
-  PFAS:PFASInfo[]
+export interface CommuneType {
+  n: string;
+  C: string;
+  G: string;
+  Centroid: Centroid;
+  I: string;
+  PFAS: PFASInfo[];
 }
 
-export interface Centroid{
-  Lon:number,
-  Lat:number
-
+export interface Centroid {
+  Lon: number;
+  Lat: number;
 }
 
-interface CommunesProps{
-  DisplayedCommunesListChanged:(CommuneList:CommuneType[],Fstring:string)=>void,
-  CommunesData: CommuneType[]
+interface CommunesProps {
+  DisplayedCommunesListChanged: (
+    CommuneList: CommuneType[],
+    Fstring: string
+  ) => void;
+  CommunesData: CommuneType[];
 }
 
-export default function Communes(Props:CommunesProps) 
-{
-  const [SearchString,SetSearchString]=useState("")
-  const [CommunesNames, SetCommunesNames]=useState<string[]>([])
-  const [CommunesData,SetCommunesData]=useState<CommuneType[]>(Props.CommunesData)
-  const [SearchCommunes,SetSearchedCommunes]=useState<CommuneType[]>([])
-  
-  useEffect(()=>{
-  if (CommunesData?.length!==Props.CommunesData?.length)
-  {
-    SetCommunesData(Props.CommunesData)
-    SetCommunesNames(LoadCommunesList(CommunesData))
-  }
-  }, [CommunesData,CommunesNames, Props.CommunesData])
+export default function Communes(Props: CommunesProps) {
+  const [SearchString] = useState("");
+  const [CommunesNames, SetCommunesNames] = useState<string[]>([]);
+  const [CommunesData, SetCommunesData] = useState<CommuneType[]>(
+    Props.CommunesData
+  );
+  const [, SetSearchedCommunes] = useState<CommuneType[]>([]);
 
-  useEffect(()=>
-    {      
-      const NewList = GetCommunesSubSet(CommunesData, SearchString)
-      if (Props.DisplayedCommunesListChanged)
-      {
-        Props.DisplayedCommunesListChanged(NewList,SearchString)
-      }
-
-      if (NewList?.length<=42)
-      {
-        SetSearchedCommunes(NewList)
-      }
-      else
-      {
-        SetSearchedCommunes([])
-      }
+  useEffect(() => {
+    if (CommunesData?.length !== Props.CommunesData?.length) {
+      SetCommunesData(Props.CommunesData);
+      SetCommunesNames(LoadCommunesList(CommunesData));
     }
-    ,[SearchString, CommunesData,Props]
-  )
-   /* Remove with headlessui dep.
+  }, [CommunesData, CommunesNames, Props.CommunesData]);
+
+  useEffect(() => {
+    const NewList = GetCommunesSubSet(CommunesData, SearchString);
+    if (Props.DisplayedCommunesListChanged) {
+      Props.DisplayedCommunesListChanged(NewList, SearchString);
+    }
+
+    if (NewList?.length <= 42) {
+      SetSearchedCommunes(NewList);
+    } else {
+      SetSearchedCommunes([]);
+    }
+  }, [SearchString, CommunesData, Props]);
+  /* Remove with headlessui dep.
     <Combobox  value={SearchString} onChange={(x:string)=>{ SetSearchString(x)}} >
       <ComboboxInput
         aria-label="Assignee"
@@ -72,49 +66,45 @@ export default function Communes(Props:CommunesProps)
       </ComboboxOptions>
     </Combobox>
     */
-  return <div>
-    <span>{CommunesNames.length} Nom de communes en mémoire</span>
-  </div>
+  return (
+    <div>
+      <span>{CommunesNames.length} Nom de communes en mémoire</span>
+    </div>
+  );
 }
 
-
-function LoadCommunesList(CommunesList:Array<CommuneType>):string[]
-{
-  if (!CommunesList)
-  {
-    return []
+function LoadCommunesList(CommunesList: Array<CommuneType>): string[] {
+  if (!CommunesList) {
+    return [];
   }
-  const Communes=CommunesList?.map((x)=>{
-    return x.n
-  }) 
-  return Communes
+  const Communes = CommunesList?.map((x) => {
+    return x.n;
+  });
+  return Communes;
 }
 
-function GetCommunesSubSet(CommunesList:CommuneType[], SearchString: string):CommuneType[]
-{
-  if (!CommunesList || !CommunesList.length)
-  {
-    return [] as CommuneType[]
+function GetCommunesSubSet(
+  CommunesList: CommuneType[],
+  SearchString: string
+): CommuneType[] {
+  if (!CommunesList || !CommunesList.length) {
+    return [] as CommuneType[];
   }
-  const RetArray:CommuneType[]=[]
-  const TmpArray:CommuneType[]=[]
-  
-  CommunesList.map((x:CommuneType)=>
-  {
-    if (x?.n.includes(SearchString?.toUpperCase())|| x.C==SearchString)
-    {
-      if (x.G && !x.Centroid)
-      {
-        const coords = x.G.split(',').map(num => parseFloat(num));
-        x.Centroid={Lon:coords[1],Lat:coords[0]}
+  const RetArray: CommuneType[] = [];
+  const TmpArray: CommuneType[] = [];
+
+  CommunesList.map((x: CommuneType) => {
+    if (x?.n.includes(SearchString?.toUpperCase()) || x.C == SearchString) {
+      if (x.G && !x.Centroid) {
+        const coords = x.G.split(",").map((num) => parseFloat(num));
+        x.Centroid = { Lon: coords[1], Lat: coords[0] };
       }
-      TmpArray[x.I]=x
-      
+      TmpArray[x.I] = x;
     }
-    
-  })
+  });
 
-  TmpArray.map((x:CommuneType)=>{RetArray.push(x)})
-  return RetArray
+  TmpArray.map((x: CommuneType) => {
+    RetArray.push(x);
+  });
+  return RetArray;
 }
-

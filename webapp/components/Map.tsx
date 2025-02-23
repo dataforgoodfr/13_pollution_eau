@@ -1,89 +1,91 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import maplibregl, { GeoJSONSourceSpecification, LngLat, Map, MapGeoJSONFeature, MapMouseEvent } from "maplibre-gl";
+import maplibregl, {
+  GeoJSONSourceSpecification,
+  LngLat,
+  Map,
+  MapGeoJSONFeature,
+  MapMouseEvent,
+} from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
-import Communes,{CommuneType} from "./Communes";
-import { Protocol } from 'pmtiles';
+import Communes, { CommuneType } from "./Communes";
+import { Protocol } from "pmtiles";
 
+const MAP_SOURCES_COMMUNES_GEOJSON = "CommuneData";
+const MAP_SOURCES_COMMUNES_PMTILES = "PMTiles_Communes";
+const MAP_SOURCES_PFAS_PMTILES = "PFAS_Communes";
+const MAP_LAYER_COMMUNES_DOTS = "CommunesDotsLayer";
+const MAP_LAYER_COMMUNES_POLYGONS = "CommunesPolygonsLayer";
+const MAP_LAYER_COMMUNES_POLYGONS_SEARCH = "CommunesPolygonsLayer_SearchFilter";
 
-
-const MAP_SOURCES_COMMUNES_GEOJSON = "CommuneData"
-const MAP_SOURCES_COMMUNES_PMTILES ="PMTiles_Communes"
-const MAP_SOURCES_PFAS_PMTILES ="PFAS_Communes"
-const MAP_LAYER_COMMUNES_DOTS = 'CommunesDotsLayer'
-const MAP_LAYER_COMMUNES_POLYGONS = 'CommunesPolygonsLayer'
-const MAP_LAYER_COMMUNES_POLYGONS_SEARCH = 'CommunesPolygonsLayer_SearchFilter'
-
-const GeoJsonSpecs:GeoJSONSourceSpecification={
-  type: 'geojson',
-  data: {type:'FeatureCollection',features:[]},
-  cluster: false,    
-} 
+const GeoJsonSpecs: GeoJSONSourceSpecification = {
+  type: "geojson",
+  data: { type: "FeatureCollection", features: [] },
+  cluster: false,
+};
 
 export default function MainMap() {
-
-  
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<maplibregl.Map | null>(null);
-  const MapDefaultCenter= useMemo(()=>{ return new LngLat(2.213749, 46.227638)},[])
-  const [CommunesBaseData,SetCommunesBaseData]=useState(null)
-  const [FilterString,SetFilterString]=useState("")
-  const [PopupObject,SetPopupObject]=useState(null)
-  const [RollIndex,SetRollIndex]=useState(0)
-  const [Animate]=useState(false)
+  const MapDefaultCenter = useMemo(() => {
+    return new LngLat(2.213749, 46.227638);
+  }, []);
+  const [CommunesBaseData, SetCommunesBaseData] = useState<CommuneType | null>(
+    null
+  );
+  const [FilterString, SetFilterString] = useState("");
+  const [RollIndex, SetRollIndex] = useState(0);
+  const [Animate] = useState(false);
 
   useEffect(() => {
-    console.log("Adding protocol")
+    console.log("Adding protocol");
     const protocol = new Protocol();
-    maplibregl.addProtocol("pmtiles",protocol.tile);
+    maplibregl.addProtocol("pmtiles", protocol.tile);
     return () => {
       maplibregl.removeProtocol("pmtiles");
-    }
+    };
   }, []);
 
-  useEffect(() => 
-  {
+  useEffect(() => {
     if (map.current || !mapContainer.current) return;
 
-    console.log("Adding Map")
+    console.log("Adding Map");
     map.current = new maplibregl.Map({
       container: mapContainer.current,
       style: {
         version: 8,
         sources: {
-          "PMTiles_Communes": 
-          {
-            type: 'vector',
+          PMTiles_Communes: {
+            type: "vector",
             //tiles: ['http://10.35.0.15:3000/api/Map/{z}/{x}/{y}.mvt'] // Protomaps tile URL
-            "url": "pmtiles://http:/api/Map/Contours",
+            url: "pmtiles://http:/api/Map/Contours",
           },
-          "PFAS_Communes": 
-          {
-            type: 'vector',
+          PFAS_Communes: {
+            type: "vector",
             //tiles: ['http://10.35.0.15:3000/api/Map/{z}/{x}/{y}.mvt'] // Protomaps tile URL
-            "url": "pmtiles://http:/api/Map/PFAS",
+            url: "pmtiles://http:/api/Map/PFAS",
           },
-          'raster-tiles': {
-            'type': 'raster',
-            'tiles': [
-                // NOTE: Layers from Stadia Maps do not require an API key for localhost development or most production
-                // web deployments. See https://docs.stadiamaps.com/authentication/ for details.
-                //'https://tiles.stadiamaps.com/tiles/stamen_watercolor/{z}/{x}/{y}.jpg'
-                'https://tile.openstreetmap.org/{z}/{x}/{y}.png'
+          "raster-tiles": {
+            type: "raster",
+            tiles: [
+              // NOTE: Layers from Stadia Maps do not require an API key for localhost development or most production
+              // web deployments. See https://docs.stadiamaps.com/authentication/ for details.
+              //'https://tiles.stadiamaps.com/tiles/stamen_watercolor/{z}/{x}/{y}.jpg'
+              "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
             ],
-            'tileSize': 256,
-            'attribution':
-                'Map tiles by OpenstreetMap" target="_blank">Stadia Maps</a>. Data &copy; <a href="https://www.openstreetmap.org/about" target="_blank">OpenStreetMap</a> contributors'
-        }
+            tileSize: 256,
+            attribution:
+              'Map tiles by OpenstreetMap" target="_blank">Stadia Maps</a>. Data &copy; <a href="https://www.openstreetmap.org/about" target="_blank">OpenStreetMap</a> contributors',
+          },
         },
         layers: [
           {
-            id: 'background',
-            type: 'background',
+            id: "background",
+            type: "background",
             paint: {
-              'background-color': '#ffffff' // Background color
-            }
+              "background-color": "#ffffff", // Background color
+            },
           },
           /*{
             'id': 'simple-tiles',
@@ -95,84 +97,81 @@ export default function MainMap() {
           },*/
           {
             id: MAP_LAYER_COMMUNES_POLYGONS,
-            type: 'line',
+            type: "line",
             source: MAP_SOURCES_COMMUNES_PMTILES,
-            'source-layer': 'Communes',
+            "source-layer": "Communes",
             paint: {
-              'line-width': 0.1,
-              'line-color': '#9090e0', // Water color
-              'line-opacity':0.5
-            }
+              "line-width": 0.1,
+              "line-color": "#9090e0", // Water color
+              "line-opacity": 0.5,
+            },
           },
           {
             id: MAP_LAYER_COMMUNES_DOTS,
             type: "circle",
             source: MAP_SOURCES_PFAS_PMTILES,
-            'source-layer': 'PFAS',
+            "source-layer": "PFAS",
             paint: {
-              'circle-radius':['get','radius'],
-              'circle-color': ['get','color'], //'#9090e0' // Water color
-            }
+              "circle-radius": ["get", "radius"],
+              "circle-color": ["get", "color"], //'#9090e0' // Water color
+            },
           },
           {
             id: MAP_LAYER_COMMUNES_POLYGONS_SEARCH,
-            type: 'fill',
-            filter:['in',['get','nom'],["literal",[]]],
+            type: "fill",
+            filter: ["in", ["get", "nom"], ["literal", []]],
             source: MAP_SOURCES_COMMUNES_PMTILES,
-            'source-layer': 'Communes',
+            "source-layer": "Communes",
             paint: {
-              'fill-color': '#ff0000' ,
-              'fill-opacity':0.2
-            }
+              "fill-color": "#ff0000",
+              "fill-opacity": 0.2,
+            },
           },
-          
-          
+
           // Add more layers as needed
-        ]
+        ],
       },
       center: MapDefaultCenter,
       zoom: 5,
     });
 
-    InitZoneButtons(map.current)
+    InitZoneButtons(map.current);
 
-    map.current.on('load', ()=>{ InitCommunesLayer(map.current as Map,SetPopupObject)})
+    map.current.on("load", () => {
+      InitCommunesLayer(map.current as Map);
+    });
     //map.current.on('sourcedata', (x)=>{console.log("SourceDataEvt",x)})
     return () => {
       map.current?.remove();
     };
-  }
-  , [map, MapDefaultCenter]);
+  }, [map, MapDefaultCenter]);
 
-useEffect(()=>{
-     if (CommunesBaseData)
-      {
-        return
-      }
-    
+  useEffect(() => {
+    if (CommunesBaseData) {
+      return;
+    }
+
     const fetchData = async () => {
-     
-      const response = await fetch('/api/CommunesServer')
-      const jsonData = await response.json()
-      SetCommunesBaseData(jsonData)
-      SetRollIndex(0)
-      const Features = GetCommunesFeatures(jsonData,FilterString,0)
+      const response = await fetch("/api/CommunesServer");
+      const jsonData = await response.json();
+      SetCommunesBaseData(jsonData);
+      SetRollIndex(0);
+      const Features = GetCommunesFeatures(jsonData, FilterString, 0);
 
-      GeoJsonSpecs.data.features=Features
+      GeoJsonSpecs.data.features = Features;
       setTimeout(() => {
-        SetRollIndex(1)
-      },100);  
+        SetRollIndex(1);
+      }, 100);
     };
 
     fetchData();
-  },[FilterString, CommunesBaseData,RollIndex])
+  }, [FilterString, CommunesBaseData, RollIndex]);
 
-  useEffect(()=>{
-      if (!CommunesBaseData)
-      {
-        return
-      }
-      /*const Features = GetCommunesFeatures(CommunesBaseData,FilterString,RollIndex)
+  useEffect(() => {
+    if (!CommunesBaseData) {
+      return;
+    }
+    /*const Features = GetCommunesFeatures(CommunesBaseData,FilterString,RollIndex)
       GeoJsonSpecs.data.features=Features   
       const Src = map.current.getSource(MAP_SOURCES_COMMUNES_GEOJSON)
       if (Src)
@@ -189,64 +188,69 @@ useEffect(()=>{
           SetRollIndex(RollIndex+1)
         },2000); 
       }*/
-     const L = map.current?.getLayer(MAP_LAYER_COMMUNES_POLYGONS_SEARCH)
-     const S = map.current?.getSource(MAP_SOURCES_COMMUNES_PMTILES)
-     const QS = map.current?.queryRenderedFeatures(MAP_SOURCES_COMMUNES_PMTILES,{
-                  sourceLayer: MAP_LAYER_COMMUNES_POLYGONS , filter:["all"]   })
-     const CList:string[]=[]
+    const QS = map.current?.queryRenderedFeatures(
+      MAP_SOURCES_COMMUNES_PMTILES,
+      {
+        sourceLayer: MAP_LAYER_COMMUNES_POLYGONS,
+        filter: ["all"],
+      }
+    );
+    const CList: string[] = [];
 
-     if (QS && QS.length)
-     {
-      QS.map((x:MapGeoJSONFeature)=>{
-        if (x.properties.nom?.toUpperCase().includes(FilterString?.toUpperCase()))
-        {
-          CList.push(x.properties.nom)
+    if (QS && QS.length) {
+      QS.map((x: MapGeoJSONFeature) => {
+        if (
+          x.properties.nom?.toUpperCase().includes(FilterString?.toUpperCase())
+        ) {
+          CList.push(x.properties.nom);
         }
-      })
-     }
+      });
+    }
 
-     
+    map.current?.setFilter(MAP_LAYER_COMMUNES_POLYGONS_SEARCH, [
+      "in",
+      ["get", "nom"],
+      ["literal", CList],
+    ]);
+  }, [FilterString, CommunesBaseData, RollIndex, Animate]);
 
-     map.current?.setFilter(MAP_LAYER_COMMUNES_POLYGONS_SEARCH,["in",['get','nom'],["literal",CList]])
-    
-  },[FilterString, CommunesBaseData,RollIndex,Animate])
-
-  function UpdateDisplayedCommunes(CList:CommuneType[], FString:string)
-  {
-    SetFilterString(FString)
+  function UpdateDisplayedCommunes(CList: CommuneType[], FString: string) {
+    SetFilterString(FString);
   }
-//
-  return <div>
-          <Communes CommunesData={CommunesBaseData} DisplayedCommunesListChanged={UpdateDisplayedCommunes}/>
-          
-          <div ref={mapContainer} className="w-full h-[calc(100vh-9rem)]" />
-        </div>;
-  
-  }
+  //
+  return (
+    <div>
+      <Communes
+        CommunesData={CommunesBaseData}
+        DisplayedCommunesListChanged={UpdateDisplayedCommunes}
+      />
 
-function InitCommunesLayer(_map: maplibregl.Map, SetPopupObjectFn) 
-{
-return
-  console.log("Initing Map", _map)
-  
-  const src = _map.getSource(MAP_SOURCES_COMMUNES_GEOJSON)
+      <div ref={mapContainer} className="w-full h-[calc(100vh-9rem)]" />
+    </div>
+  );
+}
 
-  if (!src)
-  {
-    _map.addSource(MAP_SOURCES_COMMUNES_GEOJSON,GeoJsonSpecs)
+function InitCommunesLayer(_map: maplibregl.Map) {
+  return;
+  console.log("Initing Map", _map);
+
+  const src = _map.getSource(MAP_SOURCES_COMMUNES_GEOJSON);
+
+  if (!src) {
+    _map.addSource(MAP_SOURCES_COMMUNES_GEOJSON, GeoJsonSpecs);
   }
   //_map.addSource(MAP_SOURCES_COMMUNES_PMTILES,"pmtiles:/api/Map")
   _map.addLayer({
     id: MAP_LAYER_COMMUNES_DOTS,
-    type: 'circle',
+    type: "circle",
     source: MAP_SOURCES_COMMUNES_GEOJSON,
     //filter: ['!', ['has', 'point_count']],
     paint: {
-        'circle-color': ['get','color'],
-        'circle-radius': ['get','radius'],
-        'circle-stroke-width': 0.5,
-        'circle-stroke-color': '#fff'
-    }
+      "circle-color": ["get", "color"],
+      "circle-radius": ["get", "radius"],
+      "circle-stroke-width": 0.5,
+      "circle-stroke-color": "#fff",
+    },
   });
 
   /*  _map.addLayer({
@@ -261,115 +265,122 @@ return
       }
     });
   */
-  
 
   // Create a popup, but don't add it to the map yet.
   const popup = new maplibregl.Popup({
     closeButton: false,
-    closeOnClick: false
+    closeOnClick: false,
   });
   //SetPopupObjectFn(popup)
 
-  _map.on('mouseenter', MAP_LAYER_COMMUNES_POLYGONS, (e:MapMouseEvent) => {
+  _map.on("mouseenter", MAP_LAYER_COMMUNES_POLYGONS, (e: MapMouseEvent) => {
     // Change the cursor style as a UI indicator.
-    _map.getCanvas().style.cursor = 'pointer';
+    _map.getCanvas().style.cursor = "pointer";
 
-    let Lon=0
-    let Lat=0
-    const NbPts=e.features[0].geometry.coordinates[0].length
-    e.features[0]?.geometry?.coordinates[0]?.map((x:LngLat)=>{Lon+=x[0]; Lat+=x[1]})
+    let Lon = 0;
+    let Lat = 0;
+    const NbPts = e.features[0].geometry.coordinates[0].length;
+    e.features[0]?.geometry?.coordinates[0]?.map((x: LngLat) => {
+      Lon += x[0];
+      Lat += x[1];
+    });
 
-    const coordinates:LngLat=new LngLat(Lon/NbPts,Lat/NbPts)
+    const coordinates: LngLat = new LngLat(Lon / NbPts, Lat / NbPts);
 
-    const description = e.features[0].properties.nom //+ ' ' + e.features[0].properties.color
+    const description = e.features[0].properties.nom; //+ ' ' + e.features[0].properties.color
 
     // Ensure that if the map is zoomed out such that multiple
     // copies of the feature are visible, the popup appears
     // over the copy being pointed to.
     while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
-        coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+      coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
     }
 
     // Populate the popup and set its coordinates
     // based on the feature found.
     popup.setLngLat(coordinates).setHTML(description).addTo(_map);
-});
+  });
 
-  _map.on('mouseleave', MAP_LAYER_COMMUNES_DOTS, () => {
-    _map.getCanvas().style.cursor = '';
+  _map.on("mouseleave", MAP_LAYER_COMMUNES_DOTS, () => {
+    _map.getCanvas().style.cursor = "";
     popup.remove();
   });
-  
 }
-function GetCommunesFeatures(jsonData: CommuneType[],FilterString:string,RollIndex:number) 
-{
-  return jsonData.map((x,index)=>{return CommuneType2GeoJSON(x,index*RollIndex,FilterString)})
+function GetCommunesFeatures(
+  jsonData: CommuneType[],
+  FilterString: string,
+  RollIndex: number
+) {
+  return jsonData.map((x, index) => {
+    return CommuneType2GeoJSON(x, index * RollIndex, FilterString);
+  });
 }
 
-function CommuneType2GeoJSON(C:CommuneType, Index:number, FilterString:string)
-{
-  const Coords=C.G.split(",").map(parseFloat)
+function CommuneType2GeoJSON(
+  C: CommuneType,
+  Index: number,
+  FilterString: string
+) {
+  const Coords = C.G.split(",").map(parseFloat);
   //Index=2*Coords[0]+256*Index
-  const Col='#'+((Math.ceil(Index) % 0xFFFFFF).toString(16)).padStart(6,0)
-  const RetValue= {
-    type:'symbol',
-    properties:{
-      id:C.I,
-      nom:C.n,
-      selected:FilterString!==""&& C.n.includes(FilterString?.toUpperCase()),
-      radius:3,
-      color:Col
+  const Col = "#" + (Math.ceil(Index) % 0xffffff).toString(16).padStart(6, 0);
+  const RetValue = {
+    type: "symbol",
+    properties: {
+      id: C.I,
+      nom: C.n,
+      selected:
+        FilterString !== "" && C.n.includes(FilterString?.toUpperCase()),
+      radius: 3,
+      color: Col,
     },
-    geometry:{
-      type:'Point',
-      coordinates: [Coords[1],Coords[0]]
-    }
-  }
-  RetValue.properties.radius=RetValue.properties.selected?8:3
-  return RetValue
-
+    geometry: {
+      type: "Point",
+      coordinates: [Coords[1], Coords[0]],
+    },
+  };
+  RetValue.properties.radius = RetValue.properties.selected ? 8 : 3;
+  return RetValue;
 }
 
-function InitZoneButtons(map: maplibregl.Map) 
-{
-// Custom control to pan to specific zones
-class CustomControl {
-  map: maplibregl.Map;
-  container: HTMLDivElement;
-  onAdd(map:maplibregl.Map) {
+function InitZoneButtons(map: maplibregl.Map) {
+  // Custom control to pan to specific zones
+  class CustomControl {
+    map: maplibregl.Map;
+    container: HTMLDivElement;
+    onAdd(map: maplibregl.Map) {
       this.map = map;
-      this.container = document.createElement('div');
-      this.container.className = 'custom-control';
+      this.container = document.createElement("div");
+      this.container.className = "custom-control";
 
       // Create buttons for different zones
       const zones = [
-          { name: 'Metropole', coords: [46, 2] },
-          { name: 'Guadeloupe', coords: [-61, 16] },
-          { name: 'Zone 3', coords: [30, 30] }
+        { name: "Metropole", coords: [46, 2] },
+        { name: "Guadeloupe", coords: [-61, 16] },
+        { name: "Zone 3", coords: [30, 30] },
       ];
 
-      zones.forEach(zone => {
-          const button = document.createElement('button');
-          button.textContent = zone.name;
-          button.onclick = () => {
-              this.map.flyTo({
-                  center: zone.coords,
-                  essential: true // This animation is considered essential with respect to prefers-reduced-motion
-              });
-          };
-          this.container.appendChild(button);
+      zones.forEach((zone) => {
+        const button = document.createElement("button");
+        button.textContent = zone.name;
+        button.onclick = () => {
+          this.map.flyTo({
+            center: zone.coords,
+            essential: true, // This animation is considered essential with respect to prefers-reduced-motion
+          });
+        };
+        this.container.appendChild(button);
       });
 
       return this.container;
-  }
+    }
 
-  onRemove() {
+    onRemove() {
       this.container.parentNode.removeChild(this.container);
       this.map = undefined;
+    }
   }
-}
 
-// Add the custom control to the map
-map.addControl(new CustomControl(), 'top-left'); 
+  // Add the custom control to the map
+  map.addControl(new CustomControl(), "top-left");
 }
-

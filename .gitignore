@@ -6,6 +6,8 @@ __pycache__/
 .ipynb_checkpoints/
 .venv/
 .idea
+.ruff_cache/
+
 
 # JavaScript/Node
 node_modules/
@@ -20,12 +22,15 @@ dist/
 *.sqlite3
 *.db
 *.duckdb
+*.duckdb.*
 *.csv
 *.parquet
 *.xlsx
 *.xls
-/database/*
+logs/
+
 !database/.gitkeep
+cache/
 
 # OS
 .DS_Store

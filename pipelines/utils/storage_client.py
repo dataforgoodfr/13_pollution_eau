@@ -43,10 +43,15 @@ class ObjectStorageClient:
     def download_object(self, file_key, local_path):
         self.client_v4.download_file(self.bucket_name, file_key, local_path)
 
-    def upload_object(self, local_path, file_key=None):
+    def upload_object(self, local_path, file_key=None, public_read=False):
         if file_key is None:
             file_key = os.path.basename(local_path)
-        self.client_v2.upload_file(local_path, self.bucket_name, file_key)
+        self.client_v2.upload_file(
+            local_path,
+            self.bucket_name,
+            file_key,
+            ExtraArgs={"ACL": "public-read"} if public_read else None,
+        )
 
     def upload_dataframe(self, df, file_key):
         csv_buffer = io.StringIO()

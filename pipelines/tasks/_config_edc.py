@@ -16,10 +16,10 @@ def get_edc_config() -> Dict:
         "source": {
             "base_url": "https://www.data.gouv.fr/fr/datasets/r/",
             "available_years": [
-                "2016",
-                "2017",
-                "2018",
-                "2019",
+                # "2016",
+                # "2017",
+                # "2018",
+                # "2019", it was decided to use dataset from 2020
                 "2020",
                 "2021",
                 "2022",

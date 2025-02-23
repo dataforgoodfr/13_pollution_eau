@@ -5,7 +5,7 @@ import os
 import click
 
 # Importer et charger les variables d'environnement depuis config.py
-from pipelines.config.config import load_env_variables
+from pipelines.config.config import get_environment, load_env_variables
 
 load_env_variables()
 
@@ -14,6 +14,8 @@ logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
 )
+
+logger = logging.getLogger(__name__)
 
 
 @click.group()
@@ -68,7 +70,14 @@ def run():
     default=False,
     help="Drop and re-create edc tables in the database before data insertion.",
 )
-def run_build_database(refresh_type, custom_years, drop_tables):
+@click.option(
+    "--check-update",
+    is_flag=True,
+    show_default=True,
+    default=False,
+    help="Apply refresh-type only on the years whose data has been modified from the source.",
+)
+def run_build_database(refresh_type, custom_years, drop_tables, check_update):
     """Run build_database task."""
     module = importlib.import_module("tasks.build_database")
     task_func = getattr(module, "execute")
@@ -81,6 +90,7 @@ def run_build_database(refresh_type, custom_years, drop_tables):
         refresh_type=refresh_type,
         custom_years=custom_years_list,
         drop_tables=drop_tables,
+        check_update=check_update,
     )
 
 
@@ -88,30 +98,54 @@ def run_build_database(refresh_type, custom_years, drop_tables):
 @click.option(
     "--env",
     type=click.Choice(["dev", "prod"]),
-    default="prod",
-    help="Environment to download from",
+    default=None,
+    help="Environment to download from. It will override environment defined in .env",
 )
 def run_download_database(env):
     """Download database from S3."""
-    os.environ["ENVIRONMENT"] = env
+    if env is not None:
+        os.environ["ENV"] = env
+    env = get_environment(default="prod")
+    logger.info(f"Running on env {env}")
     module = importlib.import_module("tasks.download_database")
     task_func = getattr(module, "execute")
-    task_func()
+    task_func(env)
+
+
+@run.command("download_database_https")
+@click.option(
+    "--env",
+    type=click.Choice(["dev", "prod"]),
+    default=None,
+    help="Environment to download from. It will override environment defined in .env",
+)
+def run_download_database_https(env):
+    """Download database from S3 via HTTPS."""
+    if env is not None:
+        os.environ["ENV"] = env
+    env = get_environment(default="prod")
+    logger.info(f"Running on env {env}")
+    module = importlib.import_module("tasks.download_database_https")
+    task_func = getattr(module, "execute")
+    task_func(env)
 
 
 @run.command("upload_database")
 @click.option(
     "--env",
     type=click.Choice(["dev", "prod"]),
-    default="dev",
-    help="Environment to upload to",
+    default=None,
+    help="Environment to upload to. It will override environment defined in .env",
 )
 def run_upload_database(env):
     """Upload database to S3."""
-    os.environ["ENVIRONMENT"] = env
+    if env is not None:
+        os.environ["ENV"] = env
+    env = get_environment(default="dev")
+    logger.info(f"Running on env {env}")
     module = importlib.import_module("tasks.upload_database")
     task_func = getattr(module, "execute")
-    task_func()
+    task_func(env)
 
 
 if __name__ == "__main__":

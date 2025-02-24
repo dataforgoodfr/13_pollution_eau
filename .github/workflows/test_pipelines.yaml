@@ -2,10 +2,9 @@ name: 🧪 Run Tests
 
 on:
   pull_request:
-  push:
     branches: [main]
     paths:
-      - 'pipelines/**'
+        - 'pipelines/**'
 
 env:
   SCW_ACCESS_KEY: ${{ secrets.SCW_ACCESS_KEY }}

@@ -303,11 +303,19 @@ class COGDataset:
         # Process data
         logger.info("Launching processing of COG datasets")
 
+        # download dataset
         self.datagouv.download_dataset_to_file(
             dataset_id=self.config["source"]["id"],
             filepath=Path(CACHE_FOLDER, self.config["file"]["file_name"]),
         )
 
-        logger.info("Cleaning up cache...")
-        # clear_cache(recreate_folder=True)
-        return True
+        # create table in the database
+        duckdb_client = DuckDBClient()
+        duckdb_client.drop_tables(table_names=[self.config["file"]["table_name"]])
+        duckdb_client.ingest_from_csv(
+            ingest_type="CREATE",
+            table_name=self.config["file"]["table_name"],
+            de_partition=self.config["source"]["datetime"][:4],
+            dataset_datetime=self.config["source"]["datetime"],
+            filepath=Path(CACHE_FOLDER, self.config["file"]["file_name"]),
+        )

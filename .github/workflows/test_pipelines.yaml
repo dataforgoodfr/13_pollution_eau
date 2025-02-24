@@ -4,7 +4,7 @@ on:
   pull_request:
     branches: [main]
     paths:
-        - 'pipelines/**'
+      - 'pipelines/**'
 
 env:
   SCW_ACCESS_KEY: ${{ secrets.SCW_ACCESS_KEY }}

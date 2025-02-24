@@ -10,6 +10,9 @@ Examples:
     - build_database --refresh-type last : Process last year only
     - build_database --refresh-type custom --custom-years 2018,2024 : Process only the years 2018 and 2024
     - build_database --refresh-type last --drop-tables : Drop tables and process last year only
+    - build_database --refresh-type all --check_update : Process only years whose data has been modified from the source
+    - build_database --refresh-type last --check_update : Process last year if its data has been modified from the source
+    - build_database --refresh-type custom --custom-years 2018,2024 --check_update : Process only the years 2018 and 2024 if their data has been modified from the source
 """
 
 import logging
@@ -18,17 +21,21 @@ from typing import List, Literal
 from zipfile import ZipFile
 
 import duckdb
+from tqdm import tqdm
+
+from pipelines.utils.utils import (
+    extract_dataset_datetime,
+    get_edc_dataset_years_to_update,
+)
 
 from ._common import (
     CACHE_FOLDER,
     DUCKDB_FILE,
-    tqdm_common,
     clear_cache,
     download_file_from_https,
+    tqdm_common,
 )
 from ._config_edc import create_edc_yearly_filename, get_edc_config
-from tqdm import tqdm
-
 
 logger = logging.getLogger(__name__)
 edc_config = get_edc_config()
@@ -41,12 +48,12 @@ def check_table_existence(conn: duckdb.DuckDBPyConnection, table_name: str) -> b
     :param table_name: The table name to check existence
     :return: True if the table exists, False if not
     """
-    query = f"""
+    query = """
         SELECT COUNT(*)
         FROM information_schema.tables
-        WHERE table_name = '{table_name}'
+        WHERE table_name = ?
         """
-    conn.execute(query)
+    conn.execute(query, (table_name,))
     return list(conn.fetchone())[0] == 1
 
 
@@ -70,6 +77,9 @@ def download_extract_insert_yearly_edc_data(year: str):
     FILES = edc_config["files"]
 
     logger.info(f"Processing EDC dataset for {year}...")
+
+    dataset_datetime = extract_dataset_datetime(DATA_URL)
+    logger.info(f"   EDC dataset datetime: {dataset_datetime}")
 
     download_file_from_https(url=DATA_URL, filepath=ZIP_FILE)
 
@@ -100,29 +110,27 @@ def download_extract_insert_yearly_edc_data(year: str):
                 ),
             )
 
-            if check_table_existence(
-                conn=conn, table_name=f"{file_info['table_name']}"
-            ):
+            if check_table_existence(conn=conn, table_name=file_info["table_name"]):
                 query = f"""
-                    DELETE FROM {f"{file_info['table_name']}"}
-                    WHERE de_partition = CAST({year} as INTEGER)
+                    DELETE FROM {file_info["table_name"]}
+                    WHERE de_partition = CAST(? AS INTEGER)
                     ;
                 """
-                conn.execute(query)
-                query_start = f"INSERT INTO {f'{file_info["table_name"]}'} "
+                conn.execute(query, (year,))
+                query_start = f"INSERT INTO {file_info['table_name']} "
 
             else:
-                query_start = f"CREATE TABLE {f'{file_info["table_name"]}'} AS "
+                query_start = f"CREATE TABLE {file_info['table_name']} AS "
 
-            query_select = f"""
-                SELECT 
+            query_select = """
+                SELECT
                     *,
-                    CAST({year} AS INTEGER) AS de_partition,
-                    current_date            AS de_ingestion_date
-                FROM read_csv('{filepath}', header=true, delim=',');
+                    CAST(? AS INTEGER)      AS de_partition,
+                    current_date            AS de_ingestion_date,
+                    ?                       AS de_dataset_datetime
+                FROM read_csv(?, header=true, delim=',');
             """
-
-            conn.execute(query_start + query_select)
+            conn.execute(query_start + query_select, (year, dataset_datetime, filepath))
             pbar.update(1)
 
     conn.close()
@@ -150,6 +158,7 @@ def process_edc_datasets(
     refresh_type: Literal["all", "last", "custom"] = "last",
     custom_years: List[str] = None,
     drop_tables: bool = False,
+    check_update: bool = False,
 ):
     """
     Process the EDC datasets.
@@ -159,6 +168,7 @@ def process_edc_datasets(
         - "custom": Refresh the data for the years specified in the list custom_years
     :param custom_years: years to update
     :param drop_tables: Whether to drop edc tables in the database before data insertion.
+    :param check_update: Whether to process only whose data has been modified from the source
     :return:
     """
     available_years = edc_config["source"]["available_years"]
@@ -188,10 +198,13 @@ def process_edc_datasets(
             f""" refresh_type needs to be one of ["all", "last", "custom"], it can't be: {refresh_type}"""
         )
 
-    logger.info(f"Launching processing of EDC datasets for years: {years_to_update}")
+    if check_update:
+        years_to_update = get_edc_dataset_years_to_update(years_to_update)
+    else:
+        if drop_tables or (refresh_type == "all"):
+            drop_edc_tables()
 
-    if drop_tables or (refresh_type == "all"):
-        drop_edc_tables()
+    logger.info(f"Launching processing of EDC datasets for years: {years_to_update}")
 
     for year in years_to_update:
         download_extract_insert_yearly_edc_data(year=year)
@@ -205,6 +218,7 @@ def execute(
     refresh_type: str = "all",
     custom_years: List[str] = None,
     drop_tables: bool = False,
+    check_update: bool = False,
 ):
     """
     Execute the EDC dataset processing with specified parameters.
@@ -215,5 +229,8 @@ def execute(
     """
     # Build database
     process_edc_datasets(
-        refresh_type=refresh_type, custom_years=custom_years, drop_tables=drop_tables
+        refresh_type=refresh_type,
+        custom_years=custom_years,
+        drop_tables=drop_tables,
+        check_update=check_update,
     )

@@ -24,3 +24,10 @@ repos:
   #  rev: v1.3.1
   #  hooks:
   #    - id: python-safety-dependencies-check
+
+  - repo: https://github.com/rbubley/mirrors-prettier
+    rev: v3.5.1
+    hooks:
+    - id: prettier
+      types_or: [markdown, javascript, jsx, ts, tsx, json]
+      files: 'webapp'

@@ -40,7 +40,17 @@ jobs:
 
     - name: Update production database
       run: |
-        uv run pipelines/run.py run build_database
+        uv run pipelines/run.py run build_database --refresh-type all --check-update
+
+    - name: Install dbt dependencies
+      run: |
+        cd dbt_
+        uv run dbt deps || { echo "dbt deps failed"; exit 1; }
+    
+    - name: Create tables/views in dbt
+      run: |
+        cd dbt_
+        uv run dbt build || { echo "dbt build failed"; exit 1; }
 
     - name: Upload production database to Storage
       run: |

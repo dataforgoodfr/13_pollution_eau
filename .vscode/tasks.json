@@ -2,12 +2,12 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "Build database",
+      "label": "Download database",
       "type": "shell",
-      "command": "uv run pipelines/run.py run build_database",
+      "command": "uv run pipelines/run.py run download_database",
       "group": "none",
       "icon": {
-        "id": "database"
+        "id": "cloud-download"
       },
       "presentation": {
         "reveal": "always",
@@ -30,6 +30,6 @@
         "reveal": "always",
         "panel": "new"
       }
-    }
-  ]
+    },
+  ],
 }

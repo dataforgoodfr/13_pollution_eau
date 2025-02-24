@@ -1,15 +1,16 @@
 import os
 from datetime import datetime
 from pathlib import Path
+from typing import List, Literal, Union
 from urllib.parse import urlparse
 
-from typing import Union, Literal, List
 from tqdm import tqdm
 
+from .._common import CACHE_FOLDER, clear_cache, extract_file, logger, tqdm_common
+from .._config_edc import get_edc_config
+from .._config_laposte import get_cog_config
 from .duckdb_client import DuckDBClient
 from .https_client import HTTPSClient
-from .._common import tqdm_common, logger, CACHE_FOLDER, extract_file, clear_cache
-from .._config_edc import get_edc_config
 
 
 class DataGouvClient(HTTPSClient):
@@ -281,4 +282,32 @@ class DataGouvClient(HTTPSClient):
 
         logger.info("Cleaning up cache...")
         clear_cache(recreate_folder=False)
+        return True
+
+
+class COGDataset:
+    """Dataset pour le Code Officiel Géographique (COG)
+
+    Chaque année, l'Insee met à disposition sur son site (insee.fr) le code officiel géographique
+    qui rassemble les codes et libellés des communes, des cantons, des arrondissements, des départements,
+    des régions et des pays et territoires étrangers au 1er janvier.
+    Source : https://www.data.gouv.fr/fr/datasets/code-officiel-geographique-cog/
+    """
+
+    def __init__(self):
+        self.datagouv = DataGouvClient()
+        self.config = get_cog_config()
+
+    def process_datasets(self):
+        """Process the COG datasets"""
+        # Process data
+        logger.info("Launching processing of COG datasets")
+
+        self.datagouv.download_dataset_to_file(
+            dataset_id=self.config["source"]["id"],
+            filepath=Path(CACHE_FOLDER, self.config["file"]["file_name"]),
+        )
+
+        logger.info("Cleaning up cache...")
+        # clear_cache(recreate_folder=True)
         return True

@@ -11,7 +11,7 @@ export async function fetchExample() {
 
     const result = await connection.runAndReadUntil(
       "SELECT * from edc_resultats",
-      ROW_TARGET_COUNT
+      ROW_TARGET_COUNT,
     );
 
     // Example of query with a group by :

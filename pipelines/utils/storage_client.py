@@ -1,8 +1,10 @@
-import os
-import boto3
-from botocore.client import Config
-import pandas as pd
 import io
+import os
+
+import boto3
+import pandas as pd
+from botocore.client import Config
+from tqdm import tqdm
 
 """Client class to interact with Scaleway Object Storage."""
 
@@ -41,7 +43,20 @@ class ObjectStorageClient:
             return []
 
     def download_object(self, file_key, local_path):
-        self.client_v4.download_file(self.bucket_name, file_key, local_path)
+        # Get file size
+        meta_data = self.client_v4.head_object(Bucket=self.bucket_name, Key=file_key)
+        total_length = int(meta_data.get("ContentLength", 0))
+
+        # Configure the callback to update the progress bar
+        with tqdm(
+            total=total_length, unit="iB", unit_scale=True, desc=file_key
+        ) as pbar:
+            self.client_v4.download_file(
+                self.bucket_name,
+                file_key,
+                local_path,
+                Callback=lambda bytes_transferred: pbar.update(bytes_transferred),
+            )
 
     def upload_object(self, local_path, file_key=None, public_read=False):
         if file_key is None:

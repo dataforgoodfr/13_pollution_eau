@@ -101,33 +101,27 @@ def run_build_database(refresh_type, custom_years, drop_tables, check_update):
     default=None,
     help="Environment to download from. It will override environment defined in .env",
 )
-def run_download_database(env):
-    """Download database from S3."""
+@click.option(
+    "--use-boto3",
+    is_flag=True,
+    default=False,
+    help="Download database via Boto3 (instead of HTTPS).",
+)
+def run_download_database(env, use_boto3):
+    """Download database
+
+    :param env: The environment to download from ("dev" or "prod").
+    :param use_boto3: Whether to download via Boto3 instead of direct download via HTTPS. Default is False.
+    :return: None
+    """
     if env is not None:
         os.environ["ENV"] = env
     env = get_environment(default="prod")
-    logger.info(f"Running on env {env}")
+    logger.debug(f"Running on env {env}")
+    logger.debug(f"Downloading database via Boto3: {use_boto3}")
     module = importlib.import_module("tasks.download_database")
     task_func = getattr(module, "execute")
-    task_func(env)
-
-
-@run.command("download_database_https")
-@click.option(
-    "--env",
-    type=click.Choice(["dev", "prod"]),
-    default=None,
-    help="Environment to download from. It will override environment defined in .env",
-)
-def run_download_database_https(env):
-    """Download database from S3 via HTTPS."""
-    if env is not None:
-        os.environ["ENV"] = env
-    env = get_environment(default="prod")
-    logger.info(f"Running on env {env}")
-    module = importlib.import_module("tasks.download_database_https")
-    task_func = getattr(module, "execute")
-    task_func(env)
+    task_func(env, use_boto3)
 
 
 @run.command("upload_database")

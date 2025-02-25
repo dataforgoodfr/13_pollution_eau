@@ -1,0 +1,46 @@
+name: 🧪 Run Tests
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'pipelines/**'
+
+env:
+  SCW_ACCESS_KEY: ${{ secrets.SCW_ACCESS_KEY }}
+  SCW_SECRET_KEY: ${{ secrets.SCW_SECRET_KEY }}
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Check if SCW_ACCESS_KEY and SCW_SECRET_KEY are set
+      run: |
+        if [ -z "$SCW_ACCESS_KEY" ]; then
+          echo "SCW_ACCESS_KEY is not set, cannot run tests without access key"
+          exit 1
+        else
+          echo "SCW_ACCESS_KEY is properly set."
+        fi
+
+        if [ -z "$SCW_SECRET_KEY" ]; then
+          echo "SCW_SECRET_KEY is not set, cannot run tests without secret key"
+          exit 1
+        else
+          echo "SCW_SECRET_KEY is properly set."
+        fi
+
+    - name: Install a specific version of uv
+      uses: astral-sh/setup-uv@v5
+      with:
+        version: ">=0.4.0"
+
+    - name: Install dependencies
+      run: uv sync
+
+    - name: Run tests with coverage
+      run: uv run pytest -s --cov=. --cov-report=term-missing

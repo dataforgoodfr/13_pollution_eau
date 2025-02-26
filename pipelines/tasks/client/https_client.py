@@ -3,8 +3,7 @@ from pathlib import Path
 import requests
 from typing import Union
 from tqdm import tqdm
-
-from .._common import tqdm_common, logger
+from pipelines.tasks.config.common import tqdm_common, logger
 
 
 class HTTPSClient:
@@ -19,7 +18,6 @@ class HTTPSClient:
         :return: Downloaded file filename.
         """
         url = self.base_url + path
-        print("url", url)
         response = requests.get(url, stream=True)
         response.raise_for_status()
         response_size = int(response.headers.get("content-length", 0))

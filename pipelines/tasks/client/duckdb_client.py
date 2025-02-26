@@ -1,8 +1,9 @@
 from dataclasses import dataclass
-from typing import Union, List
-from .._common import logger, DUCKDB_FILE
+from typing import List, Union
 
 import duckdb
+
+from pipelines.tasks.config.common import DUCKDB_FILE, logger
 
 
 class DuckDBClient:
@@ -60,6 +61,18 @@ class DuckDBClient:
         Delete data from tables verifying the SQLFilters
         :param table_name: Table name
         :param filters: SQLFilter for the where clause
+
+        Example:
+        duckcb_client.delete_from_table(
+            table_name=edc_communes,
+            filters=[
+                duckcb_client.SQLFilters(
+                    colname="de_partition",
+                    filter_value="2024",
+                    coltype="INTEGER",
+                )
+            ],
+        )
         """
 
         query = f"""
@@ -102,25 +115,17 @@ class DuckDBClient:
             query = f"CREATE TABLE {table_name} AS "
         else:
             raise ValueError("ingest_type parameter needs to be INSERT or CREATE")
-
-        query = (
-            query
-            + f"""
-            SELECT
-                *,
-                CAST({de_partition} AS INTEGER)     AS de_partition,
-                current_date                        AS de_ingestion_date,
-                {dataset_datetime}                  AS de_dataset_datetime
-            FROM read_csv('{filepath}', header=true, delim=',');
-        """
+        query_select = """
+                SELECT
+                    *,
+                    CAST(? AS INTEGER)      AS de_partition,
+                    current_date            AS de_ingestion_date,
+                    ?                       AS de_dataset_datetime
+                FROM read_csv(?, header=true, delim=',');
+            """
+        self.conn.execute(
+            query + query_select, (de_partition, dataset_datetime, str(filepath))
         )
-        self.conn.execute(query)
-        return True
-
-    def ingest_from_geopanda(self,file_path, table_name):
-        sql = f"CREATE TABLE IF NOT EXISTS {table_name} AS SELECT * FROM {file_path}"
-        print(sql)
-        # self.conn.execute(sql)
         return True
 
     def close(self):

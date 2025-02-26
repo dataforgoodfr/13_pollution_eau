@@ -18,8 +18,10 @@ Examples:
 import logging
 from typing import List
 
-from pipelines.tasks.client.datagouv_client import COGDataset, DataGouvClient
-from pipelines.tasks.client.insee_client import InseeClient
+from pipelines.tasks.client.datagouv_client import DataGouvClient
+from pipelines.tasks.client.https_to_duckdb_client import HTTPSToDuckDBClient
+from pipelines.tasks.config.config_insee import get_insee_config
+from pipelines.tasks.config.config_laposte import get_laposte_config
 
 logger = logging.getLogger(__name__)
 
@@ -38,9 +40,9 @@ def execute(
     :param drop_tables: Whether to drop edc tables in the database before data insertion.
     """
     # Build database
-    insee = InseeClient()
-    insee.process_datasets()
-    laposte = COGDataset()
+    insee_client = HTTPSToDuckDBClient(get_insee_config())
+    insee_client.process_datasets()
+    laposte = HTTPSToDuckDBClient(get_laposte_config())
     laposte.process_datasets()
     data_gouv_client = DataGouvClient()
     data_gouv_client.process_edc_datasets(

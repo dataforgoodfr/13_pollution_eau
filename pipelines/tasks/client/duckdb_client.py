@@ -100,6 +100,7 @@ class DuckDBClient:
         de_partition: str,
         dataset_datetime: str,
         filepath: str,
+        delim: str = ",",
     ):
         """
         Ingest data from a csv file to a table
@@ -115,7 +116,6 @@ class DuckDBClient:
             query = f"CREATE TABLE {table_name} AS "
         else:
             raise ValueError("ingest_type parameter needs to be INSERT or CREATE")
-
         query = (
             query
             + f"""
@@ -124,7 +124,7 @@ class DuckDBClient:
                 CAST({de_partition} AS INTEGER)     AS de_partition,
                 current_date                        AS de_ingestion_date,
                 {dataset_datetime}                  AS de_dataset_datetime
-            FROM read_csv('{filepath}', header=true, delim=',');
+            FROM read_csv('{filepath}', header=true, delim='{delim}');
         """
         )
         self.conn.execute(query)

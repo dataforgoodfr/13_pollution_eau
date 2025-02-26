@@ -4,4 +4,4 @@ models:
   - name: stg_communes__cog
     description: "Liste des communes et leurs unités de distribution chargé depuis le site de l'insee"
   - name: stg_communes__laposte
-    description: "Liste des communes et leurs unités de distribution chargé depuis open data gouv"
+    description: "Liste des communes et leurs unités de distribution chargé depuis le site de la poste https://datanova.laposte.fr/datasets/laposte-hexasmal"

@@ -16,7 +16,6 @@ from pipelines.tasks.config.common import (
     tqdm_common,
 )
 from pipelines.tasks.config.config_edc import get_edc_config
-from pipelines.tasks.config.config_laposte import get_cog_config
 
 
 class DataGouvClient(HTTPSClient):
@@ -73,7 +72,8 @@ class DataGouvClient(HTTPSClient):
             "Check that EDC dataset are up to date according to www.data.gouv.fr"
         )
 
-        conn = DuckDBClient().conn
+        duckdb_client = DuckDBClient()
+        conn = duckdb_client.conn
 
         for year in years:
             logger.info(f"   Check EDC dataset datetime for {year}")
@@ -149,7 +149,7 @@ class DataGouvClient(HTTPSClient):
         else:
             logger.info("   All EDC dataset are already up to date")
 
-        conn.close()
+        # duckdb_client.close() # this line is commented because we get error duckdb.duckdb.ConnectionException: Connection Error: Connection already closed! when it is not
         return update_years
 
     def process_yearly_edc_data(self, year):
@@ -289,39 +289,3 @@ class DataGouvClient(HTTPSClient):
         logger.info("Cleaning up cache...")
         clear_cache(recreate_folder=False)
         return True
-
-
-class COGDataset:
-    """Dataset pour le Code Officiel Géographique (COG)
-
-    Chaque année, l'Insee met à disposition sur son site (insee.fr) le code officiel géographique
-    qui rassemble les codes et libellés des communes, des cantons, des arrondissements, des départements,
-    des régions et des pays et territoires étrangers au 1er janvier.
-    Source : https://www.data.gouv.fr/fr/datasets/code-officiel-geographique-cog/
-    """
-
-    def __init__(self):
-        self.datagouv = DataGouvClient()
-        self.config = get_cog_config()
-
-    def process_datasets(self):
-        """Process the COG datasets"""
-        # Process data
-        logger.info("Launching processing of laposte COG datasets")
-
-        # download dataset
-        self.datagouv.download_dataset_to_file(
-            dataset_id=self.config["source"]["id"],
-            filepath=Path(CACHE_FOLDER, self.config["file"]["file_name"]),
-        )
-
-        # create table in the database
-        duckdb_client = DuckDBClient()
-        duckdb_client.drop_tables(table_names=[self.config["file"]["table_name"]])
-        duckdb_client.ingest_from_csv(
-            ingest_type="CREATE",
-            table_name=self.config["file"]["table_name"],
-            de_partition=self.config["source"]["datetime"][:4],
-            dataset_datetime=self.config["source"]["datetime"],
-            filepath=Path(CACHE_FOLDER, self.config["file"]["file_name"]),
-        )

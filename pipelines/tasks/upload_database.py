@@ -12,7 +12,7 @@ Examples:
 import logging
 
 from pipelines.config.config import get_s3_path
-from pipelines.tasks._common import DUCKDB_FILE
+from pipelines.tasks.config.common import DUCKDB_FILE
 from pipelines.utils.storage_client import ObjectStorageClient
 
 logger = logging.getLogger(__name__)

@@ -85,19 +85,3 @@ def get_edc_config() -> Dict:
     }
 
     return edc_config
-
-
-def create_edc_yearly_filename(
-    file_name_prefix: str, file_extension: str, year: str
-) -> str:
-    """
-    This function is used to recreate the yearly filenames of the extracted files.
-    It is intended for use with the edc_config["files"] data above.
-    For example in 2024 the file name for communes should be:
-        DIS_COM_UDI_2024.txt
-    :param file_name_prefix: prefix of the filename
-    :param file_extension: extension of the file
-    :param year: year of the needed file
-    :return: the yearly filename as a string
-    """
-    return file_name_prefix + year + file_extension

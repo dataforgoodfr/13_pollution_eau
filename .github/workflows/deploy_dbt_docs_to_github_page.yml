@@ -51,7 +51,7 @@ jobs:
 
       - name: Download production database from Storage
         run: |
-          uv run pipelines/run.py run download_database_https
+          uv run pipelines/run.py run download_database
 
       - name: dbt deps & dbt docs generate
         run: cd dbt_/ && uv run dbt deps && uv run dbt docs generate

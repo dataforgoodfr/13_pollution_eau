@@ -19,6 +19,7 @@ class HTTPSClient:
         :return: Downloaded file filename.
         """
         url = self.base_url + path
+        print("url", url)
         response = requests.get(url, stream=True)
         response.raise_for_status()
         response_size = int(response.headers.get("content-length", 0))

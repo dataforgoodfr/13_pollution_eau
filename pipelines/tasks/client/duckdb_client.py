@@ -117,6 +117,12 @@ class DuckDBClient:
         self.conn.execute(query)
         return True
 
+    def ingest_from_geopanda(self,file_path, table_name):
+        sql = f"CREATE TABLE IF NOT EXISTS {table_name} AS SELECT * FROM {file_path}"
+        print(sql)
+        # self.conn.execute(sql)
+        return True
+
     def close(self):
         """
         Close the connection

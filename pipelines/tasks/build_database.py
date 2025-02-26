@@ -18,7 +18,7 @@ Examples:
 import logging
 from typing import List
 
-from .client.datagouv_client import COGDataset, DataGouvClient
+from .client.datagouv_client import COGDataset, DataGouvClient, GeoServiceIgnData
 
 logger = logging.getLogger(__name__)
 
@@ -37,12 +37,14 @@ def execute(
     :param drop_tables: Whether to drop edc tables in the database before data insertion.
     """
     # Build database
-    laposte = COGDataset()
-    laposte.process_datasets()
-    data_gouv_client = DataGouvClient()
-    data_gouv_client.process_edc_datasets(
-        refresh_type=refresh_type,
-        custom_years=custom_years,
-        drop_tables=drop_tables,
-        check_update=check_update,
-    )
+    # laposte = COGDataset()
+    # laposte.process_datasets()
+    # data_gouv_client = DataGouvClient()
+    # data_gouv_client.process_edc_datasets(
+    #     refresh_type=refresh_type,
+    #     custom_years=custom_years,
+    #     drop_tables=drop_tables,
+    #     check_update=check_update,
+    # )
+    latracee = GeoServiceIgnData()
+    latracee.process_datasets()

@@ -3,6 +3,8 @@ import os
 import shutil
 from pathlib import Path
 from zipfile import ZipFile
+from py7zr import SevenZipFile
+import re
 
 import requests
 from typing import Union
@@ -68,3 +70,10 @@ def extract_file(zip_file, extract_folder):
                 zip_ref.extract(file, extract_folder)  # Extract each file
                 pbar.update(1)
     return True
+
+def extract_file_7zip(zip_file, extract_folder):
+    with SevenZipFile(zip_file, "r") as zip_ref:
+        file_list = zip_ref.getnames()
+        zip_ref.extract(targets=file_list, path=extract_folder, recursive=True) 
+    return True
+

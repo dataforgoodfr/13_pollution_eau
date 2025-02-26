@@ -1,6 +1,9 @@
 name: 🔄 Synchronize Production DB to storage
 
 on:
+  push:
+      branches: [ "main" ]
+      paths: [ "dbt_/**" ]
   schedule:
     # Execute pipeline every 1st and 15th of the month at 10:00 AM
     - cron: '0 10 1,15 * *'
@@ -41,6 +44,16 @@ jobs:
     - name: Update production database
       run: |
         uv run pipelines/run.py run build_database --refresh-type all --check-update
+
+    - name: Install dbt dependencies
+      run: |
+        cd dbt_
+        uv run dbt deps || { echo "dbt deps failed"; exit 1; }
+    
+    - name: Create tables/views in dbt
+      run: |
+        cd dbt_
+        uv run dbt build || { echo "dbt build failed"; exit 1; }
 
     - name: Upload production database to Storage
       run: |

@@ -275,10 +275,14 @@ models:
             - C : conforme
             - N : non conforme
             - S : sans objet lorsqu'aucun paramètre microbio n'a été mesuré.
+            - D : conforme dans le cadre d’une dérogation
+          
+          N.B. cette dernière valeur n'est pas possible selon la documentation officielle d'EDC, mais on trouve des prélèvements
+          avec cette valeur. A discuter.
         type: VARCHAR(1)
         tests:
           - accepted_values:
-              values: ["blanc", "C", "N", "S"]
+              values: ["blanc", "C", "N", "S", "D"]
       
       
   

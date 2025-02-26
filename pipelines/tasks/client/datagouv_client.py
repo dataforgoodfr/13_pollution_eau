@@ -171,7 +171,7 @@ class DataGouvClient(HTTPSClient):
         extract_file(zip_file=zip_file, extract_folder=extract_folder)
 
         logger.info("   Creating or updating tables in the database...")
-        duckcb_client = DuckDBClient()
+        duckdb_client = DuckDBClient()
 
         files = self.config_edc["files"]
 
@@ -187,13 +187,13 @@ class DataGouvClient(HTTPSClient):
                         year=year,
                     ),
                 )
-                if duckcb_client.check_table_existence(
+                if duckdb_client.check_table_existence(
                     table_name=file_info["table_name"]
                 ):
-                    duckcb_client.delete_from_table(
+                    duckdb_client.delete_from_table(
                         table_name=file_info["table_name"],
                         filters=[
-                            duckcb_client.SQLFilters(
+                            duckdb_client.SQLFilters(
                                 colname="de_partition",
                                 filter_value=year,
                                 coltype="INTEGER",
@@ -206,7 +206,7 @@ class DataGouvClient(HTTPSClient):
                 else:
                     ingest_type = "CREATE"
 
-                duckcb_client.ingest_from_csv(
+                duckdb_client.ingest_from_csv(
                     ingest_type=ingest_type,
                     table_name=file_info["table_name"],
                     de_partition=year,
@@ -215,7 +215,7 @@ class DataGouvClient(HTTPSClient):
                 )
                 pbar.update(1)
 
-        duckcb_client.close()
+        # duckdb_client.close()
 
         logger.info("   Cleaning up cache...")
         clear_cache()
@@ -277,7 +277,7 @@ class DataGouvClient(HTTPSClient):
                 ]
 
                 duckdb_client.drop_tables(table_names=tables_names)
-                duckdb_client.close()
+                # duckdb_client.close()
 
         logger.info(
             f"Launching processing of EDC datasets for years: {years_to_update}"

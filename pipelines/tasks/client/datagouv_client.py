@@ -287,5 +287,5 @@ class DataGouvClient(HTTPSClient):
             self.process_yearly_edc_data(year=year)
 
         logger.info("Cleaning up cache...")
-        clear_cache(recreate_folder=False)
+        clear_cache()
         return True

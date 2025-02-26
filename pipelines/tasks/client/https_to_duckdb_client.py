@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 
 from pipelines.tasks.client.duckdb_client import DuckDBClient
@@ -18,6 +19,7 @@ class HTTPSToDuckDBClient(HTTPSClient):
         # Process data
         logger.info("Launching processing of Insee communes")
 
+        os.makedirs(CACHE_FOLDER, exist_ok=True)
         self.download_file_from_https(
             path=self.config["source"]["id"],
             filepath=Path(CACHE_FOLDER, self.config["file"]["file_name"]),

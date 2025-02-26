@@ -40,10 +40,7 @@ def execute(
     :param drop_tables: Whether to drop edc tables in the database before data insertion.
     """
     # Build database
-    insee_client = HTTPSToDuckDBClient(get_insee_config())
-    insee_client.process_datasets()
-    laposte = HTTPSToDuckDBClient(get_laposte_config())
-    laposte.process_datasets()
+
     data_gouv_client = DataGouvClient()
     data_gouv_client.process_edc_datasets(
         refresh_type=refresh_type,
@@ -51,3 +48,7 @@ def execute(
         drop_tables=drop_tables,
         check_update=check_update,
     )
+    insee_client = HTTPSToDuckDBClient(get_insee_config())
+    insee_client.process_datasets()
+    laposte = HTTPSToDuckDBClient(get_laposte_config())
+    laposte.process_datasets()

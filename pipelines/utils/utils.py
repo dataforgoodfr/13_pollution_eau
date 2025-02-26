@@ -1,13 +1,9 @@
 import logging
-from datetime import datetime
 from pathlib import Path
 from urllib.parse import urlparse
 
-import duckdb
 import requests
 
-from pipelines.tasks.config.common import DUCKDB_FILE
-from pipelines.tasks.config.config_edc import get_edc_config
 
 logger = logging.getLogger(__name__)
 

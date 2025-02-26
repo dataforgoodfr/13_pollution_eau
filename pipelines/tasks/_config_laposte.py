@@ -7,6 +7,6 @@ def get_cog_config() -> dict:
         },
         "file": {
             "file_name": "v_communes_2024.csv",
-            "table_name": "cog_communes",
+            "table_name": "laposte_commune",
         },
     }

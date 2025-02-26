@@ -6,11 +6,17 @@ from urllib.parse import urlparse
 
 from tqdm import tqdm
 
-from .._common import CACHE_FOLDER, clear_cache, extract_file, logger, tqdm_common
-from .._config_edc import get_edc_config
-from .._config_laposte import get_cog_config
-from .duckdb_client import DuckDBClient
-from .https_client import HTTPSClient
+from pipelines.tasks._common import (
+    CACHE_FOLDER,
+    clear_cache,
+    extract_file,
+    logger,
+    tqdm_common,
+)
+from pipelines.tasks._config_edc import get_edc_config
+from pipelines.tasks._config_laposte import get_cog_config
+from pipelines.tasks.client.duckdb_client import DuckDBClient
+from pipelines.tasks.client.https_client import HTTPSClient
 
 
 class DataGouvClient(HTTPSClient):

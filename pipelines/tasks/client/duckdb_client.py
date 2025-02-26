@@ -1,8 +1,9 @@
 from dataclasses import dataclass
-from typing import Union, List
-from .._common import logger, DUCKDB_FILE
+from typing import List, Union
 
 import duckdb
+
+from .._common import DUCKDB_FILE, logger
 
 
 class DuckDBClient:
@@ -60,6 +61,18 @@ class DuckDBClient:
         Delete data from tables verifying the SQLFilters
         :param table_name: Table name
         :param filters: SQLFilter for the where clause
+
+        Example:
+        duckcb_client.delete_from_table(
+            table_name=edc_communes,
+            filters=[
+                duckcb_client.SQLFilters(
+                    colname="de_partition",
+                    filter_value="2024",
+                    coltype="INTEGER",
+                )
+            ],
+        )
         """
 
         query = f"""

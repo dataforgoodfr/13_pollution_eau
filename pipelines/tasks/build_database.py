@@ -18,7 +18,7 @@ Examples:
 import logging
 from typing import List
 
-from .client.datagouv_client import COGDataset, DataGouvClient
+from pipelines.tasks.client.datagouv_client import COGDataset, DataGouvClient
 
 logger = logging.getLogger(__name__)
 

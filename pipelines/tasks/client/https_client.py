@@ -4,7 +4,7 @@ from typing import Union
 import requests
 from tqdm import tqdm
 
-from pipelines.tasks._common import logger, tqdm_common
+from pipelines.tasks.config.common import logger, tqdm_common
 
 
 class HTTPSClient:

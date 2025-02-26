@@ -3,7 +3,7 @@ from typing import List, Union
 
 import duckdb
 
-from .._common import DUCKDB_FILE, logger
+from pipelines.tasks.config.common import DUCKDB_FILE, logger
 
 
 class DuckDBClient:

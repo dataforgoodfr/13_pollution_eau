@@ -6,7 +6,7 @@ def get_cog_config() -> dict:
             "datetime": "2024-02-20",
         },
         "file": {
-            "file_name": "v_communes_2024.csv",
-            "table_name": "laposte_commune",
+            "file_name": "laposte_communes_2024.csv",
+            "table_name": "laposte_communes",
         },
     }

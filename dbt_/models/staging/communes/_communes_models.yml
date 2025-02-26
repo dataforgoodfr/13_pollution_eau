@@ -1,0 +1,7 @@
+version: 2
+
+models:
+  - name: stg_communes__cog
+    description: "Liste des communes et leurs unités de distribution chargé depuis le site de l'insee"
+  - name: stg_communes__laposte
+    description: "Liste des communes et leurs unités de distribution chargé depuis open data gouv"

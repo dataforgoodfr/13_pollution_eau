@@ -19,6 +19,7 @@ import logging
 from typing import List
 
 from pipelines.tasks.client.datagouv_client import COGDataset, DataGouvClient
+from pipelines.tasks.client.insee_client import InseeClient
 
 logger = logging.getLogger(__name__)
 
@@ -37,6 +38,8 @@ def execute(
     :param drop_tables: Whether to drop edc tables in the database before data insertion.
     """
     # Build database
+    insee = InseeClient()
+    insee.process_datasets()
     laposte = COGDataset()
     laposte.process_datasets()
     data_gouv_client = DataGouvClient()

@@ -307,7 +307,7 @@ class COGDataset:
     def process_datasets(self):
         """Process the COG datasets"""
         # Process data
-        logger.info("Launching processing of COG datasets")
+        logger.info("Launching processing of laposte COG datasets")
 
         # download dataset
         self.datagouv.download_dataset_to_file(

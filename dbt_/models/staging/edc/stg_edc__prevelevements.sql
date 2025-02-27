@@ -16,5 +16,6 @@ SELECT
     plvconformitebacterio::VARCHAR(1) as plvconformitebacterio,
     plvconformitechimique::VARCHAR(1) as plvconformitechimique,
     plvconformitereferencebact::VARCHAR(1) as plvconformitereferencebact,
-    plvconformitereferencechim::VARCHAR(1) as plvconformitereferencechim
+    plvconformitereferencechim::VARCHAR(1) as plvconformitereferencechim, 
+    de_partition::SMALLINT as de_partition
 FROM {{ source('edc', 'edc_prelevements') }}

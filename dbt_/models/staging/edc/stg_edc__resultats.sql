@@ -15,5 +15,6 @@ SELECT
     refqual::VARCHAR as refqual,
     valtraduite::NUMERIC as valtraduite,
     casparam::VARCHAR as casparam,
-    referenceanl::VARCHAR as referenceanl
+    referenceanl::VARCHAR as referenceanl, 
+    de_partition::SMALLINT as de_partition
 FROM {{ source('edc', 'edc_resultats') }}

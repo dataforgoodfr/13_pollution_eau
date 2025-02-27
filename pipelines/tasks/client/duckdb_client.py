@@ -2,6 +2,7 @@ from dataclasses import dataclass
 from typing import List, Union
 
 import duckdb
+import pandas as pd
 
 from pipelines.tasks.config.common import DUCKDB_FILE, logger
 
@@ -127,6 +128,18 @@ class DuckDBClient:
             query + query_select, (de_partition, dataset_datetime, str(filepath))
         )
         return True
+
+    def ingest_from_geopanda(self, df: pd.DataFrame, table_name: str):
+        # # todo
+        # add bar to ingection
+        logger.info("ingest_from_geopanda")
+        try:
+            df.to_sql(table_name, con=self.conn, if_exists="replace", index=False)
+            print(f"Table {table_name} created successfully.")
+            return True
+        except Exception as e:
+            print(f"An error occurred: {e}")
+            return False
 
     def close(self):
         """

@@ -19,8 +19,10 @@ import logging
 from typing import List
 
 from pipelines.tasks.client.datagouv_client import DataGouvClient
+from pipelines.tasks.client.geoservice_client import GeoServiceClient
 from pipelines.tasks.client.https_to_duckdb_client import HTTPSToDuckDBClient
 from pipelines.tasks.config.config_insee import get_insee_config
+from pipelines.tasks.config.config_irisge import get_irisge_config
 from pipelines.tasks.config.config_laposte import get_laposte_config
 
 logger = logging.getLogger(__name__)
@@ -52,3 +54,5 @@ def execute(
     insee_client.process_datasets()
     laposte = HTTPSToDuckDBClient(get_laposte_config())
     laposte.process_datasets()
+    # geoservice = GeoServiceClient(get_irisge_config())
+    # geoservice.process_datasets()

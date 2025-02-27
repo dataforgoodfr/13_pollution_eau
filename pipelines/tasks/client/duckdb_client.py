@@ -130,15 +130,13 @@ class DuckDBClient:
         return True
 
     def ingest_from_geopanda(self, df: pd.DataFrame, table_name: str):
-        # # todo
-        # add bar to ingection
         logger.info("ingest_from_geopanda")
         try:
             df.to_sql(table_name, con=self.conn, if_exists="replace", index=False)
-            print(f"Table {table_name} created successfully.")
+            logger.info(f"Table {table_name} created successfully.")
             return True
         except Exception as e:
-            print(f"An error occurred: {e}")
+            logger.error(f"An error occurred in ingest_from_geopanda: {e}")
             return False
 
     def close(self):

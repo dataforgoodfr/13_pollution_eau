@@ -1,4 +1,3 @@
-import os
 from pathlib import Path
 
 import geopandas as gpd
@@ -49,9 +48,10 @@ class GeoServiceClient(HTTPSClient):
         gpd_file = gpd.read_file(iris_ge_path)
 
         # duckdb ne peut pas accepter le geometry de gpd, convertir en format WKT
-        gpd_file["GEOM"] = gpd_file["geometry"].apply(lambda geom: geom.wkt)
+        gpd_file["wkt"] = gpd_file["geometry"].apply(lambda geom: geom.wkt)
         gpd_file = gpd_file.drop(columns="geometry")
         duckdb_client = DuckDBClient()
+        # drop old table before create one
         duckdb_client.drop_tables(table_names=[self.config["file"]["table_name"]])
         duckdb_client.ingest_from_geopanda(
             df=gpd_file, table_name=self.config["file"]["table_name"]

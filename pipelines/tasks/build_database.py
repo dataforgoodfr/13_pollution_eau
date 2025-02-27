@@ -54,5 +54,5 @@ def execute(
     insee_client.process_datasets()
     laposte = HTTPSToDuckDBClient(get_laposte_config())
     laposte.process_datasets()
-    # geoservice = GeoServiceClient(get_irisge_config())
-    # geoservice.process_datasets()
+    geoservice = GeoServiceClient(get_irisge_config())
+    geoservice.process_datasets()

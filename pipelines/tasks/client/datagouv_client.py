@@ -5,7 +5,7 @@ from typing import List, Literal, Union
 from urllib.parse import urlparse
 
 from tqdm import tqdm
-import geopandas as gpd
+
 from pipelines.tasks.client.duckdb_client import DuckDBClient
 from pipelines.tasks.client.https_client import HTTPSClient
 from pipelines.tasks.config.common import (
@@ -14,7 +14,6 @@ from pipelines.tasks.config.common import (
     extract_file,
     logger,
     tqdm_common,
-    extract_file_7zip
 )
 from pipelines.tasks.config.config_edc import get_edc_config
 
@@ -290,4 +289,3 @@ class DataGouvClient(HTTPSClient):
         logger.info("Cleaning up cache...")
         clear_cache()
         return True
-

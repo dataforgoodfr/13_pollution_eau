@@ -1,4 +1,4 @@
-name: 🧪 Run Tests
+name: 🧪 Run DBT Tests
 
 on:
   pull_request:

@@ -1,0 +1,49 @@
+version: 2
+
+models:
+  - name: stg_communes__cog
+    description: "Liste des communes et leurs unités de distribution chargé depuis le site de l'insee https://www.insee.fr/fr/information/7766585"
+    columns:
+      - name: TYPECOM
+        description: >
+          Type de commune
+          COM 	Commune
+          COMA 	Commune associée
+          COMD 	Commune déléguée
+          ARM 	Arrondissement municipal
+      - name: COM
+        description: Code Commune
+      - name: REG
+        description: Code Region
+      - name: DEP
+        description: Code Departement
+      - name: CTCD
+        description: Code de la collectivité territoriale ayant les compétences départementales
+      - name: ARR
+        description: Code arrondissement
+      - name: TNCC
+        description: >
+          Type de nom en clair
+          0 	Pas d'article et le nom commence par une consonne sauf H muet 	charnière = DE
+          1 	Pas d'article et le nom commence par une voyelle ou un H muet 	charnière = D'
+          2 	Article = LE 	charnière = DU
+          3 	Article = LA 	charnière = DE LA
+          4 	Article = LES 	charnière = DES
+          5 	Article = L' 	charnière = DE L'
+          6 	Article = AUX 	charnière = DES
+          7 	Article = LAS 	charnière = DE LAS
+          8 	Article = LOS 	charnière = DE LOS
+      - name: NCC
+        description: Nom en clair (majuscules)
+      - name: NCCENR
+        description: Nom en clair (typographie riche)
+      - name: LIBELLE
+        description: Nom en clair (typographie riche) avec article 
+      - name: CAN
+        description: Code canton. Pour les communes « multi-cantonales », code décliné de 99 à 90 (pseudo-canton) ou de 89 à 80 (communes nouvelles) 
+      - name: COMPARENT
+        description: Code de la commune parente pour les arrondissements municipaux et les communes associées ou déléguées.
+
+      
+  - name: stg_communes__laposte
+    description: "Liste des communes et leurs unités de distribution chargé depuis le site de la poste https://datanova.laposte.fr/datasets/laposte-hexasmal"

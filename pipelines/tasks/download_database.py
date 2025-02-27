@@ -15,7 +15,7 @@ import logging
 from abc import ABC, abstractmethod
 
 from pipelines.config.config import get_s3_path
-from pipelines.tasks._common import DUCKDB_FILE, download_file_from_https
+from pipelines.tasks.config.common import DUCKDB_FILE, download_file_from_https
 from pipelines.utils.storage_client import ObjectStorageClient
 
 logger = logging.getLogger(__name__)

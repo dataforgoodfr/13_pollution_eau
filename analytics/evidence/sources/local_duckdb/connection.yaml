@@ -1,5 +1,0 @@
-# This file was automatically generated
-name: local_duckdb
-type: duckdb
-options:
-  filename: ../../../../database/data.duckdb

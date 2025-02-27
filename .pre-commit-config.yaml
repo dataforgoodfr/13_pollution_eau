@@ -1,4 +1,14 @@
 repos:
+  - repo: https://github.com/sqlfluff/sqlfluff
+    rev: 3.3.1  # Vérifie la dernière version sur GitHub
+    hooks:
+      - id: sqlfluff-lint
+        args: [ "--config", ".sqlfluff" ]  # Adapte au dialecte que tu utilises (bigquery, snowflake, etc.)
+        files: dbt_/
+
+      - id: sqlfluff-fix  # Optionnel, pour corriger automatiquement les erreurs
+        args: [ "--config", ".sqlfluff" ]
+        files: dbt_/
   - repo: https://github.com/astral-sh/ruff-pre-commit
     # Ruff version.
     rev: v0.9.3

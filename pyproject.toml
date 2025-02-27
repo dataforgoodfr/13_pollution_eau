@@ -28,8 +28,8 @@ dependencies = [
 dev = [
     "jupyter>=1.1.0,<2",
     "pre-commit>=4.1.0,<5",
-    "pytest>=8.3.4",
-    "pytest-cov>=6.0.0",
+    "pytest>=8.3.4,<9",
+    "pytest-cov>=6.0.0,<7"
 ]
 
 [build-system]

@@ -60,9 +60,9 @@ Allez dans settings, python interpreter, add interpreter, puis selectionnez exis
 
 utilisez les commandes `uv run` pour lancer un script Python depuis votre terminal
 
-- [Installation de Node.js](#installation-de-nodejs) (pour le développement du site web et pour l'usage de Evidence)
+- [Installation de Node.js](#installation-de-nodejs) (pour le développement du site web)
 
-Pour le développement du site web et pour l'usage de [Evidence](https://evidence.dev/), il est nécessaire d'installer Node.js. Pour cela, il suffit de suivre les instructions sur le [site officiel](https://nodejs.org/).
+Pour le développement du site web, il est nécessaire d'installer Node.js. Pour cela, il suffit de suivre les instructions sur le [site officiel](https://nodejs.org/).
 
 Pour installer les dépendances du site web, il suffit de lancer les commandes suivantes :
 

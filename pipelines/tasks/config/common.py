@@ -6,6 +6,7 @@ from typing import Union
 from zipfile import ZipFile
 
 import requests
+from py7zr import SevenZipFile
 from tqdm import tqdm
 
 ROOT_FOLDER = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../.."))
@@ -67,4 +68,11 @@ def extract_file(zip_file, extract_folder):
             for file in file_list:
                 zip_ref.extract(file, extract_folder)  # Extract each file
                 pbar.update(1)
+    return True
+
+
+def extract_file_7zip(zip_file, extract_folder):
+    with SevenZipFile(zip_file, "r") as zip_ref:
+        file_list = zip_ref.getnames()
+        zip_ref.extract(targets=file_list, path=extract_folder, recursive=True)
     return True

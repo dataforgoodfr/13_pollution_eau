@@ -1,10 +1,9 @@
 from pathlib import Path
-from typing import Union
 
 import requests
+from typing import Union
 from tqdm import tqdm
-
-from pipelines.tasks.config.common import logger, tqdm_common
+from pipelines.tasks.config.common import tqdm_common, logger
 
 
 class HTTPSClient:

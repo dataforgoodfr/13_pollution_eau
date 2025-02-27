@@ -19,7 +19,9 @@ class HTTPSClient:
         :return: Downloaded file filename.
         """
         url = self.base_url + path
-        response = requests.get(url, stream=True)
+        response = requests.get(
+            url, stream=True, headers={"Accept-Encoding": "gzip, deflate"}
+        )
         response.raise_for_status()
         response_size = int(response.headers.get("content-length", 0))
         filepath = Path(filepath)

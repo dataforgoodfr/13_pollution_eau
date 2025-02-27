@@ -57,8 +57,3 @@ class GeoServiceClient(HTTPSClient):
             df=gpd_file, table_name=self.config["file"]["table_name"]
         )
         clear_cache(recreate_folder=False)
-
-
-# todo
-# add bar to extraction 7zip
-# add ingestion_date

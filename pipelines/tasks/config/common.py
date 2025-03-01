@@ -1,17 +1,22 @@
+import logging
 import os
 import shutil
 from pathlib import Path
-import requests
 from typing import Union
+from zipfile import ZipFile
+
+import requests
 from tqdm import tqdm
 
-ROOT_FOLDER = os.path.abspath(os.path.join(os.path.dirname(__file__), "../.."))
+ROOT_FOLDER = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../.."))
 DATABASE_FOLDER = os.path.join(ROOT_FOLDER, "database")
 DUCKDB_FILE = os.path.join(DATABASE_FOLDER, "data.duckdb")
 CACHE_FOLDER = os.path.join(ROOT_FOLDER, "database", "cache")
 
 os.makedirs(CACHE_FOLDER, exist_ok=True)
 os.makedirs(DATABASE_FOLDER, exist_ok=True)
+
+logger = logging.getLogger(__name__)
 
 # common style for the progressbar dans cli
 tqdm_common = {
@@ -51,3 +56,15 @@ def download_file_from_https(url: str, filepath: Union[str, Path]):
                 pbar.update(len(chunk))
 
     return filepath.name
+
+
+def extract_file(zip_file, extract_folder):
+    with ZipFile(zip_file, "r") as zip_ref:
+        file_list = zip_ref.namelist()
+        with tqdm(
+            total=len(file_list), unit="file", desc="Extracting", **tqdm_common
+        ) as pbar:
+            for file in file_list:
+                zip_ref.extract(file, extract_folder)  # Extract each file
+                pbar.update(1)
+    return True

@@ -1,0 +1,21 @@
+version: 2
+
+models:
+  - name: ana__resultats_communes
+    description: "Resultat des prélevement par commune et par année"
+    columns:
+      - name: commune_code_insee
+        description: "Code INSEE de la commune du point de surveillance"
+        type: VARCHAR
+      - name: commune_nom
+        description: "Nom de la commune du point de surveillance"
+        type: VARCHAR
+      - name: annee
+        description: "Annee du prevelvement"
+        type: SMALLINT
+      - name: resultat_cvm
+        description: "resultat du prélevement"
+        type: VARCHAR
+        tests:
+          - accepted_values:
+              values: ["conforme", "non conforme", "non analysé"]

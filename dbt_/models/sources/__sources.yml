@@ -8,3 +8,9 @@ sources:
       - name: edc_communes
       - name: edc_prelevements
       - name: edc_resultats
+  - name: communes
+    database: data
+    schema: main
+    tables:
+      - name: laposte_communes
+      - name: cog_communes

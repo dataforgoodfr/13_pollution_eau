@@ -2,13 +2,19 @@ name: 🔄 Synchronize Production DB to storage
 
 on:
   push:
-    branches:
-      - main
-    paths:
-      - 'pipelines/**'
-      - 'database/**'
-  # Allows you to run this workflow manually from the Actions tab
+      branches: [ "main" ]
+      paths: [ "dbt_/**" ]
+  schedule:
+    # Execute pipeline every 1st and 15th of the month at 10:00 AM
+    - cron: '0 10 1,15 * *'
+
   workflow_dispatch:
+    inputs:
+      reason:
+        description: 'Raison de la synchronisation'
+        required: true
+        type: string
+        default: 'Mise à jour manuelle de la base de données'
 
 env:
   ENV: prod
@@ -37,8 +43,31 @@ jobs:
 
     - name: Update production database
       run: |
-        uv run pipelines/run.py run build_database
+        uv run pipelines/run.py run build_database --refresh-type all --check-update
+
+    - name: Install dbt dependencies
+      run: |
+        cd dbt_
+        uv run dbt deps || { echo "dbt deps failed"; exit 1; }
+    
+    - name: Create tables/views in dbt
+      run: |
+        cd dbt_
+        uv run dbt build || { echo "dbt build failed"; exit 1; }
 
     - name: Upload production database to Storage
       run: |
         uv run pipelines/run.py run upload_database
+
+    - name: Create Issue if Failed
+      if: failure()
+      uses: actions/github-script@v6
+      with:
+        script: |
+          github.rest.issues.create({
+            owner: context.repo.owner,
+            repo: context.repo.name,
+            title: '❌ Échec de la synchronisation de la base de données',
+            body: `La synchronisation de la base de données a échoué.\n\nVoir les détails : ${context.serverUrl}/${context.repo.owner}/${context.repo.name}/actions/runs/${context.runId}`,
+            labels: ['bug', 'database']
+          })

@@ -1,0 +1,8 @@
+dbt_:
+  outputs:
+    dev:
+      type: duckdb
+      path: ../database/data.duckdb
+      threads: 4
+      read_only: true
+  target: dev

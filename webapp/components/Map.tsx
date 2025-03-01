@@ -15,7 +15,10 @@ import { Protocol } from "pmtiles";
 const MAP_SOURCES_COMMUNES_GEOJSON = "CommuneData";
 const MAP_SOURCES_COMMUNES_PMTILES = "PMTiles_Communes";
 const MAP_SOURCES_PFAS_PMTILES = "PFAS_Communes";
+const MAP_SOURCES_CVM_PMTILES = "CVM_Communes";
 const MAP_LAYER_COMMUNES_DOTS = "CommunesDotsLayer";
+const MAP_LAYER_COMMUNES_POLYGONS_CVM_0="CommunesCVM_C0";
+const MAP_LAYER_COMMUNES_POLYGONS_CVM_1="CommunesCVM_C1";
 const MAP_LAYER_COMMUNES_POLYGONS = "CommunesPolygonsLayer";
 const MAP_LAYER_COMMUNES_POLYGONS_SEARCH = "CommunesPolygonsLayer_SearchFilter";
 
@@ -38,6 +41,7 @@ export default function MainMap() {
   const [RollIndex, SetRollIndex] = useState(0);
   const [Animate] = useState(false);
 
+
   useEffect(() => {
     console.log("Adding protocol");
     const protocol = new Protocol();
@@ -56,15 +60,20 @@ export default function MainMap() {
       style: {
         version: 8,
         sources: {
-          PMTiles_Communes: {
+          /*PMTiles_Communes: {
             type: "vector",
             //tiles: ['http://10.35.0.15:3000/api/Map/{z}/{x}/{y}.mvt'] // Protomaps tile URL
             url: "pmtiles://http:/api/Map/Contours",
-          },
-          PFAS_Communes: {
+          },*/
+          /*PFAS_Communes: {
             type: "vector",
             //tiles: ['http://10.35.0.15:3000/api/Map/{z}/{x}/{y}.mvt'] // Protomaps tile URL
             url: "pmtiles://http:/api/Map/PFAS",
+          },*/
+          CVM_Communes: {
+            type: "vector",
+            //tiles: ['http://10.35.0.15:3000/api/Map/{z}/{x}/{y}.mvt'] // Protomaps tile URL
+            url: "pmtiles://http:/api/Map/CVM",
           },
           "raster-tiles": {
             type: "raster",
@@ -92,14 +101,14 @@ export default function MainMap() {
             'type': 'raster',
             'source': 'raster-tiles',
             'minzoom': 0,
-            'maxzoom': 22,
+            'maxzoom': 8,
             
           },*/
           {
             id: MAP_LAYER_COMMUNES_POLYGONS,
             type: "line",
-            source: MAP_SOURCES_COMMUNES_PMTILES,
-            "source-layer": "Communes",
+            source: MAP_SOURCES_CVM_PMTILES,
+            "source-layer": "CVM",
             paint: {
               "line-width": 0.1,
               "line-color": "#9090e0", // Water color
@@ -107,6 +116,30 @@ export default function MainMap() {
             },
           },
           {
+            id: MAP_LAYER_COMMUNES_POLYGONS_CVM_0,
+            type: "fill",
+            source: MAP_SOURCES_CVM_PMTILES,
+            "source-layer": "CVM",
+            //filter:["==",['get','resultat_cvm_2024'],"conforme"],
+            filter:['==',['get','resultat_cvm'],'{"2020":"conforme","2021":"conforme","2022":"conforme","2023":"conforme","2024":"conforme"}'],
+            paint: {
+              "fill-color": "#00FF00",
+              "fill-opacity": 0.5,
+            },
+          },
+          {
+            id: MAP_LAYER_COMMUNES_POLYGONS_CVM_1,
+            type: "fill",
+            source: MAP_SOURCES_CVM_PMTILES,
+            "source-layer": "CVM",
+            //filter:["==",['get', 'resultat_cvm_2024'],"conforme"],
+            filter:['==',['get','resultat_cvm'],'{"2020":"conforme","2021":"conforme","2022":"conforme","2023":"conforme","2024":"non conforme"}'],
+            paint: {
+              "fill-color": "#FF0000",
+              "fill-opacity": 0.5,
+            },
+          },
+          /*{
             id: MAP_LAYER_COMMUNES_DOTS,
             type: "circle",
             source: MAP_SOURCES_PFAS_PMTILES,
@@ -115,13 +148,13 @@ export default function MainMap() {
               "circle-radius": ["get", "radius"],
               "circle-color": ["get", "color"], //'#9090e0' // Water color
             },
-          },
+          },*/
           {
             id: MAP_LAYER_COMMUNES_POLYGONS_SEARCH,
             type: "fill",
             filter: ["in", ["get", "nom"], ["literal", []]],
-            source: MAP_SOURCES_COMMUNES_PMTILES,
-            "source-layer": "Communes",
+            source: MAP_SOURCES_CVM_PMTILES,
+            "source-layer": "CVM",
             paint: {
               "fill-color": "#ff0000",
               "fill-opacity": 0.2,
@@ -207,12 +240,45 @@ export default function MainMap() {
       });
     }
 
+    
+    
     map.current?.setFilter(MAP_LAYER_COMMUNES_POLYGONS_SEARCH, [
       "in",
       ["get", "nom"],
       ["literal", CList],
     ]);
   }, [FilterString, CommunesBaseData, RollIndex, Animate]);
+
+  /*map?.current?.on("move",MAP_LAYER_COMMUNES_POLYGONS,()=>{
+    const QS_0 = map.current?.querySourceFeatures(
+      MAP_SOURCES_CVM_PMTILES,
+     {
+        sourceLayer: "CVM",
+        //filter: ["all"],
+      }
+    );
+
+    if (QS_0)
+    {
+      const Values=[]
+      QS_0.map((x:MapGeoJSONFeature)=>{
+        if (x.properties?.resultat_cvm)
+        {
+          if (x.properties.commune_code_insee==69029)
+          {
+            console.log('la',x)
+          }
+          Values[x.properties.resultat_cvm]?1:Values[x.properties.resultat_cvm]+1
+          
+        }
+        
+      })
+      console.log("Values",Values)
+      //console.log("QS",QS_0[0])
+      //map.current?.setFilter(MAP_LAYER_COMMUNES_POLYGONS_CVM_0,["==",['get','resultat_cvm_2024_conforme'],1])
+      //map.current?.setFilter(MAP_LAYER_COMMUNES_POLYGONS_CVM_1,["==",['get','resultat_cvm_2024_non conforme'],1])
+
+    }})*/
 
   function UpdateDisplayedCommunes(CList: CommuneType[], FString: string) {
     SetFilterString(FString);

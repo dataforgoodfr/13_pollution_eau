@@ -8,16 +8,22 @@ export async function GET(req: NextRequest) {
   const Url = new URL(req.url);
 
   let filePath = "";
-  let buf;
+  let buf=[];
+  let BufIndex 
   switch (Url.pathname) {
     case "/api/Map/Contours":
       filePath = path.join(process.cwd(), "public", "communes-full.pmtiles");
-
+      BufIndex=0;
       break;
-    case "/api/Map/PFAS":
-      filePath = path.join(process.cwd(), "public", "PFAS.pmtiles");
-      break;
-
+      case "/api/Map/PFAS":
+        filePath = path.join(process.cwd(), "public", "PFAS.pmtiles");
+        BufIndex=1;
+        break;
+      case "/api/Map/CVM":
+        filePath = path.join(process.cwd(), "public", "CVM.pmtiles");
+        BufIndex=2
+        break;
+      
     default:
       console.log("Unknown Tile Call");
       return null;
@@ -42,15 +48,15 @@ export async function GET(req: NextRequest) {
     console.log("Unexpected range", Range);
   }
 
-  //if (!buf)
+  if (!buf[BufIndex])
   {
     const data = fs.readFileSync(filePath);
 
-    buf = Buffer.from(data);
+    buf[BufIndex] = Buffer.from(data);
   }
 
   const copiedBuf = Uint8Array.prototype.slice
-    .call(buf)
+    .call(buf[BufIndex])
     .slice(ReadRange[0], ReadRange[1] + 1);
   const contentType = "application/octet-stream";
 

@@ -1,0 +1,20 @@
+SELECT
+    cddept::VARCHAR(3) AS cddept,
+    referenceprel::VARCHAR(11) AS referenceprel,
+    cdparametresiseeaux::VARCHAR(10) AS cdparametresiseeaux,
+    cdparametre::INT AS cdparametre,
+    libmajparametre::VARCHAR AS libmajparametre,
+    libminparametre::VARCHAR AS libminparametre,
+    libwebparametre::VARCHAR AS libwebparametre,
+    qualitparam::VARCHAR(1) AS qualitparam,
+    insituana::VARCHAR(1) AS insituana,
+    rqana::VARCHAR(8) AS rqana,
+    cdunitereferencesiseeaux::VARCHAR(7) AS cdunitereferencesiseeaux,
+    cdunitereference::VARCHAR AS cdunitereference,
+    limitequal::VARCHAR AS limitequal,
+    refqual::VARCHAR AS refqual,
+    valtraduite::NUMERIC AS valtraduite,
+    casparam::VARCHAR AS casparam,
+    referenceanl::VARCHAR AS referenceanl,
+    de_partition::SMALLINT AS de_partition
+FROM {{ source('edc', 'edc_resultats') }}

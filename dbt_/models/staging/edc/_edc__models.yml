@@ -33,7 +33,7 @@ models:
         type: SMALLINT
         tests:
           - dbt_utils.expression_is_true:
-              expression: ">= 2016"
+              expression: ">= 2020"
     
   - name: stg_edc__resultats
     description: "Liste des communes et leurs prélévements"
@@ -134,6 +134,13 @@ models:
           Un même paramètre peut donc être analysé sur le terrain, et dans le cadre d’une ou plusieurs analyses par des
           laboratoires différents.
         type: VARCHAR
+
+      - name: de_partition
+        description: Année de récupération des données. Ceci est un champ ajouté automatiquement lors de l'ingestion des données.
+        type: SMALLINT
+        tests:
+          - dbt_utils.expression_is_true:
+              expression: ">= 2020"
 
   - name: stg_edc__prevelevements
     description: "Liste des prélèvements"
@@ -275,10 +282,20 @@ models:
             - C : conforme
             - N : non conforme
             - S : sans objet lorsqu'aucun paramètre microbio n'a été mesuré.
+            - D : conforme dans le cadre d’une dérogation
+          
+          N.B. cette dernière valeur n'est pas possible selon la documentation officielle d'EDC, mais on trouve des prélèvements
+          avec cette valeur. A discuter.
         type: VARCHAR(1)
         tests:
           - accepted_values:
-              values: ["blanc", "C", "N", "S"]
+              values: ["blanc", "C", "N", "S", "D"]
+      - name: de_partition
+        description: Année de récupération des données. Ceci est un champ ajouté automatiquement lors de l'ingestion des données.
+        type: SMALLINT
+        tests:
+          - dbt_utils.expression_is_true:
+              expression: ">= 2020"
       
       
   

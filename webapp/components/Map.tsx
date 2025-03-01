@@ -9,12 +9,10 @@ import maplibregl, {
   MapMouseEvent,
 } from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
-import Communes, { CommuneType } from "./Communes";
 import { Protocol } from "pmtiles";
 
 const MAP_SOURCES_COMMUNES_GEOJSON = "CommuneData";
 const MAP_SOURCES_COMMUNES_PMTILES = "PMTiles_Communes";
-const MAP_SOURCES_PFAS_PMTILES = "PFAS_Communes";
 const MAP_SOURCES_CVM_PMTILES = "CVM_Communes";
 const MAP_LAYER_COMMUNES_DOTS = "CommunesDotsLayer";
 const MAP_LAYER_COMMUNES_POLYGONS_CVM_0="CommunesCVM_C0";
@@ -34,9 +32,7 @@ export default function MainMap() {
   const MapDefaultCenter = useMemo(() => {
     return new LngLat(2.213749, 46.227638);
   }, []);
-  const [CommunesBaseData, SetCommunesBaseData] = useState<CommuneType | null>(
-    null
-  );
+  
   const [FilterString, SetFilterString] = useState("");
   const [RollIndex, SetRollIndex] = useState(0);
   const [Animate] = useState(false);
@@ -179,76 +175,7 @@ export default function MainMap() {
     };
   }, [map, MapDefaultCenter]);
 
-  useEffect(() => {
-    if (CommunesBaseData) {
-      return;
-    }
-
-    const fetchData = async () => {
-      const response = await fetch("/api/CommunesServer");
-      const jsonData = await response.json();
-      SetCommunesBaseData(jsonData);
-      SetRollIndex(0);
-      const Features = GetCommunesFeatures(jsonData, FilterString, 0);
-
-      GeoJsonSpecs.data.features = Features;
-      setTimeout(() => {
-        SetRollIndex(1);
-      }, 100);
-    };
-
-    fetchData();
-  }, [FilterString, CommunesBaseData, RollIndex]);
-
-  useEffect(() => {
-    if (!CommunesBaseData) {
-      return;
-    }
-    /*const Features = GetCommunesFeatures(CommunesBaseData,FilterString,RollIndex)
-      GeoJsonSpecs.data.features=Features   
-      const Src = map.current.getSource(MAP_SOURCES_COMMUNES_GEOJSON)
-      if (Src)
-      {
-        Src.setData(GeoJsonSpecs.data)
-      }
-      else
-      {
-        map.current?.addSource(MAP_SOURCES_COMMUNES_GEOJSON,GeoJsonSpecs)
-      }
-      if (Animate)
-      {
-        setTimeout(() => {
-          SetRollIndex(RollIndex+1)
-        },2000); 
-      }*/
-    const QS = map.current?.queryRenderedFeatures(
-      MAP_SOURCES_COMMUNES_PMTILES,
-      {
-        sourceLayer: MAP_LAYER_COMMUNES_POLYGONS,
-        filter: ["all"],
-      }
-    );
-    const CList: string[] = [];
-
-    if (QS && QS.length) {
-      QS.map((x: MapGeoJSONFeature) => {
-        if (
-          x.properties.nom?.toUpperCase().includes(FilterString?.toUpperCase())
-        ) {
-          CList.push(x.properties.nom);
-        }
-      });
-    }
-
-    
-    
-    map.current?.setFilter(MAP_LAYER_COMMUNES_POLYGONS_SEARCH, [
-      "in",
-      ["get", "nom"],
-      ["literal", CList],
-    ]);
-  }, [FilterString, CommunesBaseData, RollIndex, Animate]);
-
+  
   /*map?.current?.on("move",MAP_LAYER_COMMUNES_POLYGONS,()=>{
     const QS_0 = map.current?.querySourceFeatures(
       MAP_SOURCES_CVM_PMTILES,
@@ -280,17 +207,10 @@ export default function MainMap() {
 
     }})*/
 
-  function UpdateDisplayedCommunes(CList: CommuneType[], FString: string) {
-    SetFilterString(FString);
-  }
   //
   return (
     <div>
-      <Communes
-        CommunesData={CommunesBaseData}
-        DisplayedCommunesListChanged={UpdateDisplayedCommunes}
-      />
-
+      
       <div ref={mapContainer} className="w-full h-[calc(100vh-9rem)]" />
     </div>
   );

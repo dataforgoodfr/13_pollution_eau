@@ -1,1 +1,0 @@
-select * from edc_prelevements;

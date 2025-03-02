@@ -1,0 +1,37 @@
+name: 🧪 Run DBT Tests
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'dbt_/**'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Install a specific version of uv
+      uses: astral-sh/setup-uv@v5
+      with:
+        version: ">=0.4.0"
+
+    - name: Install dependencies
+      run: uv sync
+
+    - name: Download production database from Storage
+      run: |
+        uv run pipelines/run.py run download_database
+
+    - name: Install dbt dependencies
+      run: |
+        cd dbt_
+        uv run dbt deps || { echo "dbt deps failed"; exit 1; }
+
+    - name: Run dbt build
+      run: |
+        cd dbt_
+        uv run dbt build || { echo "dbt build failed"; exit 1; }

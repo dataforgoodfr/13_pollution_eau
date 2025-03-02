@@ -1,0 +1,4 @@
+[sqlfluff]
+dialect = duckdb  
+
+

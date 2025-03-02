@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import maplibregl, {
+  Feature,
   GeoJSONSourceSpecification,
   LngLat,
   Map,
@@ -10,13 +11,14 @@ import maplibregl, {
 } from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 import { Protocol } from "pmtiles";
+import { YearFilerInfo } from "./YearFilter";
 
 const MAP_SOURCES_COMMUNES_GEOJSON = "CommuneData";
 const MAP_SOURCES_COMMUNES_PMTILES = "PMTiles_Communes";
 const MAP_SOURCES_CVM_PMTILES = "CVM_Communes";
 const MAP_LAYER_COMMUNES_DOTS = "CommunesDotsLayer";
-const MAP_LAYER_COMMUNES_POLYGONS_CVM_0="CommunesCVM_C0";
-const MAP_LAYER_COMMUNES_POLYGONS_CVM_1="CommunesCVM_C1";
+const MAP_LAYER_COMMUNES_POLYGONS_CVM_0 = "CommunesCVM_C0";
+const MAP_LAYER_COMMUNES_POLYGONS_CVM_1 = "CommunesCVM_C1";
 const MAP_LAYER_COMMUNES_POLYGONS = "CommunesPolygonsLayer";
 const MAP_LAYER_COMMUNES_POLYGONS_SEARCH = "CommunesPolygonsLayer_SearchFilter";
 
@@ -26,18 +28,33 @@ const GeoJsonSpecs: GeoJSONSourceSpecification = {
   cluster: false,
 };
 
-export default function MainMap() {
+interface mapParams {
+  selectedCommune: Feature | null;
+  selectedYear: YearFilerInfo;
+  selectedPolluantGroup: number;
+}
+
+export default function MainMap(props: mapParams) {
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<maplibregl.Map | null>(null);
   const MapDefaultCenter = useMemo(() => {
     return new LngLat(2.213749, 46.227638);
   }, []);
-  
-  const [FilterString, SetFilterString] = useState("");
-  const [RollIndex, SetRollIndex] = useState(0);
-  const [Animate] = useState(false);
 
+  const [selectedYear, setSelectedYear] = useState<YearFilerInfo>(
+    props?.selectedYear
+      ? props.selectedYear
+      : { value: new Date().getFullYear(), label: new Date().getFullYear() },
+  );
+  const [selectedPolluantGroup] = useState<number>(
+    props?.selectedPolluantGroup ? props.selectedPolluantGroup : 1,
+  );
+  const [mapLoaded, setMapLoaded] = useState<boolean>(false);
+  const [currentCommune, setCurrentCommune] = useState<Feature | null>(null);
 
+  if (props?.selectedYear && selectedYear !== props.selectedYear) {
+    setSelectedYear(props.selectedYear);
+  }
   useEffect(() => {
     console.log("Adding protocol");
     const protocol = new Protocol();
@@ -47,9 +64,28 @@ export default function MainMap() {
     };
   }, []);
 
+  console.log("YearFilter is now", selectedYear, props.selectedCommune);
+
+  if (
+    props?.selectedCommune &&
+    map?.current &&
+    props.selectedCommune.properties.name !== currentCommune?.properties?.name
+  ) {
+    if (props.selectedCommune.geometry?.coordinates) {
+      console.log("flying to ", props.selectedCommune.geometry?.coordinates);
+      map.current.flyTo({
+        center: props.selectedCommune.geometry?.coordinates,
+        essential: true,
+        zoom: 9,
+      });
+    }
+    setCurrentCommune(props.selectedCommune);
+  }
+
   useEffect(() => {
     if (map.current || !mapContainer.current) return;
 
+    const confProp = GetConformtyPropName(selectedPolluantGroup,selectedYear)
     console.log("Adding Map");
     map.current = new maplibregl.Map({
       container: mapContainer.current,
@@ -92,14 +128,13 @@ export default function MainMap() {
               "background-color": "#ffffff", // Background color
             },
           },
-          /*{
-            'id': 'simple-tiles',
-            'type': 'raster',
-            'source': 'raster-tiles',
-            'minzoom': 0,
-            'maxzoom': 8,
-            
-          },*/
+          {
+            id: "simple-tiles",
+            type: "raster",
+            source: "raster-tiles",
+            minzoom: 0,
+            maxzoom: 18,
+          },
           {
             id: MAP_LAYER_COMMUNES_POLYGONS,
             type: "line",
@@ -116,8 +151,7 @@ export default function MainMap() {
             type: "fill",
             source: MAP_SOURCES_CVM_PMTILES,
             "source-layer": "CVM",
-            //filter:["==",['get','resultat_cvm_2024'],"conforme"],
-            filter:['==',['get','resultat_cvm'],'{"2020":"conforme","2021":"conforme","2022":"conforme","2023":"conforme","2024":"conforme"}'],
+            filter:["==",['get',"confProp"],"conforme"],
             paint: {
               "fill-color": "#00FF00",
               "fill-opacity": 0.5,
@@ -128,8 +162,8 @@ export default function MainMap() {
             type: "fill",
             source: MAP_SOURCES_CVM_PMTILES,
             "source-layer": "CVM",
-            //filter:["==",['get', 'resultat_cvm_2024'],"conforme"],
-            filter:['==',['get','resultat_cvm'],'{"2020":"conforme","2021":"conforme","2022":"conforme","2023":"conforme","2024":"non conforme"}'],
+            filter: ["==", ["get", "confProp"], "non conforme"],
+            // filter:['==',['get','resultat_cvm'],'{"2020":"conforme","2021":"conforme","2022":"conforme","2023":"conforme","2024":"non conforme"}'],
             paint: {
               "fill-color": "#FF0000",
               "fill-opacity": 0.5,
@@ -164,10 +198,11 @@ export default function MainMap() {
       zoom: 5,
     });
 
-    InitZoneButtons(map.current);
+    //InitZoneButtons(map.current);
 
     map.current.on("load", () => {
       InitCommunesLayer(map.current as Map);
+      setMapLoaded(true);
     });
     //map.current.on('sourcedata', (x)=>{console.log("SourceDataEvt",x)})
     return () => {
@@ -175,45 +210,60 @@ export default function MainMap() {
     };
   }, [map, MapDefaultCenter]);
 
-  
-  /*map?.current?.on("move",MAP_LAYER_COMMUNES_POLYGONS,()=>{
-    const QS_0 = map.current?.querySourceFeatures(
-      MAP_SOURCES_CVM_PMTILES,
-     {
-        sourceLayer: "CVM",
-        //filter: ["all"],
-      }
-    );
+  useEffect(() => {
+    if (!mapLoaded) {
+      return;
+    }
+    const Conforme = GetConformtyPropName(selectedPolluantGroup, selectedYear);
 
-    if (QS_0)
-    {
-      const Values=[]
-      QS_0.map((x:MapGeoJSONFeature)=>{
-        if (x.properties?.resultat_cvm)
-        {
-          if (x.properties.commune_code_insee==69029)
-          {
-            console.log('la',x)
+    console.log("updating map filters", Conforme);
+    map.current?.setFilter(MAP_LAYER_COMMUNES_POLYGONS_CVM_0, [
+      "==",
+      ["get", Conforme],
+      "conforme",
+    ]);
+    map.current?.setFilter(MAP_LAYER_COMMUNES_POLYGONS_CVM_1, [
+      "==",
+      ["get", Conforme],
+      "non conforme",
+    ]);
+  }, [selectedYear, selectedPolluantGroup, mapLoaded]);
+
+  /*  map?.current?.on("move", MAP_LAYER_COMMUNES_POLYGONS, () => {
+    const QS_0 = map.current?.querySourceFeatures(MAP_SOURCES_CVM_PMTILES, {
+      sourceLayer: "CVM",
+      //filter: ["all"],
+    });
+
+    if (QS_0) {
+      const Values = [];
+      QS_0.map((x: MapGeoJSONFeature) => {
+        if (x.properties?.resultat_cvm) {
+          if (x.properties.commune_code_insee == 69029) {
+            console.log("la", x);
           }
-          Values[x.properties.resultat_cvm]?1:Values[x.properties.resultat_cvm]+1
-          
+          Values[x.properties.resultat_cvm]
+            ? 1
+            : Values[x.properties.resultat_cvm] + 1;
         }
-        
-      })
-      console.log("Values",Values)
+      });
+      console.log("Values", Values);
       //console.log("QS",QS_0[0])
       //map.current?.setFilter(MAP_LAYER_COMMUNES_POLYGONS_CVM_0,["==",['get','resultat_cvm_2024_conforme'],1])
       //map.current?.setFilter(MAP_LAYER_COMMUNES_POLYGONS_CVM_1,["==",['get','resultat_cvm_2024_non conforme'],1])
-
-    }})*/
+    }
+  }); */
 
   //
   return (
     <div>
-      
       <div ref={mapContainer} className="w-full h-[calc(100vh-9rem)]" />
     </div>
   );
+}
+
+function GetConformtyPropName(selectedPolluantGroup: number, selectedYear: YearFilerInfo) {
+  return "Res_Cat_" + selectedPolluantGroup + "_" + selectedYear.value;
 }
 
 function InitCommunesLayer(_map: maplibregl.Map) {
@@ -295,7 +345,7 @@ function InitCommunesLayer(_map: maplibregl.Map) {
 function GetCommunesFeatures(
   jsonData: CommuneType[],
   FilterString: string,
-  RollIndex: number
+  RollIndex: number,
 ) {
   return jsonData.map((x, index) => {
     return CommuneType2GeoJSON(x, index * RollIndex, FilterString);
@@ -305,7 +355,7 @@ function GetCommunesFeatures(
 function CommuneType2GeoJSON(
   C: CommuneType,
   Index: number,
-  FilterString: string
+  FilterString: string,
 ) {
   const Coords = C.G.split(",").map(parseFloat);
   //Index=2*Coords[0]+256*Index

@@ -1,30 +1,10 @@
 "use client";
-import {
-  Dispatch,
-  Fragment,
-  SetStateAction,
-  use,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
-import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
-import { Button } from "./ui/button";
-import {
-  Command,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from "./ui/command";
+import { Dispatch, Fragment, SetStateAction, useState } from "react";
+import { Popover, PopoverContent } from "./ui/popover";
+import { Command, CommandGroup, CommandItem, CommandList } from "./ui/command";
 import { Feature } from "maplibre-gl";
-import { Check, ChevronsUpDown } from "lucide-react";
 import { Input } from "./ui/input";
-import { cn } from "@/lib/utils";
 import { PopoverAnchor, PopoverPortal } from "@radix-ui/react-popover";
-import { Container } from "postcss";
-import Container_, { ContainerWithChildren } from "postcss/lib/container";
-import { start } from "node:repl";
 
 export interface CommuneType {
   nom: string;
@@ -39,7 +19,10 @@ export interface Centroid {
   Lat: number;
 }
 
-export default function CommuneFilter() {
+export interface CommuneFilterParams {
+  onCommuneSelected: (C: Feature) => void;
+}
+export default function CommuneFilter(props: CommuneFilterParams) {
   const [filterString, setFilterString] = useState("");
   const [delayHandler, setDelayHandler] = useState<NodeJS.Timeout | null>(null);
   const [communesList, setCommunesList] = useState([]);
@@ -91,26 +74,28 @@ export default function CommuneFilter() {
     <Popover open={DropDownIsOpened} onOpenChange={setDropDownOpen}>
       <PopoverAnchor>
         <Input
-          className="float max-w-fit rounded-sm outline-1 outline-blue-500"
           key="TextInputCommune"
           value={filterString}
           placeholder="Saisir le nom de votre commune"
           onChange={HandleFilterChange}
-          autoFocus={true}
+          className="w-[300px] justify-between bg-white"
         />
       </PopoverAnchor>
-      <PopoverContent className="" asChild={true}>
+      <PopoverContent>
         <Command>
           <CommandList>
             <CommandGroup key="CommuneList">
               {communesList?.map((x: Feature) => (
-                <CommandItem key={x?.properties?.extrafields.cleabs}>
+                <CommandItem
+                  key={x?.properties?.id}
+                  onSelect={() => {
+                    setDropDownOpen(false);
+                    props?.onCommuneSelected(x);
+                  }}
+                >
                   <HilightLabel
                     value={
-                      x?.properties?.toponym +
-                      " (" +
-                      x?.properties?.postcode +
-                      ")"
+                      x?.properties?.name + " (" + x?.properties?.postcode + ")"
                     }
                     HilightText={filterString}
                   />

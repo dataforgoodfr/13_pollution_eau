@@ -4,11 +4,13 @@ import { headers } from "next/headers";
 import { Buffer } from "node:buffer";
 import { NextRequest, NextResponse } from "next/server";
 
+const pmTileBufferCache:Buffer[]=[];
+
 export async function GET(req: NextRequest) {
   const Url = new URL(req.url);
 
   let filePath = "";
-  let buf=[];
+  
   let BufIndex 
   switch (Url.pathname) {
     case "/api/Map/Contours":
@@ -48,15 +50,15 @@ export async function GET(req: NextRequest) {
     console.log("Unexpected range", Range);
   }
 
-  if (!buf[BufIndex])
+  if (!pmTileBufferCache[BufIndex])
   {
     const data = fs.readFileSync(filePath);
 
-    buf[BufIndex] = Buffer.from(data);
+    pmTileBufferCache[BufIndex] = Buffer.from(data);
   }
 
   const copiedBuf = Uint8Array.prototype.slice
-    .call(buf[BufIndex])
+    .call(pmTileBufferCache[BufIndex])
     .slice(ReadRange[0], ReadRange[1] + 1);
   const contentType = "application/octet-stream";
 

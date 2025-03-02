@@ -4,10 +4,12 @@ import fs from "fs";
 import path from "path";
 
 // Access the database file one level above the current project directory
-const dbFilePath = path.join(process.cwd(), "../database", "data.duckdb");
+let dbFilePath = path.join(process.cwd(), "../database", "data.duckdb");
+
 // Check if the file exists
 if (!fs.existsSync(dbFilePath)) {
-  throw new Error("Database file not found");
+  //throw new Error("Database file not found");
+  dbFilePath = path.join(process.cwd(), "../", "data_empty.duckdb");
 }
 
 //TODO: need to handle hot reload in dev mode

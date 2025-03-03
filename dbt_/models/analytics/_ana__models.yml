@@ -14,7 +14,7 @@ models:
         description: "Annee du prevelvement"
         type: SMALLINT
       - name: resultat_cvm
-        description: "resultat du prélevement"
+        description: "resultat du prélevement cvm (Chlorure de vinyl monomère)"
         type: VARCHAR
         tests:
           - accepted_values:

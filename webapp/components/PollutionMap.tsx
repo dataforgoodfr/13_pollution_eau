@@ -6,6 +6,7 @@ import PollutionMapFilters from "@/components/PollutionMapFilters";
 // import PollutionMapSearchBox from "@/components/PollutionMapSearchBox";
 // import PollutionMapLegend from "@/components/PollutionMapLegend";
 import PollutionMapDetailPanel from "@/components/PollutionMapDetailPanel";
+import PollutionMapSearchBox from "./PollutionMapSearchBox";
 
 export default function PollutionMap() {
   // États partagés entre les composants
@@ -24,10 +25,10 @@ export default function PollutionMap() {
       />
 
       <div className="absolute top-4 left-4 right-4 z-10 bg-white p-3 rounded-lg shadow-lg flex justify-between">
-        {/* <PollutionMapSearchBox
+        <PollutionMapSearchBox
           onSelect={setSelectedCommune}
           selectedCommune={selectedCommune}
-        /> */}
+        />
         <PollutionMapFilters
           year={year}
           setYear={setYear}

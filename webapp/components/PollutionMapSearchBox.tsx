@@ -70,8 +70,6 @@ export default function PollutionMapSearchBox(
     }
   }
 
-  //console.log("Commuunes ", communesList, DropDownIsOpened);
-
   return (
     <div className="flex items-center space-x-6">
       <div>
@@ -88,12 +86,10 @@ export default function PollutionMapSearchBox(
               key="TextInputCommune"
               value={filterString}
               placeholder="Saisir le nom de votre commune"
-              onChange={HandleFilterChange}
-              autoFocus={true}
+              onChange={HandleFilterChange}              
             />
           </PopoverAnchor>
           <PopoverContent
-            className=""
             asChild={true}
             onOpenAutoFocus={(e) => e.preventDefault()}
           >
@@ -134,15 +130,12 @@ function HilightLabel(props: { HilightText: string; value: string }) {
     return <>props?.value</>;
   }
   const text: string = props.value;
-  const subString = props?.HilightText
-    ? props.HilightText?.toLowerCase().substring(0, text.length)
-    : "";
+  const subString = props?.HilightText ? props.HilightText?.toLowerCase() : "";
   const startIdx = text.toLowerCase().indexOf(subString);
   if (startIdx == -1) {
     return <>{text}</>;
   }
 
-  
   const S1 = text.substring(0, startIdx);
   const S2 = text.substring(startIdx, startIdx + subString?.length);
   const S3 =

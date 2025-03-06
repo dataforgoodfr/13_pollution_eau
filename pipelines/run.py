@@ -142,5 +142,57 @@ def run_upload_database(env):
     task_func(env)
 
 
+@run.command("generate_geojson")
+def run_generate_geojson():
+    """Generate and upload merged GeoJSON file.
+
+    Downloads commune GeoJSON data from OpenDataSoft, merges it with
+    water quality results from the database, and uploads the final
+    GeoJSON to S3.
+    """
+    import os
+
+    import duckdb
+    from tasks.client.opendatasoft_client import OpenDataSoftClient
+    from tasks.config.common import CACHE_FOLDER, DUCKDB_FILE
+    from tasks.geojson_processor import GeoJSONProcessor
+    from utils.storage_client import ObjectStorageClient
+
+    logger.info("Starting GeoJSON generation process")
+
+    # Initialize clients
+    opendatasoft = OpenDataSoftClient()
+    processor = GeoJSONProcessor()
+    storage = ObjectStorageClient()
+
+    # Download GeoJSON
+    geojson_path = os.path.join(CACHE_FOLDER, "georef-france-commune.geojson")
+    logger.info("Downloading GeoJSON from OpenDataSoft")
+    opendatasoft.download_geojson("georef-france-commune", geojson_path)
+
+    # Get results from database
+    logger.info("Fetching commune results from database")
+    with duckdb.connect(DUCKDB_FILE, read_only=True) as con:
+        results_df = con.sql("SELECT * FROM ana__resultats_communes").df()
+
+    # Process and merge data
+    logger.info("Merging GeoJSON with commune results")
+    output_path = os.path.join(
+        CACHE_FOLDER, "georef-france-commune-prelevement.geojson"
+    )
+    processor.merge_geojson_with_results(
+        geojson_path=geojson_path, results_df=results_df, output_path=output_path
+    )
+
+    # Upload to S3
+    logger.info("Uploading merged GeoJSON to S3")
+    s3_path = "dev/geojson/georef-france-commune-prelevement.geojson"
+    storage.upload_object(local_path=output_path, file_key=s3_path, public_read=True)
+
+    logger.info(
+        f"✅ GeoJSON processed and uploaded to s3://{storage.bucket_name}/{s3_path}"
+    )
+
+
 if __name__ == "__main__":
     cli()

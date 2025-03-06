@@ -92,7 +92,7 @@ export default function PollutionMapSearchBox(
               autoFocus={true}
             />
           </PopoverAnchor>
-          <PopoverContent className="" asChild={true}>
+          <PopoverContent className="" asChild={true} onOpenAutoFocus={(e) => e.preventDefault()}>
             <Command>
               <CommandList>
                 <CommandGroup key="CommuneList">

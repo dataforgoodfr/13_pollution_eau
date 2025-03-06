@@ -1,31 +1,38 @@
-WITH reseau_without_reseau_amont AS (
-    SELECT DISTINCT cdreseau
-    FROM {{ ref('stg_edc__prevelevements') }}
-    WHERE cdreseauamont IS NULL
-),
+WITH 
+prelevements_cdfirstreseauamont AS (
+    SELECT DISTINCT
+      referenceprel , 
+      (CASE 
+        WHEN cdreseauamont IS NULL THEN cdreseau
+        WHEN cdreseauamont IS NOT NULL THEN cdreseauamont
+      END) AS cdfirstreseauamont,
+      dateprel ,	
+      heureprel ,
+      TRY_STRPTIME(dateprel || ' ' || REPLACE(heureprel, 'h', ':'), '%Y-%m-%d %H:%M') AS datetimeprel,
+      conclusionprel ,
+      plvconformitebacterio ,	
+      plvconformitechimique ,
+      plvconformitereferencebact ,
+      plvconformitereferencechim ,
+    FROM
+        edc_prelevements ),
 
-prelevements_uniques AS (
+ranked AS (
     SELECT
-        p.referenceprel,
-        p.cdreseau,
-        p.dateprel,
-        p.heureprel,
-        ROW_NUMBER() OVER (
-            PARTITION BY p.referenceprel
-            ORDER BY
-                p.cdreseau,
-                p.dateprel,
-                p.heureprel
-        ) AS row_num
-    FROM {{ ref('stg_edc__prevelevements') }} AS p
-    LEFT JOIN reseau_without_reseau_amont AS r ON p.cdreseau = r.cdreseau
-    WHERE r.cdreseau IS NOT NULL
-)
+        *,
+        ROW_NUMBER() OVER ( 
+                PARTITION BY referenceprel
+                ORDER BY
+                    dateprel,
+                    heureprel
+            )  AS row_num
+        FROM 
+            prelevements_cdfirstreseauamont
+        )
 
-SELECT
-    referenceprel,
-    cdreseau,
-    dateprel,
-    heureprel
-FROM prelevements_uniques
-WHERE row_num = 1
+SELECT 
+    * EXCLUDE (row_num)
+FROM 
+        ranked
+WHERE 
+       row_num = 1

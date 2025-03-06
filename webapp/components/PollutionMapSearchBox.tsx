@@ -7,7 +7,7 @@ import { Dispatch, Fragment, SetStateAction, useState } from "react";
 import { Command, CommandGroup, CommandItem, CommandList } from "./ui/command";
 
 interface PollutionMapsSearchBoxProps {
-  onSelect: (SelectedCommuneInfo: Feature) => void;
+  onSelect: (SelectedCommuneInfo: Feature|null) => void;
   selectedCommune: Feature | null;
 }
 
@@ -20,7 +20,7 @@ export default function PollutionMapSearchBox(
   const [delayHandler, setDelayHandler] = useState<NodeJS.Timeout | null>(null);
 
   async function PerformSearch(
-    FilterString: string,
+    filterString: string,
     SetCommunesListCallback: Dispatch<SetStateAction<never[]>>,
   ) {
     const IGNQuery =
@@ -47,7 +47,6 @@ export default function PollutionMapSearchBox(
   }
 
   async function HandleFilterChange(e: React.ChangeEvent<HTMLInputElement>) {
-    console.log("HandleFilter", e);
     if (!e?.target?.value) {
       setFilterString("");
       setCommunesList([]);
@@ -59,12 +58,16 @@ export default function PollutionMapSearchBox(
     }
 
     setFilterString(e.target.value);
-
-    setDelayHandler(
-      setTimeout(() => {
-        PerformSearch(e.target.value, setCommunesList);
-      }, 200),
-    );
+    props?.onSelect(null);
+    if (e.target.value?.length >= 3) {
+      setDelayHandler(
+        setTimeout(() => {
+          PerformSearch(e.target.value, setCommunesList);
+        }, 200),
+      );
+    } else {
+      setCommunesList([]);
+    }
   }
 
   //console.log("Commuunes ", communesList, DropDownIsOpened);
@@ -79,7 +82,7 @@ export default function PollutionMapSearchBox(
           Commune
         </label>
         <Popover open={dropDownIsOpened} onOpenChange={setDropDownOpen}>
-          <PopoverAnchor>
+          <PopoverAnchor asChild>
             <Input
               className="float max-w-fit rounded-sm outline-1 outline-blue-500"
               key="TextInputCommune"
@@ -122,7 +125,7 @@ export default function PollutionMapSearchBox(
   );
 }
 
-function HilightLabel(props:{HilightText:string, value:string}) {
+function HilightLabel(props: { HilightText: string; value: string }) {
   if (!props?.value || !props?.HilightText) {
     return <span>props?.value</span>;
   }

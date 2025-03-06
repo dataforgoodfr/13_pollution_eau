@@ -1,0 +1,17 @@
+version: '3'
+services:
+  metabase:
+    build: .
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./database:/database
+      - metabase-data:/metabase-data
+    environment:
+      - MB_DB_FILE=/metabase-data/metabase.db
+      - MB_PLUGINS_DIR=/home/plugins
+      - DUCKDB_FILE=/database/data.duckdb
+    restart: unless-stopped
+
+volumes:
+  metabase-data:

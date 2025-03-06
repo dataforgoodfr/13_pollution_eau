@@ -7,13 +7,14 @@ import PollutionMapFilters from "@/components/PollutionMapFilters";
 // import PollutionMapLegend from "@/components/PollutionMapLegend";
 import PollutionMapDetailPanel from "@/components/PollutionMapDetailPanel";
 import PollutionMapSearchBox from "./PollutionMapSearchBox";
+import { Feature, MapGeoJSONFeature } from "maplibre-gl";
 
 export default function PollutionMap() {
   // États partagés entre les composants
   const [year, setYear] = useState("2024");
   const [categoryType, setCategoryType] = useState("cvm");
-  const [selectedCommune, setSelectedCommune] = useState(null);
-  const [selectedFeature, setSelectedFeature] = useState(null);
+  const [selectedCommune, setSelectedCommune] = useState<Feature | null>(null);
+  const [selectedFeature, setSelectedFeature] = useState<MapGeoJSONFeature | null>(null);
 
   return (
     <div className="relative w-full h-full flex flex-col">
@@ -26,8 +27,8 @@ export default function PollutionMap() {
 
       <div className="absolute top-4 left-4 right-4 z-10 bg-white p-3 rounded-lg shadow-lg flex justify-between">
         <PollutionMapSearchBox
-          onSelect={setSelectedCommune}
           selectedCommune={selectedCommune}
+          onSelect={setSelectedCommune}
         />
         <PollutionMapFilters
           year={year}

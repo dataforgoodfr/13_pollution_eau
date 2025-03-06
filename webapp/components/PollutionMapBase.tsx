@@ -2,10 +2,10 @@
 
 import { useEffect, useMemo, useRef } from "react";
 import ReactMapGl, { MapLayerMouseEvent, useMap } from "react-map-gl/maplibre";
-import maplibregl, { Feature } from "maplibre-gl";
+import maplibregl, { Feature, MapGeoJSONFeature } from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 import { Protocol } from "pmtiles";
-import layers from "protomaps-themes-base";
+
 import {
   MAPLIBRE_MAP,
   DEFAULT_MAP_STYLE,
@@ -16,7 +16,7 @@ type PollutionMapBaseLayerProps = {
   year: string;
   categoryType: string;
   selectedCommune: Feature | null;
-  onFeatureClick: (feature: any) => void;
+  onFeatureClick: (feature: MapGeoJSONFeature) => void;
 };
 
 export default function PollutionMapBaseLayer({
@@ -48,9 +48,9 @@ export default function PollutionMapBaseLayer({
 
   useEffect(() => {
     if (selectedCommune) {
-      console.log("Should zoom to:", selectedCommune.geometry.coordinates);
+      console.log("Should zoom to:", selectedCommune?.geometry?.coordinates);
       mapRef?.current?.flyTo({
-        center: selectedCommune.geometry.coordinates,
+        center: selectedCommune?.geometry?.coordinates,
         zoom: 9,
       });
     }
@@ -77,11 +77,11 @@ export default function PollutionMapBaseLayer({
           "fill-opacity": 0.5,
         },
         // Ajout d'un filtre pour mettre en évidence la commune sélectionnée si présente
-        ...(0 && selectedCommune
+        ...(selectedCommune
           ? {
               filter: [
                 "==",
-                ["get", "code_insee"],
+                ["get", "commune_code_insee"],
                 selectedCommune.properties?.id,
               ],
             }

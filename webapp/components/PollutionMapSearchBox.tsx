@@ -8,7 +8,7 @@ import { Command, CommandGroup, CommandItem, CommandList } from "./ui/command";
 
 interface PollutionMapsSearchBoxProps {
   onSelect: (SelectedCommuneInfo: Feature) => void;
-  selectedCommune: Feature;
+  selectedCommune: Feature | null;
 }
 
 export default function PollutionMapSearchBox(
@@ -122,7 +122,7 @@ export default function PollutionMapSearchBox(
   );
 }
 
-function HilightLabel(props) {
+function HilightLabel(props:{HilightText:string, value:string}) {
   if (!props?.value || !props?.HilightText) {
     return <span>props?.value</span>;
   }
@@ -145,9 +145,11 @@ function HilightLabel(props) {
 
   return (
     <Fragment>
-      <p className=" inline-block p-0">{S1}</p>
-      <p className=" inline-block bg-yellow-400 p-0">{S2}</p>
-      {S3}
+      <p>
+        {S1}
+        <em className=" font-normal bg-yellow-400">{S2}</em>
+        {S3}
+      </p>
     </Fragment>
   );
 }

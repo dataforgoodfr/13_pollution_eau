@@ -7,7 +7,7 @@ import { Dispatch, Fragment, SetStateAction, useState } from "react";
 import { Command, CommandGroup, CommandItem, CommandList } from "./ui/command";
 
 interface PollutionMapsSearchBoxProps {
-  onSelect: (SelectedCommuneInfo: Feature|null) => void;
+  onSelect: (SelectedCommuneInfo: Feature | null) => void;
   selectedCommune: Feature | null;
 }
 
@@ -92,7 +92,11 @@ export default function PollutionMapSearchBox(
               autoFocus={true}
             />
           </PopoverAnchor>
-          <PopoverContent className="" asChild={true} onOpenAutoFocus={(e) => e.preventDefault()}>
+          <PopoverContent
+            className=""
+            asChild={true}
+            onOpenAutoFocus={(e) => e.preventDefault()}
+          >
             <Command>
               <CommandList>
                 <CommandGroup key="CommuneList">
@@ -127,7 +131,7 @@ export default function PollutionMapSearchBox(
 
 function HilightLabel(props: { HilightText: string; value: string }) {
   if (!props?.value || !props?.HilightText) {
-    return <span>props?.value</span>;
+    return <>props?.value</>;
   }
   const text: string = props.value;
   const subString = props?.HilightText
@@ -135,10 +139,10 @@ function HilightLabel(props: { HilightText: string; value: string }) {
     : "";
   const startIdx = text.toLowerCase().indexOf(subString);
   if (startIdx == -1) {
-    return <Fragment>{text}</Fragment>;
+    return <>{text}</>;
   }
 
-  // TODO take care of -
+  
   const S1 = text.substring(0, startIdx);
   const S2 = text.substring(startIdx, startIdx + subString?.length);
   const S3 =
@@ -147,12 +151,10 @@ function HilightLabel(props: { HilightText: string; value: string }) {
       : "";
 
   return (
-    <Fragment>
-      <p>
-        {S1}
-        <em className=" font-normal bg-yellow-400">{S2}</em>
-        {S3}
-      </p>
-    </Fragment>
+    <p>
+      {S1}
+      <em className=" font-normal bg-yellow-400">{S2}</em>
+      {S3}
+    </p>
   );
 }

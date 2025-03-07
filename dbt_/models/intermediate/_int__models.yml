@@ -1,15 +1,17 @@
 version: 2
 
 models:
-  - name: int_prevelevements_unique
+  - name: int_prevelevements_uniques
     description: "Liste des prélèvements unique"
     columns:
       - name: referenceprel
         description: Identifiant du prélèvement ; il s’agit d’un numéro attribué par le système garantissant son unicité.
         type: VARCHAR(11)
+        tests:
+          - unique
 
       - name: cdfirstreseauamont
-        description: Code SISE-Eaux de la première installation (unité de distribution) du prélèvement.
+        description: Code SISE-Eaux de la première installation (unité de distribution) du prélèvement, celle  où a été fait le prélèvement.
         type: VARCHAR(9)
       
       - name: dateprel

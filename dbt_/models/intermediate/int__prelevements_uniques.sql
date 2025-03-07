@@ -17,7 +17,7 @@ prelevements_cdfirstreseauamont AS (
             dateprel || ' ' || REPLACE(heureprel, 'h', ':'), '%Y-%m-%d %H:%M'
         ) AS datetimeprel
     FROM
-        edc_prelevements
+        {{ ref('stg_edc__prevelevements') }}
 ),
 
 ranked AS (

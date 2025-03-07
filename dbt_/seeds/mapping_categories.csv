@@ -826,6 +826,7 @@ PFHXS,6830.0,PERFLUOROHEXANE SULFONATE,Perfluorohexane sulfonate,355-46-4,pfas
 SPFAS,8847.0,SOMME DE 20 PFAS,Somme de 20 substances perfluoroalkylées (PFAS),,pfas
 PFHPA,5977.0,ACIDE PERFLUOROHEPTANOÏQUE,Acide perfluoroheptanoïque,375-85-9,pfas
 PFOS,6561.0,ACIDE SULFONIQUE DE PERFLUOROOCTANE,Acide sulfonique de perfluorooctane,1763-23-1,pfas
+PFOS,6561,SULFONATE DE PERFLUOROOCTANE,Sulfonate de perfluorooctane,45298-90-6,pfas
 ASPFOS,6560.0,ACIDE PERFLUOROOCTANE SULFONIQUE,Acide perfluorooctane sulfonique (PFOS),1763-23-1,pfas
 CLVYL,1753.0,CHLORURE DE VINYL MONOMÈRE,Chlorure de vinyl monomère,75-01-4,cvm
 CL2LIB,1398,CHLORE LIBRE,Chlore libre,,sous produit désinfection
@@ -976,7 +977,6 @@ CLE,1853,CHLOROÉTHANE,Chloroéthane,75-00-3,hydrocarbure
 TCB,1774,TRICHLOROBENZÈNES (TOTAL),Trichlorobenzènes (Total),,hydrocarbure
 TTCB,1631,"TETRACHLOROBENZÈNE-1,2,4,5","Tetrachlorobenzène-1,2,4,5",95-94-3,hydrocarbure
 TETRACB,2735,TETRACHLOROBENZÈNE,Tetrachlorobenzène,12408-10-5,hydrocarbure
-PFOS,6561,SULFONATE DE PERFLUOROOCTANE,Sulfonate de perfluorooctane,45298-90-6,hydrocarbure
 TTCB34,2010,"TÉTRACHLOROBENZÈNE-1,2,3,4","Tétrachlorobenzène-1,2,3,4",634-66-2,hydrocarbure
 TTCB35,2536,"TÉTRACHLOROBENZÈNE-1,2,3,5","Tétrachlorobenzène-1,2,3,5",634-90-2,hydrocarbure
 14DAN,1580,"1,4 DIOXANE","1,4 dioxane",123-91-1,hydrocarbure

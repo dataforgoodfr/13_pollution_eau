@@ -1,23 +1,26 @@
 import { DuckDBInstance } from "@duckdb/node-api";
-
 import fs from "fs";
 import path from "path";
 
-// Access the database file one level above the current project directory
-let dbFilePath = path.join(process.cwd(), "../database", "data.duckdb");
+// Get database path from environment variable or use default
+const envDbPath = process.env.DUCKDB_PATH;
+const defaultDbPath = path.join(process.cwd(), "../database/data.duckdb");
+const dbFilePath = envDbPath || defaultDbPath;
+
+console.log(`Using database path: ${dbFilePath}`);
 
 // Check if the file exists
 if (!fs.existsSync(dbFilePath)) {
-  //throw new Error("Database file not found");
-  dbFilePath = path.join(process.cwd(), "../", "data_empty.duckdb");
+  throw new Error(
+    `Database file not found at ${dbFilePath}. Please check that your DUCKDB_PATH environment variable is correctly set or that the default database exists.`,
+  );
 }
 
-//TODO: need to handle hot reload in dev mode
-console.log("Create DB instance...");
-// next build needs access to the file and can't if not using read_only because the file gets locked - @see https://duckdb.org/docs/connect/concurrency
-// it may be possible without it if we use the database differently or configure next (maybe ?), but as we are only reading in the db it should be better like this
+// Create DB instance
 const db = await DuckDBInstance.create(dbFilePath, {
   access_mode: "READ_ONLY",
+  max_memory: "512MB",
+  threads: "4",
 });
 
 export default db;

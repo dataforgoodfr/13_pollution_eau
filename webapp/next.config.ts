@@ -8,6 +8,14 @@ const nextConfig: NextConfig = {
     ignoreDuringBuilds: true,
   },
   output: "standalone",
+  rewrites: async () => {
+    return [
+      {
+        source: "/s3/:path*",
+        destination: "https://s3.fr-par.scw.cloud/pollution-eau-s3/:path*",
+      },
+    ];
+  },
 };
 
 export default nextConfig;

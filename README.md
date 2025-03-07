@@ -71,6 +71,11 @@ cd webapp
 npm install
 ```
 
+Veuillez copier `./webapp/example.env` comme `./webapp/.env`.
+
+Ensuite, vous pouvez lancer `npm run start` et ouvrir le navigateur pour voir la carte.
+
+
 ## Data Processing
 
 ### Package installation

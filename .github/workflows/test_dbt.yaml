@@ -35,3 +35,8 @@ jobs:
       run: |
         cd dbt_
         uv run dbt build || { echo "dbt build failed"; exit 1; }
+        
+    - name: Run dbt docs generate
+      run: |
+        cd dbt_
+        uv run dbt docs generate || { echo "dbt docs generate failed"; exit 1; }

@@ -10,7 +10,7 @@ export async function fetchExample() {
     const connection = await db.connect();
 
     const result = await connection.runAndReadUntil(
-      "SELECT * from edc_resultats",
+      "SELECT * from ana__resultats_communes limit 10",
       ROW_TARGET_COUNT,
     );
 

@@ -4,6 +4,10 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "Pollution de l'Eau Potable en France",
   description: "",
+  robots: {
+    index: false,
+    follow: false,
+  },
 };
 
 export default function RootLayout({

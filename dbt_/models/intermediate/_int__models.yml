@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: int_prevelevements_uniques
+  - name: int__prevelevements_uniques
     description: "Liste des prélèvements unique"
     columns:
       - name: referenceprel

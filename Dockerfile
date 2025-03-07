@@ -1,4 +1,5 @@
 # Builder stage for compiling the application
+# Note: debian bookworm is supported until 2028-06-30
 FROM debian:bookworm-slim AS builder
 
 # Install UV
@@ -28,6 +29,7 @@ COPY README.md pyproject.toml uv.lock /app/
 COPY pipelines /app/pipelines
 RUN uv sync
 RUN uv run pipelines/run.py run download_database
+RUN uv run pipelines/run.py run trim_database_for_website --output-file=database/data_for_website.duckdb
 
 # Copy next.js app and build it
 WORKDIR /app/webapp
@@ -61,13 +63,14 @@ RUN chown appuser:appgroup /app/database
 COPY --from=builder --chown=appuser:appgroup /app/webapp/.next/standalone /app
 COPY --from=builder --chown=appuser:appgroup /app/webapp/.next/static /app/.next/static
 COPY --from=builder --chown=appuser:appgroup /app/webapp/public /app/public
-COPY --from=builder --chown=appuser:appgroup /app/database /app/database
+COPY --from=builder --chown=appuser:appgroup /app/database/data_for_website.duckdb /app/database/data_for_website.duckdb
 
 # Set environment variables
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV PORT=8080
 ENV HOSTNAME="0.0.0.0"
+ENV DUCKDB_PATH="/app/database/data_for_website.duckdb"
 
 # Switch to non-root user
 RUN chown -R appuser:appgroup /app

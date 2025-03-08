@@ -127,7 +127,7 @@ export default function PollutionMapSearchBox(
 
 function HilightLabel(props: { HilightText: string; value: string }) {
   if (!props?.value || !props?.HilightText) {
-    return <>props?.value</>;
+    return <>{props?.value}</>;
   }
   const text: string = props.value;
   const subString = props?.HilightText ? props.HilightText?.toLowerCase() : "";

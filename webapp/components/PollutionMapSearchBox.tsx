@@ -5,6 +5,7 @@ import { Popover, PopoverAnchor, PopoverContent } from "./ui/popover";
 import { Input } from "./ui/input";
 import { Dispatch, Fragment, SetStateAction, useState } from "react";
 import { Command, CommandGroup, CommandItem, CommandList } from "./ui/command";
+import { CommandEmpty } from "cmdk";
 
 interface PollutionMapsSearchBoxProps {
   onSelect: (SelectedCommuneInfo: Feature | null) => void;
@@ -86,14 +87,17 @@ export default function PollutionMapSearchBox(
               key="TextInputCommune"
               value={filterString}
               placeholder="Saisir le nom de votre commune"
-              onChange={HandleFilterChange}              
+              onChange={HandleFilterChange}
             />
           </PopoverAnchor>
           <PopoverContent
             asChild={true}
             onOpenAutoFocus={(e) => e.preventDefault()}
+            align="start"
+            sideOffset={5}
           >
             <Command>
+              <CommandEmpty className="py-6 text-center text-sm text-muted-foreground">Aucune commune trouvée.</CommandEmpty>
               <CommandList>
                 <CommandGroup key="CommuneList">
                   {communesList?.map((x: Feature) => (
@@ -146,7 +150,7 @@ function HilightLabel(props: { HilightText: string; value: string }) {
   return (
     <p>
       {S1}
-      <em className=" font-normal bg-yellow-400">{S2}</em>
+      <mark className="font-normal bg-yellow-400">{S2}</mark>
       {S3}
     </p>
   );

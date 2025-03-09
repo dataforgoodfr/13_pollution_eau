@@ -1,0 +1,10 @@
+**/node_modules
+.git
+.github
+webapp/.next
+.vscode
+.env*
+**/.env*
+npm-debug.log
+.DS_Store
+database

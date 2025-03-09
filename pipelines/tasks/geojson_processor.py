@@ -1,9 +1,10 @@
 # pipelines/tasks/geojson_processor.py
 
-import pandas as pd
-import geopandas as gpd
-from typing import Dict, Any
 import json
+from typing import Any, Dict
+
+import geopandas as gpd
+import pandas as pd
 from tqdm import tqdm
 
 
@@ -15,7 +16,7 @@ class GeoJSONProcessor:
         self, geojson_path: str, results_df: pd.DataFrame, output_path: str
     ) -> str:
         """
-        Merge GeoJSON with results data
+        Merge GeoJSON with commuunes analysed data
 
         Args:
             geojson_path: Path to input GeoJSON file
@@ -28,7 +29,6 @@ class GeoJSONProcessor:
 
         # Process features
         data_geo_features = data_geo["features"]
-        default_properties = {"annee": "2024", "resultat_cvm": "None"}
 
         # Create lookup dict for faster processing
         results_lookup = (

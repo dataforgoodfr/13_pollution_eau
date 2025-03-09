@@ -144,11 +144,11 @@ def run_upload_database(env):
 
 @run.command("generate_geojson")
 def run_generate_geojson():
-    """Generate and upload merged GeoJSON file.
+    """Generate and upload merged new GeoJSON file.
 
     Downloads commune GeoJSON data from OpenDataSoft, merges it with
-    water quality results from the database, and uploads the final
-    GeoJSON to S3.
+    ana__resultats_communes from duckdb, and uploads the
+    new GeoJSON to S3.
     """
     import os
 
@@ -178,20 +178,16 @@ def run_generate_geojson():
     # Process and merge data
     logger.info("Merging GeoJSON with commune results")
     output_path = os.path.join(
-        CACHE_FOLDER, "georef-france-commune-prelevement.geojson"
+        CACHE_FOLDER, "new-georef-france-commune-prelevement.geojson"
     )
     processor.merge_geojson_with_results(
         geojson_path=geojson_path, results_df=results_df, output_path=output_path
     )
 
-    # Upload to S3
-    logger.info("Uploading merged GeoJSON to S3")
-    s3_path = "dev/geojson/georef-france-commune-prelevement.geojson"
-    storage.upload_object(local_path=output_path, file_key=s3_path, public_read=True)
+    logger.info(f"✅ new-GeoJSON processed and stored at://{output_path}")
 
-    logger.info(
-        f"✅ GeoJSON processed and uploaded to s3://{storage.bucket_name}/{s3_path}"
-    )
+    # Upload to S3
+    # todo: update once S3 credentials are attributed
 
 
 if __name__ == "__main__":

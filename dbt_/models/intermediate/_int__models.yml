@@ -1,0 +1,104 @@
+version: 2
+
+models:
+  - name: int__prelevements_uniques
+    description: "Liste des prélèvements unique"
+    columns:
+      - name: referenceprel
+        description: Identifiant du prélèvement ; il s’agit d’un numéro attribué par le système garantissant son unicité.
+        type: VARCHAR(11)
+        tests:
+          - unique
+
+      - name: cdfirstreseauamont
+        description: Code SISE-Eaux de la première installation (unité de distribution) du prélèvement, celle  où a été fait le prélèvement.
+        type: VARCHAR(9)
+      
+      - name: dateprel
+        description: > 
+          Date du prélèvement correspondant la date à laquelle le prélèvement d’échantillon a été réalisé. 
+          Dans le cas où il n’y a pas constitution d’échantillon (mesures in situ), il s’agit de la date de la visite.
+        type: DATE
+      
+      - name: heureprel
+        description: Heure et minute à laquelle le prélèvement a été effectué
+        type: VARCHAR
+
+
+      - name: datetimeprel
+        description: datetime à laquelle le prélèvement a été effectué
+        type: DATETIME
+      
+      - name: conclusionprel
+        description: >
+          Conclusion sanitaire du prélèvement regroupant l’ensemble des recommandations et conclusions sanitaires de l’ARS
+          sur l'ensemble des observations, mesures de terrain et résultats d'analyses de laboratoire associés à un prélèvement.
+        type: VARCHAR
+      
+      - name: plvconformitebacterio
+        description: >
+          Indicateur de la conformité des paramètres microbiologiques aux limites de qualité en vigueur au moment du
+          prélèvement pour le type d’eau considéré.
+          Valeurs possibles : 
+            - blanc 
+            - C : conforme
+            - N : non conforme
+            - S : sans objet lorsqu'aucun paramètre microbio n'a été mesuré.
+        type: VARCHAR(1)
+        tests:
+          - accepted_values:
+              values: ["blanc", "C", "N", "S"]
+      
+      - name: plvconformitechimique
+        description: >
+          Indicateur de la conformité des paramètres chimiques aux limites de qualité en vigueur au moment du prélèvement
+          pour le type d’eau considéré (et en prenant en compte les dérogations éventuelles en cours pour l'installation
+          concernée).
+          
+          Valeurs possibles : 
+            - blanc 
+            - C : conforme
+            - N : non conforme
+            - D : conforme dans le cadre d’une dérogation
+            - S : sans objet lorsqu'aucun paramètre microbio n'a été mesuré.
+        type: VARCHAR(1)
+        tests:
+          - accepted_values:
+              values: ["blanc", "C", "N", "D", "S"]
+      
+      - name: plvconformitereferencebact
+        description: >
+          Indicateur de la conformité des paramètres microbiologiques aux références de qualité en vigueur au moment du
+          prélèvement pour le type d’eau considéré.
+
+          Valeurs possibles : 
+            - blanc 
+            - C : conforme
+            - N : non conforme
+            - S : sans objet lorsqu'aucun paramètre microbio n'a été mesuré.
+        type: VARCHAR(1)
+        tests:
+          - accepted_values:
+              values: ["blanc", "C", "N", "S"]
+      
+      - name: plvconformitereferencechim
+        description: >
+          Indicateur de la conformité des paramètres chimiques aux références de qualité en vigueur au moment du prélèvement
+          pour le type d’eau considéré.
+
+          Valeurs possibles : 
+            - blanc 
+            - C : conforme
+            - N : non conforme
+            - S : sans objet lorsqu'aucun paramètre microbio n'a été mesuré.
+            - D : conforme dans le cadre d’une dérogation
+          
+          N.B. cette dernière valeur n'est pas possible selon la documentation officielle d'EDC, mais on trouve des prélèvements
+          avec cette valeur. A discuter.
+        type: VARCHAR(1)
+        tests:
+          - accepted_values:
+              values: ["blanc", "C", "N", "S", "D"]
+      
+      
+  

@@ -1,11 +1,11 @@
 "use client";
 
-import { useEffect, useMemo } from "react";
-import ReactMapGl, { MapLayerMouseEvent } from "react-map-gl/maplibre";
-import maplibregl from "maplibre-gl";
+import { useEffect, useMemo, useRef } from "react";
+import ReactMapGl, { MapLayerMouseEvent, useMap } from "react-map-gl/maplibre";
+import maplibregl, { Feature, MapGeoJSONFeature } from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 import { Protocol } from "pmtiles";
-import layers from "protomaps-themes-base";
+
 import {
   MAPLIBRE_MAP,
   DEFAULT_MAP_STYLE,
@@ -15,8 +15,8 @@ import {
 type PollutionMapBaseLayerProps = {
   year: string;
   categoryType: string;
-  selectedCommune: any | null;
-  onFeatureClick: (feature: any) => void;
+  selectedCommune: Feature | null;
+  onFeatureClick: (feature: MapGeoJSONFeature) => void;
 };
 
 export default function PollutionMapBaseLayer({
@@ -25,6 +25,8 @@ export default function PollutionMapBaseLayer({
   selectedCommune,
   onFeatureClick,
 }: PollutionMapBaseLayerProps) {
+  const mapRef = useRef(null);
+
   useEffect(() => {
     // adds the support for PMTiles
     const protocol = new Protocol();
@@ -42,12 +44,17 @@ export default function PollutionMapBaseLayer({
       onFeatureClick(event.features[0]);
     }
   }
+  const { current: map } = useMap();
 
   useEffect(() => {
     if (selectedCommune) {
-      console.log("Should zoom to:", selectedCommune);
+      console.log("Should zoom to:", selectedCommune?.geometry?.coordinates);
+      mapRef?.current?.flyTo({
+        center: selectedCommune?.geometry?.coordinates,
+        zoom: 9,
+      });
     }
-  }, [selectedCommune]);
+  }, [selectedCommune, map]);
 
   const mapStyle = useMemo(() => {
     const dynamicLayers: maplibregl.LayerSpecification[] = [
@@ -72,7 +79,11 @@ export default function PollutionMapBaseLayer({
         // Ajout d'un filtre pour mettre en évidence la commune sélectionnée si présente
         ...(selectedCommune
           ? {
-              filter: ["==", ["get", "code_insee"], selectedCommune.code_insee],
+              filter: [
+                "==",
+                ["get", "commune_code_insee"],
+                selectedCommune.properties?.id,
+              ],
             }
           : {}),
       },
@@ -92,6 +103,7 @@ export default function PollutionMapBaseLayer({
       mapLib={maplibregl}
       onClick={onClick}
       interactiveLayerIds={["polluants"]}
+      ref={mapRef}
     />
   );
 }

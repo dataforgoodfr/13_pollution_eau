@@ -16,23 +16,21 @@ L'objectif est de consolider, analyser et cartographier les données sur la qual
 
 ### Data Pipelines
 
-- [Installation de Python](#installation-de-python)
+Installer [uv](https://docs.astral.sh/uv/getting-started/installation/#installing-uv). Ce projet utilise uv pour la gestion des dépendances Python.
 
-Ce projet utilise [uv](https://docs.astral.sh/uv/) pour la gestion des dépendances Python. Il est préréquis pour l'installation de ce projet.
+  Installation sur Windows
 
-Installation sur Windows
+  ```bash
+  powershell -c "irm https://astral.sh/uv/install.ps1 | iex"
+  ```
 
-```bash
-powershell -c "irm https://astral.sh/uv/install.ps1 | iex"
-```
+  Installation sur Mac ou linux
 
-Installation sur Mac ou linux
+  ```bash
+  curl -LsSf https://astral.sh/uv/install.sh | sh
+  ```
 
-```bash
-curl -LsSf https://astral.sh/uv/install.sh | sh
-```
-
-Une fois installé, il suffit de lancer la commande suivante pour installer la version de Python adéquate, créer un environnement virtuel et installer les dépendances du projet.
+- Lancez la commande suivante pour installer la version de Python adéquate, créer un environnement virtuel et installer les dépendances du projet.
 
 ```bash
 uv sync
@@ -60,20 +58,22 @@ Allez dans settings, python interpreter, add interpreter, puis selectionnez exis
 
 utilisez les commandes `uv run` pour lancer un script Python depuis votre terminal
 
-- [Installation de Node.js](#installation-de-nodejs) (pour le développement du site web)
+### Site web
 
-Pour le développement du site web, il est nécessaire d'installer Node.js. Pour cela, il suffit de suivre les instructions sur le [site officiel](https://nodejs.org/).
+- Installez [Node.js](https://nodejs.org/) ou [NVM](https://github.com/nvm-sh/nvm?tab=readme-ov-file#install--update-script)
 
-Pour installer les dépendances du site web, il suffit de lancer les commandes suivantes :
+  ```bash
+  curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
+  ```
 
-```bash
-cd webapp
-npm install
-```
+- Installez les dépendances du site web:
 
-Veuillez copier `./webapp/example.env` comme `./webapp/.env`.
+  ```bash
+  cd webapp
+  npm install
+  ```
 
-Ensuite, vous pouvez lancer `npm run dev` et ouvrir le navigateur pour voir la carte.
+- Lancer `npm run dev` et ouvrir le navigateur sur http://localhost:3000 pour voir la carte.
 
 
 ## Data Processing

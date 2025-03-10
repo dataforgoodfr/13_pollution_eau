@@ -16,5 +16,7 @@ SELECT
     valtraduite::NUMERIC AS valtraduite,
     casparam::VARCHAR AS casparam,
     referenceanl::VARCHAR AS referenceanl,
-    de_partition::SMALLINT AS de_partition
+    de_partition::SMALLINT AS de_partition,
+    de_ingestion_date::DATE AS de_ingestion_date,
+    de_dataset_datetime::VARCHAR AS de_dataset_datetime
 FROM {{ source('edc', 'edc_resultats') }}

@@ -30,8 +30,8 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# env files (can opt-in for committing if needed)
-.env*
+# next.js lets you commit env variables: https://nextjs.org/docs/pages/building-your-application/configuring/environment-variables#loading-environment-variables
+!.env*
 
 # vercel
 .vercel

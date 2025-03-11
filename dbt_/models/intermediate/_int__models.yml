@@ -149,7 +149,7 @@ models:
         type: VARCHAR
 
   - name: int__udi_cog
-    description: ""
+    description: "Liste des communes et leurs unités de distribution avec le code region et departement"
     columns:
       - name: commune_code_insee 
         description: Code Commune

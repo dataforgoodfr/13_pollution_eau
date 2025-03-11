@@ -121,7 +121,7 @@ models:
               values: ["blanc", "C", "N", "S", "D"]
       
   - name: int__mesures_cat
-    description: "Liste des résultats unique avec categorisation"
+    description: "Liste des résultats avec categorisation et limitequal_float"
     columns:
       - name: referenceprel
         description: "Code SISE-Eaux du prélèvement"

@@ -2,8 +2,6 @@
 
 import json
 from typing import Any, Dict
-
-import geopandas as gpd
 import pandas as pd
 from tqdm import tqdm
 

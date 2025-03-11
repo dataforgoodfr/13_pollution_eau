@@ -120,5 +120,43 @@ models:
           - accepted_values:
               values: ["blanc", "C", "N", "S", "D"]
       
-      
-  
+  - name: int__mesures_cat
+    description: "Liste des résultats unique avec categorisation"
+    columns:
+      - name: referenceprel
+        description: "Code SISE-Eaux du prélèvement"
+        type: VARCHAR(11)
+      - name: cdparametresiseeaux
+        description: >
+          Le code SISE-Eaux du paramètre est un identifiant alphanumérique sur 7 positions maximum, associé à chaque
+          paramètre. Lorsque c'est possible, le symbole chimique est retenu comme identifiant (NO3, AS...) pour le rendre
+          signifiant.
+        type: VARCHAR(10)
+      - name: valtraduite
+        description: '{{ doc("val_traduite_docs") }}'
+        type: NUMERIC
+      - name: limitequal
+        description: Limite(s) de qualité du paramètre concerné en vigueur au moment du prélèvement pour le type d’eau considéré.
+        type: VARCHAR
+      - name: limitequal_float
+        description: Limite(s) de qualité du paramètre concerné en vigueur au moment du prélèvement pour le type d’eau considéré.
+        type: FLOAT
+      - name: unite
+        description: Unité de ka Limite(s) de qualité du paramètre concerné en vigueur au moment du prélèvement pour le type d’eau considéré.
+        type: VARCHAR      
+      - name: categorie
+        description: "Catégorie du paramètre (pesticides, nitrites, etc.)"
+        type: VARCHAR
+
+  - name: int__udi_cog
+    description: ""
+    columns:
+      - name: commune_code_insee 
+        description: Code Commune
+      - name: cdreseau
+        description: "Code de l'installation (unité de distribution)"
+        type: VARCHAR(9)
+      - name: code_departement
+        description: Code Departement
+      - name: code_region
+        description: Code Region

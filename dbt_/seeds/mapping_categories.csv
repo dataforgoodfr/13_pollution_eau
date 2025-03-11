@@ -881,169 +881,167 @@ CRD,1389,CHROME DISSOUS,Chrome dissous,7440-47-3,métaux lourds
 HGD,1387,MERCURE DISSOUS,Mercure dissous,7439-97-6,métaux lourds
 SECL,1385,SÉLÉNIUM SI CONDITIONS GÉOLOGIQUES PARTICULIÈRES,Sélénium si conditions géologiques particulières,7782-49-2,métaux lourds
 PB210,1928,PLOMB 210 EN MG/L,Plomb 210 en mg/L,14255-04-0,métaux lourds
-TCEY,1272,"TÉTRACHLOROÉTHYLÈNE-1,1,2,2","Tétrachloroéthylène-1,1,2,2",127-18-4,hydrocarbure
-TCLEY,1286,TRICHLOROÉTHYLÈNE,Trichloroéthylène,79-01-6,hydrocarbure
-TCEYTCL,2963,TÉTRACHLOROÉTHYLÈN+TRICHLOROÉTHYLÈN,Tétrachloroéthylèn+Trichloroéthylène,,hydrocarbure
-12DCLE,1161,"DICHLOROÉTHANE-1,2","Dichloroéthane-1,2",107-06-2,hydrocarbure
-INDPYR,1204,"INDÉNO(1,2,3-CD)PYRÈNE","Indéno(1,2,3-cd)pyrène",193-39-5,hydrocarbure
-BGPERY,1118,"BENZO(G,H,I)PÉRYLÈNE","Benzo(g,h,i)pérylène",191-24-2,hydrocarbure
-BKFLUO,1117,BENZO(K)FLUORANTHÈNE,Benzo(k)fluoranthène,207-08-9,hydrocarbure
-BBFLUO,1116,BENZO(B)FLUORANTHÈNE,Benzo(b)fluoranthène,205-99-2,hydrocarbure
-BAPYR,1115,BENZO(A)PYRÈNE *,Benzo(a)pyrène *,50-32-8,hydrocarbure
-HPAT4,2033,HYDROCARBURES POLYCYCLIQUES AROMATIQUES (4 SUBSTANCES),Hydrocarbures polycycliques aromatiques (4 substances),,hydrocarbure
-BENZ,1114,BENZÈNE,Benzène,71-43-2,hydrocarbure
-HCB,1199,HEXACHLOROBENZÈNE,Hexachlorobenzène,118-74-1,hydrocarbure
-HBUT,1652,HEXACHLOROBUTADIÈNE,Hexachlorobutadiène,87-68-3,hydrocarbure
-FLUORA,1191,FLUORANTHÈNE *,Fluoranthène *,206-44-0,hydrocarbure
-111TCL,1284,"TRICHLOROÉTHANE-1,1,1","Trichloroéthane-1,1,1",71-55-6,hydrocarbure
-DCLM,1168,DICHLOROMÉTHANE,Dichlorométhane,75-09-2,hydrocarbure
-12DCET,1456,"DICHLOROÉTHYLÈNE-1,2 CIS","Dichloroéthylène-1,2 cis",156-59-2,hydrocarbure
-112TCE,1285,"TRICHLOROÉTHANE-1,1,2","Trichloroéthane-1,1,2",79-00-5,hydrocarbure
-11DCET,1162,"DICHLOROÉTHYLÈNE-1,1","Dichloroéthylène-1,1",75-35-4,hydrocarbure
-DCLE,1727,"DICHLOROÉTHYLÈNE-1,2 TRANS","Dichloroéthylène-1,2 trans",156-60-5,hydrocarbure
-11DCLE,1160,"DICHLOROÉTHANE-1,1","Dichloroéthane-1,1",75-34-3,hydrocarbure
-13DCPYT,1835,"DICHLOROPROPYLÈNE-1,3 TRANS","Dichloropropylène-1,3 trans",10061-02-6,hydrocarbure
-HPAT,2034,HYDROCARBURES POLYCYCLIQUES AROMATIQUES (6 SUBST.*),Hydrocarbures polycycliques aromatiques (6 subst.*),,hydrocarbure
-13DCPYC,1834,"DICHLOROPROPYLÈNE-1,3 CIS","Dichloropropylène-1,3 cis",10061-01-5,hydrocarbure
-13DCPY,1487,"DICHLOROPROPYLÈNE-1,3 TOTAL","Dichloropropylène-1,3 total",542-75-6,hydrocarbure
-NAPHTA,1517,NAPHTALÈNE,Naphtalène,91-20-3,hydrocarbure
-ANTHRA,1458,ANTHRACÈNE,Anthracène,120-12-7,hydrocarbure
-BENZAN,1082,BENZANTHRACÈNE,Benzanthracène,56-55-3,hydrocarbure
-DBENZAN,1621,"DIBENZO(A,H)ANTHRACÈNE","Dibenzo(a,h)anthracène",53-70-3,hydrocarbure
-PHENAN,1524,PHÉNANTRÈNE,Phénantrène,85-01-8,hydrocarbure
-FLUORE,1623,FLUORÈNE,Fluorène,86-73-7,hydrocarbure
-PYR,1537,PYRÈNE,Pyrène,129-00-0,hydrocarbure
-CHRYS,1476,CHRYSÈNE,Chrysène,218-01-9,hydrocarbure
-1122TCE,1271,"TÉTRACHLOROÉTHANE-1,1,2,2","Tétrachloroéthane-1,1,2,2",79-34-5,hydrocarbure
-TOL,1278,TOLUÈNE,Toluène,108-88-3,hydrocarbure
-ACPT,1453,ACÉNAPHTÈNE,Acénaphtène,83-32-9,hydrocarbure
-XYLO,1292,XYLÈNE ORTHO,Xylène ortho,95-47-6,hydrocarbure
-14DCB,1166,"DICHLOROBENZÈNE-1,4","Dichlorobenzène-1,4",106-46-7,hydrocarbure
-BENZETH,1497,ETHYLBENZÈNE,Ethylbenzène,100-41-4,hydrocarbure
-STYR,1541,STYRÈNE,Styrène,100-42-5,hydrocarbure
-12DCB,1165,"DICHLOROBENZÈNE-1,2","Dichlorobenzène-1,2",95-50-1,hydrocarbure
-13DCB,1164,"DICHLOROBENZÈNE-1,3","Dichlorobenzène-1,3",541-73-1,hydrocarbure
-MCB,1467,CHLOROBENZÈNE,Chlorobenzène,108-90-7,hydrocarbure
-XYLMEPA,2925,XYLENES (MÉTA + PARA),Xylenes (méta + para),,hydrocarbure
-12BRE,1498,"DIBROMOÉTHANE-1,2","Dibromoéthane-1,2",106-93-4,hydrocarbure
-HEXBU,1652,HEXACHLOROBUTADIÈNE (PESTICIDE),Hexachlorobutadiène (pesticide),87-68-3,hydrocarbure
-ANPHT,1622,ACÉNAPHTHYLÈNE,Acénaphthylène,208-96-8,hydrocarbure
-1112TCE,1270,"TÉTRACHLOROÉTHANE-1,1,1,2","Tétrachloroéthane-1,1,1,2",630-20-6,hydrocarbure
-12DCP,1655,"DICHLOROPROPANE-1,2","Dichloropropane-1,2",78-87-5,hydrocarbure
-HEXCP,2612,HEXACHLOROPENTADIÈNE,Hexachloropentadiène,77-47-4,hydrocarbure
-BRCLM,1121,BROMOCHLOROMÉTHANE,Bromochlorométhane,74-97-5,hydrocarbure
-ME2FL,1619,MÉTHYL(2)FLUORANTHÈNE,Méthyl(2)fluoranthène,33543-31-6,hydrocarbure
-CUMEN,1633,CUMÈNE,Cumène,98-82-8,hydrocarbure
-ME2NA,1618,MÉTHYL(2)NAPHTALÈNE,Méthyl(2)naphtalène,91-57-6,hydrocarbure
-CLPREN,2611,CHLOROPRÈNE,Chloroprène,126-99-8,hydrocarbure
-XYLMP,1294,XYLÈNE PARA,Xylène para,106-42-3,hydrocarbure
-XYLEN,1780,XYLÈNES (ORTHO+PARA+MÉTA),Xylènes (ortho+para+méta),,hydrocarbure
-12DBM,1513,DIBROMOMÉTHANE,Dibromométhane,74-95-3,hydrocarbure
-HCPD,2612,HEXACHLOROPENTADIÈNE (PESTICIDE),Hexachloropentadiène (pesticide),77-47-4,hydrocarbure
-2CTCL,1602,CHLORO-2-TOLUÈNE,Chloro-2-toluène,95-49-8,hydrocarbure
-4CTCL,1600,CHLORO-4-TOLUÈNE,Chloro-4-toluène,106-43-4,hydrocarbure
-3CTCL,1601,CHLORO-3-TOLUÈNE,Chloro-3-toluène,108-41-8,hydrocarbure
-123TMB,1857,"TRIMÉTHYLBENZÈNE-1,2,3","Triméthylbenzène-1,2,3",526-73-8,hydrocarbure
-124TCB,1283,"TRICHLORO-1,2,4-BENZÈNE","Trichloro-1,2,4-benzène",120-82-1,hydrocarbure
-TCFM,1195,TRICHLOROFLUOROMÉTHANE,Trichlorofluorométhane,75-69-4,hydrocarbure
-123TCB,1630,"TRICHLORO-1,2,3-BENZÈNE","Trichloro-1,2,3-benzène",87-61-6,hydrocarbure
-135TCB,1629,"TRICHLORO-1,3,5-BENZÈNE","Trichloro-1,3,5-benzène",108-70-3,hydrocarbure
-23DCPRO,1653,"DICHLOROPROPÈNE-2,3","Dichloropropène-2,3",78-88-6,hydrocarbure
-PCUMEN,1609,PSEUDOCUMÈNE,Pseudocumène,95-63-6,hydrocarbure
-MSTL,1509,MÉSITYLÈNE,Mésitylène,108-67-8,hydrocarbure
-XYL,1293,XYLÈNE MÉTA,Xylène méta,108-38-3,hydrocarbure
-NBUBENZ,1855,BUTYL BENZÈNE-N,Butyl benzène-n,104-51-8,hydrocarbure
-IBENZ,1836,ISOBUTYLBENZÈNE,Isobutylbenzène,538-93-2,hydrocarbure
-TEQ_HAP,8117,EQUIVALENT TOXIQUE HAP,Équivalent Toxique HAP,,hydrocarbure
-3CLPROP,2065,3-CHLOROPROPÈNE,3-Chloropropène,107-05-1,hydrocarbure
-SBUBENZ,1610,BUTYL BENZÈNE SEC,Butyl benzène sec,135-98-8,hydrocarbure
-12DCETT,1163,"DICHLOROÉTHYLÈNE-1,2 TOTAL","Dichloroéthylène-1,2 total",540-59-0,hydrocarbure
-HEXCE,1656,HEXACHLOROÉTHANE,Hexachloroéthane,67-72-1,hydrocarbure
-O2SAT,1312,OXYGÈNE DISSOUS % SATURATION,Oxygène dissous % Saturation,,hydrocarbure
-11DCPRO,2082,"DICHLOROPROPÈNE-1,1","Dichloropropène-1,1",,hydrocarbure
-PCMY,1856,CYMÈNE-P,Cymène-p,99-87-6,hydrocarbure
-PBENZ,1837,PROPYLBENZÈNE-N,Propylbenzène-n,103-65-1,hydrocarbure
-BBENZ,1632,BROMOBENZÈNE,Bromobenzène,108-86-1,hydrocarbure
-O2,1311,OXYGÈNE DISSOUS,Oxygène dissous,7782-44-7,hydrocarbure
-CLM,1736,CHLOROMÉTHANE,Chlorométhane,74-87-3,hydrocarbure
-12DCPOV,1655,"DICHLOROPROPANE-1,2 (OHV)","Dichloropropane-1,2 (OHV)",78-87-5,hydrocarbure
-ME1NA,2725,MÉTHYL-1 NAPHTALÈNE,Méthyl-1 naphtalène,90-12-0,hydrocarbure
-HYDISSO,2962,HYDROCARBURES DISSOUS OU ÉMULSIONNÉS,Hydrocarbures dissous ou émulsionnés,,hydrocarbure
-TCPR,1854,"TRICLHLORO-1,2,3-PROPANE","Triclhloro-1,2,3-propane",96-18-4,hydrocarbure
-PYE,1620,PÉRYLÈNE,Pérylène,198-55-0,hydrocarbure
-DFCM,1485,DICHLORODIFLUOROMÉTHANE,Dichlorodifluorométhane,75-71-8,hydrocarbure
-22DCP,2081,"DICHLOROPROPANE-2,2","Dichloropropane-2,2",,hydrocarbure
-CLE,1853,CHLOROÉTHANE,Chloroéthane,75-00-3,hydrocarbure
-TCB,1774,TRICHLOROBENZÈNES (TOTAL),Trichlorobenzènes (Total),,hydrocarbure
-TTCB,1631,"TETRACHLOROBENZÈNE-1,2,4,5","Tetrachlorobenzène-1,2,4,5",95-94-3,hydrocarbure
-TETRACB,2735,TETRACHLOROBENZÈNE,Tetrachlorobenzène,12408-10-5,hydrocarbure
-TTCB34,2010,"TÉTRACHLOROBENZÈNE-1,2,3,4","Tétrachlorobenzène-1,2,3,4",634-66-2,hydrocarbure
-TTCB35,2536,"TÉTRACHLOROBENZÈNE-1,2,3,5","Tétrachlorobenzène-1,2,3,5",634-90-2,hydrocarbure
-14DAN,1580,"1,4 DIOXANE","1,4 dioxane",123-91-1,hydrocarbure
-CLNBO,1469,CHLORONITROBENZÈNE ORTHO,Chloronitrobenzène ortho,88-73-3,hydrocarbure
-CLNBP,1470,CHLORONITROBENZÈNE PARA,Chloronitrobenzène para,100-00-5,hydrocarbure
-CLNBM,1468,CHLORONITROBENZÈNE MÉTA,Chloronitrobenzène méta,121-73-3,hydrocarbure
-MO,1395,MOLYBDÈNE,Molybdène,7439-98-7,hydrocarbure
-MOD,1395,MOLYBDÈNE DISSOUS,Molybdène dissous,7439-98-7,hydrocarbure
-H2S,1343,HYDROGÈNE SULFURÉ,Hydrogène sulfuré,7783-06-4,hydrocarbure
-IHV,7006,HYDROCARBURE VOLATIL (INDICE),Hydrocarbure volatil (Indice),,hydrocarbure
-EQES,5935,EQUIVALENT-ESSENCE,Equivalent-essence,8006-61-9,hydrocarbure
-H2SQ,5906,HYDROGÈNE SULFURÉ (QUALITATIF),Hydrogène sulfuré (qualitatif),,hydrocarbure
-EQPE,6097,EQUIVALENT-PÉTROLE,Equivalent-pétrole,,hydrocarbure
-THM,6275,SOMME DES TRIHALOMÉTHANES ANALYSÉS,Somme des Trihalométhanes analysés,,hydrocarbure
-2CLPR,2695,2-CHLOROPROPANE,2-Chloropropane,75-29-6,hydrocarbure
-SCCPS,1955,C10-13-CHLOROALCANES,C10-13-chloroalcanes,85535-84-8,hydrocarbure
-1112TCP,2704,"1,1,1,2 TÉTRACHLOROPROPANE","1,1,1,2 Tétrachloropropane",812-03-3,hydrocarbure
-1113TCP,2705,"1,1,1,3 TÉTRACHLOROPROPANE","1,1,1,3 Tétrachloropropane",1070-78-6,hydrocarbure
-CLNAPH1,1603,CHLORONAPHTALÈNE-1,Chloronaphtalène-1,90-13-1,hydrocarbure
-CLNAPH2,1604,CHLORONAPHTALÈNE-2,Chloronaphtalène-2,91-58-7,hydrocarbure
-TCTFM00,6506,TRICHLOROTRIFLUOROÉTHANE,Trichlorotrifluoroéthane,26523-64-8,hydrocarbure
-234ET_S,2552,SOMME ETHYLTOLUÈNES (3 ISOMÈRES),Somme Ethyltoluènes (3 isomères),25550-14-5,hydrocarbure
-IDAN,2676,INDANE,Indane,496-11-7,hydrocarbure
-MCH,5506,METHYL CYCLOHEXANE,Methyl cyclohexane,108-87-2,hydrocarbure
-PENT,2686,PENTANE,Pentane,109-66-0,hydrocarbure
-2MPENT,2683,2-METHYLPENTANE,2-Methylpentane,107-83-5,hydrocarbure
-DOD,1554,DODECANE,Dodecane,112-40-3,hydrocarbure
-SEH,7464,SUBSTANCES EXTRACTIBLES À L'HEXANE,Substances extractibles à l'hexane,,hydrocarbure
-23DMB,2667,"2,3-DIMETHYLBUTANE","2,3-Dimethylbutane",79-29-8,hydrocarbure
-23DMP,2668,"2,3-DIMETHYLPENTANE","2,3-Dimethylpentane",565-59-3,hydrocarbure
-34ET_S,3348,SOMME 3ETHYLTOLUÈNE+4ETHYLTOLUÈNE,Somme 3ethyltoluène+4ethyltoluène,,hydrocarbure
-IPENT,2682,ISOPENTANE,Isopentane,78-78-4,hydrocarbure
-NONA,2684,NONANE,Nonane,111-84-2,hydrocarbure
-22DMB,2666,"2,2-DIMETHYLBUTANE","2,2-Dimethylbutane",75-83-2,hydrocarbure
-IOCTA,1581,ISOOCTANE,Isooctane,540-84-1,hydrocarbure
-CHEX,1583,CYCLOHEXANE,Cyclohexane,110-82-7,hydrocarbure
-NHEX,2675,N-HEXANE,n-Hexane,110-54-3,hydrocarbure
-DEC,2665,DECANE,Decane,124-18-5,hydrocarbure
-HTAN,2674,HEPTANE,Heptane,142-82-5,hydrocarbure
-OCTA,2679,OCTANE,Octane,111-65-9,hydrocarbure
-UDEC,2690,UNDECANE,Undecane,1120-21-4,hydrocarbure
-EQGO,6096,EQUIVALENT-GAZOLE,Equivalent-gazole,64741-44-2,hydrocarbure
-EHT,7009,EQUIVALENT HYDROCARBURES TOTAUX,Equivalent hydrocarbures totaux,,hydrocarbure
-CAMP,7418,CAMPHÈNE,Camphène,79-92-5,hydrocarbure
-BJFL,1733,BENZO(J)FLUORANTHÈNE,Benzo(J)fluoranthène,205-82-3,hydrocarbure
-BBPYR,1460,BENZO(E)PYRÈNE,Benzo(e)pyrène,192-97-2,hydrocarbure
-EDTA,1493,ACIDE ÉTHYLÈNEDIAMINE TÉTRAACÉTIQUE,Acide éthylènediamine tétraacétique,60-00-4,hydrocarbure
-PGOL,3360,PROPYLÈNE GLYCOL,Propylène glycol,57-55-6,hydrocarbure
-B12FLU,1732,"BENZO(1,2)FLUORÈNE","Benzo(1,2)fluorène",238-84-6,hydrocarbure
-DEGME,2718,ETHYLÈNE GLYCOL,Ethylène glycol,107-21-1,hydrocarbure
-2NTOL,2613,2-NITROTOLUÈNE,2-nitrotoluène,88-72-2,hydrocarbure
-23CNT,2814,2-CHLORO-3-NITROTOLUÈNE,2-chloro-3-nitrotoluène,3970-40-9,hydrocarbure
-13BUTOL,7624,"1,3-BUTANEDIOL","1,3-Butanediol",107-88-0,hydrocarbure
-42CNT,1605,4-CHLORO-2-NITROTOLUÈNE,4-chloro-2-nitrotoluène,89-59-8,hydrocarbure
-26CNT,2816,2-CHLORO-6-NITROTOLUÈNE,2-chloro-6-nitrotoluène,83-42-1,hydrocarbure
-14BUTOL,7625,"1,4-BUTANEDIOL","1,4-Butanediol",110-63-4,hydrocarbure
-2EAT,7886,2-ÉTHYLAMINOTOLUÈNE,2-éthylaminotoluène,94-68-8,hydrocarbure
-13PRPOL,2727,"1,3-PROPANEDIOL","1,3-Propanediol",504-63-2,hydrocarbure
-HPAT16,6136,HYDROCARBURES POLYCYCLIQUES AROMATIQUES (16 SUBST.),Hydrocarbures polycycliques aromatiques (16 subst.),,hydrocarbure
-ANTHRAD,2013,ANTHRAQUINONE (HAP),Anthraquinone (HAP),84-65-1,hydrocarbure
-ICH2,1446,HYDROCARBURES (INDICE CH2),Hydrocarbures (Indice CH2),,hydrocarbure
-1M3IPB,2680,1-METHYL-3-ISOPROPYLBENZENE,1-Methyl-3-isopropylbenzene,535-77-3,hydrocarbure
-IDEN,2677,INDENE,Indene,95-13-6,hydrocarbure
-IDURE,2689,ISODURENE,Isodurene,527-53-7,hydrocarbure
-OCMY,2681,CYMENE-O,cymene-o,527-84-4,hydrocarbure
-DURE,2688,DURENE,Durene,95-93-2,hydrocarbure
-1E2MB,2717,"BENZENE, 1-ETHYL-2-METHYL-","Benzene, 1-ethyl-2-methyl-",611-14-3,hydrocarbure
+BENZ,1114,BENZÈNE,Benzène,71-43-2,hydrocarbures
+BRCLM,1121,BROMOCHLOROMÉTHANE,Bromochlorométhane,74-97-5,hydrocarbures
+11DCLE,1160,"DICHLOROÉTHANE-1,1","Dichloroéthane-1,1",75-34-3,hydrocarbures
+12DCLE,1161,"DICHLOROÉTHANE-1,2","Dichloroéthane-1,2",107-06-2,hydrocarbures
+11DCET,1162,"DICHLOROÉTHYLÈNE-1,1","Dichloroéthylène-1,1",75-35-4,hydrocarbures
+12DCETT,1163,"DICHLOROÉTHYLÈNE-1,2 TOTAL","Dichloroéthylène-1,2 total",540-59-0,hydrocarbures
+13DCB,1164,"DICHLOROBENZÈNE-1,3","Dichlorobenzène-1,3",541-73-1,hydrocarbures
+12DCB,1165,"DICHLOROBENZÈNE-1,2","Dichlorobenzène-1,2",95-50-1,hydrocarbures
+14DCB,1166,"DICHLOROBENZÈNE-1,4","Dichlorobenzène-1,4",106-46-7,hydrocarbures
+DCLM,1168,DICHLOROMÉTHANE,Dichlorométhane,75-09-2,hydrocarbures
+TCFM,1195,TRICHLOROFLUOROMÉTHANE,Trichlorofluorométhane,75-69-4,hydrocarbures
+HCB,1199,HEXACHLOROBENZÈNE,Hexachlorobenzène,118-74-1,hydrocarbures
+1112TCE,1270,"TÉTRACHLOROÉTHANE-1,1,1,2","Tétrachloroéthane-1,1,1,2",630-20-6,hydrocarbures
+1122TCE,1271,"TÉTRACHLOROÉTHANE-1,1,2,2","Tétrachloroéthane-1,1,2,2",79-34-5,hydrocarbures
+TCEY,1272,"TÉTRACHLOROÉTHYLÈNE-1,1,2,2","Tétrachloroéthylène-1,1,2,2",127-18-4,hydrocarbures
+TOL,1278,TOLUÈNE,Toluène,108-88-3,hydrocarbures
+124TCB,1283,"TRICHLORO-1,2,4-BENZÈNE","Trichloro-1,2,4-benzène",120-82-1,hydrocarbures
+111TCL,1284,"TRICHLOROÉTHANE-1,1,1","Trichloroéthane-1,1,1",71-55-6,hydrocarbures
+112TCE,1285,"TRICHLOROÉTHANE-1,1,2","Trichloroéthane-1,1,2",79-00-5,hydrocarbures
+TCLEY,1286,TRICHLOROÉTHYLÈNE,Trichloroéthylène,79-01-6,hydrocarbures
+XYLO,1292,XYLÈNE ORTHO,Xylène ortho,95-47-6,hydrocarbures
+XYL,1293,XYLÈNE MÉTA,Xylène méta,108-38-3,hydrocarbures
+XYLMP,1294,XYLÈNE PARA,Xylène para,106-42-3,hydrocarbures
+H2S,1343,HYDROGÈNE SULFURÉ,Hydrogène sulfuré,7783-06-4,hydrocarbures
+MO,1395,MOLYBDÈNE,Molybdène,7439-98-7,hydrocarbures
+MOD,1395,MOLYBDÈNE DISSOUS,Molybdène dissous,7439-98-7,hydrocarbures
+ICH2,1446,HYDROCARBURES (INDICE CH2),Hydrocarbures (Indice CH2),,hydrocarbures
+12DCET,1456,"DICHLOROÉTHYLÈNE-1,2 CIS","Dichloroéthylène-1,2 cis",156-59-2,hydrocarbures
+MCB,1467,CHLOROBENZÈNE,Chlorobenzène,108-90-7,hydrocarbures
+CLNBM,1468,CHLORONITROBENZÈNE MÉTA,Chloronitrobenzène méta,121-73-3,hydrocarbures
+CLNBO,1469,CHLORONITROBENZÈNE ORTHO,Chloronitrobenzène ortho,88-73-3,hydrocarbures
+CLNBP,1470,CHLORONITROBENZÈNE PARA,Chloronitrobenzène para,100-00-5,hydrocarbures
+DFCM,1485,DICHLORODIFLUOROMÉTHANE,Dichlorodifluorométhane,75-71-8,hydrocarbures
+13DCPY,1487,"DICHLOROPROPYLÈNE-1,3 TOTAL","Dichloropropylène-1,3 total",542-75-6,hydrocarbures
+EDTA,1493,ACIDE ÉTHYLÈNEDIAMINE TÉTRAACÉTIQUE,Acide éthylènediamine tétraacétique,60-00-4,hydrocarbures
+BENZETH,1497,ETHYLBENZÈNE,Ethylbenzène,100-41-4,hydrocarbures
+12BRE,1498,"DIBROMOÉTHANE-1,2","Dibromoéthane-1,2",106-93-4,hydrocarbures
+MSTL,1509,MÉSITYLÈNE,Mésitylène,108-67-8,hydrocarbures
+12DBM,1513,DIBROMOMÉTHANE,Dibromométhane,74-95-3,hydrocarbures
+STYR,1541,STYRÈNE,Styrène,100-42-5,hydrocarbures
+DOD,1554,DODECANE,Dodecane,112-40-3,hydrocarbures
+14DAN,1580,"1,4 DIOXANE","1,4 dioxane",123-91-1,hydrocarbures
+IOCTA,1581,ISOOCTANE,Isooctane,540-84-1,hydrocarbures
+CHEX,1583,CYCLOHEXANE,Cyclohexane,110-82-7,hydrocarbures
+4CTCL,1600,CHLORO-4-TOLUÈNE,Chloro-4-toluène,106-43-4,hydrocarbures
+3CTCL,1601,CHLORO-3-TOLUÈNE,Chloro-3-toluène,108-41-8,hydrocarbures
+2CTCL,1602,CHLORO-2-TOLUÈNE,Chloro-2-toluène,95-49-8,hydrocarbures
+42CNT,1605,4-CHLORO-2-NITROTOLUÈNE,4-chloro-2-nitrotoluène,89-59-8,hydrocarbures
+PCUMEN,1609,PSEUDOCUMÈNE,Pseudocumène,95-63-6,hydrocarbures
+SBUBENZ,1610,BUTYL BENZÈNE SEC,Butyl benzène sec,135-98-8,hydrocarbures
+135TCB,1629,"TRICHLORO-1,3,5-BENZÈNE","Trichloro-1,3,5-benzène",108-70-3,hydrocarbures
+123TCB,1630,"TRICHLORO-1,2,3-BENZÈNE","Trichloro-1,2,3-benzène",87-61-6,hydrocarbures
+TTCB,1631,"TETRACHLOROBENZÈNE-1,2,4,5","Tetrachlorobenzène-1,2,4,5",95-94-3,hydrocarbures
+BBENZ,1632,BROMOBENZÈNE,Bromobenzène,108-86-1,hydrocarbures
+CUMEN,1633,CUMÈNE,Cumène,98-82-8,hydrocarbures
+HBUT,1652,HEXACHLOROBUTADIÈNE,Hexachlorobutadiène,87-68-3,hydrocarbures
+HEXBU,1652,HEXACHLOROBUTADIÈNE (PESTICIDE),Hexachlorobutadiène (pesticide),87-68-3,hydrocarbures
+23DCPRO,1653,"DICHLOROPROPÈNE-2,3","Dichloropropène-2,3",78-88-6,hydrocarbures
+12DCP,1655,"DICHLOROPROPANE-1,2","Dichloropropane-1,2",78-87-5,hydrocarbures
+12DCPOV,1655,"DICHLOROPROPANE-1,2 (OHV)","Dichloropropane-1,2 (OHV)",78-87-5,hydrocarbures
+HEXCE,1656,HEXACHLOROÉTHANE,Hexachloroéthane,67-72-1,hydrocarbures
+DCLE,1727,"DICHLOROÉTHYLÈNE-1,2 TRANS","Dichloroéthylène-1,2 trans",156-60-5,hydrocarbures
+CLM,1736,CHLOROMÉTHANE,Chlorométhane,74-87-3,hydrocarbures
+TCB,1774,TRICHLOROBENZÈNES (TOTAL),Trichlorobenzènes (Total),,hydrocarbures
+XYLEN,1780,XYLÈNES (ORTHO+PARA+MÉTA),Xylènes (ortho+para+méta),,hydrocarbures
+13DCPYC,1834,"DICHLOROPROPYLÈNE-1,3 CIS","Dichloropropylène-1,3 cis",10061-01-5,hydrocarbures
+13DCPYT,1835,"DICHLOROPROPYLÈNE-1,3 TRANS","Dichloropropylène-1,3 trans",10061-02-6,hydrocarbures
+IBENZ,1836,ISOBUTYLBENZÈNE,Isobutylbenzène,538-93-2,hydrocarbures
+PBENZ,1837,PROPYLBENZÈNE-N,Propylbenzène-n,103-65-1,hydrocarbures
+CLE,1853,CHLOROÉTHANE,Chloroéthane,75-00-3,hydrocarbures
+TCPR,1854,"TRICLHLORO-1,2,3-PROPANE","Triclhloro-1,2,3-propane",96-18-4,hydrocarbures
+NBUBENZ,1855,BUTYL BENZÈNE-N,Butyl benzène-n,104-51-8,hydrocarbures
+PCMY,1856,CYMÈNE-P,Cymène-p,99-87-6,hydrocarbures
+123TMB,1857,"TRIMÉTHYLBENZÈNE-1,2,3","Triméthylbenzène-1,2,3",526-73-8,hydrocarbures
+SCCPS,1955,C10-13-CHLOROALCANES,C10-13-chloroalcanes,85535-84-8,hydrocarbures
+TTCB34,2010,"TÉTRACHLOROBENZÈNE-1,2,3,4","Tétrachlorobenzène-1,2,3,4",634-66-2,hydrocarbures
+3CLPROP,2065,3-CHLOROPROPÈNE,3-Chloropropène,107-05-1,hydrocarbures
+22DCP,2081,"DICHLOROPROPANE-2,2","Dichloropropane-2,2",,hydrocarbures
+11DCPRO,2082,"DICHLOROPROPÈNE-1,1","Dichloropropène-1,1",,hydrocarbures
+TTCB35,2536,"TÉTRACHLOROBENZÈNE-1,2,3,5","Tétrachlorobenzène-1,2,3,5",634-90-2,hydrocarbures
+234ET_S,2552,SOMME ETHYLTOLUÈNES (3 ISOMÈRES),Somme Ethyltoluènes (3 isomères),25550-14-5,hydrocarbures
+CLPREN,2611,CHLOROPRÈNE,Chloroprène,126-99-8,hydrocarbures
+HEXCP,2612,HEXACHLOROPENTADIÈNE,Hexachloropentadiène,77-47-4,hydrocarbures
+HCPD,2612,HEXACHLOROPENTADIÈNE (PESTICIDE),Hexachloropentadiène (pesticide),77-47-4,hydrocarbures
+2NTOL,2613,2-NITROTOLUÈNE,2-nitrotoluène,88-72-2,hydrocarbures
+DEC,2665,DECANE,Decane,124-18-5,hydrocarbures
+22DMB,2666,"2,2-DIMETHYLBUTANE","2,2-Dimethylbutane",75-83-2,hydrocarbures
+23DMB,2667,"2,3-DIMETHYLBUTANE","2,3-Dimethylbutane",79-29-8,hydrocarbures
+23DMP,2668,"2,3-DIMETHYLPENTANE","2,3-Dimethylpentane",565-59-3,hydrocarbures
+HTAN,2674,HEPTANE,Heptane,142-82-5,hydrocarbures
+NHEX,2675,N-HEXANE,n-Hexane,110-54-3,hydrocarbures
+IDAN,2676,INDANE,Indane,496-11-7,hydrocarbures
+IDEN,2677,INDENE,Indene,95-13-6,hydrocarbures
+OCTA,2679,OCTANE,Octane,111-65-9,hydrocarbures
+1M3IPB,2680,1-METHYL-3-ISOPROPYLBENZENE,1-Methyl-3-isopropylbenzene,535-77-3,hydrocarbures
+OCMY,2681,CYMENE-O,cymene-o,527-84-4,hydrocarbures
+IPENT,2682,ISOPENTANE,Isopentane,78-78-4,hydrocarbures
+2MPENT,2683,2-METHYLPENTANE,2-Methylpentane,107-83-5,hydrocarbures
+NONA,2684,NONANE,Nonane,111-84-2,hydrocarbures
+PENT,2686,PENTANE,Pentane,109-66-0,hydrocarbures
+DURE,2688,DURENE,Durene,95-93-2,hydrocarbures
+IDURE,2689,ISODURENE,Isodurene,527-53-7,hydrocarbures
+UDEC,2690,UNDECANE,Undecane,1120-21-4,hydrocarbures
+2CLPR,2695,2-CHLOROPROPANE,2-Chloropropane,75-29-6,hydrocarbures
+1112TCP,2704,"1,1,1,2 TÉTRACHLOROPROPANE","1,1,1,2 Tétrachloropropane",812-03-3,hydrocarbures
+1113TCP,2705,"1,1,1,3 TÉTRACHLOROPROPANE","1,1,1,3 Tétrachloropropane",1070-78-6,hydrocarbures
+1E2MB,2717,"BENZENE, 1-ETHYL-2-METHYL-","Benzene, 1-ethyl-2-methyl-",611-14-3,hydrocarbures
+DEGME,2718,ETHYLÈNE GLYCOL,Ethylène glycol,107-21-1,hydrocarbures
+13PRPOL,2727,"1,3-PROPANEDIOL","1,3-Propanediol",504-63-2,hydrocarbures
+TETRACB,2735,TETRACHLOROBENZÈNE,Tetrachlorobenzène,12408-10-5,hydrocarbures
+23CNT,2814,2-CHLORO-3-NITROTOLUÈNE,2-chloro-3-nitrotoluène,3970-40-9,hydrocarbures
+26CNT,2816,2-CHLORO-6-NITROTOLUÈNE,2-chloro-6-nitrotoluène,83-42-1,hydrocarbures
+XYLMEPA,2925,XYLENES (MÉTA + PARA),Xylenes (méta + para),,hydrocarbures
+HYDISSO,2962,HYDROCARBURES DISSOUS OU ÉMULSIONNÉS,Hydrocarbures dissous ou émulsionnés,,hydrocarbures
+TCEYTCL,2963,TÉTRACHLOROÉTHYLÈN+TRICHLOROÉTHYLÈN,Tétrachloroéthylèn+Trichloroéthylène,,hydrocarbures
+34ET_S,3348,SOMME 3ETHYLTOLUÈNE+4ETHYLTOLUÈNE,Somme 3ethyltoluène+4ethyltoluène,,hydrocarbures
+PGOL,3360,PROPYLÈNE GLYCOL,Propylène glycol,57-55-6,hydrocarbures
+MCH,5506,METHYL CYCLOHEXANE,Methyl cyclohexane,108-87-2,hydrocarbures
+H2SQ,5906,HYDROGÈNE SULFURÉ (QUALITATIF),Hydrogène sulfuré (qualitatif),,hydrocarbures
+EQES,5935,EQUIVALENT-ESSENCE,Equivalent-essence,8006-61-9,hydrocarbures
+EQGO,6096,EQUIVALENT-GAZOLE,Equivalent-gazole,64741-44-2,hydrocarbures
+EQPE,6097,EQUIVALENT-PÉTROLE,Equivalent-pétrole,,hydrocarbures
+THM,6275,SOMME DES TRIHALOMÉTHANES ANALYSÉS,Somme des Trihalométhanes analysés,,hydrocarbures
+TCTFM00,6506,TRICHLOROTRIFLUOROÉTHANE,Trichlorotrifluoroéthane,26523-64-8,hydrocarbures
+IHV,7006,HYDROCARBURE VOLATIL (INDICE),Hydrocarbure volatil (Indice),,hydrocarbures
+EHT,7009,EQUIVALENT HYDROCARBURES TOTAUX,Equivalent hydrocarbures totaux,,hydrocarbures
+CAMP,7418,CAMPHÈNE,Camphène,79-92-5,hydrocarbures
+SEH,7464,SUBSTANCES EXTRACTIBLES À L'HEXANE,Substances extractibles à l'hexane,,hydrocarbures
+13BUTOL,7624,"1,3-BUTANEDIOL","1,3-Butanediol",107-88-0,hydrocarbures
+14BUTOL,7625,"1,4-BUTANEDIOL","1,4-Butanediol",110-63-4,hydrocarbures
+2EAT,7886,2-ÉTHYLAMINOTOLUÈNE,2-éthylaminotoluène,94-68-8,hydrocarbures
+ACPT,1453,ACÉNAPHTÈNE,Acénaphtène,83-32-9,hap
+ANPHT,1622,ACÉNAPHTHYLÈNE,Acénaphthylène,208-96-8,hap
+ANTHRA,1458,ANTHRACÈNE,Anthracène,120-12-7,hap
+ANTHRAD,2013,ANTHRAQUINONE (HAP),Anthraquinone (HAP),84-65-1,hap
+BENZAN,1082,BENZANTHRACÈNE,Benzanthracène,56-55-3,hap
+B12FLU,1732,"BENZO(1,2)FLUORÈNE","Benzo(1,2)fluorène",238-84-6,hap
+BAPYR,1115,BENZO(A)PYRÈNE *,Benzo(a)pyrène *,50-32-8,hap
+BBFLUO,1116,BENZO(B)FLUORANTHÈNE,Benzo(b)fluoranthène,205-99-2,hap
+BBPYR,1460,BENZO(E)PYRÈNE,Benzo(e)pyrène,192-97-2,hap
+BGPERY,1118,"BENZO(G,H,I)PÉRYLÈNE","Benzo(g,h,i)pérylène",191-24-2,hap
+BJFL,1733,BENZO(J)FLUORANTHÈNE,Benzo(J)fluoranthène,205-82-3,hap
+BKFLUO,1117,BENZO(K)FLUORANTHÈNE,Benzo(k)fluoranthène,207-08-9,hap
+CLNAPH1,1603,CHLORONAPHTALÈNE-1,Chloronaphtalène-1,90-13-1,hap
+CLNAPH2,1604,CHLORONAPHTALÈNE-2,Chloronaphtalène-2,91-58-7,hap
+CHRYS,1476,CHRYSÈNE,Chrysène,218-01-9,hap
+DBENZAN,1621,"DIBENZO(A,H)ANTHRACÈNE","Dibenzo(a,h)anthracène",53-70-3,hap
+TEQ_HAP,8117,EQUIVALENT TOXIQUE HAP,Équivalent Toxique HAP,,hap
+FLUORA,1191,FLUORANTHÈNE *,Fluoranthène *,206-44-0,hap
+FLUORE,1623,FLUORÈNE,Fluorène,86-73-7,hap
+HPAT16,6136,HYDROCARBURES POLYCYCLIQUES AROMATIQUES (16 SUBST.),Hydrocarbures polycycliques aromatiques (16 subst.),,hap
+HPAT4,2033,HYDROCARBURES POLYCYCLIQUES AROMATIQUES (4 SUBSTANCES),Hydrocarbures polycycliques aromatiques (4 substances),,hap
+HPAT,2034,HYDROCARBURES POLYCYCLIQUES AROMATIQUES (6 SUBST.*),Hydrocarbures polycycliques aromatiques (6 subst.*),,hap
+INDPYR,1204,"INDÉNO(1,2,3-CD)PYRÈNE","Indéno(1,2,3-cd)pyrène",193-39-5,hap
+ME1NA,2725,MÉTHYL-1 NAPHTALÈNE,Méthyl-1 naphtalène,90-12-0,hap
+ME2FL,1619,MÉTHYL(2)FLUORANTHÈNE,Méthyl(2)fluoranthène,33543-31-6,hap
+ME2NA,1618,MÉTHYL(2)NAPHTALÈNE,Méthyl(2)naphtalène,91-57-6,hap
+NAPHTA,1517,NAPHTALÈNE,Naphtalène,91-20-3,hap
+PYE,1620,PÉRYLÈNE,Pérylène,198-55-0,hap
+PHENAN,1524,PHÉNANTRÈNE,Phénantrène,85-01-8,hap
+PYR,1537,PYRÈNE,Pyrène,129-00-0,hap
 PCB138,1244,PCB 138,PCB 138,35065-28-2,pcb
 PCB180,1246,PCB 180,PCB 180,35065-29-3,pcb
 PCB118,1243,PCB 118,PCB 118,31508-00-6,pcb
@@ -1186,6 +1184,8 @@ FMG,7073,FLUORURES MG/L,Fluorures mg/L,16984-48-8,minéral
 THCA,5411,TITRE HYDROTIMÉTRIQUE CALCIQUE,Titre hydrotimétrique calcique,,minéral
 PT,1350,PHOSPHORE TOTAL (EXPRIME EN MG(P2O5)/L),Phosphore total (exprimé en mg(P2O5)/L),7723-14-0,minéral
 K40,2954,POTASSIUM 40 EN MG/L,Potassium 40 en mg/L,,minéral
+O2,1311,OXYGÈNE DISSOUS,Oxygène dissous,7782-44-7,minéral
+O2SAT,1312,OXYGÈNE DISSOUS % SATURATION,Oxygène dissous % Saturation,,minéral
 STRF,6455,ENTÉROCOQUES /100ML-MS,Entérocoques /100ml-MS,,microbio
 ECOLI,1449,ESCHERICHIA COLI /100ML - MF,Escherichia coli /100ml - MF,,microbio
 CTF,1447,BACTÉRIES COLIFORMES /100ML-MS,Bactéries coliformes /100ml-MS,,microbio

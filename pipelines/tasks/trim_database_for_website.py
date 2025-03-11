@@ -89,7 +89,7 @@ def execute(
         table for table in tables_to_keep if table not in available_table_names
     ]
     if missing_tables:
-        logger.warning(f"Requested tables not found in database: {missing_tables}")
+        raise ValueError(f"Requested tables not found in database: {missing_tables}")
 
     # Final list of tables to copy (intersection of requested tables and available tables)
     tables_to_copy = [

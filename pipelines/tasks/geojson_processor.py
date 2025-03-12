@@ -1,7 +1,6 @@
 # pipelines/tasks/geojson_processor.py
 
 import json
-from typing import Any, Dict
 import pandas as pd
 from tqdm import tqdm
 

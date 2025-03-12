@@ -1,12 +1,13 @@
 # pipelines/tasks/client/opendatasoft_client.py
 
 import requests
-from typing import Dict, Any
-import json
 
 
 class OpenDataSoftClient:
-    def __init__(self, base_url: str = "https://public.opendatasoft.com/api/explore/v2.1/catalog/datasets/"):
+    def __init__(
+        self,
+        base_url: str = "https://public.opendatasoft.com/api/explore/v2.1/catalog/datasets/",
+    ):
         self.base_url = base_url
 
     def download_geojson(self, dataset_name: str, output_path: str) -> str:

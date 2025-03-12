@@ -1,5 +1,4 @@
 version = 1
-revision = 1
 requires-python = ">=3.12"
 
 [[package]]
@@ -925,6 +924,23 @@ wheels = [
 ]
 
 [[package]]
+name = "ipython-sql"
+version = "0.5.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "ipython" },
+    { name = "ipython-genutils" },
+    { name = "prettytable" },
+    { name = "six" },
+    { name = "sqlalchemy" },
+    { name = "sqlparse" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/d0/ba/5a396a3b5bda93943479e7e79511ccec00f5b7ac30d0ed9072a1e69ee1a6/ipython-sql-0.5.0.tar.gz", hash = "sha256:3db3ce7f9a95dfaf43876fa80b16bdbb9a04de0ba12042cab13e9f596fcffdbe", size = 20581 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/30/8f/9e50fa53ffc371483f9d1b90c1175b706d28a2e978e90a8894035af01905/ipython_sql-0.5.0-py3-none-any.whl", hash = "sha256:61b46ecffb956f62dbc17b5744cf70c649104c8db9afd821aa39b31f7cbb5d5b", size = 20172 },
+]
+
+[[package]]
 name = "ipywidgets"
 version = "8.1.5"
 source = { registry = "https://pypi.org/simple" }
@@ -1056,7 +1072,7 @@ wheels = [
 
 [[package]]
 name = "jupysql"
-version = "0.11.0"
+version = "0.10.17"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "ipython-genutils" },
@@ -1068,9 +1084,9 @@ dependencies = [
     { name = "sqlglot" },
     { name = "sqlparse" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/41/49/a6d279890d3c7ec763a888998dc6eef15b8ecb19346354a23fd4d79618ab/jupysql-0.11.0.tar.gz", hash = "sha256:d5f331406791e1b7dc2c784d6a01cd6be445c4cda142552ea24923b7df44a72a", size = 81176 }
+sdist = { url = "https://files.pythonhosted.org/packages/8d/d3/cbcf345839ba992e3c8bb0c41237b445f5eae0a814f0fcbc93ac63f8c261/jupysql-0.10.17.tar.gz", hash = "sha256:021f162b83115c9f332db2a09977a9a9a9207f961960aabccea8b30a8945e988", size = 80990 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/79/4f/0fb4c183adaa817ad2e68147c5e8ba8c1d207583cf8bc95c19d36d12e07e/jupysql-0.11.0-py3-none-any.whl", hash = "sha256:9279993e7de6f51c96a4c0448f084000b2e2ae4519d3bdfdf35892bfbe22a155", size = 95311 },
+    { url = "https://files.pythonhosted.org/packages/cd/d5/e8ac71e735ce96c76b32fcbd657255179f625deae2aae3e2611e139bb878/jupysql-0.10.17-py3-none-any.whl", hash = "sha256:fdab91d52aefff18fdc92752ab3c25fe56d5546c7b4c032a793b44f57496f91d", size = 95161 },
 ]
 
 [[package]]
@@ -1876,6 +1892,7 @@ dependencies = [
     { name = "ibis-framework", extra = ["duckdb"] },
     { name = "ipykernel" },
     { name = "ipython" },
+    { name = "ipython-sql" },
     { name = "jupysql" },
     { name = "matplotlib" },
     { name = "pandas" },
@@ -1904,7 +1921,8 @@ requires-dist = [
     { name = "ibis-framework", extras = ["duckdb"], specifier = "==10.1.0" },
     { name = "ipykernel", specifier = ">=6.29.5,<7" },
     { name = "ipython", specifier = ">=8.31.0,<9" },
-    { name = "jupysql", specifier = ">=0.11.0,<1" },
+    { name = "ipython-sql", specifier = ">=0.5.0,<1" },
+    { name = "jupysql", specifier = ">=0.10.17,<1" },
     { name = "matplotlib", specifier = ">=3.10.0,<4" },
     { name = "pandas", specifier = ">=2.2.3,<3" },
     { name = "python-dotenv", specifier = ">=1.0.1,<2" },

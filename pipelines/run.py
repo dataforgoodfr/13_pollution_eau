@@ -165,6 +165,7 @@ def run_generate_geojson(env):
     from tasks.geojson_processor import GeoJSONProcessor
 
     from pipelines.config.config import get_environment
+    from pipelines.tasks.config.config_geojson import get_opendatasoft_config
 
     if env is not None:
         os.environ["ENV"] = env
@@ -174,13 +175,13 @@ def run_generate_geojson(env):
     logger.info("Starting GeoJSON generation process")
 
     # Initialize clients
-    opendatasoft = OpenDataSoftClient()
+    opendatasoft = OpenDataSoftClient(config=get_opendatasoft_config())
     processor = GeoJSONProcessor()
 
     # Download GeoJSON
     geojson_path = os.path.join(CACHE_FOLDER, "georef-france-commune.geojson")
     logger.info("Downloading GeoJSON from OpenDataSoft")
-    opendatasoft.download_geojson("georef-france-commune", geojson_path)
+    opendatasoft.download_geojson(output_path=geojson_path)
 
     # Get results from database
     logger.info("Fetching commune results from database")

@@ -64,6 +64,7 @@ utilisez les commandes `uv run` pour lancer un script Python depuis votre termin
 
   ```bash
   curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
+  nvm install 22
   ```
 
 - Installez les dépendances du site web:

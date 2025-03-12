@@ -148,15 +148,35 @@ models:
         description: "Catégorie du paramètre (pesticides, nitrites, etc.)"
         type: VARCHAR
 
-  - name: int__udi_cog
-    description: "Liste des communes et leurs unités de distribution avec le code region et departement"
+  - name: int_edc__commune_udi
+    description: "Liste des communes et leurs unités de distribution "
     columns:
       - name: commune_code_insee 
         description: Code Commune
       - name: cdreseau
         description: "Code de l'installation (unité de distribution)"
         type: VARCHAR(9)
+      - name: nomcommune
+      - name: quartiers
+      - name: nomreseaux
+      - name: debutalim
       - name: code_departement
         description: Code Departement
       - name: code_region
         description: Code Region
+
+  - name : int_mesures_cat_communes_year
+    description: "Analyses par année, categorie et communes "
+    columns:
+      - name: annee
+      - name: categorie
+        description: "Catégorie du paramètre (pesticides, nitrites, etc.)"
+        type: VARCHAR
+      - name: commune_code_insee 
+        description: Code Commune
+      - name: nb_analyses
+        description: Nombre d'analyse totales sur l'année pour la commune et la catégorie
+      - name: nb_analyses_not_ok
+        description: Nombre d'analyse avec  valtraduite >= limitequal_float sur l'année pour la commune et la catégorie
+      - name: nb_analyses_ok
+        description: Nombre d'analyse avec  valtraduite < limitequal_float sur l'année pour la commune et la catégorie

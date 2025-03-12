@@ -905,8 +905,8 @@ XYLO,1292,XYLÈNE ORTHO,Xylène ortho,95-47-6,hydrocarbures
 XYL,1293,XYLÈNE MÉTA,Xylène méta,108-38-3,hydrocarbures
 XYLMP,1294,XYLÈNE PARA,Xylène para,106-42-3,hydrocarbures
 H2S,1343,HYDROGÈNE SULFURÉ,Hydrogène sulfuré,7783-06-4,hydrocarbures
-MO,1395,MOLYBDÈNE,Molybdène,7439-98-7,hydrocarbures
-MOD,1395,MOLYBDÈNE DISSOUS,Molybdène dissous,7439-98-7,hydrocarbures
+MO,1395,MOLYBDÈNE,Molybdène,7439-98-7,non classé
+MOD,1395,MOLYBDÈNE DISSOUS,Molybdène dissous,7439-98-7,non classé
 ICH2,1446,HYDROCARBURES (INDICE CH2),Hydrocarbures (Indice CH2),,hydrocarbures
 12DCET,1456,"DICHLOROÉTHYLÈNE-1,2 CIS","Dichloroéthylène-1,2 cis",156-59-2,hydrocarbures
 MCB,1467,CHLOROBENZÈNE,Chlorobenzène,108-90-7,hydrocarbures
@@ -964,7 +964,7 @@ TTCB35,2536,"TÉTRACHLOROBENZÈNE-1,2,3,5","Tétrachlorobenzène-1,2,3,5",634-90
 234ET_S,2552,SOMME ETHYLTOLUÈNES (3 ISOMÈRES),Somme Ethyltoluènes (3 isomères),25550-14-5,hydrocarbures
 CLPREN,2611,CHLOROPRÈNE,Chloroprène,126-99-8,hydrocarbures
 HEXCP,2612,HEXACHLOROPENTADIÈNE,Hexachloropentadiène,77-47-4,hydrocarbures
-HCPD,2612,HEXACHLOROPENTADIÈNE (PESTICIDE),Hexachloropentadiène (pesticide),77-47-4,hydrocarbures
+HCPD,2612,HEXACHLOROPENTADIÈNE (PESTICIDE),Hexachloropentadiène (pesticide),77-47-4,pesticides
 2NTOL,2613,2-NITROTOLUÈNE,2-nitrotoluène,88-72-2,hydrocarbures
 DEC,2665,DECANE,Decane,124-18-5,hydrocarbures
 22DMB,2666,"2,2-DIMETHYLBUTANE","2,2-Dimethylbutane",75-83-2,hydrocarbures

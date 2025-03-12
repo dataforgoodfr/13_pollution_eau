@@ -25,23 +25,23 @@ export default function PollutionMapSearchBox(
       "https://data.geopf.fr/geocodage/search?autocomplete=1&limit=10&returntruegeometry=false&type=municipality&category=commune";
     const URLIGN = new URL(IGNQuery);
     URLIGN.searchParams.set("q", filterString);
-    const data = await fetch(URLIGN)
-      .then((response) => {
-        const data = response.clone();
-        //console.log("body",response)
-        return data.json();
-      })
-      .catch((err) => {
-        console.log("fetch error :", err);
-      });
-
-    if (data?.features) {
-      setCommunesList(data?.features);
-      setDropDownOpen(true);
-    } else {
-      setCommunesList([]);
-      setDropDownOpen(false);
-    }
+    
+        try {
+            const response = await fetch(URLIGN);
+            const data = await response.json();
+            
+            if (data?.features) {
+              setCommunesList(data.features);
+              setDropDownOpen(true);
+            } else {
+              setCommunesList([]);
+              setDropDownOpen(false);
+            }
+          } catch (err) {
+            console.log("fetch error :", err);
+            setCommunesList([]);
+            setDropDownOpen(false);
+          }
   }
 
   async function HandleFilterChange(e: React.ChangeEvent<HTMLInputElement>) {

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef } from "react";
-import ReactMapGl, { MapLayerMouseEvent, useMap } from "react-map-gl/maplibre";
+import ReactMapGl, { MapLayerMouseEvent } from "react-map-gl/maplibre";
 import maplibregl, { Feature, MapGeoJSONFeature } from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 import { Protocol } from "pmtiles";

@@ -1,4 +1,3 @@
-
 ## Installation
 
 First, run the development server:

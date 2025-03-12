@@ -76,7 +76,6 @@ utilisez les commandes `uv run` pour lancer un script Python depuis votre termin
 
 - Lancer `npm run dev` et ouvrir le navigateur sur http://localhost:3000 pour voir la carte.
 
-
 ## Data Processing
 
 ### Package installation

@@ -3,7 +3,7 @@
 import { Feature } from "maplibre-gl";
 import { Popover, PopoverAnchor, PopoverContent } from "./ui/popover";
 import { Input } from "./ui/input";
-import { Dispatch, Fragment, SetStateAction, useState } from "react";
+import { useState } from "react";
 import { Command, CommandGroup, CommandItem, CommandList } from "./ui/command";
 import { CommandEmpty } from "cmdk";
 
@@ -20,10 +20,7 @@ export default function PollutionMapSearchBox(
   const [communesList, setCommunesList] = useState([]);
   const [delayHandler, setDelayHandler] = useState<NodeJS.Timeout | null>(null);
 
-  async function PerformSearch(
-    filterString: string,
-    SetCommunesListCallback: Dispatch<SetStateAction<never[]>>,
-  ) {
+  async function PerformSearch(filterString: string) {
     const IGNQuery =
       "https://data.geopf.fr/geocodage/search?autocomplete=1&limit=10&returntruegeometry=false&type=municipality&category=commune";
     const URLIGN = new URL(IGNQuery);
@@ -39,10 +36,10 @@ export default function PollutionMapSearchBox(
       });
 
     if (data?.features) {
-      SetCommunesListCallback(data?.features);
+      setCommunesList(data?.features);
       setDropDownOpen(true);
     } else {
-      SetCommunesListCallback([]);
+      setCommunesList([]);
       setDropDownOpen(false);
     }
   }
@@ -63,7 +60,7 @@ export default function PollutionMapSearchBox(
     if (e.target.value?.length >= 3) {
       setDelayHandler(
         setTimeout(() => {
-          PerformSearch(e.target.value, setCommunesList);
+          PerformSearch(e.target.value);
         }, 200),
       );
     } else {

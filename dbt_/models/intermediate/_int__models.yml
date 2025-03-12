@@ -1,6 +1,26 @@
 version: 2
 
 models:
+  - name: int__mapping_category_simple
+    description: "Liste des cdparametresiseeaux unique avec categorisation"
+    columns:
+      - name: cdparametresiseeaux
+        description: >
+          Le code SISE-Eaux du paramètre est un identifiant alphanumérique sur 7 positions maximum, associé à chaque
+          paramètre. Lorsque c'est possible, le symbole chimique est retenu comme identifiant (NO3, AS...) pour le rendre
+          signifiant.
+        type: VARCHAR(10)
+        tests:
+          - unique
+      - name: categorie
+        description: "Catégorie du paramètre (pesticides, nitrites, etc.)"
+        type: VARCHAR
+      - name: nb_categorie
+        description: Nombre unique categorie à cdparametresiseeaux - DOIT être égal à 1
+        type: SMALLINT
+        tests:
+          - accepted_values:
+              values: [1]
   - name: int__prelevements_uniques
     description: "Liste des prélèvements unique"
     columns:

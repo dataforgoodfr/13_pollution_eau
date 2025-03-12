@@ -236,5 +236,25 @@ def run_download_geojson(env, use_boto3):
     task_func(env, use_boto3)
 
 
+@run.command("trim_database_for_website")
+@click.option(
+    "--output-file",
+    type=click.Path(file_okay=True, dir_okay=False),
+    default=None,
+    help="Path to save the trimmed database",
+)
+@click.option(
+    "--tables-list",
+    type=str,
+    default=None,
+    help="Comma-separated list of tables to keep (overrides default list)",
+)
+def run_trim_database_for_website(output_file, tables_list):
+    """Trim database for website use by keeping only necessary tables."""
+    module = importlib.import_module("tasks.trim_database_for_website")
+    task_func = getattr(module, "execute")
+    task_func(output_file=output_file, tables_list=tables_list)
+
+
 if __name__ == "__main__":
     cli()

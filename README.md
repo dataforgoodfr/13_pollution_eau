@@ -199,6 +199,20 @@ Lancer la commande suivante pour s'assurer que le code satisfait bien tous les p
 pre-commit run --all-files
 ```
 
+## Déploiement du site avec Docker
+
+Un fichier `Dockerfile` est disponible pour déployer le site web avec Docker.
+
+Pour créer et exécuter l'image Docker en local (à la racine du projet) :
+
+```bash
+docker build -t pollution-eau-app .
+
+docker run -p 8080:8080 --rm pollution-eau-app
+```
+
+Le site sera alors accessible à l'adresse http://localhost:8080.
+
 ## How to contribute
 Pour contribuer, il est recommandé d'utiliser un fork du projet. Cela permet d'éviter la gestion des demandes d'accès au dépôt principal.
 

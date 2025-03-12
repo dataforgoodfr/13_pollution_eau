@@ -97,7 +97,9 @@ export default function PollutionMapSearchBox(
             sideOffset={5}
           >
             <Command>
-              <CommandEmpty className="py-6 text-center text-sm text-muted-foreground">Aucune commune trouvée.</CommandEmpty>
+              <CommandEmpty className="py-6 text-center text-sm text-muted-foreground">
+                Aucune commune trouvée.
+              </CommandEmpty>
               <CommandList>
                 <CommandGroup key="CommuneList">
                   {communesList?.map((x: Feature) => (

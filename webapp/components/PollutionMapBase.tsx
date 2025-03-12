@@ -44,7 +44,6 @@ export default function PollutionMapBaseLayer({
       onFeatureClick(event.features[0]);
     }
   }
-  const { current: map } = useMap();
 
   useEffect(() => {
     if (selectedCommune) {
@@ -54,7 +53,7 @@ export default function PollutionMapBaseLayer({
         zoom: 9,
       });
     }
-  }, [selectedCommune, map]);
+  }, [selectedCommune]);
 
   const mapStyle = useMemo(() => {
     const dynamicLayers: maplibregl.LayerSpecification[] = [

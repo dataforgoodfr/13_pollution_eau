@@ -99,22 +99,22 @@ export default function PollutionMapSearchBox(
               </CommandEmpty>
               <CommandList>
                 <CommandGroup key="CommuneList">
-                  {communesList?.map((x: Feature) => (
+                  {communesList?.map((CommuneFeature: Feature) => (
                     <CommandItem
-                      key={x?.properties?.id}
+                      key={CommuneFeature?.properties?.id}
                       onSelect={() => {
                         setDropDownOpen(false);
-                        props?.onSelect(x);
+                        props?.onSelect(CommuneFeature);
                       }}
                     >
                       <HilightLabel
-                        value={
-                          x?.properties?.name +
+                        originalText={
+                          CommuneFeature?.properties?.name +
                           " (" +
-                          x?.properties?.postcode +
+                          CommuneFeature?.properties?.postcode +
                           ")"
                         }
-                        HilightText={filterString}
+                        textToHilight={filterString}
                       />
                     </CommandItem>
                   ))}
@@ -128,29 +128,29 @@ export default function PollutionMapSearchBox(
   );
 }
 
-function HilightLabel(props: { HilightText: string; value: string }) {
-  if (!props?.value || !props?.HilightText) {
-    return <>{props?.value}</>;
+function HilightLabel(props: { textToHilight: string; originalText: string }) {
+  if (!props?.originalText || !props?.textToHilight) {
+    return <>{props?.originalText}</>;
   }
-  const text: string = props.value;
-  const subString = props?.HilightText ? props.HilightText?.toLowerCase() : "";
+  const text: string = props.originalText;
+  const subString = props?.textToHilight ? props.textToHilight?.toLowerCase() : "";
   const startIdx = text.toLowerCase().indexOf(subString);
   if (startIdx == -1) {
     return <>{text}</>;
   }
 
-  const S1 = text.substring(0, startIdx);
-  const S2 = text.substring(startIdx, startIdx + subString?.length);
-  const S3 =
-    S2?.length < text.length
+  const subStringBefore = text.substring(0, startIdx);
+  const higlightedSubString = text.substring(startIdx, startIdx + subString?.length);
+  const subStringAfter =
+    higlightedSubString?.length < text.length
       ? text.substring(startIdx + subString?.length, text.length)
       : "";
 
   return (
     <p>
-      {S1}
-      <mark className="font-normal bg-yellow-400">{S2}</mark>
-      {S3}
+      {subStringBefore}
+      <mark className="font-normal bg-yellow-400">{higlightedSubString}</mark>
+      {subStringAfter}
     </p>
   );
 }

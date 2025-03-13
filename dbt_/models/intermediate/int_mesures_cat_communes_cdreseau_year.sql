@@ -43,4 +43,4 @@ SELECT
 FROM
     mesures_cat_communes
 GROUP BY
-    1, 2, 3,4
+    1, 2, 3, 4

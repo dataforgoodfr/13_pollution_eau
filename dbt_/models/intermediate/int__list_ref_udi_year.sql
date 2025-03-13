@@ -1,39 +1,41 @@
-WITH   
+WITH
 annees AS (
-    SELECT unnest(generate_series(2020, 2024)) as annee
-    ),
+    SELECT unnest(generate_series(2020, 2024)) AS annee
+),
 
 cat AS (
-    SELECT categorie FROM int__mapping_category_simple GROUP BY 1 
-    ),
+    SELECT categorie FROM {{ ref('int__mapping_category_simple') }}
+    GROUP BY 1
+),
 
-year_cat AS (   
+year_cat AS (
     SELECT
-     annee, categorie
-    FROM 
-    annees
+        annee,
+        categorie
+    FROM
+        annees
     CROSS JOIN
-    cat 
+        cat
 ),
 
 udi AS (
     SELECT
-      de_partition AS year,
-      inseecommune AS commune_code_insee,
-      cdreseau,
+        de_partition AS year,
+        inseecommune AS commune_code_insee,
+        cdreseau
     FROM
-      edc_communes
-    GROUP BY 
-    1,2,3
+        {{ ref('stg_edc__communes') }}
+    GROUP BY
+        1, 2, 3
 )
-   
+
 SELECT DISTINCT
-    annee, 
+    annee,
     categorie,
-    commune_code_insee ,
- FROM
-      udi
- FULL OUTER JOIN
-       year_cat
- ON
-    udi.year = year_cat.annee
+    commune_code_insee
+FROM
+    udi
+FULL OUTER JOIN
+    year_cat
+    ON
+        udi.year = year_cat.annee

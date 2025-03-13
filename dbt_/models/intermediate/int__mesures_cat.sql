@@ -21,7 +21,7 @@ SELECT
 FROM
     resultats
 LEFT JOIN
-    int__mapping_category_simple
+    {{ ref('int__mapping_category_simple') }} AS int__mapping_category_simple
     ON
         resultats.cdparametresiseeaux
         = int__mapping_category_simple.cdparametresiseeaux

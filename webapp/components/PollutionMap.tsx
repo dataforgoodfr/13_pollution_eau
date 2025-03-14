@@ -20,14 +20,15 @@ export default function PollutionMap() {
   const [featureDetails, setFeatureDetails] =
     useState<MapGeoJSONFeature | null>(null);
 
-  const handleCommuneSelect = ({
-    center,
-    zoom,
-    communeInseeCode,
-  }: CommuneFilterResult) => {
-    setMapCenter(center);
-    setMapZoom(zoom);
-    setCommuneInseeCode(communeInseeCode);
+  const handleCommuneSelect = (result: CommuneFilterResult | null) => {
+    if (result) {
+      const { center, zoom, communeInseeCode } = result;
+      setMapCenter(center);
+      setMapZoom(zoom);
+      setCommuneInseeCode(communeInseeCode);
+    } else {
+      setCommuneInseeCode(null);
+    }
   };
 
   const handleViewportChange = (center: [number, number], zoom: number) => {

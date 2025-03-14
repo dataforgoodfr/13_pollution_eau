@@ -5,6 +5,7 @@ import { Input } from "./ui/input";
 import { useState } from "react";
 import { Command, CommandGroup, CommandItem, CommandList } from "./ui/command";
 import { CommandEmpty } from "cmdk";
+import { X } from "lucide-react";
 
 interface IGNQueryResult {
   type: string;
@@ -31,7 +32,7 @@ export type CommuneFilterResult = {
 };
 
 interface PollutionMapsSearchBoxProps {
-  onCommuneFilter: (communeFilter: CommuneFilterResult) => void;
+  onCommuneFilter: (communeFilter: CommuneFilterResult | null) => void;
   communeInseeCode: string | null;
 }
 
@@ -104,6 +105,13 @@ export default function PollutionMapSearchBox({
     });
   }
 
+  function clearSearch() {
+    setFilterString("");
+    setCommunesList([]);
+    setDropDownOpen(false);
+    onCommuneFilter(null);
+  }
+
   return (
     <div className="flex items-center space-x-6">
       <div>
@@ -113,49 +121,60 @@ export default function PollutionMapSearchBox({
         >
           Commune
         </label>
-        <Popover open={dropDownIsOpened} onOpenChange={setDropDownOpen}>
-          <PopoverAnchor asChild>
-            <Input
-              className="float max-w-fit rounded-sm outline-1 outline-blue-500"
-              key="TextInputCommune"
-              value={filterString}
-              placeholder="Saisir le nom de votre commune"
-              onChange={HandleFilterChange}
-            />
-          </PopoverAnchor>
-          <PopoverContent
-            asChild={true}
-            onOpenAutoFocus={(e) => e.preventDefault()}
-            align="start"
-            sideOffset={5}
-          >
-            <Command>
-              <CommandEmpty className="py-6 text-center text-sm text-muted-foreground">
-                Aucune commune trouvée.
-              </CommandEmpty>
-              <CommandList>
-                <CommandGroup key="CommuneList">
-                  {communesList.map((CommuneFeature) => (
-                    <CommandItem
-                      key={CommuneFeature.properties.id}
-                      onSelect={() => handleCommuneSelect(CommuneFeature)}
-                    >
-                      <HilightLabel
-                        originalText={
-                          CommuneFeature.properties.name +
-                          " (" +
-                          CommuneFeature.properties.postcode +
-                          ")"
-                        }
-                        textToHilight={filterString}
-                      />
-                    </CommandItem>
-                  ))}
-                </CommandGroup>
-              </CommandList>
-            </Command>
-          </PopoverContent>
-        </Popover>
+        <div className="relative">
+          <Popover open={dropDownIsOpened} onOpenChange={setDropDownOpen}>
+            <PopoverAnchor asChild>
+              <Input
+                className="float max-w-fit rounded-sm outline-1 outline-blue-500 pr-8"
+                key="TextInputCommune"
+                value={filterString}
+                placeholder="Saisir le nom de votre commune"
+                onChange={HandleFilterChange}
+              />
+            </PopoverAnchor>
+            <PopoverContent
+              asChild={true}
+              onOpenAutoFocus={(e) => e.preventDefault()}
+              align="start"
+              sideOffset={5}
+            >
+              <Command>
+                <CommandEmpty className="py-6 text-center text-sm text-muted-foreground">
+                  Aucune commune trouvée.
+                </CommandEmpty>
+                <CommandList>
+                  <CommandGroup key="CommuneList">
+                    {communesList.map((CommuneFeature) => (
+                      <CommandItem
+                        key={CommuneFeature.properties.id}
+                        onSelect={() => handleCommuneSelect(CommuneFeature)}
+                      >
+                        <HilightLabel
+                          originalText={
+                            CommuneFeature.properties.name +
+                            " (" +
+                            CommuneFeature.properties.postcode +
+                            ")"
+                          }
+                          textToHilight={filterString}
+                        />
+                      </CommandItem>
+                    ))}
+                  </CommandGroup>
+                </CommandList>
+              </Command>
+            </PopoverContent>
+          </Popover>
+          {filterString && (
+            <button
+              onClick={clearSearch}
+              className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 focus:outline-none"
+              aria-label="Clear search"
+            >
+              <X size={16} />
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );

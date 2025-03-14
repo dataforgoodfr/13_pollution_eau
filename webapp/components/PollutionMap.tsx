@@ -3,32 +3,55 @@
 import { useState } from "react";
 import PollutionMapBaseLayer from "@/components/PollutionMapBase";
 import PollutionMapFilters from "@/components/PollutionMapFilters";
-// import PollutionMapSearchBox from "@/components/PollutionMapSearchBox";
-// import PollutionMapLegend from "@/components/PollutionMapLegend";
 import PollutionMapDetailPanel from "@/components/PollutionMapDetailPanel";
-import PollutionMapSearchBox from "./PollutionMapSearchBox";
-import { Feature, MapGeoJSONFeature } from "maplibre-gl";
+import PollutionMapSearchBox, {
+  CommuneFilterResult,
+} from "./PollutionMapSearchBox";
+import { MapGeoJSONFeature } from "maplibre-gl";
 
 export default function PollutionMap() {
-  // États partagés entre les composants
   const [year, setYear] = useState("2024");
   const [categoryType, setCategoryType] = useState("cvm");
-  const [selectedCommune, setSelectedCommune] = useState<Feature | null>(null);
-  const [selectedFeature, setSelectedFeature] = useState<MapGeoJSONFeature | null>(null);
+  const [mapCenter, setMapCenter] = useState<[number, number]>([
+    2.213749, 46.227638,
+  ]);
+  const [mapZoom, setMapZoom] = useState<number>(5);
+  const [communeInseeCode, setCommuneInseeCode] = useState<string | null>(null);
+  const [featureDetails, setFeatureDetails] =
+    useState<MapGeoJSONFeature | null>(null);
+
+  const handleCommuneSelect = ({
+    center,
+    zoom,
+    communeInseeCode,
+  }: CommuneFilterResult) => {
+    setMapCenter(center);
+    setMapZoom(zoom);
+    setCommuneInseeCode(communeInseeCode);
+  };
+
+  const handleViewportChange = (center: [number, number], zoom: number) => {
+    setMapCenter(center);
+    setMapZoom(zoom);
+    console.log("Viewport changed to", center, zoom);
+  };
 
   return (
     <div className="relative w-full h-full flex flex-col">
       <PollutionMapBaseLayer
         year={year}
         categoryType={categoryType}
-        selectedCommune={selectedCommune}
-        onFeatureClick={setSelectedFeature}
+        communeInseeCode={communeInseeCode}
+        center={mapCenter}
+        zoom={mapZoom}
+        onViewportChange={handleViewportChange}
+        onFeatureClick={setFeatureDetails}
       />
 
       <div className="absolute top-4 left-4 right-4 z-10 bg-white p-3 rounded-lg shadow-lg flex justify-between">
         <PollutionMapSearchBox
-          selectedCommune={selectedCommune}
-          onSelect={setSelectedCommune}
+          communeInseeCode={communeInseeCode}
+          onCommuneFilter={handleCommuneSelect}
         />
         <PollutionMapFilters
           year={year}
@@ -42,10 +65,10 @@ export default function PollutionMap() {
         <PollutionMapLegend categoryType={categoryType} />
       </div> */}
 
-      {selectedFeature && (
+      {featureDetails && (
         <PollutionMapDetailPanel
-          feature={selectedFeature}
-          onClose={() => setSelectedFeature(null)}
+          feature={featureDetails}
+          onClose={() => setFeatureDetails(null)}
           className="absolute bottom-6 left-4 z-10 bg-white p-3 rounded-lg shadow-lg max-w-xs"
         />
       )}

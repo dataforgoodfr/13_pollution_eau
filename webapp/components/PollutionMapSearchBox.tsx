@@ -1,23 +1,47 @@
 "use client";
 
-import { Feature } from "maplibre-gl";
 import { Popover, PopoverAnchor, PopoverContent } from "./ui/popover";
 import { Input } from "./ui/input";
 import { useState } from "react";
 import { Command, CommandGroup, CommandItem, CommandList } from "./ui/command";
 import { CommandEmpty } from "cmdk";
 
-interface PollutionMapsSearchBoxProps {
-  onSelect: (SelectedCommuneInfo: Feature | null) => void;
-  selectedCommune: Feature | null;
+interface IGNQueryResult {
+  type: string;
+  geometry: {
+    type: string;
+    coordinates: [number, number];
+  };
+  properties: {
+    id: string;
+    name: string;
+    postcode: string;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    [key: string]: any;
+  };
 }
 
-export default function PollutionMapSearchBox(
-  props: PollutionMapsSearchBoxProps,
-) {
+interface IGNQueryResponse {
+  features: IGNQueryResult[];
+}
+export type CommuneFilterResult = {
+  center: [number, number];
+  zoom: number;
+  communeInseeCode: string;
+};
+
+interface PollutionMapsSearchBoxProps {
+  onCommuneFilter: (communeFilter: CommuneFilterResult) => void;
+  communeInseeCode: string | null;
+}
+
+export default function PollutionMapSearchBox({
+  onCommuneFilter,
+  //communeInseeCode,
+}: PollutionMapsSearchBoxProps) {
   const [filterString, setFilterString] = useState("");
   const [dropDownIsOpened, setDropDownOpen] = useState(false);
-  const [communesList, setCommunesList] = useState([]);
+  const [communesList, setCommunesList] = useState<IGNQueryResult[]>([]);
   const [delayHandler, setDelayHandler] = useState<NodeJS.Timeout | null>(null);
 
   async function PerformSearch(filterString: string) {
@@ -25,23 +49,23 @@ export default function PollutionMapSearchBox(
       "https://data.geopf.fr/geocodage/search?autocomplete=1&limit=10&returntruegeometry=false&type=municipality&category=commune";
     const URLIGN = new URL(IGNQuery);
     URLIGN.searchParams.set("q", filterString);
-    
-        try {
-            const response = await fetch(URLIGN);
-            const data = await response.json();
-            
-            if (data?.features) {
-              setCommunesList(data.features);
-              setDropDownOpen(true);
-            } else {
-              setCommunesList([]);
-              setDropDownOpen(false);
-            }
-          } catch (err) {
-            console.log("fetch error :", err);
-            setCommunesList([]);
-            setDropDownOpen(false);
-          }
+
+    try {
+      const response = await fetch(URLIGN);
+      const data: IGNQueryResponse = await response.json();
+
+      if (data.features) {
+        setCommunesList(data.features);
+        setDropDownOpen(true);
+      } else {
+        setCommunesList([]);
+        setDropDownOpen(false);
+      }
+    } catch (err) {
+      console.log("fetch error :", err);
+      setCommunesList([]);
+      setDropDownOpen(false);
+    }
   }
 
   async function HandleFilterChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -56,7 +80,7 @@ export default function PollutionMapSearchBox(
     }
 
     setFilterString(e.target.value);
-    props?.onSelect(null);
+
     if (e.target.value?.length >= 3) {
       setDelayHandler(
         setTimeout(() => {
@@ -66,6 +90,18 @@ export default function PollutionMapSearchBox(
     } else {
       setCommunesList([]);
     }
+  }
+
+  function handleCommuneSelect(feature: IGNQueryResult) {
+    setDropDownOpen(false);
+    setFilterString(
+      feature.properties.name + " (" + feature.properties.postcode + ")",
+    );
+    onCommuneFilter({
+      center: feature.geometry.coordinates,
+      zoom: 10,
+      communeInseeCode: feature.properties.id,
+    });
   }
 
   return (
@@ -99,19 +135,16 @@ export default function PollutionMapSearchBox(
               </CommandEmpty>
               <CommandList>
                 <CommandGroup key="CommuneList">
-                  {communesList?.map((CommuneFeature: Feature) => (
+                  {communesList.map((CommuneFeature) => (
                     <CommandItem
-                      key={CommuneFeature?.properties?.id}
-                      onSelect={() => {
-                        setDropDownOpen(false);
-                        props?.onSelect(CommuneFeature);
-                      }}
+                      key={CommuneFeature.properties.id}
+                      onSelect={() => handleCommuneSelect(CommuneFeature)}
                     >
                       <HilightLabel
                         originalText={
-                          CommuneFeature?.properties?.name +
+                          CommuneFeature.properties.name +
                           " (" +
-                          CommuneFeature?.properties?.postcode +
+                          CommuneFeature.properties.postcode +
                           ")"
                         }
                         textToHilight={filterString}
@@ -133,14 +166,19 @@ function HilightLabel(props: { textToHilight: string; originalText: string }) {
     return <>{props?.originalText}</>;
   }
   const text: string = props.originalText;
-  const subString = props?.textToHilight ? props.textToHilight?.toLowerCase() : "";
+  const subString = props?.textToHilight
+    ? props.textToHilight?.toLowerCase()
+    : "";
   const startIdx = text.toLowerCase().indexOf(subString);
   if (startIdx == -1) {
     return <>{text}</>;
   }
 
   const subStringBefore = text.substring(0, startIdx);
-  const higlightedSubString = text.substring(startIdx, startIdx + subString?.length);
+  const higlightedSubString = text.substring(
+    startIdx,
+    startIdx + subString?.length,
+  );
   const subStringAfter =
     higlightedSubString?.length < text.length
       ? text.substring(startIdx + subString?.length, text.length)

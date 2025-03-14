@@ -1,29 +1,29 @@
-
-with ranked AS (
-    SELECT
+with ranked as (
+    select
         cdreseau,
         referenceprel,
         dateprel,
         heureprel,
+        de_partition,
+        -- TODO : parfois heureprel est vide, faut gérer ce cas
+        -- exemple : referenceprel = '07700233713';
+        -- TODO : vérifier si dateprel est toujours renseigné !
         TRY_STRPTIME(
             dateprel || ' ' || REPLACE(heureprel, 'h', ':'), '%Y-%m-%d %H:%M'
-        ) AS datetimeprel,
-        -- TODO : parfois heureprel est vide, faut gérer ce cas
-        -- exemple : select * from edc_prelevements where referenceprel = '07700233713';
-        -- TODO : vérifier si dateprel est toujours renseigné !
-        de_partition,
-        ROW_NUMBER() OVER (
-            PARTITION BY cdreseau, referenceprel
-            ORDER BY
+        ) as datetimeprel,
+        ROW_NUMBER() over (
+            partition by cdreseau, referenceprel
+            order by
                 dateprel,
                 heureprel
-        ) AS row_num
-    FROM
+        ) as row_num
+    from
         {{ ref('stg_edc__prevelevements') }}
 
 )
-SELECT * EXCLUDE (row_num)
-FROM
+
+select * exclude (row_num)
+from
     ranked
-WHERE
+where
     row_num = 1

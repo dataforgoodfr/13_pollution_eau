@@ -46,7 +46,7 @@ models:
         type: VARCHAR
 
       - name: datetimeprel
-        description: datetime à laquelle le prélèvement a été effectué
+        description: Datetime à laquelle le prélèvement a été effectué
         type: DATETIME
 
       - name: conclusionprel
@@ -190,3 +190,57 @@ models:
         description: "Année de récupération des données"
         tests:
           - not_null
+
+  - name: int__resultats_udi_communes
+    description: >
+      Table des résultats de prélèvements ventilés par UDI et commune, 
+      pour les catégories d'intérêt (pesticides, pfas, vcm, etc.).
+      Exclut les catégories 'non classé' et 'paramètre organoleptique'.
+    columns:
+      - name: referenceprel
+        description: "Code SISE-Eaux du prélèvement"
+        type: VARCHAR(11)
+        tests:
+          - not_null
+
+      - name: cdparametresiseeaux
+        description: >
+          Le code SISE-Eaux du paramètre est un identifiant alphanumérique sur 7 positions maximum, associé à chaque
+          paramètre. Lorsque c'est possible, le symbole chimique est retenu comme identifiant (NO3, AS...) pour le rendre
+          signifiant.
+        tests:
+          - not_null
+
+      - name: valtraduite
+        description: '{{ doc("val_traduite_docs") }}'
+
+      - name: limitequal
+        description: "Limite(s) de qualité du paramètre concerné en vigueur au moment du prélèvement pour le type d'eau considéré."
+
+      - name: de_partition
+        description: 'Année de récupération des données. "de" signifie "data engineering". Ce champ est ajouté automatiquement lors de l''ingestion des données.'
+        tests:
+          - not_null
+
+      - name: limitequal_float
+        description: "Limite de qualité convertie en valeur numérique (flottant) pour faciliter les comparaisons."
+
+      - name: unite
+        description: "L'unité de mesure du paramètre est l'unité (mg, μg/L, NFU) définie pour ce paramètre par la réglementation des eaux d'alimentation en vigueur."
+
+      - name: categorie
+        description: "Catégorie du paramètre (pesticides, pfas, vcm, nitrates, etc.) selon la classification établie."
+        tests:
+          - not_null
+
+      - name: inseecommune
+        description: "Code INSEE de la commune"
+        # tests:
+        #   - not_null
+        # TODO : investigate !
+
+      - name: datetimeprel
+        description: >
+          Date et heure du prélèvement correspondant la date à laquelle le prélèvement d'échantillon a été réalisé. 
+          Dans le cas où il n'y a pas constitution d'échantillon (mesures in situ), il s'agit de la date de la visite.
+        type: DATETIME

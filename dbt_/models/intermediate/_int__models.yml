@@ -119,9 +119,9 @@ models:
           - accepted_values:
               values: ["blanc", "C", "N", "S", "D"]
 
-  - name: int_edc__commune_udi
+  - name: int__lien_commune_cdreseau
     description: >
-      Table intermédiaire établissant la relation entre communes et unités de distribution (UDI).
+      Table intermédiaire établissant la relation entre communes (inseecommune) et UDI (cdreseau).
       Cette table agrège les entrées multiples de la table stg_edc__communes pour garantir l'unicité
       sur la combinaison inseecommune-cdreseau-de_partition.
     tests:
@@ -155,3 +155,38 @@ models:
 
       - name: debutalim
         description: "Première date de début d'alimentation du quartier"
+
+  - name: int__lien_cdreseau_refreneceprel
+    description: >
+      Table intermédiaire établissant la relation entre UDI (cdreseau) et prélèvements (referenceprel).
+      Cette table garantit l'unicité sur la combinaison cdreseau-referenceprel en sélectionnant une seule entrée par combinaison.
+    tests:
+      - unique:
+          column_name: "cdreseau || '-' || referenceprel"
+    columns:
+      - name: cdreseau
+        description: "Code de l'installation (unité de distribution)"
+        tests:
+          - not_null
+
+      - name: referenceprel
+        description: "Identifiant du prélèvement"
+        tests:
+          - not_null
+
+      - name: dateprel
+        description: "Date du prélèvement"
+        type: DATE
+
+      - name: heureprel
+        description: "Heure du prélèvement au format 'Hh:MM'"
+        type: VARCHAR
+
+      - name: datetimeprel
+        description: "Date et heure du prélèvement combinées en un timestamp"
+        type: TIMESTAMP
+
+      - name: de_partition
+        description: "Année de récupération des données"
+        tests:
+          - not_null

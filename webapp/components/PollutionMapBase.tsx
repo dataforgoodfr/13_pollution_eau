@@ -9,35 +9,28 @@ import maplibregl, { MapGeoJSONFeature } from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 import { Protocol } from "pmtiles";
 
-import {
-  MAPLIBRE_MAP,
-  DEFAULT_MAP_STYLE,
-  getDefaultLayers,
-} from "@/app/config";
+import { DEFAULT_MAP_STYLE, getDefaultLayers } from "@/app/config";
 
 type PollutionMapBaseLayerProps = {
   year: string;
   categoryType: string;
   communeInseeCode: string | null;
-  center?: [number, number];
-  zoom?: number;
+  mapState: { longitude: number; latitude: number; zoom: number };
   onFeatureClick: (feature: MapGeoJSONFeature) => void;
-  onViewportChange?: (center: [number, number], zoom: number) => void;
+  onMapStateChange?: (coords: {
+    longitude: number;
+    latitude: number;
+    zoom: number;
+  }) => void;
 };
 
 export default function PollutionMapBaseLayer({
   year,
   categoryType,
   communeInseeCode,
-  center = MAPLIBRE_MAP.initialViewState.longitude
-    ? ([
-        MAPLIBRE_MAP.initialViewState.longitude,
-        MAPLIBRE_MAP.initialViewState.latitude,
-      ] as [number, number])
-    : [2.213749, 46.227638],
-  zoom = MAPLIBRE_MAP.initialViewState.zoom || 5,
+  mapState,
   onFeatureClick,
-  onViewportChange,
+  onMapStateChange,
 }: PollutionMapBaseLayerProps) {
   const mapRef = useRef(null);
 
@@ -59,14 +52,13 @@ export default function PollutionMapBaseLayer({
     }
   }
 
-  function handleViewStateChange(e: ViewStateChangeEvent) {
-    if (e.viewState && onViewportChange) {
-      const newCenter: [number, number] = [
-        e.viewState.longitude,
-        e.viewState.latitude,
-      ];
-      const newZoom = e.viewState.zoom;
-      onViewportChange(newCenter, newZoom);
+  function handleMapStateChange(e: ViewStateChangeEvent) {
+    if (e.viewState && onMapStateChange) {
+      onMapStateChange({
+        longitude: e.viewState.longitude,
+        latitude: e.viewState.latitude,
+        zoom: e.viewState.zoom,
+      });
     }
   }
 
@@ -109,12 +101,10 @@ export default function PollutionMapBaseLayer({
     <ReactMapGl
       style={{ width: "100%", height: "100%" }}
       mapStyle={mapStyle}
-      longitude={center[0]}
-      latitude={center[1]}
-      zoom={zoom}
+      {...mapState}
       mapLib={maplibregl}
       onClick={onClick}
-      onMove={handleViewStateChange}
+      onMove={handleMapStateChange}
       interactiveLayerIds={["polluants"]}
       ref={mapRef}
     />

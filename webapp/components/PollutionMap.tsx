@@ -8,14 +8,16 @@ import PollutionMapSearchBox, {
   CommuneFilterResult,
 } from "./PollutionMapSearchBox";
 import { MapGeoJSONFeature } from "maplibre-gl";
+import { MAPLIBRE_MAP } from "@/app/config";
 
 export default function PollutionMap() {
   const [year, setYear] = useState("2024");
   const [categoryType, setCategoryType] = useState("cvm");
-  const [mapCenter, setMapCenter] = useState<[number, number]>([
-    2.213749, 46.227638,
-  ]);
-  const [mapZoom, setMapZoom] = useState<number>(5);
+  const [mapState, setMapState] = useState<{
+    longitude: number;
+    latitude: number;
+    zoom: number;
+  }>(MAPLIBRE_MAP.initialViewState);
   const [communeInseeCode, setCommuneInseeCode] = useState<string | null>(null);
   const [featureDetails, setFeatureDetails] =
     useState<MapGeoJSONFeature | null>(null);
@@ -23,18 +25,11 @@ export default function PollutionMap() {
   const handleCommuneSelect = (result: CommuneFilterResult | null) => {
     if (result) {
       const { center, zoom, communeInseeCode } = result;
-      setMapCenter(center);
-      setMapZoom(zoom);
+      setMapState({ longitude: center[0], latitude: center[1], zoom });
       setCommuneInseeCode(communeInseeCode);
     } else {
       setCommuneInseeCode(null);
     }
-  };
-
-  const handleViewportChange = (center: [number, number], zoom: number) => {
-    setMapCenter(center);
-    setMapZoom(zoom);
-    console.log("Viewport changed to", center, zoom);
   };
 
   return (
@@ -43,9 +38,8 @@ export default function PollutionMap() {
         year={year}
         categoryType={categoryType}
         communeInseeCode={communeInseeCode}
-        center={mapCenter}
-        zoom={mapZoom}
-        onViewportChange={handleViewportChange}
+        mapState={mapState}
+        onMapStateChange={setMapState}
         onFeatureClick={setFeatureDetails}
       />
 

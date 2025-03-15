@@ -17,5 +17,7 @@ SELECT
     plvconformitechimique::VARCHAR(1) AS plvconformitechimique,
     plvconformitereferencebact::VARCHAR(1) AS plvconformitereferencebact,
     plvconformitereferencechim::VARCHAR(1) AS plvconformitereferencechim,
-    de_partition::SMALLINT AS de_partition
+    de_partition::SMALLINT AS de_partition,
+    de_ingestion_date::DATE AS de_ingestion_date,
+    de_dataset_datetime::VARCHAR AS de_dataset_datetime
 FROM {{ source('edc', 'edc_prelevements') }}

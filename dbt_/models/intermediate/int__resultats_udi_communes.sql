@@ -22,7 +22,7 @@ resultats_with_cat AS (
     FROM
         resultats
     LEFT JOIN
-        int__mapping_category_simple as mcs
+        int__mapping_category_simple AS mcs
         ON
             resultats.cdparametresiseeaux = mcs.cdparametresiseeaux
     WHERE

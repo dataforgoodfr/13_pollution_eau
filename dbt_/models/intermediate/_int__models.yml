@@ -233,11 +233,15 @@ models:
         tests:
           - not_null
 
+      - name: cdreseau
+        description: "Code de l'installation (unité de distribution)"
+        tests:
+          - not_null
+
       - name: inseecommune
         description: "Code INSEE de la commune"
-        # tests:
-        #   - not_null
-        # TODO : investigate !
+        tests:
+          - not_null
 
       - name: datetimeprel
         description: >

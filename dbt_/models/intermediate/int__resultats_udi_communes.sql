@@ -34,11 +34,12 @@ resultats_with_cat AS (
 
 SELECT
     resultats_with_cat.*,
+    udi.cdreseau,
     udi.inseecommune,
     plv.datetimeprel
 FROM
     resultats_with_cat
-LEFT JOIN
+INNER JOIN
     {{ ref("int__lien_cdreseau_refreneceprel") }} AS plv
     ON
         resultats_with_cat.referenceprel = plv.referenceprel

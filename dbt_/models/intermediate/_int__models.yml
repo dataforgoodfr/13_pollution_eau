@@ -255,6 +255,9 @@ models:
       - name: commune_code_insee
         description: "Code INSEE de la commune du point de surveillance"
         type: VARCHAR
+      - name: commune_nom
+        description: "Nom de la commune du point de surveillance"
+        type: VARCHAR
       - name: categorie
         description: "Catégorie du paramètre (pesticides, pfas, vcm, nitrates, etc.) selon la classification établie."
         tests:
@@ -276,15 +279,12 @@ models:
         type: DATE
 
   - name: int__resultats_annuel_cvm_uid
-    description: "Resultat des prélevements par commune /catégorie et par année"
+    description: "Resultat des prélevements par uid /catégorie et par année"
     columns:
       - name: cdreseau
         description: "Code de l'installation (unité de distribution)"
         tests:
           - not_null
-      - name: commune_nom
-        description: "Nom de la commune du point de surveillance"
-        type: VARCHAR
       - name: categorie
         description: "Catégorie du paramètre (pesticides, pfas, vcm, nitrates, etc.) selon la classification établie."
         tests:

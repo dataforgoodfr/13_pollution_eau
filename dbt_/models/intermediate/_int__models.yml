@@ -249,7 +249,7 @@ models:
           Dans le cas où il n'y a pas constitution d'échantillon (mesures in situ), il s'agit de la date de la visite.
         type: DATETIME
 
-  - name: int__resultats_annuel_cvm_uid
+  - name: int__resultats_annuel_cvm_communes
     description: "Resultat des prélevements par commune /catégorie et par année"
     columns:
       - name: commune_code_insee
@@ -275,7 +275,7 @@ models:
         description: "Annee du prevelvement"
         type: DATE
 
-  - name: int__resultats_annuel_cvm_communes
+  - name: int__resultats_annuel_cvm_uid
     description: "Resultat des prélevements par commune /catégorie et par année"
     columns:
       - name: cdreseau

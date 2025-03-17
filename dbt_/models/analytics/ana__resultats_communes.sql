@@ -29,7 +29,7 @@ list_communes_uid AS (
     FULL OUTER JOIN
         year_cat
         ON
-            int__lien_commune_cdreseau.de_partition = year_cat.annee
+            com.de_partition = year_cat.annee
 ),
 
 communes_year AS (
@@ -121,12 +121,13 @@ cog AS (
 )
 
 SELECT
-    int__resultats_all_communes.inseecommune,
+    int__resultats_all_communes.inseecommune AS commune_code_insee,
     cog.commune_nom,
     'bilan annuel' AS periode,
     int__resultats_all_communes.categorie,
     int__resultats_all_communes.resultat,
-    date(int__resultats_all_communes.annee) AS date_prvl
+    cast(concat(int__resultats_all_communes.annee, '-01-01') AS DATE)
+        AS date_prvl
 FROM
     int__resultats_all_communes
 LEFT JOIN

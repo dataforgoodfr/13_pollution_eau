@@ -22,7 +22,6 @@ dependencies = [
     "dbt-core>=1.9.2,<2",
     "dbt-duckdb>=1.9.1,<2",
     "tqdm>=4.67.1,<5",
-    "geopandas>=1.0.1",
     "pre-commit>=4.1.0",
     "ruff>=0.9.10",
 ]

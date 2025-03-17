@@ -248,3 +248,59 @@ models:
           Date et heure du prélèvement correspondant la date à laquelle le prélèvement d'échantillon a été réalisé. 
           Dans le cas où il n'y a pas constitution d'échantillon (mesures in situ), il s'agit de la date de la visite.
         type: DATETIME
+
+  - name: int__resultats_annuel_cvm_uid
+    description: "Resultat des prélevements par commune /catégorie et par année"
+    columns:
+      - name: cdreseau
+        description: "Code INSEE de la commune du point de surveillance"
+        type: VARCHAR
+      - name: categorie
+        description: "Catégorie du paramètre (pesticides, pfas, vcm, nitrates, etc.) selon la classification établie."
+        tests:
+          - not_null
+      - name: periode
+        description: "Typde de resultat du prélevement"
+        type: VARCHAR
+        tests:
+          - accepted_values:
+              values: ["bilan annuel","dernier prélévement"]
+      - name: resultat
+        description: "resultat du prélevement"
+        type: VARCHAR
+        tests:
+          - accepted_values:
+              values: ["Pas recherché", "jamais quantifié", "> 0,5 µg/L","<= 0,5 µg/L","Not CVM - other"]
+      - name: date_prvl
+        description: "Annee du prevelvement"
+        type: DATE
+
+  - name: int__resultats_annuel_cvm_communes
+    description: "Resultat des prélevements par commune /catégorie et par année"
+    columns:
+      - name: cdreseau
+        description: "Code de l'installation (unité de distribution)"
+        tests:
+          - not_null
+      - name: commune_nom
+        description: "Nom de la commune du point de surveillance"
+        type: VARCHAR
+      - name: categorie
+        description: "Catégorie du paramètre (pesticides, pfas, vcm, nitrates, etc.) selon la classification établie."
+        tests:
+          - not_null
+      - name: periode
+        description: "Typde de resultat du prélevement"
+        type: VARCHAR
+        tests:
+          - accepted_values:
+              values: ["bilan annuel","dernier prélévement"]
+      - name: resultat
+        description: "resultat du prélevement"
+        type: VARCHAR
+        tests:
+          - accepted_values:
+              values: ["Pas recherché", "jamais quantifié", "> 0,5 µg/L","<= 0,5 µg/L","Not CVM - other"]
+      - name: date_prvl
+        description: "Annee du prevelvement"
+        type: DATE

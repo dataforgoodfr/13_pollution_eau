@@ -2,7 +2,7 @@ version: 2
 
 models:
   - name: ana__resultats_communes
-    description: "Resultat des prélevements par commune /catégorie et par année"
+    description: "Resultat des prélevement par commune et par année"
     columns:
       - name: commune_code_insee
         description: "Code INSEE de la commune du point de surveillance"
@@ -10,22 +10,12 @@ models:
       - name: commune_nom
         description: "Nom de la commune du point de surveillance"
         type: VARCHAR
-      - name: categorie
-        description: "Catégorie du paramètre (pesticides, pfas, vcm, nitrates, etc.) selon la classification établie."
-        tests:
-          - not_null
-      - name: periode
-        description: "Typde de resultat du prélevement"
-        type: VARCHAR
-        tests:
-          - accepted_values:
-              values: ["bilan annuel","dernier prélévement"]
-      - name: resultat
-        description: "resultat du prélevement"
-        type: VARCHAR
-        tests:
-          - accepted_values:
-              values: ["Pas recherché", "jamais quantifié", "> 0,5 µg/L","<= 0,5 µg/L","Not CVM - other"]
-      - name: date_prvl
+      - name: annee
         description: "Annee du prevelvement"
-        type: DATE
+        type: SMALLINT
+      - name: resultat_cvm
+        description: "resultat du prélevement cvm (Chlorure de vinyl monomère)"
+        type: VARCHAR
+        tests:
+          - accepted_values:
+              values: ["conforme", "non conforme", "non analysé"]

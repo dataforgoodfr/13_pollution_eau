@@ -2,6 +2,7 @@
 
 import json
 import logging
+from pathlib import Path
 
 import pandas as pd
 from tqdm import tqdm
@@ -32,9 +33,6 @@ class GeoJSONProcessor:
         # Process features
         data_geo_features = data_geo["features"]
 
-        # Get set of communes in database
-        communes_in_db = set(results_df["commune_code_insee"])
-
         # Create lookup dict for faster processing
         results_lookup = (
             results_df.groupby("commune_code_insee")
@@ -45,7 +43,7 @@ class GeoJSONProcessor:
         )
 
         # Track communes in GeoJSON
-        communes_in_geojson = set()
+        communes_in_geojson = {}
 
         # Process features
         for feature in tqdm(data_geo_features, desc="Processing communes"):
@@ -55,7 +53,7 @@ class GeoJSONProcessor:
             if code_insee:
                 code_insee = code_insee[0]
                 name_insee = name_insee[0]
-                communes_in_geojson.add(code_insee)
+                communes_in_geojson[code_insee] = name_insee
 
                 properties = {
                     "commune_code_insee": code_insee,
@@ -65,9 +63,44 @@ class GeoJSONProcessor:
 
                 feature["properties"] = properties
 
+        # Get communes names from database
+        communes_db_names = dict(
+            zip(results_df["commune_code_insee"], results_df["commune_nom"])
+        )
+
         # Find missing communes in both sets
-        self.communes_in_db_not_in_geojson = communes_in_db - communes_in_geojson
-        self.communes_in_geojson_not_in_db = communes_in_geojson - communes_in_db
+        self.communes_in_db_not_in_geojson = set(communes_db_names.keys()) - set(
+            communes_in_geojson.keys()
+        )
+        self.communes_in_geojson_not_in_db = set(communes_in_geojson.keys()) - set(
+            communes_db_names.keys()
+        )
+
+        # Save missing communes to csv file
+        output_dir = Path(output_path).parent
+        missing_communes_file = output_dir / "missing_communes.csv"
+
+        missing_data = {
+            "commune_code_insee": (
+                list(self.communes_in_db_not_in_geojson)
+                + list(self.communes_in_geojson_not_in_db)
+            ),
+            "commune_nom": (
+                [
+                    communes_db_names.get(code, "N/A")
+                    for code in self.communes_in_db_not_in_geojson
+                ]
+                + [
+                    communes_in_geojson.get(code, "N/A")
+                    for code in self.communes_in_geojson_not_in_db
+                ]
+            ),
+            "source": (
+                ["database"] * len(self.communes_in_db_not_in_geojson)
+                + ["geojson"] * len(self.communes_in_geojson_not_in_db)
+            ),
+        }
+        pd.DataFrame(missing_data).to_csv(missing_communes_file, index=False)
 
         # Log results
         if (
@@ -83,16 +116,8 @@ class GeoJSONProcessor:
             logger.info(
                 f"Found {len(self.communes_in_geojson_not_in_db)} communes in GeoJSON not in database"
             )
-        if self.communes_in_db_not_in_geojson:
-            logger.debug(
-                "10 first communes in database but not in GeoJSON: %s",
-                sorted(list(self.communes_in_db_not_in_geojson))[:10],
-            )
-
-        if self.communes_in_geojson_not_in_db:
-            logger.debug(
-                "10 first communes in GeoJSON but not in database: %s",
-                sorted(list(self.communes_in_geojson_not_in_db))[:10],
+            logger.info(
+                f"Full list of missing communes saved to: {missing_communes_file}"
             )
 
         # Save result

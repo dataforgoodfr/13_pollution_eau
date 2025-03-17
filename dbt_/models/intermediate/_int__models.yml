@@ -252,7 +252,7 @@ models:
   - name: int__resultats_annuel_cvm_uid
     description: "Resultat des prélevements par commune /catégorie et par année"
     columns:
-      - name: cdreseau
+      - name: commune_code_insee
         description: "Code INSEE de la commune du point de surveillance"
         type: VARCHAR
       - name: categorie

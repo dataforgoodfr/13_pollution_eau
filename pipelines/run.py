@@ -183,7 +183,7 @@ def run_download_geojson(env, use_boto3):
     """
     if env is not None:
         os.environ["ENV"] = env
-    env = get_environment(default="dev")
+    env = get_environment(default="prod")
     logger.info(f"Running on env {env}")
 
     module = importlib.import_module("tasks.download_geojson")

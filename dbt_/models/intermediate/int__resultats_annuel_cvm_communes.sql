@@ -36,7 +36,7 @@ communes_year AS (
         END) AS nb_analyses_ok
     FROM
         {{ ref('int__resultats_udi_communes') }}
-    WHERE 
+    WHERE
         categorie = 'cvm'
     GROUP BY
         annee,
@@ -89,7 +89,7 @@ int__resultats_all_communes AS (
         int__resultats_communes
         ON
             list_communes_uid.annee = int__resultats_communes.annee
-            AND  list_communes_uid.categorie  =  int__resultats_communes.categorie
+            AND list_communes_uid.categorie = int__resultats_communes.categorie
             AND list_communes_uid.inseecommune
             = int__resultats_communes.inseecommune
 ),

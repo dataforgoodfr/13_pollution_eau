@@ -21,6 +21,7 @@ models:
         tests:
           - accepted_values:
               values: [1]
+
   - name: int__prelevements_uniques
     description: "Liste des prélèvements unique"
     columns:
@@ -33,28 +34,27 @@ models:
       - name: cdfirstreseauamont
         description: Code SISE-Eaux de la première installation (unité de distribution) du prélèvement, celle  où a été fait le prélèvement.
         type: VARCHAR(9)
-      
+
       - name: dateprel
-        description: > 
+        description: >
           Date du prélèvement correspondant la date à laquelle le prélèvement d’échantillon a été réalisé. 
           Dans le cas où il n’y a pas constitution d’échantillon (mesures in situ), il s’agit de la date de la visite.
         type: DATE
-      
+
       - name: heureprel
         description: Heure et minute à laquelle le prélèvement a été effectué
         type: VARCHAR
 
-
       - name: datetimeprel
-        description: datetime à laquelle le prélèvement a été effectué
+        description: Datetime à laquelle le prélèvement a été effectué
         type: DATETIME
-      
+
       - name: conclusionprel
         description: >
           Conclusion sanitaire du prélèvement regroupant l’ensemble des recommandations et conclusions sanitaires de l’ARS
           sur l'ensemble des observations, mesures de terrain et résultats d'analyses de laboratoire associés à un prélèvement.
         type: VARCHAR
-      
+
       - name: plvconformitebacterio
         description: >
           Indicateur de la conformité des paramètres microbiologiques aux limites de qualité en vigueur au moment du
@@ -68,13 +68,12 @@ models:
         tests:
           - accepted_values:
               values: ["blanc", "C", "N", "S"]
-      
+
       - name: plvconformitechimique
         description: >
           Indicateur de la conformité des paramètres chimiques aux limites de qualité en vigueur au moment du prélèvement
           pour le type d’eau considéré (et en prenant en compte les dérogations éventuelles en cours pour l'installation
           concernée).
-          
           Valeurs possibles : 
             - blanc 
             - C : conforme
@@ -85,7 +84,7 @@ models:
         tests:
           - accepted_values:
               values: ["blanc", "C", "N", "D", "S"]
-      
+
       - name: plvconformitereferencebact
         description: >
           Indicateur de la conformité des paramètres microbiologiques aux références de qualité en vigueur au moment du
@@ -100,7 +99,7 @@ models:
         tests:
           - accepted_values:
               values: ["blanc", "C", "N", "S"]
-      
+
       - name: plvconformitereferencechim
         description: >
           Indicateur de la conformité des paramètres chimiques aux références de qualité en vigueur au moment du prélèvement
@@ -112,13 +111,140 @@ models:
             - N : non conforme
             - S : sans objet lorsqu'aucun paramètre microbio n'a été mesuré.
             - D : conforme dans le cadre d’une dérogation
-          
+
           N.B. cette dernière valeur n'est pas possible selon la documentation officielle d'EDC, mais on trouve des prélèvements
           avec cette valeur. A discuter.
         type: VARCHAR(1)
         tests:
           - accepted_values:
               values: ["blanc", "C", "N", "S", "D"]
-      
-      
-  
+
+  - name: int__lien_commune_cdreseau
+    description: >
+      Table intermédiaire établissant la relation entre communes (inseecommune) et UDI (cdreseau).
+      Cette table agrège les entrées multiples de la table stg_edc__communes pour garantir l'unicité
+      sur la combinaison inseecommune-cdreseau-de_partition.
+    tests:
+      - unique:
+          column_name: "inseecommune || '-' || cdreseau || '-' || de_partition"
+          name: "unique_inseecommune_cdreseau_partition"
+    columns:
+      - name: inseecommune
+        description: "Code INSEE de la commune"
+        tests:
+          - not_null
+
+      - name: cdreseau
+        description: "Code de l'installation (unité de distribution)"
+        tests:
+          - not_null
+
+      - name: de_partition
+        description: "Année de récupération des données"
+        tests:
+          - not_null
+
+      - name: nomcommune
+        description: "Nom de la commune alimentée par l'UDI"
+
+      - name: quartiers
+        description: "Liste de tous les quartiers distincts alimentés par le réseau, séparés par des virgules"
+
+      - name: nomreseaux
+        description: "Liste de tous les noms distincts de l'installation, séparés par des virgules"
+
+      - name: debutalim
+        description: "Première date de début d'alimentation du quartier"
+
+  - name: int__lien_cdreseau_refreneceprel
+    description: >
+      Table intermédiaire établissant la relation entre UDI (cdreseau) et prélèvements (referenceprel).
+      Cette table garantit l'unicité sur la combinaison cdreseau-referenceprel en sélectionnant une seule entrée par combinaison.
+    tests:
+      - unique:
+          column_name: "cdreseau || '-' || referenceprel"
+    columns:
+      - name: cdreseau
+        description: "Code de l'installation (unité de distribution)"
+        tests:
+          - not_null
+
+      - name: referenceprel
+        description: "Identifiant du prélèvement"
+        tests:
+          - not_null
+
+      - name: dateprel
+        description: "Date du prélèvement"
+        type: DATE
+
+      - name: heureprel
+        description: "Heure du prélèvement au format 'Hh:MM'"
+        type: VARCHAR
+
+      - name: datetimeprel
+        description: "Date et heure du prélèvement combinées en un timestamp"
+        type: TIMESTAMP
+
+      - name: de_partition
+        description: "Année de récupération des données"
+        tests:
+          - not_null
+
+  - name: int__resultats_udi_communes
+    description: >
+      Table des résultats de prélèvements ventilés par UDI et commune, 
+      pour les catégories d'intérêt (pesticides, pfas, vcm, etc.).
+      Exclut les catégories 'non classé' et 'paramètre organoleptique'.
+    columns:
+      - name: referenceprel
+        description: "Code SISE-Eaux du prélèvement"
+        type: VARCHAR(11)
+        tests:
+          - not_null
+
+      - name: cdparametresiseeaux
+        description: >
+          Le code SISE-Eaux du paramètre est un identifiant alphanumérique sur 7 positions maximum, associé à chaque
+          paramètre. Lorsque c'est possible, le symbole chimique est retenu comme identifiant (NO3, AS...) pour le rendre
+          signifiant.
+        tests:
+          - not_null
+
+      - name: valtraduite
+        description: '{{ doc("val_traduite_docs") }}'
+
+      - name: limitequal
+        description: "Limite(s) de qualité du paramètre concerné en vigueur au moment du prélèvement pour le type d'eau considéré."
+
+      - name: de_partition
+        description: 'Année de récupération des données. "de" signifie "data engineering". Ce champ est ajouté automatiquement lors de l''ingestion des données.'
+        tests:
+          - not_null
+
+      - name: limitequal_float
+        description: "Limite de qualité convertie en valeur numérique (flottant) pour faciliter les comparaisons."
+
+      - name: unite
+        description: "L'unité de mesure du paramètre est l'unité (mg, μg/L, NFU) définie pour ce paramètre par la réglementation des eaux d'alimentation en vigueur."
+
+      - name: categorie
+        description: "Catégorie du paramètre (pesticides, pfas, vcm, nitrates, etc.) selon la classification établie."
+        tests:
+          - not_null
+
+      - name: cdreseau
+        description: "Code de l'installation (unité de distribution)"
+        tests:
+          - not_null
+
+      - name: inseecommune
+        description: "Code INSEE de la commune"
+        tests:
+          - not_null
+
+      - name: datetimeprel
+        description: >
+          Date et heure du prélèvement correspondant la date à laquelle le prélèvement d'échantillon a été réalisé. 
+          Dans le cas où il n'y a pas constitution d'échantillon (mesures in situ), il s'agit de la date de la visite.
+        type: DATETIME

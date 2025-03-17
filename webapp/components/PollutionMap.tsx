@@ -3,31 +3,51 @@
 import { useState } from "react";
 import PollutionMapBaseLayer from "@/components/PollutionMapBase";
 import PollutionMapFilters from "@/components/PollutionMapFilters";
-// import PollutionMapSearchBox from "@/components/PollutionMapSearchBox";
-// import PollutionMapLegend from "@/components/PollutionMapLegend";
 import PollutionMapDetailPanel from "@/components/PollutionMapDetailPanel";
+import PollutionMapSearchBox, {
+  CommuneFilterResult,
+} from "./PollutionMapSearchBox";
+import { MapGeoJSONFeature } from "maplibre-gl";
+import { MAPLIBRE_MAP } from "@/app/config";
 
 export default function PollutionMap() {
-  // États partagés entre les composants
   const [year, setYear] = useState("2024");
   const [categoryType, setCategoryType] = useState("cvm");
-  const [selectedCommune, setSelectedCommune] = useState(null);
-  const [selectedFeature, setSelectedFeature] = useState(null);
+  const [mapState, setMapState] = useState<{
+    longitude: number;
+    latitude: number;
+    zoom: number;
+  }>(MAPLIBRE_MAP.initialViewState);
+  const [communeInseeCode, setCommuneInseeCode] = useState<string | null>(null);
+  const [featureDetails, setFeatureDetails] =
+    useState<MapGeoJSONFeature | null>(null);
+
+  const handleCommuneSelect = (result: CommuneFilterResult | null) => {
+    if (result) {
+      const { center, zoom, communeInseeCode } = result;
+      setMapState({ longitude: center[0], latitude: center[1], zoom });
+      setCommuneInseeCode(communeInseeCode);
+    } else {
+      setCommuneInseeCode(null);
+    }
+  };
 
   return (
     <div className="relative w-full h-full flex flex-col">
       <PollutionMapBaseLayer
         year={year}
         categoryType={categoryType}
-        selectedCommune={selectedCommune}
-        onFeatureClick={setSelectedFeature}
+        communeInseeCode={communeInseeCode}
+        mapState={mapState}
+        onMapStateChange={setMapState}
+        onFeatureClick={setFeatureDetails}
       />
 
       <div className="absolute top-4 left-4 right-4 z-10 bg-white p-3 rounded-lg shadow-lg flex justify-between">
-        {/* <PollutionMapSearchBox
-          onSelect={setSelectedCommune}
-          selectedCommune={selectedCommune}
-        /> */}
+        <PollutionMapSearchBox
+          communeInseeCode={communeInseeCode}
+          onCommuneFilter={handleCommuneSelect}
+        />
         <PollutionMapFilters
           year={year}
           setYear={setYear}
@@ -40,10 +60,10 @@ export default function PollutionMap() {
         <PollutionMapLegend categoryType={categoryType} />
       </div> */}
 
-      {selectedFeature && (
+      {featureDetails && (
         <PollutionMapDetailPanel
-          feature={selectedFeature}
-          onClose={() => setSelectedFeature(null)}
+          feature={featureDetails}
+          onClose={() => setFeatureDetails(null)}
           className="absolute bottom-6 left-4 z-10 bg-white p-3 rounded-lg shadow-lg max-w-xs"
         />
       )}

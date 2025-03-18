@@ -31,7 +31,7 @@ communes_last_pvl AS (
 resultat_communes_last_pvl AS (
     SELECT
         cdreseau,
-        categorie,
+        'cvm' AS categorie,
         cdparametresiseeaux,
         datetimeprel,
         CASE
@@ -67,6 +67,6 @@ resultats_all_communes_last AS (
 
 SELECT
     resultats_all_communes_last.*,
-    'dernier prelevement' AS periode
+    'dernier prélévement' AS periode
 FROM
     resultats_all_communes_last

@@ -397,7 +397,7 @@ models:
         type: VARCHAR
         tests:
           - accepted_values:
-              values: ["Pas recherché", "jamais quantifié", "> 0,5 µg/L","<= 0,5 µg/L","Not CVM - other"]
+              values: ["Pas recherché", "jamais quantifié", "> 0,5 µg/L","<= 0,5 µg/L","Not CVM - other","error check SQL"]
       - name: last_datetimeprel
         description: "date du dernier prevelvement pour le cas periode=dernier prélévement "
         type: DATE
@@ -426,7 +426,7 @@ models:
         type: VARCHAR
         tests:
           - accepted_values:
-              values: ["Pas recherché", "jamais quantifié", "> 0,5 µg/L","<= 0,5 µg/L","Not CVM - other"]
+              values: ["Pas recherché", "jamais quantifié", "> 0,5 µg/L","<= 0,5 µg/L","Not CVM - other","error check SQL"]
       - name: last_datetimeprel
         description: "date du dernier prevelvement pour le cas periode=dernier prélévement "
         type: DATE

@@ -3,7 +3,7 @@ last AS (
     SELECT
         periode,
         commune_nom,
-        inseecommune,
+        commune_code_insee,
         categorie,
         last_datetimeprel,
         resultat
@@ -14,7 +14,7 @@ last AS (
 yearly AS (
     SELECT
         commune_nom,
-        inseecommune,
+        commune_code_insee,
         categorie,
         NULL AS last_datetimeprel,
         resultat,

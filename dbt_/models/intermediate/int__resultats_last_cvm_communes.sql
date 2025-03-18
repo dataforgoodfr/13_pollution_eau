@@ -31,7 +31,6 @@ communes_last_pvl AS (
 resultat_communes_last_pvl AS (
     SELECT
         inseecommune,
-        'cvm' AS categorie,
         cdparametresiseeaux,
         datetimeprel,
         CASE
@@ -52,7 +51,7 @@ resultat_communes_last_pvl AS (
 resultats_all_communes_last AS (
     SELECT
         list_communes_uid.inseecommune,
-        resultat_communes_last_pvl.categorie,
+        'cvm' AS categorie,
         resultat_communes_last_pvl.cdparametresiseeaux,
         resultat_communes_last_pvl.datetimeprel AS last_datetimeprel,
         COALESCE(resultat_communes_last_pvl.resultat, 'Pas recherché')

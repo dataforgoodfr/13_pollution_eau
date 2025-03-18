@@ -10,11 +10,10 @@ import os
 
 import duckdb
 
+from pipelines.tasks.client.geojson_processor import GeoJSONProcessor
 from pipelines.tasks.config.config_geojson import get_opendatasoft_config
 from tasks.client.opendatasoft_client import OpenDataSoftClient
 from tasks.config.common import CACHE_FOLDER, DUCKDB_FILE
-from tasks.geojson_processor import GeoJSONProcessor
-from tasks.upload_geojson import execute as upload_geojson
 
 logger = logging.getLogger(__name__)
 
@@ -56,4 +55,4 @@ def execute(env: str):
 
     # Upload to S3
     logger.info("Uploading merged GeoJSON to S3")
-    upload_geojson(env, output_path)
+    processor.upload_geojson_to_storage(env, output_path)

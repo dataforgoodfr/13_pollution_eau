@@ -7,6 +7,9 @@ from pathlib import Path
 import pandas as pd
 from tqdm import tqdm
 
+from pipelines.config.config import get_s3_path_geojson
+from pipelines.utils.storage_client import ObjectStorageClient
+
 logger = logging.getLogger(__name__)
 
 
@@ -126,3 +129,15 @@ class GeoJSONProcessor:
             json.dump(new_geojson, f)
 
         return output_path
+
+    @staticmethod
+    def upload_geojson_to_storage(env: str, geojson_path: str):
+        """
+        Upload the GeoJSON file to Storage Object depending on the environment
+        This requires setting the correct environment variables for the Scaleway credentials
+        """
+        s3 = ObjectStorageClient()
+        s3_path = get_s3_path_geojson(env)
+
+        s3.upload_object(local_path=geojson_path, file_key=s3_path, public_read=True)
+        logger.info(f"✅ GeoJSON uploaded to s3://{s3.bucket_name}/{s3_path}")

@@ -1,7 +1,7 @@
 # pipelines/tasks/client/opendatasoft_client.py
 
-import requests
 
+from pipelines.tasks.client.https_client import HTTPSClient
 from pipelines.tasks.config.config_geojson import get_opendatasoft_config
 
 
@@ -15,6 +15,7 @@ class OpenDataSoftClient:
         """
         self.config = config or get_opendatasoft_config()
         self.base_url = self.config["base_url"]
+        self.https_client = HTTPSClient(base_url=self.base_url)
 
     def download_geojson(
         self, dataset_name: str = None, output_path: str = None
@@ -27,12 +28,11 @@ class OpenDataSoftClient:
             output_path: Path where to save the GeoJSON file
         """
         dataset = dataset_name or self.config["dataset_name"]
-        url = f"{self.base_url}{dataset}/exports/geojson"
-        response = requests.get(url, stream=True)
-        response.raise_for_status()
+        path = f"{dataset}/exports/geojson"
 
-        with open(output_path, "wb") as f:
-            for chunk in response.iter_content(chunk_size=self.config["chunk_size"]):
-                f.write(chunk)
+        # Use of HTTPSClient to download the file with progress bar
+        filename = self.https_client.download_file_from_https(
+            path=path, filepath=output_path
+        )
 
-        return output_path
+        return filename

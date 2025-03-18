@@ -1,5 +1,3 @@
-
-
 def get_opendatasoft_config() -> dict:
     """Get OpenDataSoft configuration parameters.
 

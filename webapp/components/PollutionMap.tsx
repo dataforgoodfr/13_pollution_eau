@@ -44,16 +44,22 @@ export default function PollutionMap() {
       />
 
       <div className="absolute top-4 left-4 right-4 z-10 bg-white p-3 rounded-lg shadow-lg flex justify-between">
-        <PollutionMapSearchBox
-          communeInseeCode={communeInseeCode}
-          onCommuneFilter={handleCommuneSelect}
-        />
-        <PollutionMapFilters
-          year={year}
-          setYear={setYear}
-          categoryType={categoryType}
-          setCategoryType={setCategoryType}
-        />
+        <div className="grow grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <PollutionMapSearchBox
+              communeInseeCode={communeInseeCode}
+              onCommuneFilter={handleCommuneSelect}
+            />
+          </div>
+          <div>
+            <PollutionMapFilters
+              year={year}
+              setYear={setYear}
+              categoryType={categoryType}
+              setCategoryType={setCategoryType}
+            />
+          </div>
+        </div>
       </div>
 
       {/* <div className="absolute bottom-6 right-4 z-10 bg-white p-3 rounded-lg shadow-lg">

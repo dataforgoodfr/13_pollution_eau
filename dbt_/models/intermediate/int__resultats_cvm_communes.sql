@@ -5,7 +5,7 @@ last AS (
         commune_nom,
         inseecommune,
         categorie,
-        datetimeprel,
+        last_datetimeprel,
         resultat
     FROM
         {{ ref('int__resultats_last_cvm_communes') }}
@@ -16,7 +16,7 @@ yearly AS (
         commune_nom,
         inseecommune,
         categorie,
-        NULL AS datetimeprel,
+        NULL AS last_datetimeprel,
         resultat,
         CONCAT(periode, ' - ', annee) AS periode
     FROM
@@ -29,7 +29,7 @@ SELECT
     commune_nom,
     inseecommune,
     categorie,
-    datetimeprel,
+    last_datetimeprel,
     resultat
 FROM
     last
@@ -39,7 +39,7 @@ SELECT
     commune_nom,
     inseecommune,
     categorie,
-    datetimeprel,
+    last_datetimeprel,
     resultat
 FROM
     yearly

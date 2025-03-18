@@ -4,7 +4,7 @@ last AS (
         periode,
         cdreseau,
         categorie,
-        datetimeprel,
+        last_datetimeprel,
         resultat
     FROM
         {{ ref('int__resultats_last_cvm_uid') }}
@@ -14,7 +14,7 @@ yearly AS (
     SELECT
         cdreseau,
         categorie,
-        NULL AS datetimeprel,
+        NULL AS last_datetimeprel,
         resultat,
         CONCAT(periode, ' - ', annee) AS periode
     FROM
@@ -26,7 +26,7 @@ SELECT
     periode,
     cdreseau,
     categorie,
-    datetimeprel,
+    last_datetimeprel,
     resultat
 FROM
     last
@@ -35,7 +35,7 @@ SELECT
     periode,
     cdreseau,
     categorie,
-    datetimeprel,
+    last_datetimeprel,
     resultat
 FROM
     yearly

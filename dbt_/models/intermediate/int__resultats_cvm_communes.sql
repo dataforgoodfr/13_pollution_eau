@@ -27,7 +27,7 @@ yearly AS (
 SELECT
     periode,
     commune_nom,
-    inseecommune,
+    commune_code_insee,
     categorie,
     last_datetimeprel,
     resultat
@@ -37,7 +37,7 @@ UNION ALL
 SELECT
     periode,
     commune_nom,
-    inseecommune,
+    commune_code_insee,
     categorie,
     last_datetimeprel,
     resultat

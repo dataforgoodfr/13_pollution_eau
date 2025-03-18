@@ -50,7 +50,7 @@ resultat_communes_last_pvl AS (
 
 resultats_all_communes_last AS (
     SELECT
-        list_communes_uid.inseecommune,
+        list_communes_uid.inseecommune AS commune_code_insee,
         'cvm' AS categorie,
         resultat_communes_last_pvl.cdparametresiseeaux,
         resultat_communes_last_pvl.datetimeprel AS last_datetimeprel,

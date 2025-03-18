@@ -23,6 +23,11 @@ communes_year AS (
         inseecommune,
         sum(1) AS nb_analyses,
         sum(CASE
+            WHEN valtraduite = 0 THEN 1
+            WHEN valtraduite = 1 THEN 1
+            ELSE 0
+        END) AS nb_analyses_not_quantify,
+        sum(CASE
             WHEN
                 limitequal_float IS NOT NULL AND valtraduite >= limitequal_float
                 THEN 1
@@ -50,12 +55,14 @@ int__resultats_communes AS (
         inseecommune,
         categorie,
         coalesce(nb_analyses, 0) AS nb_analyses,
+        coalesce(nb_analyses_not_quantify, 0) AS nb_analyses_not_quantify,
         coalesce(nb_analyses_not_ok, 0) AS nb_analyses_not_ok,
         coalesce(nb_analyses_ok, 0) AS nb_analyses_ok,
         CASE
             WHEN coalesce(nb_analyses, 0) = 0 THEN 'Pas recherché'
             WHEN
-                coalesce(nb_analyses, 0) > 0 AND coalesce(nb_analyses_ok, 0) = 0
+                coalesce(nb_analyses_not_quantify, 0) > 0
+                AND coalesce(nb_analyses_ok, 0) = 0
                 THEN 'jamais quantifié'
             WHEN
                 categorie = 'cvm'
@@ -79,6 +86,8 @@ int__resultats_all_communes AS (
         list_communes_uid.inseecommune,
         list_communes_uid.categorie,
         coalesce(int__resultats_communes.nb_analyses, 0) AS nb_analyses,
+        coalesce(int__resultats_communes.nb_analyses_not_quantify, 0)
+            AS nb_analyses_not_quantif,
         coalesce(int__resultats_communes.nb_analyses_not_ok, 0)
             AS nb_analyses_not_ok,
         coalesce(int__resultats_communes.nb_analyses_ok, 0) AS nb_analyses_ok,
@@ -112,8 +121,7 @@ SELECT
     'bilan annuel' AS periode,
     int__resultats_all_communes.categorie,
     int__resultats_all_communes.resultat,
-    cast(concat(int__resultats_all_communes.annee, '-01-01') AS DATE)
-        AS date_prvl
+    int__resultats_all_communes.annee
 FROM
     int__resultats_all_communes
 LEFT JOIN

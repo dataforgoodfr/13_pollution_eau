@@ -86,4 +86,4 @@ FROM
 LEFT JOIN
     cog
     ON
-        resultats_all_communes_last.inseecommune = cog.inseecommune
+        resultats_all_communes_last.commune_code_insee = cog.inseecommune

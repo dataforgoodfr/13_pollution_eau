@@ -151,9 +151,7 @@ def run_upload_database(env):
 )
 def run_generate_geojson(env):
     """Generate and upload merged new GeoJSON file."""
-    if env is not None:
-        os.environ["ENV"] = env
-    env = get_environment(default="dev")
+    env = get_environment(default=env)
     logger.info(f"Running on env {env}")
 
     module = importlib.import_module("tasks.generate_geojson")

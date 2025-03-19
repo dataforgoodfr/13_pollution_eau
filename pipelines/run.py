@@ -142,6 +142,21 @@ def run_upload_database(env):
     task_func(env)
 
 
+@run.command("upload_udi")
+@click.option(
+    "--env",
+    type=click.Choice(["dev", "prod"]),
+    default=None,
+    help="Environment to upload to. It will override environment defined in .env",
+)
+def run_upload_udi(env):
+    """Upload database to S3."""
+    env = get_environment(default="dev")
+    module = importlib.import_module("tasks.upload_udi")
+    task_func = getattr(module, "execute")
+    task_func(env)
+
+
 @run.command("generate_geojson")
 @click.option(
     "--env",
@@ -162,12 +177,6 @@ def run_generate_geojson(env):
 
 
 @run.command("download_geojson")
-@click.option(
-    "--env",
-    type=click.Choice(["dev", "prod"]),
-    default=None,
-    help="Environment to download from. It will override environment defined in .env",
-)
 @click.option(
     "--use-boto3",
     is_flag=True,

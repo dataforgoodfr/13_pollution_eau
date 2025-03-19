@@ -1,6 +1,9 @@
+import logging
 import os
 
 from dotenv import load_dotenv
+
+logger = logging.getLogger(__name__)
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 # Construct the path to the .env file
@@ -13,6 +16,7 @@ def load_env_variables():
 
 def get_environment(default="prod"):
     env = os.getenv("ENV", default)
+    logger.info(f"Running on env {env}")
     if env not in ["dev", "prod"]:
         raise ValueError(f"Invalid environment: {env}. Must be 'dev' or 'prod'.")
     return env
@@ -20,6 +24,10 @@ def get_environment(default="prod"):
 
 def get_s3_path(env, filename="data.duckdb"):
     return f"{env}/database/{filename}"
+
+
+def get_s3_udi_path(env, filename):
+    return f"{env}/UDI/{filename}"
 
 
 def get_s3_path_geojson(env, filename="new-georef-france-commune-prelevement.geojson"):

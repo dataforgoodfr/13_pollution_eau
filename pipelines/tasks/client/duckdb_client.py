@@ -16,6 +16,9 @@ class DuckDBClient:
 
     def __init__(self, conn: DuckDBPyConnection = duckdb.connect(DUCKDB_FILE)):
         self.conn = conn
+        # install and load duckdb spatial extention
+        self.conn.sql("INSTALL spatial;")
+        self.conn.sql("LOAD spatial;")
 
     @dataclass
     class SQLFilters:
@@ -126,6 +129,12 @@ class DuckDBClient:
         self.conn.execute(
             query + query_select, (de_partition, dataset_datetime, str(filepath))
         )
+        return True
+
+    def ingest_from_geojson(self, geojson_path: str, table_name: str):
+        # read geo_json with st_read() from spatial extention
+        sql = f"CREATE TABLE {table_name} AS SELECT * FROM ST_Read('{geojson_path}')"
+        self.conn.execute(sql)
         return True
 
     def close(self):

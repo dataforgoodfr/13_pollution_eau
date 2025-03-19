@@ -55,6 +55,9 @@ jobs:
         cd dbt_
         uv run dbt build || { echo "dbt build failed"; exit 1; }
 
+    - name: Generate geo_json, convert geo_json to pmtiles and update pmtiles to Storage
+      run: uv run pipelines/run.py run generate_geojson
+
     - name: Upload production database to Storage
       run: |
         uv run pipelines/run.py run upload_database

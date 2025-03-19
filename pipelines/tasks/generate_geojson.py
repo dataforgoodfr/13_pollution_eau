@@ -71,4 +71,4 @@ def execute(env: str):
     url = pmtiles_processor.upload_pmtils_to_storage(
         env, pmtils_path=pmtils_output_path
     )
-    logger.info("pmtiles pubic Url: ", url)
+    logger.info("pmtiles s3 pubic Url: ", url)

@@ -7,10 +7,10 @@ communes_year AS (
         inseecommune,
         sum(1) AS nb_analyses,
         sum(CASE
-            WHEN valtraduite = 0 OR valtraduite = 1 OR valtraduite IS NULL
-                OR  valtraduite IS NULL
-                OR  limitequal_float IS NULL
-            THEN 'non quantifié'
+            WHEN
+                valtraduite = 0 OR valtraduite = 1 OR valtraduite IS NULL
+                OR valtraduite IS NULL
+                OR limitequal_float IS NULL
                 THEN 1
             ELSE 0
         END) AS nb_analyses_not_quantify,

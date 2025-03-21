@@ -257,7 +257,8 @@ models:
       - name: categorie
         description: "Catégorie du paramètre (pesticides, pfas, vcm, nitrates, etc.) selon la classification établie."
         tests:
-          - not_null
+          - accepted_values:
+              values: ["cvm"]
       - name: periode
         description: "Typde de resultat du prélevement"
         type: VARCHAR
@@ -284,7 +285,8 @@ models:
       - name: categorie
         description: "Catégorie du paramètre (pesticides, pfas, vcm, nitrates, etc.) selon la classification établie."
         tests:
-          - not_null
+          - accepted_values:
+              values: ["cvm"]
       - name: periode
         description: "Typde de resultat du prélevement"
         type: VARCHAR
@@ -316,7 +318,8 @@ models:
       - name: categorie
         description: "Catégorie du paramètre (pesticides, pfas, vcm, nitrates, etc.) selon la classification établie."
         tests:
-          - not_null
+          - accepted_values:
+              values: ["cvm"]
       - name: periode
         description: "Typde de resultat du prélevement"
         type: VARCHAR
@@ -348,7 +351,8 @@ models:
       - name: categorie
         description: "Catégorie du paramètre (pesticides, pfas, vcm, nitrates, etc.) selon la classification établie."
         tests:
-          - not_null
+          - accepted_values:
+              values: ["cvm"]
       - name: periode
         description: "Typde de resultat du prélevement"
         type: VARCHAR
@@ -383,7 +387,8 @@ models:
       - name: categorie
         description: "Catégorie du paramètre (pesticides, pfas, vcm, nitrates, etc.) selon la classification établie."
         tests:
-          - not_null
+          - accepted_values:
+              values: ["cvm"]
       - name: periode
         description: "Typde de resultat du prélevement"
         type: VARCHAR
@@ -412,7 +417,8 @@ models:
       - name: categorie
         description: "Catégorie du paramètre (pesticides, pfas, vcm, nitrates, etc.) selon la classification établie."
         tests:
-          - not_null
+          - accepted_values:
+              values: ["cvm"]
       - name: periode
         description: "Typde de resultat du prélevement"
         type: VARCHAR

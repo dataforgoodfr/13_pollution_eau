@@ -8,6 +8,7 @@ WITH latest_pfas_results AS (
     FROM {{ ref('int__resultats_udi_communes') }}
     WHERE categorie = 'pfas'
 ),
+
 aggregated_results AS (
     SELECT
         referenceprel,
@@ -21,6 +22,7 @@ aggregated_results AS (
     WHERE row_number = 1
     GROUP BY referenceprel, cdreseau, datetimeprel
 )
+
 SELECT
     referenceprel,
     cdreseau,

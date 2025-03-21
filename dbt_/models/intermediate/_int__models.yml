@@ -259,6 +259,11 @@ models:
         tests:
           - accepted_values:
               values: ["cvm"]
+      - name: cdparametresiseeaux
+        description: >
+          Le code SISE-Eaux du paramètre est un identifiant alphanumérique sur 7 positions maximum, associé à chaque
+          paramètre. Lorsque c'est possible, le symbole chimique est retenu comme identifiant (NO3, AS...) pour le rendre
+          signifiant.
       - name: periode
         description: "Typde de resultat du prélevement"
         type: VARCHAR
@@ -287,6 +292,11 @@ models:
         tests:
           - accepted_values:
               values: ["cvm"]
+      - name: cdparametresiseeaux
+        description: >
+          Le code SISE-Eaux du paramètre est un identifiant alphanumérique sur 7 positions maximum, associé à chaque
+          paramètre. Lorsque c'est possible, le symbole chimique est retenu comme identifiant (NO3, AS...) pour le rendre
+          signifiant.
       - name: periode
         description: "Typde de resultat du prélevement"
         type: VARCHAR

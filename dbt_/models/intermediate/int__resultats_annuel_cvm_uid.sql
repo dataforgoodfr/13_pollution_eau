@@ -49,9 +49,9 @@ SELECT
             THEN 'non quantifié'
         WHEN
             communes_year.nb_analyses > 0
-            AND communes_year.nb_analyses_not_ok > 1
+            AND communes_year.nb_analyses_not_ok >= 1
             THEN '>= 0,5 µg/L'
-        WHEN communes_year.nb_analyses > 0 AND communes_year.nb_analyses_ok > 1
+        WHEN communes_year.nb_analyses > 0 AND communes_year.nb_analyses_ok >= 1
             THEN '< 0,5 µg/L'
         ELSE 'Check SQL'
     END AS resultat

@@ -16,13 +16,13 @@ communes_year AS (
         END) AS nb_analyses_not_quantify,
         sum(CASE
             WHEN
-                limitequal_float IS NOT NULL AND valtraduite >= limitequal_float
+                limitequal_float IS NOT NULL AND valtraduite > limitequal_float
                 THEN 1
             ELSE 0
         END) AS nb_analyses_not_ok,
         sum(CASE
             WHEN
-                limitequal_float IS NOT NULL AND valtraduite < limitequal_float
+                limitequal_float IS NOT NULL AND valtraduite <= limitequal_float
                 THEN 1
             ELSE 0
         END) AS nb_analyses_ok
@@ -53,9 +53,9 @@ SELECT
         WHEN
             communes_year.nb_analyses > 0
             AND communes_year.nb_analyses_not_ok >= 1
-            THEN '>= 0,5 µg/L'
+            THEN '> 0,5 µg/L'
         WHEN communes_year.nb_analyses > 0 AND communes_year.nb_analyses_ok >= 1
-            THEN '< 0,5 µg/L'
+            THEN '<= 0,5 µg/L'
         ELSE 'Check SQL'
     END AS resultat
 FROM

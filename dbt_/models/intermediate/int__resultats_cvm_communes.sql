@@ -1,11 +1,11 @@
 WITH
 last AS (
     SELECT
-        periode,
         inseecommune AS commune_code_insee,
         categorie,
         last_datetimeprel,
-        resultat
+        resultat,
+        periode
     FROM
         {{ ref('int__resultats_last_cvm_communes') }}
 ),

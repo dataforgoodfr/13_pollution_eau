@@ -254,9 +254,6 @@ models:
       - name: commune_code_insee
         description: "Code INSEE de la commune du point de surveillance"
         type: VARCHAR
-      - name: commune_nom
-        description: "Nom de la commune du point de surveillance"
-        type: VARCHAR
       - name: categorie
         description: "Catégorie du paramètre (pesticides, pfas, vcm, nitrates, etc.) selon la classification établie."
         tests:
@@ -266,13 +263,13 @@ models:
         type: VARCHAR
         tests:
           - accepted_values:
-              values: ["bilan annuel"]
+              values: ['bilan annuel']
       - name: resultat
         description: "resultat du prélevement"
         type: VARCHAR
         tests:
           - accepted_values:
-              values: ["Pas recherché", "jamais quantifié", "> 0,5 µg/L","<= 0,5 µg/L","Not CVM - other"]
+              values: ["non quantifié", ">= 0,5 µg/L","< 0,5 µg/L"]
       - name: annee
         description: "Annee du prevelvement"
         type: SMALLINT
@@ -293,13 +290,13 @@ models:
         type: VARCHAR
         tests:
           - accepted_values:
-              values: ["bilan annuel"]
+              values: ['bilan annuel']
       - name: resultat
         description: "resultat du prélevement"
         type: VARCHAR
         tests:
           - accepted_values:
-              values: ["Pas recherché", "jamais quantifié", "> 0,5 µg/L","<= 0,5 µg/L","Not CVM - other"]
+              values: ["Pas recherché", "jamais quantifié", ">= 0,5 µg/L","< 0,5 µg/L"]
       - name: annee
         description: "Annee du prevelvement"
         type: SMALLINT
@@ -310,9 +307,6 @@ models:
     columns:
       - name: commune_code_insee
         description: "Code INSEE de la commune du point de surveillance"
-        type: VARCHAR
-      - name: commune_nom
-        description: "Nom de la commune du point de surveillance"
         type: VARCHAR
       - name: cdparametresiseeaux
         description: >
@@ -334,7 +328,7 @@ models:
         type: VARCHAR
         tests:
           - accepted_values:
-              values: ["Pas recherché", "jamais quantifié", "> 0,5 µg/L","<= 0,5 µg/L","error check SQL"]
+              values: ["non quantifié", "> 0,5 µg/L","<= 0,5 µg/L"]
       - name: last_datetimeprel
         description: "date du dernier prevelvement"
         type: DATE
@@ -366,7 +360,7 @@ models:
         type: VARCHAR
         tests:
           - accepted_values:
-              values: ["Pas recherché", "jamais quantifié", "> 0,5 µg/L","<= 0,5 µg/L","error check SQL"]
+              values: ["non quantifié", "> 0,5 µg/L","<= 0,5 µg/L"]
       - name: last_datetimeprel
         description: "date du dernier prevelvement"
         type: DATE
@@ -398,7 +392,7 @@ models:
         type: VARCHAR
         tests:
           - accepted_values:
-              values: ["Pas recherché", "jamais quantifié", "> 0,5 µg/L","<= 0,5 µg/L","Not CVM - other","error check SQL"]
+              values: ["Pas recherché", "non quantifié", "> 0,5 µg/L","<= 0,5 µg/L"]
       - name: last_datetimeprel
         description: "date du dernier prevelvement pour le cas periode=dernier prélévement "
         type: DATE
@@ -427,7 +421,7 @@ models:
         type: VARCHAR
         tests:
           - accepted_values:
-              values: ["Pas recherché", "jamais quantifié", "> 0,5 µg/L","<= 0,5 µg/L","Not CVM - other","error check SQL"]
+              values: ["Pas recherché", "non quantifié", "> 0,5 µg/L","<= 0,5 µg/L"]
       - name: last_datetimeprel
         description: "date du dernier prevelvement pour le cas periode=dernier prélévement "
         type: DATE

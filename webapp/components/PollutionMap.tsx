@@ -9,6 +9,7 @@ import PollutionMapSearchBox, {
 } from "./PollutionMapSearchBox";
 import { MapGeoJSONFeature } from "maplibre-gl";
 import { MAPLIBRE_MAP } from "@/app/config";
+import MapZoneSelector, { ZONE_NOZONE } from "./MapZoneSelector";
 
 export default function PollutionMap() {
   const [year, setYear] = useState("2024");
@@ -22,6 +23,8 @@ export default function PollutionMap() {
   const [featureDetails, setFeatureDetails] =
     useState<MapGeoJSONFeature | null>(null);
 
+    const [centerOnZone,setCenterOnZone]=useState<number>(ZONE_NOZONE)
+
   const handleCommuneSelect = (result: CommuneFilterResult | null) => {
     if (result) {
       const { center, zoom, communeInseeCode } = result;
@@ -32,6 +35,8 @@ export default function PollutionMap() {
     }
   };
 
+
+
   return (
     <div className="relative w-full h-full flex flex-col">
       <PollutionMapBaseLayer
@@ -41,6 +46,8 @@ export default function PollutionMap() {
         mapState={mapState}
         onMapStateChange={setMapState}
         onFeatureClick={setFeatureDetails}
+        centerOnZone={centerOnZone}
+        resetZone={()=>{setCenterOnZone(ZONE_NOZONE)}}
       />
 
       <div className="absolute top-4 left-4 right-4 z-10 bg-white p-3 rounded-lg shadow-lg flex justify-between">
@@ -54,6 +61,10 @@ export default function PollutionMap() {
           categoryType={categoryType}
           setCategoryType={setCategoryType}
         />
+      </div>
+
+      <div className="absolute bottom-4 left-4 bg-green-100 opacity-35 p-3 rounded-lg shadow-lg flex justify-between hover:opacity-100">
+        <MapZoneSelector zoneChangeCallback={setCenterOnZone} />
       </div>
 
       {/* <div className="absolute bottom-6 right-4 z-10 bg-white p-3 rounded-lg shadow-lg">

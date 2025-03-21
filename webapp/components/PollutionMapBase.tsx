@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo,  useRef, useState } from "react";
 import ReactMapGl, {
   MapLayerMouseEvent,
   ViewStateChangeEvent,
@@ -9,7 +9,19 @@ import maplibregl, { MapGeoJSONFeature } from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 import { Protocol } from "pmtiles";
 
-import { DEFAULT_MAP_STYLE, getDefaultLayers } from "@/app/config";
+import {
+  DEFAULT_MAP_STYLE,
+  getDefaultLayers,
+} from "@/app/config";
+import {
+  ZONE_GUADELOUPE,
+  ZONE_GUYANE,
+  ZONE_LAREUNION,
+  ZONE_MARTINIQUE,
+  ZONE_MAYOTTE,
+  ZONE_METROPOLE,
+  ZONE_NOZONE,
+} from "./MapZoneSelector";
 
 type PollutionMapBaseLayerProps = {
   year: string;
@@ -22,6 +34,8 @@ type PollutionMapBaseLayerProps = {
     latitude: number;
     zoom: number;
   }) => void;
+  centerOnZone: number | null;
+  resetZone: () => void;
 };
 
 export default function PollutionMapBaseLayer({
@@ -31,7 +45,10 @@ export default function PollutionMapBaseLayer({
   mapState,
   onFeatureClick,
   onMapStateChange,
+  centerOnZone,
+  resetZone,
 }: PollutionMapBaseLayerProps) {
+  const [zone, setZone] = useState<number | null>(null);
   const mapRef = useRef(null);
 
   useEffect(() => {
@@ -52,6 +69,47 @@ export default function PollutionMapBaseLayer({
     }
   }
 
+  useEffect(() => {
+    if (mapRef && centerOnZone !== ZONE_NOZONE) {
+      setZone(centerOnZone);
+
+      let newMapCenter: number[];
+      let newZoomFactor: number;
+
+      switch (centerOnZone) {
+        case ZONE_GUADELOUPE:
+          newMapCenter = [-61.5, 16.2];
+          newZoomFactor = 9;
+          break;
+        case ZONE_LAREUNION:
+          newMapCenter = [55.5, -21.2];
+          newZoomFactor = 8;
+          break;
+        case ZONE_MARTINIQUE:
+          newMapCenter = [-61, 14.7];
+          newZoomFactor = 9;
+          break;
+        case ZONE_MAYOTTE:
+          newMapCenter = [45, -12.75];
+          newZoomFactor = 9;
+          break;
+        case ZONE_GUYANE:
+          newMapCenter = [-52.7, 4.3];
+          newZoomFactor = 6;
+          break;
+        case ZONE_METROPOLE:
+        default:
+          newMapCenter = [2.5, 46.2];
+          newZoomFactor = 5;
+          break;
+      }
+
+      if (mapRef.current && zone !== ZONE_NOZONE) {
+        mapRef.current.flyTo({ center: newMapCenter, zoom: newZoomFactor });
+      }
+    }
+  }, [mapRef, centerOnZone, zone]);
+
   function handleMapStateChange(e: ViewStateChangeEvent) {
     if (e.viewState && onMapStateChange) {
       onMapStateChange({
@@ -59,6 +117,7 @@ export default function PollutionMapBaseLayer({
         latitude: e.viewState.latitude,
         zoom: e.viewState.zoom,
       });
+      resetZone();
     }
   }
 
@@ -97,6 +156,13 @@ export default function PollutionMapBaseLayer({
     } as maplibregl.StyleSpecification;
   }, [propertyId, communeInseeCode]);
 
+  function onMoveEnd(e: ViewStateChangeEvent): void {
+    if (e.originalEvent) {
+      setZone(ZONE_NOZONE);
+      resetZone();
+    }
+  }
+
   return (
     <ReactMapGl
       style={{ width: "100%", height: "100%" }}
@@ -105,6 +171,7 @@ export default function PollutionMapBaseLayer({
       mapLib={maplibregl}
       onClick={onClick}
       onMove={handleMapStateChange}
+      onMoveEnd={onMoveEnd}
       interactiveLayerIds={["polluants"]}
       ref={mapRef}
     />

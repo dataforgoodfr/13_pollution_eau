@@ -308,7 +308,7 @@ models:
         type: VARCHAR
         tests:
           - accepted_values:
-              values: ["Pas recherché", "jamais quantifié", ">= 0,5 µg/L","< 0,5 µg/L"]
+              values: ["non quantifié", ">= 0,5 µg/L","< 0,5 µg/L"]
       - name: annee
         description: "Annee du prevelvement"
         type: SMALLINT
@@ -386,9 +386,6 @@ models:
       - name: commune_code_insee
         description: "Code INSEE de la commune du point de surveillance"
         type: VARCHAR
-      - name: commune_nom
-        description: "Nom de la commune du point de surveillance"
-        type: VARCHAR
       - name: cdparametresiseeaux
         description: >
           Le code SISE-Eaux du paramètre est un identifiant alphanumérique sur 7 positions maximum, associé à chaque
@@ -407,7 +404,7 @@ models:
         type: VARCHAR
         tests:
           - accepted_values:
-              values: ["Pas recherché", "non quantifié", "> 0,5 µg/L","<= 0,5 µg/L"]
+              values: ["non quantifié", "> 0,5 µg/L","<= 0,5 µg/L"]
       - name: last_datetimeprel
         description: "date du dernier prevelvement pour le cas periode=dernier prélévement "
         type: DATE
@@ -437,7 +434,7 @@ models:
         type: VARCHAR
         tests:
           - accepted_values:
-              values: ["Pas recherché", "non quantifié", "> 0,5 µg/L","<= 0,5 µg/L"]
+              values: ["non quantifié", "> 0,5 µg/L","<= 0,5 µg/L"]
       - name: last_datetimeprel
         description: "date du dernier prevelvement pour le cas periode=dernier prélévement "
         type: DATE

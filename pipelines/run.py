@@ -142,19 +142,19 @@ def run_upload_database(env):
     task_func(env)
 
 
-@run.command("generate_geojson")
+@run.command("generate_pmtiles")
 @click.option(
     "--env",
     type=click.Choice(["dev", "prod"]),
     default=None,
     help="Environment to upload to. It will override environment defined in .env",
 )
-def run_generate_geojson(env):
+def run_generate_pmtiles(env="dev"):
     """Generate and upload merged new GeoJSON file."""
     env = get_environment(default=env)
     logger.info(f"Running on env {env}")
 
-    module = importlib.import_module("tasks.generate_geojson")
+    module = importlib.import_module("tasks.generate_pmtiles")
     task_func = getattr(module, "execute")
     task_func(env)
 

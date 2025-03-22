@@ -9,16 +9,21 @@ logger = logging.getLogger(__name__)
 
 
 class PmtilesProcessor:
-    def convert_geojson_to_pmtiles(self, geojson_file, pmtiles_file):
+    def convert_geojson_to_pmtiles(
+        self, geojson_file: str, pmtiles_file: str, layer="datacommunes"
+    ):
         """Convert a GeoJSON file to PMTiles format using Tippecanoe."""
         try:
             # Construct the Tippecanoe command
             command = [
                 "tippecanoe",
-                "-o",
-                pmtiles_file,  # Output PMTiles file
                 "-zg",  # Zoom levels
-                "--drop-densest-as-needed",  # Drops features to reduce density
+                "-o",  # output
+                pmtiles_file,  # Output PMTiles file
+                "--layer",  # le nom de la couche dans les tuiles vectorielles
+                layer,
+                "--coalesce-densest-as-needed",
+                "--extend-zooms-if-still-dropping",
                 geojson_file,  # Input GeoJSON file
             ]
             # if file already exists then remove it

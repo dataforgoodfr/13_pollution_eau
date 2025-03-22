@@ -55,18 +55,15 @@ def execute(env: str):
         output_path=geojson_output_path,
     )
     logger.info(f"✅ new-GeoJSON processed and stored at: {geojson_output_path}")
-    # convert new geojson to pmtiles
+
     logger.info("Convert new-GeoJSON to pmtiles")
     pmtils_output_path = os.path.join(
         CACHE_FOLDER, "georef-france-commune-prelevement.pmtiles"
     )
     pmtiles_processor.convert_geojson_to_pmtiles(
-        geojson_output_path, pmtils_output_path
+        geojson_output_path, pmtils_output_path, "datacommunes"
     )
 
-    # Upload to S3
-    logger.info("Uploading merged GeoJSON to S3")
-    geojson_processor.upload_geojson_to_storage(env, geojson_output_path)
     logger.info("Uploading pmtiles to S3")
     url = pmtiles_processor.upload_pmtils_to_storage(
         env, pmtils_path=pmtils_output_path

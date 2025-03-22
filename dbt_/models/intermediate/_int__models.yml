@@ -280,8 +280,8 @@ models:
         description: "Annee du prevelvement"
         type: SMALLINT
 
-  - name: int__resultats_annuel_cvm_uid
-    description: "Resultat des prélevements par uid /catégorie et par année"
+  - name: int__resultats_annuel_cvm_udi
+    description: "Resultat des prélevements par udi /catégorie et par année"
     columns:
       - name: cdreseau
         description: "Code de l'installation (unité de distribution)"
@@ -346,7 +346,7 @@ models:
         description: "date du dernier prevelvement"
         type: DATE
 
-  - name: int__resultats_last_cvm_uid
+  - name: int__resultats_last_cvm_udi
     description: "Resultat des prélevements par commune /catégorie et par année"
     columns:
       - name: cdreseau
@@ -409,7 +409,7 @@ models:
         description: "date du dernier prevelvement pour le cas periode=dernier prélévement "
         type: DATE
 
-  - name: int__resultats_cvm_uid
+  - name: int__resultats_cvm_udi
     description: "Resultat des prélevements par commune /catégorie et par année"
     columns:
       - name: cdreseau

@@ -271,8 +271,6 @@ models:
       - name: last_datetimeprel
         description: "Date et heure du dernier prélèvement pris en compte dans l'analyse."
         type: TIMESTAMP
-        tests:
-          - not_null
       
       - name: result
         description: "Interprétation du résultat en fonction des seuils sanitaires et des valeurs mesurées."

@@ -15,7 +15,6 @@ Examples:
     - build_database --refresh-type custom --custom-years 2018,2024 --check_update : Process only the years 2018 and 2024 if their data has been modified from the source
 """
 
-import logging
 from typing import List
 
 from pipelines.tasks.client.commune_client import CommuneClient
@@ -25,8 +24,6 @@ from pipelines.tasks.client.udi_client import UDIClient
 from pipelines.tasks.config.config_insee import get_insee_config
 from pipelines.tasks.config.config_laposte import get_laposte_config
 from pipelines.tasks.config.config_udi import get_udi_config
-
-logger = logging.getLogger(__name__)
 
 
 def execute(
@@ -45,24 +42,20 @@ def execute(
     # Build database
     duckdb_client = DuckDBClient()
 
-    # data_gouv_client = DataGouvClient(duckdb_client)
-    # data_gouv_client.process_edc_datasets(
-    #     refresh_type=refresh_type,
-    #     custom_years=custom_years,
-    #     drop_tables=drop_tables,
-    #     check_update=check_update,
-    # )
+    data_gouv_client = DataGouvClient(duckdb_client)
+    data_gouv_client.process_edc_datasets(
+        refresh_type=refresh_type,
+        custom_years=custom_years,
+        drop_tables=drop_tables,
+        check_update=check_update,
+    )
 
-    # insee_client = HTTPSToDuckDBClient(get_insee_config())
-    # insee_client.process_datasets()
-    # laposte = HTTPSToDuckDBClient(get_laposte_config())
-    # laposte.process_datasets(get_udi_config())
-
-    # insee_client = CommuneClient(get_insee_config(), duckdb_client)
-    # insee_client.process_datasets()
-    # laposte = CommuneClient(get_laposte_config(), duckdb_client)
-    # laposte.process_datasets()
+    insee_client = CommuneClient(get_insee_config(), duckdb_client)
+    insee_client.process_datasets()
+    laposte = CommuneClient(get_laposte_config(), duckdb_client)
+    laposte.process_datasets()
 
     udi_client = UDIClient(get_udi_config(), duckdb_client)
     udi_client.process_datasets()
+
     duckdb_client.close()

@@ -2,33 +2,10 @@ import logging
 from pathlib import Path
 
 from pipelines.config.config import get_environment, get_s3_udi_path
-from pipelines.tasks.client.https_client import HTTPSClient
-from pipelines.tasks.config.common import CACHE_FOLDER, DUCKDB_FILE
+from pipelines.tasks.config.common import CACHE_FOLDER
 from pipelines.utils.storage_client import ObjectStorageClient
 
 logger = logging.getLogger(__name__)
-
-
-"""_summary_
-Va falloir qu’on mette à jour le dockerfile du site pour intégrer cette table et activer la geospatial extension
-Faudrait tester ça rapidement (la geospatial extension et le ST_Contains) avant qu’on fasse tout le dev
-Livrable:
-- Télécharger les données UDI séléctionné par l'étude réalisé dans ce ticket: https://noco.services.dataforgood.fr/dashboard/#/nc/pk1vq1pm8frc5lm/ms9uz8er4jpow7j/vwalcv3k4abo1sxq?rowId=168
-- Les stocker sur S3 pour le moment dans prod/UDI/filename
-- Ajouter a build database le telechargement des données depuis S3 et la création d'une table udi
-- Utiliser l'extension spatial de duckdb et vérifier que l'on peux utiliser ST_contains pour faire des recherche dans les UDI par lat/lon: https://duckdb.org/docs/stable/extensions/spatial/functions#st_contains
-- Va falloir créer une table avec les tracés des UDIS
----------
-- Faudrait tester ça rapidement (la geospatial extension et le ST_Contains) avant qu’on fasse tout le dev
-- alloir créer une table avec les tracés des UDIS
-- Va falloir qu’on mette à jour le dockerfile du site pour intégrer cette table et activer la geospatial extension
-"""
-
-
-# REPERTOIRE_DATA_ATLASANTE = Path(
-#     CACHE_FOLDER,
-#     "Telechargement_1741623465_2416/d51b5c43-812d-420f-a641-83e18ddb8628_1741623465_7231",
-# )
 
 
 def upload_udi(env: str = "dev"):

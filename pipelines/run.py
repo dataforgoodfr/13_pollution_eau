@@ -146,10 +146,10 @@ def run_upload_database(env):
 @click.option(
     "--env",
     type=click.Choice(["dev", "prod"]),
-    default=None,
+    default="dev",
     help="Environment to upload to. It will override environment defined in .env",
 )
-def run_generate_pmtiles(env="dev"):
+def run_generate_pmtiles(env):
     """Generate and upload merged new GeoJSON file."""
     env = get_environment(default=env)
     logger.info(f"Running on env {env}")
@@ -159,7 +159,7 @@ def run_generate_pmtiles(env="dev"):
     task_func(env)
 
 
-@run.command("download_geojson")
+@run.command("download_pmtiles")
 @click.option(
     "--env",
     type=click.Choice(["dev", "prod"]),
@@ -170,10 +170,10 @@ def run_generate_pmtiles(env="dev"):
     "--use-boto3",
     is_flag=True,
     default=False,
-    help="Download GeoJSON via Boto3 (instead of HTTPS).",
+    help="Download PMtiles via Boto3 (instead of HTTPS).",
 )
-def run_download_geojson(env, use_boto3):
-    """Download GeoJSON file from S3.
+def run_download_pmtiles(env, use_boto3):
+    """Download PMtiles file from S3.
 
     Args:
         env: The environment to download from ("dev" or "prod").
@@ -184,7 +184,7 @@ def run_download_geojson(env, use_boto3):
     env = get_environment(default="prod")
     logger.info(f"Running on env {env}")
 
-    module = importlib.import_module("tasks.download_geojson")
+    module = importlib.import_module("tasks.download_pmtiles")
     task_func = getattr(module, "execute")
     task_func(env, use_boto3)
 

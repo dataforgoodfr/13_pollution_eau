@@ -24,7 +24,6 @@ dependencies = [
     "tqdm>=4.67.1,<5",
     "pre-commit>=4.1.0",
     "ruff>=0.9.10",
-    "tippecanoe>=2.72.0",
 ]
 
 [dependency-groups]
@@ -33,6 +32,11 @@ dev = [
     "pre-commit>=4.1.0,<5",
     "pytest>=8.3.4,<9",
     "pytest-cov>=6.0.0,<7"
+]
+
+[project.optional-dependencies]
+pmtiles = [
+  "tippecanoe>=2.72.0,<3"
 ]
 
 [build-system]

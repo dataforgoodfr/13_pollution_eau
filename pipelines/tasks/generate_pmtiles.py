@@ -1,8 +1,8 @@
-"""Generate and upload merged new GeoJSON file.
+"""Generate and upload merged new PMtiles file.
 
 Downloads commune GeoJSON data from OpenDataSoft, merges it with
-ana__resultats_communes from duckdb, and uploads the
-new GeoJSON to S3.
+ana__resultats_communes from duckdb, convert to pmtiles and uploads the
+new Pmtiles to S3.
 """
 
 import logging
@@ -68,4 +68,4 @@ def execute(env: str):
     url = pmtiles_processor.upload_pmtils_to_storage(
         env, pmtils_path=pmtils_output_path
     )
-    logger.info("pmtiles s3 pubic Url: ", url)
+    logger.info(f"pmtiles s3 pubic Url: {url}")

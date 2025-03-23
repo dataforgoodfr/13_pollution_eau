@@ -13,30 +13,30 @@ class PmtilesProcessor:
         self, geojson_file: str, pmtiles_file: str, layer="datacommunes"
     ):
         """Convert a GeoJSON file to PMTiles format using Tippecanoe."""
-        try:
-            # Construct the Tippecanoe command
-            command = [
-                "tippecanoe",
-                "-zg",  # Zoom levels
-                "-o",  # output
-                pmtiles_file,  # Output PMTiles file
-                "--layer",  # le nom de la couche dans les tuiles vectorielles
-                layer,
-                "--coalesce-densest-as-needed",
-                "--extend-zooms-if-still-dropping",
-                geojson_file,  # Input GeoJSON file
-            ]
-            # if file already exists then remove it
-            if Path(pmtiles_file).exists():
-                Path(pmtiles_file).unlink()
-            # Run the command
-            subprocess.run(command, check=True)
-            logger.info(f"Successfully converted '{geojson_file}' to '{pmtiles_file}'.")
+        # try:
+        # Construct the Tippecanoe command
+        command = [
+            "tippecanoe",
+            "-zg",  # Zoom levels
+            "-o",  # output
+            pmtiles_file,  # Output PMTiles file
+            "--layer",  # le nom de la couche dans les tuiles vectorielles
+            layer,
+            "--coalesce-densest-as-needed",
+            "--extend-zooms-if-still-dropping",
+            geojson_file,  # Input GeoJSON file
+        ]
+        # if file already exists then remove it
+        if Path(pmtiles_file).exists():
+            Path(pmtiles_file).unlink()
+        # Run the command
+        subprocess.run(command, check=True)
+        logger.info(f"Successfully converted '{geojson_file}' to '{pmtiles_file}'.")
 
-        except subprocess.CalledProcessError as e:
-            logger.error(f"Error during conversion: {e}")
-        except Exception as e:
-            logger.error(f"An error occurred: {e}")
+        # except subprocess.CalledProcessError as e:
+        #     logger.error(f"Error during conversion: {e}")
+        # except Exception as e:
+        #     logger.error(f"An error occurred: {e}")
 
     def upload_pmtils_to_storage(self, env: str, pmtils_path: str):
         """
@@ -48,7 +48,5 @@ class PmtilesProcessor:
 
         s3.upload_object(local_path=pmtils_path, file_key=s3_path, public_read=True)
         logger.info(f"✅ pmtils uploaded to s3://{s3.bucket_name}/{s3_path}")
-        url = (
-            f"https://{s3.bucket_name}.{s3.endpoint_url.split('https://')[1]}/{s3_path}"
-        )
+        url = f"https://{s3.bucket_name}.{s3.endpoint_url.split('https://')[1]}/{s3_path}"
         return url

@@ -147,7 +147,8 @@ uv run ./pipelines/run.py run generate_pmtiles
 ```
 Le fichier PMTiles sera accessible à l'URL suivante :
 
-➡️ https://pollution-eau-s3.s3.fr-par.scw.cloud/dev/pmtiles/georef-france-commune-prelevement.pmtiles
+➡️ dev: https://pollution-eau-s3.s3.fr-par.scw.cloud/dev/pmtiles/georef-france-commune-prelevement.pmtiles
+➡️ prod: https://pollution-eau-s3.s3.fr-par.scw.cloud/dev/pmtiles/georef-france-commune-prelevement.pmtiles
 
 Si vous souhaitez télécharger ce fichier PMTiles via la commande CLI, utilisez :
 ```bash

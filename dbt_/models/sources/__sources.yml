@@ -14,3 +14,8 @@ sources:
     tables:
       - name: laposte_communes
       - name: cog_communes
+  - name: udi
+    database: data
+    schema: main
+    tables: 
+      - atlasante_udi

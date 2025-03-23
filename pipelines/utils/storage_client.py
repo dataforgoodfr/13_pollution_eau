@@ -1,5 +1,4 @@
 import io
-import logging
 import os
 
 import boto3
@@ -8,9 +7,10 @@ from botocore.client import Config
 from botocore.exceptions import ClientError
 from tqdm import tqdm
 
-"""Client class to interact with Scaleway Object Storage."""
+from pipelines.utils.logger import get_logger
 
-logger = logging.getLogger(__name__)
+logger = get_logger(__name__)
+"""Client class to interact with Scaleway Object Storage."""
 
 
 class ObjectStorageClient:

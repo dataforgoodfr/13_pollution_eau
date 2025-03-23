@@ -1,9 +1,10 @@
-import logging
 import os
 
 from dotenv import load_dotenv
 
-logger = logging.getLogger(__name__)
+from pipelines.utils.logger import get_logger
+
+logger = get_logger(__name__)
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 # Construct the path to the .env file

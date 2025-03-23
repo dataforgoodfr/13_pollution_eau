@@ -1,16 +1,16 @@
 # pipelines/tasks/geojson_processor.py
 
 import json
-import logging
 from pathlib import Path
 
 import pandas as pd
 from tqdm import tqdm
 
 from pipelines.config.config import get_s3_path_geojson
+from pipelines.utils.logger import get_logger
 from pipelines.utils.storage_client import ObjectStorageClient
 
-logger = logging.getLogger(__name__)
+logger = get_logger(__name__)
 
 
 class GeoJSONProcessor:

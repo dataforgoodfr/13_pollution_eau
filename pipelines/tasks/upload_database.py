@@ -9,13 +9,12 @@ Examples:
     - upload_database --env prod : Upload database to production environment
 """
 
-import logging
-
 from pipelines.config.config import get_s3_path
 from pipelines.tasks.config.common import DUCKDB_FILE
+from pipelines.utils.logger import get_logger
 from pipelines.utils.storage_client import ObjectStorageClient
 
-logger = logging.getLogger(__name__)
+logger = get_logger(__name__)
 
 
 def upload_database_to_storage(env):

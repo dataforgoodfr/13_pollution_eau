@@ -6,7 +6,6 @@ from urllib.parse import urlparse
 
 from tqdm import tqdm
 
-from pipelines.tasks.client.core.duckdb_client import DuckDBClient
 from pipelines.tasks.client.core.https_client import HTTPSClient
 from pipelines.tasks.config.common import (
     CACHE_FOLDER,
@@ -171,7 +170,6 @@ class DataGouvClient(HTTPSClient):
         extract_file(zip_file=zip_file, extract_folder=extract_folder)
 
         logger.info("   Creating or updating tables in the database...")
-        # duckdb_client = DuckDBClient()
 
         files = self.config_edc["files"]
 
@@ -214,9 +212,6 @@ class DataGouvClient(HTTPSClient):
                     filepath=filepath,
                 )
                 pbar.update(1)
-
-        # duckdb_client.close()
-
         logger.info("   Cleaning up cache...")
         clear_cache()
 
@@ -269,15 +264,12 @@ class DataGouvClient(HTTPSClient):
             years_to_update = self._get_edc_dataset_years_to_update(years_to_update)
         else:
             if drop_tables or (refresh_type == "all"):
-                # duckdb_client = DuckDBClient()
-
                 tables_names = [
                     file_info["table_name"]
                     for file_info in self.config_edc["files"].values()
                 ]
 
                 self.duckdb_client.drop_tables(table_names=tables_names)
-                # duckdb_client.close()
 
         logger.info(
             f"Launching processing of EDC datasets for years: {years_to_update}"

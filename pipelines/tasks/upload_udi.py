@@ -1,11 +1,11 @@
-import logging
 from pathlib import Path
 
 from pipelines.config.config import get_environment, get_s3_udi_path
 from pipelines.tasks.config.common import CACHE_FOLDER
+from pipelines.utils.logger import get_logger
 from pipelines.utils.storage_client import ObjectStorageClient
 
-logger = logging.getLogger(__name__)
+logger = get_logger(__name__)
 
 
 def upload_udi(env: str = "dev"):

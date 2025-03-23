@@ -1,21 +1,15 @@
 import importlib
-import logging
 import os
 
 import click
 
 # Importer et charger les variables d'environnement depuis config.py
 from pipelines.config.config import get_environment, load_env_variables
+from pipelines.utils.logger import get_logger
 
 load_env_variables()
 
-# Configure logging
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-)
-
-logger = logging.getLogger(__name__)
+logger = get_logger(__name__)
 
 
 @click.group()

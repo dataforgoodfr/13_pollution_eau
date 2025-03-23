@@ -5,18 +5,18 @@ ana__resultats_communes from duckdb, convert to pmtiles and uploads the
 new Pmtiles to S3.
 """
 
-import logging
 import os
 
 import duckdb
+from tasks.client.opendatasoft_client import OpenDataSoftClient
+from tasks.config.common import CACHE_FOLDER, DUCKDB_FILE
 
 from pipelines.tasks.client.geojson_processor import GeoJSONProcessor
 from pipelines.tasks.client.pmtiles_processor import PmtilesProcessor
 from pipelines.tasks.config.config_geojson import get_opendatasoft_config
-from tasks.client.opendatasoft_client import OpenDataSoftClient
-from tasks.config.common import CACHE_FOLDER, DUCKDB_FILE
+from pipelines.utils.logger import get_logger
 
-logger = logging.getLogger(__name__)
+logger = get_logger(__name__)
 
 
 def execute(env: str):

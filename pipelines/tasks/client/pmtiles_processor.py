@@ -48,5 +48,7 @@ class PmtilesProcessor:
 
         s3.upload_object(local_path=pmtils_path, file_key=s3_path, public_read=True)
         logger.info(f"✅ pmtils uploaded to s3://{s3.bucket_name}/{s3_path}")
-        url = f"https://{s3.bucket_name}.{s3.endpoint_url.split('https://')[1]}/{s3_path}"
+        url = (
+            f"https://{s3.bucket_name}.{s3.endpoint_url.split('https://')[1]}/{s3_path}"
+        )
         return url

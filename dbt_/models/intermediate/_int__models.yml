@@ -249,7 +249,7 @@ models:
         type: DATETIME
 
   - name: int__resultats_annuel_cvm_communes
-    description: "Resultat des prélevements par commune /catégorie et par année"
+    description: "Resultat des analyse par commune /catégorie et par année"
     columns:
       - name: commune_code_insee
         description: "Code INSEE de la commune du point de surveillance"
@@ -265,13 +265,13 @@ models:
           paramètre. Lorsque c'est possible, le symbole chimique est retenu comme identifiant (NO3, AS...) pour le rendre
           signifiant.
       - name: periode
-        description: "Typde de resultat du prélevement"
+        description: "Type de resultat"
         type: VARCHAR
         tests:
           - accepted_values:
               values: ['bilan annuel']
       - name: resultat
-        description: "resultat du prélevement"
+        description: "resultat de l'analyse de la catégorie sélectionnée"
         type: VARCHAR
         tests:
           - accepted_values:
@@ -298,13 +298,13 @@ models:
           paramètre. Lorsque c'est possible, le symbole chimique est retenu comme identifiant (NO3, AS...) pour le rendre
           signifiant.
       - name: periode
-        description: "Typde de resultat du prélevement"
+        description: "Type de resultat"
         type: VARCHAR
         tests:
           - accepted_values:
               values: ['bilan annuel']
       - name: resultat
-        description: "resultat du prélevement"
+        description: "resultat de l'analyse de la catégorie sélectionnée"
         type: VARCHAR
         tests:
           - accepted_values:
@@ -331,13 +331,13 @@ models:
           - accepted_values:
               values: ["cvm"]
       - name: periode
-        description: "Typde de resultat du prélevement"
+        description: "Type de resultat"
         type: VARCHAR
         tests:
           - accepted_values:
               values: ["dernier prélévement"]
       - name: resultat
-        description: "resultat du prélevement"
+        description: "resultat de l'analyse de la catégorie sélectionnée"
         type: VARCHAR
         tests:
           - accepted_values:
@@ -370,7 +370,7 @@ models:
           - accepted_values:
               values: ["dernier prélévement"]
       - name: resultat
-        description: "resultat du prélevement"
+        description: "resultat de l'analyse de la catégorie sélectionnée"
         type: VARCHAR
         tests:
           - accepted_values:
@@ -397,10 +397,10 @@ models:
           - accepted_values:
               values: ["cvm"]
       - name: periode
-        description: "Typde de resultat du prélevement"
+        description: "Type de resultat du prélevement"
         type: VARCHAR
       - name: resultat
-        description: "resultat du prélevement"
+        description: "resultat de l'analyse de la catégorie sélectionnée"
         type: VARCHAR
         tests:
           - accepted_values:
@@ -427,10 +427,10 @@ models:
           - accepted_values:
               values: ["cvm"]
       - name: periode
-        description: "Typde de resultat du prélevement"
-        type: VARCHAR
+        description: "Type de resultat du prélevement"
+        type: VARCHAR  
       - name: resultat
-        description: "resultat du prélevement"
+        description: "resultat de l'analyse de la catégorie sélectionnée"
         type: VARCHAR
         tests:
           - accepted_values:

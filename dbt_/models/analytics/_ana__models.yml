@@ -19,3 +19,23 @@ models:
         tests:
           - accepted_values:
               values: ["conforme", "non conforme", "non analysé"]
+
+
+  - name: int__resultats_annee_uid
+    description: "Resultat des prélevement par uid ( par année et dernier prélèvement)"
+    columns:
+      - name: cdreseau
+        description: "Code de l'installation (unité de distribution)"
+        tests:
+          - not_null
+      - name: categorie
+        description: "Catégorie du paramètre (pesticides, pfas, vcm, nitrates, etc.) selon la classification établie."
+        tests:
+          - accepted_values:
+              values: ["cvm"]
+      - name: periode
+        description: "Type de resultat"
+        type: VARCHAR  
+      - name: resultat
+        description: "resultat de l'analyse pour la catégorie selectionnée"
+        type: VARCHAR

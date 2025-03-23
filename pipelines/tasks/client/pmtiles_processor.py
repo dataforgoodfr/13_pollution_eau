@@ -1,11 +1,11 @@
-import logging
 import subprocess
 from pathlib import Path
 
 from pipelines.config.config import get_s3_path_pmtiles
+from pipelines.utils.logger import get_logger
 from pipelines.utils.storage_client import ObjectStorageClient
 
-logger = logging.getLogger(__name__)
+logger = get_logger(__name__)
 
 
 class PmtilesProcessor:

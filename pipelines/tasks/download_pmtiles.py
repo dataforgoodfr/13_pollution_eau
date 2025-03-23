@@ -11,15 +11,15 @@ Examples:
     - download_pmtiles --use-boto3 : Download PMtiles from S3 storage
 """
 
-import logging
 import os
 from abc import ABC, abstractmethod
 
 from pipelines.config.config import get_s3_path_pmtiles
 from pipelines.tasks.config.common import CACHE_FOLDER, download_file_from_https
+from pipelines.utils.logger import get_logger
 from pipelines.utils.storage_client import ObjectStorageClient
 
-logger = logging.getLogger(__name__)
+logger = get_logger(__name__)
 
 
 class PMtilesDownloadStrategy(ABC):

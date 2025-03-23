@@ -131,9 +131,9 @@ class DuckDBClient:
         )
         return True
 
-    def ingest_from_geojson(self, geojson_path: str, table_name: str):
+    def ingest_from_geojson(self, filepath: str, table_name: str):
         # read geo_json with st_read() from spatial extention
-        sql = f"CREATE TABLE {table_name} AS SELECT * FROM ST_Read('{geojson_path}')"
+        sql = f"CREATE TABLE {table_name} AS SELECT *, CURRENT_TIMESTAMP as ingestion_date FROM ST_Read('{filepath}')"
         self.conn.execute(sql)
         return True
 

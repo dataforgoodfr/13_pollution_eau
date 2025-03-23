@@ -40,7 +40,10 @@ class GeoJSONProcessor:
         results_lookup = (
             results_df.groupby("commune_code_insee")
             .apply(
-                lambda x: {row["annee"]: row["resultat_cvm"] for _, row in x.iterrows()}
+                lambda x: {
+                    f"resultat_cvm_{row['annee']}": row["resultat_cvm"]
+                    for _, row in x.iterrows()
+                }
             )
             .to_dict()
         )
@@ -61,11 +64,10 @@ class GeoJSONProcessor:
                 properties = {
                     "commune_code_insee": code_insee,
                     "commune_nom": name_insee,
-                    "resultat_cvm": results_lookup.get(code_insee, {}),
                 }
+                properties.update(results_lookup.get(code_insee, {}))
 
                 feature["properties"] = properties
-
         # Get communes names from database
         communes_db_names = dict(
             zip(results_df["commune_code_insee"], results_df["commune_nom"])

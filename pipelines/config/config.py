@@ -42,3 +42,9 @@ def get_s3_path_geojson(env, filename="new-georef-france-commune-prelevement.geo
     if env not in ["dev", "prod"]:
         raise ValueError("Environment must be 'dev' or 'prod'")
     return f"{env}/geojson/{filename}"
+
+
+def get_s3_path_pmtiles(env, filename="georef-france-commune-prelevement.pmtiles"):
+    if env not in ["dev", "prod"]:
+        raise ValueError("Environment must be 'dev' or 'prod'")
+    return f"{env}/pmtiles/{filename}"

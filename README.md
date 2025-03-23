@@ -205,7 +205,7 @@ Un fichier `Dockerfile` est disponible pour déployer le site web avec Docker.
 Pour créer et exécuter l'image Docker en local (à la racine du projet) :
 
 ```bash
-docker build -t pollution-eau-app .
+docker build --build-arg NEXT_PUBLIC_PROTOMAPS_API_KEY="your-api-key-here" -t pollution-eau-app .
 
 docker run -p 8080:8080 --rm pollution-eau-app
 ```

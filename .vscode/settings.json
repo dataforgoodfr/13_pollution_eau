@@ -7,9 +7,10 @@
     }
   },
   "notebook.formatOnSave.enabled": true,
-  "python.testing.pytestArgs": [
-      "-sv",
-  ],
+  "python.testing.pytestArgs": ["-sv"],
   "python.testing.unittestEnabled": false,
-  "python.testing.pytestEnabled": true
+  "python.testing.pytestEnabled": true,
+  // Config for dorzey.vscode-sqlfluff extension
+  "sqlfluff.executablePath": "${workspaceFolder}/.venv/bin/sqlfluff",
+  "sqlfluff.linter.run": "onSave"
 }

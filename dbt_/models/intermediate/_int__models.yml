@@ -312,6 +312,9 @@ models:
       - name: annee
         description: "Annee du prevelvement"
         type: SMALLINT
+      - name : percent_ko
+        description: "Pourcentage de jour > 0,5 µg/L sur la totalité des jours avec l'information connue sur l'année"
+        type: FLOAT      
 
 
   - name: int__resultats_last_cvm_communes

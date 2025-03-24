@@ -177,14 +177,20 @@ models:
       - name: dateprel
         description: "Date du prélèvement"
         type: DATE
+        tests:
+          - not_null
 
       - name: heureprel
         description: "Heure du prélèvement au format 'Hh:MM'"
         type: VARCHAR
 
       - name: datetimeprel
-        description: "Date et heure du prélèvement combinées en un timestamp"
+        description: >
+          Date et heure du prélèvement combinées en un timestamp.
+          Quand l'heure est manquante ou sous un format invalide, nous utilisons par défaut 09h00.
         type: TIMESTAMP
+        tests:
+          - not_null
 
       - name: de_partition
         description: "Année de récupération des données"

@@ -5,11 +5,19 @@ with ranked as (
         dateprel,
         heureprel,
         de_partition,
-        -- TODO : parfois heureprel est vide, faut gérer ce cas
-        -- exemple : referenceprel = '07700233713';
-        -- TODO : vérifier si dateprel est toujours renseigné !
-        TRY_STRPTIME(
-            dateprel || ' ' || REPLACE(heureprel, 'h', ':'), '%Y-%m-%d %H:%M'
+        -- Quand heureprel est null ou invalide, on choisit arbitrairement 09:00
+        -- Examples:
+        -- referenceprel = '07700233713'
+        -- referenceprel = '02800116863'
+        COALESCE(
+            TRY_STRPTIME(
+                dateprel || ' ' || REPLACE(heureprel, 'h', ':'),
+                '%Y-%m-%d %H:%M'
+            ),
+            TRY_STRPTIME(
+                dateprel || ' 09:00',
+                '%Y-%m-%d %H:%M'
+            )
         ) as datetimeprel,
         ROW_NUMBER() over (
             partition by cdreseau, referenceprel

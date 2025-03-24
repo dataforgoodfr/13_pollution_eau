@@ -49,13 +49,15 @@ def execute(
         drop_tables=drop_tables,
         check_update=check_update,
     )
+    # pour l'instant, les Commune et UDI a seulement la donnee de 2024.
+    # il y a pas besoin d'update les deux tables si nous voulons utiliser custom_year pour update seulement edc
+    if refresh_type == "all" or refresh_type == "last":
+        insee_client = CommuneClient(get_insee_config(), duckdb_client)
+        insee_client.process_datasets()
+        laposte = CommuneClient(get_laposte_config(), duckdb_client)
+        laposte.process_datasets()
 
-    insee_client = CommuneClient(get_insee_config(), duckdb_client)
-    insee_client.process_datasets()
-    laposte = CommuneClient(get_laposte_config(), duckdb_client)
-    laposte.process_datasets()
-
-    udi_client = UDIClient(get_udi_config(), duckdb_client)
-    udi_client.process_datasets()
+        udi_client = UDIClient(get_udi_config(), duckdb_client)
+        udi_client.process_datasets()
 
     duckdb_client.close()

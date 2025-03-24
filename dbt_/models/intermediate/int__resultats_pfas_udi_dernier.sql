@@ -59,6 +59,17 @@ SELECT
             max_individual_pfas >= 0.1
             THEN 'Au moins 1 PFAS >= valeur sanitaire (0,1 µg/L)'
         ELSE 'Erreur de classification'
-    END AS result
+    END AS resultat
 FROM aggregated_results
 ORDER BY datetimeprel DESC
+
+/*
+Précisions importantes:
+
+Pour le cas du PFAS individuel, on considère de manière arbitraire que
+la valeur à ne pas égaler ou dépasser est de 0,1 µg/L.
+À confirmer avec GF.
+
+J'ai choisi de mettre ≥ au lieu de > pour les valeurs seuils.
+À confirmer avec GF.
+*/

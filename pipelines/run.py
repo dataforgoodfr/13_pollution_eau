@@ -142,6 +142,53 @@ def run_upload_database(env):
     task_func(env)
 
 
+@run.command("generate_pmtiles")
+@click.option(
+    "--env",
+    type=click.Choice(["dev", "prod"]),
+    default="dev",
+    help="Environment to upload to. It will override environment defined in .env",
+)
+def run_generate_pmtiles(env):
+    """Generate and upload merged new GeoJSON file."""
+    env = get_environment(default=env)
+    logger.info(f"Running on env {env}")
+
+    module = importlib.import_module("tasks.generate_pmtiles")
+    task_func = getattr(module, "execute")
+    task_func(env)
+
+
+@run.command("download_pmtiles")
+@click.option(
+    "--env",
+    type=click.Choice(["dev", "prod"]),
+    default=None,
+    help="Environment to download from. It will override environment defined in .env",
+)
+@click.option(
+    "--use-boto3",
+    is_flag=True,
+    default=False,
+    help="Download PMtiles via Boto3 (instead of HTTPS).",
+)
+def run_download_pmtiles(env, use_boto3):
+    """Download PMtiles file from S3.
+
+    Args:
+        env: The environment to download from ("dev" or "prod").
+        use_boto3: Whether to download via Boto3 instead of HTTPS. Default is False.
+    """
+    if env is not None:
+        os.environ["ENV"] = env
+    env = get_environment(default="prod")
+    logger.info(f"Running on env {env}")
+
+    module = importlib.import_module("tasks.download_pmtiles")
+    task_func = getattr(module, "execute")
+    task_func(env, use_boto3)
+
+
 @run.command("trim_database_for_website")
 @click.option(
     "--output-file",

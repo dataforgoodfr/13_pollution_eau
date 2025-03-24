@@ -2,6 +2,9 @@
 # Note: debian bookworm is supported until 2028-06-30
 FROM debian:bookworm-slim AS builder
 
+# Define build argument for API key
+ARG NEXT_PUBLIC_PROTOMAPS_API_KEY
+
 # Install UV
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 ENV UV_COMPILE_BYTECODE=1 UV_LINK_MODE=copy
@@ -36,6 +39,8 @@ WORKDIR /app/webapp
 COPY webapp /app/webapp
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV NODE_ENV=production
+ENV NEXT_PUBLIC_PROTOMAPS_API_KEY=$NEXT_PUBLIC_PROTOMAPS_API_KEY
+ENV DUCKDB_PATH="/app/database/data_for_website.duckdb"
 RUN npm run build
 
 
@@ -70,6 +75,7 @@ ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV PORT=8080
 ENV HOSTNAME="0.0.0.0"
+ENV NEXT_PUBLIC_PROTOMAPS_API_KEY=$NEXT_PUBLIC_PROTOMAPS_API_KEY
 ENV DUCKDB_PATH="/app/database/data_for_website.duckdb"
 
 # Switch to non-root user

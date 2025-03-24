@@ -135,6 +135,28 @@ Les modèles de données sont organisés dans le dossier `dbt_/models`. La struc
 #### Documentation
 La documentation du projet dbt est disponible sur le lien suivant: [documentation dbt](https://dataforgood.fr/13_pollution_eau/#!/overview)
 
+### Création des pmtiles
+La génération des fichiers PMTiles nécessite une dépendance optionnelle. Pour l'installer, utilisez la commande suivante :
+```bash
+uv pip install .[pmtiles]
+```
+
+Une fois cette dépendance installée, vous pouvez générer les PMTiles et les uploader sur S3 en exécutant la commande suivante :
+```bash
+uv run ./pipelines/run.py run generate_pmtiles 
+```
+Le fichier PMTiles sera accessible à l'URL suivante :
+
+➡️ dev: https://pollution-eau-s3.s3.fr-par.scw.cloud/dev/pmtiles/georef-france-commune-prelevement.pmtiles
+
+➡️ prod: https://pollution-eau-s3.s3.fr-par.scw.cloud/dev/pmtiles/georef-france-commune-prelevement.pmtiles
+
+Si vous souhaitez télécharger ce fichier PMTiles via la commande CLI, utilisez :
+```bash
+uv run ./pipelines/run.py run download_pmtiles 
+```
+
+
 ### Comment télécharger la base de données
 
 #### Via HTTPS
@@ -195,7 +217,7 @@ L'option `-s` permet d'afficher les prints dans le terminal.
 Lancer la commande suivante pour s'assurer que le code satisfait bien tous les pre commit avant de créer votre pull request
 
 ```bash
-pre-commit run --all-files
+uv run pre-commit run --all-files
 ```
 
 ## Déploiement du site avec Docker
@@ -205,7 +227,7 @@ Un fichier `Dockerfile` est disponible pour déployer le site web avec Docker.
 Pour créer et exécuter l'image Docker en local (à la racine du projet) :
 
 ```bash
-docker build -t pollution-eau-app .
+docker build --build-arg NEXT_PUBLIC_PROTOMAPS_API_KEY="your-api-key-here" -t pollution-eau-app .
 
 docker run -p 8080:8080 --rm pollution-eau-app
 ```

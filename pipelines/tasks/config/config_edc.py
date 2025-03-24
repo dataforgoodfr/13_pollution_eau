@@ -25,8 +25,13 @@ def get_edc_config() -> Dict:
                 "2022",
                 "2023",
                 "2024",
+                "2025",
             ],
             "yearly_files_infos": {
+                "2025": {
+                    "id": "7e38c236-dd3c-455e-a728-f0ecb84b1a7c",
+                    "zipfile": "dis-2025.zip",
+                },
                 "2024": {
                     "id": "84a67a3b-08a7-4001-98e6-231c74a98139",
                     "zipfile": "dis-2024.zip",

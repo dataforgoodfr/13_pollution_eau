@@ -18,4 +18,4 @@ sources:
     database: data
     schema: main
     tables: 
-      - atlasante_udi
+      - name: atlasante_udi

@@ -7,7 +7,7 @@ last AS (
         last_datetimeprel,
         resultat
     FROM
-        {{ ref('int__resultats_last_cvm_udi') }}
+        {{ ref('int__resultats_cvm_udi_dernier') }}
 ),
 
 yearly AS (
@@ -18,7 +18,7 @@ yearly AS (
         resultat,
         CONCAT(periode, ' - ', annee) AS periode
     FROM
-        {{ ref('int__resultats_annuel_cvm_udi') }}
+        {{ ref('int__resultats_cvm_udi_annuel') }}
 )
 
 

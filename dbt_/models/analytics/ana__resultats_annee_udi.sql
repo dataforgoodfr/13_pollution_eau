@@ -7,7 +7,7 @@ int__resultats_annee_uid AS (
         annee,
         CONCAT(periode, ' - ', annee) AS periode
     FROM
-        {{ ref('int__resultats_annuel_cvm_udi') }}
+        {{ ref('int__resultats_cvm_udi_annuel') }}
         /* UNION ALL
             Ajouter les autres substances */
 ),

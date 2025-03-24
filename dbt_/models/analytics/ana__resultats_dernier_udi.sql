@@ -7,7 +7,7 @@ int__resultats_last_uid AS (
         last_datetimeprel,
         resultat
     FROM
-        {{ ref('int__resultats_last_cvm_udi') }}
+        {{ ref('int__resultats_cvm_udi_dernier') }}
         /* UNION ALL
             Ajouter les autres substances */
 ),

@@ -41,7 +41,7 @@ models:
         type: VARCHAR
 
 
-  - name: int__resultats_last_uid
+  - name: int__resultats_dernier_uid
     description: "Resultat des prélevement par uid et dernier prélèvement"
     columns:
       - name: cdreseau

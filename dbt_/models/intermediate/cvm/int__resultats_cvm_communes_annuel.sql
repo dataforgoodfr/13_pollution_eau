@@ -8,7 +8,7 @@ communes_year AS (
         sum(1) AS nb_analyses,
         sum(CASE
             WHEN
-                valtraduite = 0 OR valtraduite = 1 OR valtraduite IS NULL
+                valtraduite = 0 OR valtraduite IS NULL
                 OR valtraduite IS NULL
                 OR limitequal_float IS NULL
                 THEN 1
@@ -17,14 +17,14 @@ communes_year AS (
         sum(CASE
             WHEN
                 limitequal_float IS NOT NULL AND valtraduite > limitequal_float
-                AND valtraduite != 0 AND valtraduite != 1
+                AND valtraduite != 0
                 THEN 1
             ELSE 0
         END) AS nb_analyses_not_ok,
         sum(CASE
             WHEN
                 limitequal_float IS NOT NULL AND valtraduite <= limitequal_float
-                AND valtraduite != 0 AND valtraduite != 1
+                AND valtraduite != 0
                 THEN 1
             ELSE 0
         END) AS nb_analyses_ok

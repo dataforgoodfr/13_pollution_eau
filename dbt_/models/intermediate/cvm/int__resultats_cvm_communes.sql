@@ -7,7 +7,7 @@ last AS (
         resultat,
         periode
     FROM
-        {{ ref('int__resultats_last_cvm_communes') }}
+        {{ ref('int__resultats_cvm_communes_dernier') }}
 ),
 
 yearly AS (
@@ -18,7 +18,7 @@ yearly AS (
         resultat,
         CONCAT(periode, ' - ', annee) AS periode
     FROM
-        {{ ref('int__resultats_annuel_cvm_communes') }}
+        {{ ref('int__resultats_cvm_communes_annuel') }}
 )
 
 

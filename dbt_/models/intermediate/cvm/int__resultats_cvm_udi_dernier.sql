@@ -28,7 +28,6 @@ SELECT
     CASE
         WHEN
             last_pvl.valtraduite = 0
-            OR last_pvl.valtraduite = 1
             OR last_pvl.valtraduite IS NULL
             OR last_pvl.limitequal_float IS NULL
             THEN 'non quantifié'

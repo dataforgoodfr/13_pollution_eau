@@ -201,7 +201,6 @@ models:
     description: >
       Table des résultats de prélèvements ventilés par UDI et commune, 
       pour les catégories d'intérêt (pesticides, pfas, vcm, etc.).
-      Exclut les catégories 'non classé' et 'paramètre organoleptique'.
     columns:
       - name: referenceprel
         description: "Code SISE-Eaux du prélèvement"

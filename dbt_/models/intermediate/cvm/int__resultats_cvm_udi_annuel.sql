@@ -16,15 +16,15 @@ udi_year AS (
         END) AS nb_analyses_not_quantify,
         sum(CASE
             WHEN
-                limitequal_float IS NOT NULL AND valtraduite > limitequal_float
-                AND valtraduite != 0 
+                limitequal_float IS NOT NULL AND valtraduite >= limitequal_float
+                AND valtraduite != 0
                 THEN 1
             ELSE 0
         END) AS nb_analyses_not_ok,
         sum(CASE
             WHEN
-                limitequal_float IS NOT NULL AND valtraduite <= limitequal_float
-                AND valtraduite != 0 
+                limitequal_float IS NOT NULL AND valtraduite < limitequal_float
+                AND valtraduite != 0
                 THEN 1
             ELSE 0
         END) AS nb_analyses_ok
@@ -55,10 +55,10 @@ udi_year_days AS (
                 THEN 'non quantifié'
             WHEN
                 valtraduite > limitequal_float
-                THEN '> 0,5 µg/L'
+                THEN '>= 0,5 µg/L'
             WHEN
                 valtraduite <= limitequal_float
-                THEN '<= 0,5 µg/L'
+                THEN '< 0,5 µg/L'
             ELSE 'Check SQL'
         END AS actual_resultats
     FROM
@@ -163,9 +163,9 @@ SELECT
         WHEN
             udi_year.nb_analyses > 0
             AND udi_year.nb_analyses_not_ok >= 1
-            THEN '> 0,5 µg/L'
+            THEN '>= 0,5 µg/L'
         WHEN udi_year.nb_analyses > 0 AND udi_year.nb_analyses_ok >= 1
-            THEN '<= 0,5 µg/L'
+            THEN '< 0,5 µg/L'
         ELSE 'Check SQL'
     END AS resultat
 FROM

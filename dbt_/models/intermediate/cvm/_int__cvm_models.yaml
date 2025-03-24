@@ -28,7 +28,7 @@ models:
         type: VARCHAR
         tests:
           - accepted_values:
-              values: ["non quantifié", "> 0,5 µg/L","<= 0,5 µg/L"]
+              values: ["non quantifié", ">= 0,5 µg/L","< 0,5 µg/L"]
       - name: annee
         description: "Annee du prevelvement"
         type: SMALLINT
@@ -61,7 +61,7 @@ models:
         type: VARCHAR
         tests:
           - accepted_values:
-              values: ["non quantifié", "> 0,5 µg/L","<= 0,5 µg/L"]
+              values: ["non quantifié", ">= 0,5 µg/L","< 0,5 µg/L"]
       - name: annee
         description: "Annee du prevelvement"
         type: SMALLINT
@@ -97,7 +97,7 @@ models:
         type: VARCHAR
         tests:
           - accepted_values:
-              values: ["non quantifié", "> 0,5 µg/L","<= 0,5 µg/L"]
+              values: ["non quantifié", ">= 0,5 µg/L","< 0,5 µg/L"]
       - name: last_datetimeprel
         description: "date du dernier prevelvement"
         type: DATE
@@ -130,7 +130,7 @@ models:
         type: VARCHAR
         tests:
           - accepted_values:
-              values: ["non quantifié", "> 0,5 µg/L","<= 0,5 µg/L"]
+              values: ["non quantifié", ">= 0,5 µg/L","< 0,5 µg/L"]
       - name: last_datetimeprel
         description: "date du dernier prevelvement"
         type: DATE
@@ -160,7 +160,7 @@ models:
         type: VARCHAR
         tests:
           - accepted_values:
-              values: ["non quantifié", "> 0,5 µg/L","<= 0,5 µg/L"]
+              values: ["non quantifié", ">= 0,5 µg/L","< 0,5 µg/L"]
       - name: last_datetimeprel
         description: "date du dernier prevelvement pour le cas periode=dernier prélévement "
         type: DATE
@@ -190,7 +190,7 @@ models:
         type: VARCHAR
         tests:
           - accepted_values:
-              values: ["non quantifié", "> 0,5 µg/L","<= 0,5 µg/L"]
+              values: ["non quantifié", ">= 0,5 µg/L","< 0,5 µg/L"]
       - name: last_datetimeprel
         description: "date du dernier prevelvement pour le cas periode=dernier prélévement "
         type: DATE

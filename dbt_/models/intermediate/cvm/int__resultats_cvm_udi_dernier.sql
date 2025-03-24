@@ -17,6 +17,9 @@ last_pvl AS (
         {{ ref('int__resultats_udi_communes') }}
     WHERE
         categorie = 'cvm' -- à supprimer pour avoir pour tout
+        AND
+        -- On garde les prélèvements de moins d'un an
+        CURRENT_DATE - datetimeprel < INTERVAL 1 YEAR
 )
 
 SELECT
@@ -33,12 +36,12 @@ SELECT
             THEN 'non quantifié'
         WHEN
             last_pvl.limitequal_float IS NOT NULL
-            AND last_pvl.valtraduite > last_pvl.limitequal_float
-            THEN '> 0,5 µg/L'
+            AND last_pvl.valtraduite >= last_pvl.limitequal_float
+            THEN '>= 0,5 µg/L'
         WHEN
             last_pvl.limitequal_float IS NOT NULL
-            AND last_pvl.valtraduite <= last_pvl.limitequal_float
-            THEN '<= 0,5 µg/L'
+            AND last_pvl.valtraduite < last_pvl.limitequal_float
+            THEN '< 0,5 µg/L'
         ELSE 'Check SQL'
     END AS resultat
 FROM

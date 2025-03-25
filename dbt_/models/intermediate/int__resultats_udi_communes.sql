@@ -40,12 +40,18 @@ resultats_with_cat AS (
     FROM
         resultats
     LEFT JOIN
-        int__mapping_category_simple AS mcs
+        {{ ref("int__mapping_category_simple") }} AS mcs
         ON
             resultats.cdparametresiseeaux = mcs.cdparametresiseeaux
     WHERE
-        mcs.categorie NOT IN (
-            'non classé', 'paramètre organoleptique'
+        mcs.categorie IN (
+            'pesticides',
+            'nitrite',
+            'pfas',
+            'cvm',
+            'métaux lourds',
+            'perchlorate',
+            'hydrocarbures' -- contient le 1,4 dioxane
         )
 )
 

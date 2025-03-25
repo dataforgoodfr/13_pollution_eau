@@ -5,7 +5,7 @@ last_pvl AS (
         categorie,
         cdparametresiseeaux,
         datetimeprel,
-        valtraduite_corrigee,
+        valtraduite,
         limitequal_float,
         ROW_NUMBER()
             OVER (
@@ -30,17 +30,15 @@ SELECT
     'dernier prélévement' AS periode,
     CASE
         WHEN
-            last_pvl.valtraduite_corrigee = 0
-            OR last_pvl.valtraduite_corrigee IS NULL
+            last_pvl.valtraduite = 0
+            OR last_pvl.valtraduite IS NULL
             OR last_pvl.limitequal_float IS NULL
             THEN 'non quantifié'
         WHEN
-            last_pvl.limitequal_float IS NOT NULL
-            AND last_pvl.valtraduite_corrigee >= last_pvl.limitequal_float
+            last_pvl.valtraduite >= last_pvl.limitequal_float
             THEN '>= 0,5 µg/L'
         WHEN
-            last_pvl.limitequal_float IS NOT NULL
-            AND last_pvl.valtraduite_corrigee < last_pvl.limitequal_float
+            last_pvl.valtraduite < last_pvl.limitequal_float
             THEN '< 0,5 µg/L'
         ELSE 'Check SQL'
     END AS resultat

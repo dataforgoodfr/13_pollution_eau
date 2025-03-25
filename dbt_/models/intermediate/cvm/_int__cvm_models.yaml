@@ -65,9 +65,13 @@ models:
       - name: annee
         description: "Annee du prevelvement"
         type: SMALLINT
-      - name : percent_ko
-        description: "Pourcentage de jour > 0,5 µg/L sur la totalité des jours avec l'information connue sur l'année"
+      - name : pourcentage_depassement
+        description: "Nombre de dépassements par nombre de prélèvements (dans l'UDI et dans l'année)"
         type: FLOAT      
-
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              max_value: 1
 
 

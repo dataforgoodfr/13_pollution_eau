@@ -25,9 +25,9 @@ models:
         type: TIMESTAMP
         tests:
           - not_null
-          - expression_is_true:
-              expression: "CURRENT_DATE - last_datetimeprel < INTERVAL 1 YEAR"
-                 
+          - dbt_utils.expression_is_true:
+              expression: ">= CURRENT_DATE - INTERVAL 1 YEAR"
+
       - name: resultat
         description: "Interprétation du résultat en fonction des seuils sanitaires et des valeurs mesurées."
         type: VARCHAR

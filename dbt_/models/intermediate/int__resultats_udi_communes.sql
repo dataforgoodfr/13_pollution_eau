@@ -4,10 +4,23 @@ WITH resultats AS (
         cdparametresiseeaux,
         limitequal,
         de_partition,
+        -- Correction de la colonne valtraduite qui contient les valeurs
+        -- textuelles de rqana converties en valeurs numériques.
+        -- Certaines valeurs textuelles telles que "Changement anormal", "OUI",
+        -- "PRESENCE" étaient converties en 1.
+        -- Ces valeurs sont corrigées en 0 car on veut les considérer comme
+        -- des valeurs non quantifiées.
+        -- Les valeurs purement numériques restent inchangées.
+        -- Exemples après correction :
+        --   'Changement anormal' → 0
+        --   'OUI' → 0
+        --   'PRESENCE' → 0
+        --   '1,0' → 1
+        --   '>1' → 1
         CASE
             WHEN valtraduite = 1 AND REGEXP_MATCHES(rqana, '[a-zA-Z]') THEN 0
             ELSE valtraduite
-        END AS valtraduite,
+        END AS valtraduite_corrigee,
         CAST(
             REGEXP_EXTRACT(
                 REPLACE(limitequal, ',', '.'), '-?\d+(\.\d+)?'
@@ -25,12 +38,18 @@ resultats_with_cat AS (
     FROM
         resultats
     LEFT JOIN
-        int__mapping_category_simple AS mcs
+        {{ ref("int__mapping_category_simple") }} AS mcs
         ON
             resultats.cdparametresiseeaux = mcs.cdparametresiseeaux
     WHERE
-        mcs.categorie NOT IN (
-            'non classé', 'paramètre organoleptique'
+        mcs.categorie IN (
+            'pesticides',
+            'nitrite',
+            'pfas',
+            'cvm',
+            'métaux lourds',
+            'perchlorate',
+            'hydrocarbures' -- contient le 1,4 dioxane
         )
 )
 

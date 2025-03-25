@@ -201,7 +201,6 @@ models:
     description: >
       Table des résultats de prélèvements ventilés par UDI et commune, 
       pour les catégories d'intérêt (pesticides, pfas, vcm, etc.).
-      Exclut les catégories 'non classé' et 'paramètre organoleptique'.
     columns:
       - name: referenceprel
         description: "Code SISE-Eaux du prélèvement"
@@ -217,7 +216,22 @@ models:
         tests:
           - not_null
       - name: valtraduite
-        description: '{{ doc("val_traduite_docs") }}'
+        description: >
+          A noter qu'une correction a été appliquée par rapport au valtraduite de la source de donnée.
+          Les valeurs textuelles telles que "Changement anormal", "OUI", "PRESENCE" ont été converties en 0 car considérées comme non quantifiées.
+          Les valeurs purement numériques restent inchangées.
+          Exemples:
+            - 'Changement anormal' → 0
+            - 'OUI' → 0  
+            - 'PRESENCE' → 0
+            - '1,0' → 1
+            - '>1' → 1
+
+          Ci-dessous, la documentation de la source de donnée :
+
+          ---
+
+          {{ doc("val_traduite_docs") }}
 
       - name: limitequal
         description: "Limite(s) de qualité du paramètre concerné en vigueur au moment du prélèvement pour le type d'eau considéré."

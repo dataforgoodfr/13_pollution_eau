@@ -1,0 +1,48 @@
+version: 1
+
+models:
+  - name: int__resultats_pfas_udi_dernier
+    description: "Résultats des derniers prélèvements pour les PFAS par UDI. Ce modèle sélectionne le dernier prélèvement pour chaque paramètre PFAS et agrège les résultats pour identifier les dépassements des seuils sanitaires."
+    columns:
+      - name: referenceprel
+        description: "Référence unique du prélèvement."
+        tests:
+          - not_null
+      
+      - name: cdreseau
+        description: "Code de l'installation (UDI)."
+        tests:
+          - not_null
+      
+      - name: categorie
+        description: "Catégorie du paramètre analysé (ici, toujours 'pfas')."
+        tests:
+          - accepted_values:
+              values: ["pfas"]
+
+      - name: last_datetimeprel
+        description: "Date et heure du dernier prélèvement pris en compte dans l'analyse."
+        type: TIMESTAMP
+        tests:
+          - not_null
+          - CURRENT_DATE - last_datetimeprel < INTERVAL '1 year'
+      
+      - name: resultat
+        description: "Interprétation du résultat en fonction des seuils sanitaires et des valeurs mesurées."
+        type: VARCHAR
+        tests:
+          - accepted_values:
+              values: 
+                - "Aucun paramètre n’a été quantifié"
+                - "Somme des 20 PFAS < 0,1 µg/L et somme des 4 PFAS < 0,02 µg/L"
+                - "Somme des 20 PFAS < 0,1 µg/L et somme des 4 PFAS >= 0,02 µg/L"
+                - "Somme des 20 PFAS >= 0,1 µg/L"
+                - "Au moins 1 PFAS >= valeur sanitaire (0,1 µg/L)"
+                - "Erreur de classification"
+      
+      - name: periode
+        description: "Période d'analyse des prélèvements (ici, toujours 'dernier prélèvement')."
+        type: VARCHAR
+        tests:
+          - accepted_values:
+              values: ["dernier prélèvement"]

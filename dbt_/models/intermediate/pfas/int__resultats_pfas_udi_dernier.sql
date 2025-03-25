@@ -6,7 +6,11 @@ WITH latest_pfas_results AS (
             ORDER BY datetimeprel DESC
         ) AS row_number
     FROM {{ ref('int__resultats_udi_communes') }}
-    WHERE categorie = 'pfas'
+    WHERE
+        categorie = 'pfas'
+        AND
+        -- On garde les prélèvements de moins d'un an
+        CURRENT_DATE - datetimeprel < INTERVAL 1 YEAR
 ),
 
 aggregated_results AS (
@@ -30,7 +34,7 @@ aggregated_results AS (
         ) AS max_individual_pfas,
         COUNT(
             DISTINCT CASE
-                WHEN valtraduite NOT IN (0, 1) THEN cdparametresiseeaux
+                WHEN valtraduite != 0 THEN cdparametresiseeaux
             END
         ) AS nb_quantified_params
     FROM latest_pfas_results

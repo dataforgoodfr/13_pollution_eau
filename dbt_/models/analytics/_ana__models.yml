@@ -28,11 +28,6 @@ models:
         description: "Code de l'installation (unité de distribution)"
         tests:
           - not_null
-      - name: cdparametresiseeaux
-        description: >
-          Le code SISE-Eaux du paramètre est un identifiant alphanumérique sur 7 positions maximum, associé à chaque
-          paramètre. Lorsque c'est possible, le symbole chimique est retenu comme identifiant (NO3, AS...) pour le rendre
-          signifiant.
       - name: categorie
         description: "Catégorie du paramètre (pesticides, pfas, vcm, nitrates, etc.) selon la classification établie."
         #tests:

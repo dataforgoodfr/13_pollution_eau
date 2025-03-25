@@ -35,9 +35,9 @@ models:
           signifiant.
       - name: categorie
         description: "Catégorie du paramètre (pesticides, pfas, vcm, nitrates, etc.) selon la classification établie."
-        tests:
-          - accepted_values:
-              values: ["cvm"]
+        #tests:
+        #  - accepted_values:
+        #      values: ["cvm"]
       - name: periode
         description: "Typde de resultat du prélevement"
         type: VARCHAR

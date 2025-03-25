@@ -21,7 +21,7 @@ WITH resultats AS (
             WHEN valtraduite = 1 AND REGEXP_MATCHES(rqana, '[a-zA-Z]') THEN 0
             ELSE valtraduite
         END AS valtraduite,
-  
+
         CAST(
             REGEXP_EXTRACT(
                 REPLACE(limitequal, ',', '.'), '-?\d+(\.\d+)?'

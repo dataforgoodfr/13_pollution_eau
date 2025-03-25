@@ -17,10 +17,19 @@ aggregated_results AS (
     SELECT
         referenceprel,
         cdreseau,
-        datetimeprel,
+        MIN(datetimeprel) AS datetimeprel,
+        COUNT(DISTINCT cdparametresiseeaux) AS nb_params,
+        -- La somme des 20 PFAS est disponible comme un paramètre (SPFAS)
         MAX(
             CASE WHEN cdparametresiseeaux = 'SPFAS' THEN valtraduite ELSE 0 END
         ) AS sum_20_pfas,
+        COUNT(
+            DISTINCT CASE
+                WHEN cdparametresiseeaux = 'SPFAS' THEN cdparametresiseeaux
+            END
+        ) AS is_20_pfas,
+        -- On calcule une somme de 4 PFAS pour une limite recommandée par le
+        -- haut conseil de la santé public
         SUM(
             CASE
                 WHEN
@@ -29,6 +38,14 @@ aggregated_results AS (
                 ELSE 0
             END
         ) AS sum_4_pfas,
+        SUM(
+            CASE
+                WHEN
+                    cdparametresiseeaux IN ('PFOA', 'PFOS', 'PFNA', 'PFHXS')
+                    THEN 1
+                ELSE 0
+            END
+        ) AS nb_4_pfas,
         MAX(
             CASE WHEN cdparametresiseeaux != 'SPFAS' THEN valtraduite END
         ) AS max_individual_pfas,
@@ -39,7 +56,15 @@ aggregated_results AS (
         ) AS nb_quantified_params
     FROM latest_pfas_results
     WHERE row_number = 1
-    GROUP BY referenceprel, cdreseau, datetimeprel
+    GROUP BY referenceprel, cdreseau
+    HAVING
+        -- On vérifie que la somme des 20 PFAS est bien présente
+        is_20_pfas = 1
+        AND
+        -- On vérifie que la somme des 4 PFAS est bien présente
+        nb_4_pfas = 4
+        -- TODO: On pourrait prendre essayer de prendre un autre prélèvement si
+        -- le dernier n'a pas les 20 PFAS et les 4 PFAS
 )
 
 SELECT

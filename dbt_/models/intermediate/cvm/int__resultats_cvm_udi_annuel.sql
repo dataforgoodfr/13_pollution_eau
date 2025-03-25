@@ -8,23 +8,25 @@ udi_year AS (
         sum(1) AS nb_analyses,
         sum(CASE
             WHEN
-                valtraduite = 0 OR valtraduite IS NULL
-                OR valtraduite IS NULL
+                valtraduite_corrigee = 0
+                OR valtraduite_corrigee IS NULL
                 OR limitequal_float IS NULL
                 THEN 1
             ELSE 0
         END) AS nb_analyses_not_quantify,
         sum(CASE
             WHEN
-                limitequal_float IS NOT NULL AND valtraduite >= limitequal_float
-                AND valtraduite != 0
+                limitequal_float IS NOT NULL
+                AND valtraduite_corrigee >= limitequal_float
+                AND valtraduite_corrigee != 0
                 THEN 1
             ELSE 0
         END) AS nb_analyses_not_ok,
         sum(CASE
             WHEN
-                limitequal_float IS NOT NULL AND valtraduite < limitequal_float
-                AND valtraduite != 0
+                limitequal_float IS NOT NULL
+                AND valtraduite_corrigee < limitequal_float
+                AND valtraduite_corrigee != 0
                 THEN 1
             ELSE 0
         END) AS nb_analyses_ok
@@ -46,18 +48,18 @@ udi_year_days AS (
         cdreseau,
         cdparametresiseeaux,
         datetimeprel,
-        valtraduite,
+        valtraduite_corrigee,
         CASE
             WHEN
-                valtraduite = 0
-                OR valtraduite IS NULL
+                valtraduite_corrigee = 0
+                OR valtraduite_corrigee IS NULL
                 OR limitequal_float IS NULL
                 THEN 'non quantifié'
             WHEN
-                valtraduite > limitequal_float
+                valtraduite_corrigee > limitequal_float
                 THEN '>= 0,5 µg/L'
             WHEN
-                valtraduite <= limitequal_float
+                valtraduite_corrigee <= limitequal_float
                 THEN '< 0,5 µg/L'
             ELSE 'Check SQL'
         END AS actual_resultats
@@ -74,7 +76,7 @@ udi_year_days_previous AS (
         cdreseau,
         cdparametresiseeaux,
         datetimeprel,
-        valtraduite,
+        valtraduite_corrigee,
         actual_resultats,
         lag(datetimeprel) OVER (
             PARTITION BY annee, categorie, cdreseau, cdparametresiseeaux

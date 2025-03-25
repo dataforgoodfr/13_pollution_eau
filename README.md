@@ -108,6 +108,11 @@ uv run pipelines/run.py run build_database --refresh-type custom --custom-years 
 uv run pipelines/run.py run build_database --refresh-type last --drop-tables
 ```
 
+5. Chosisez une table specifique to refresh 
+```bash
+uv run pipelines/run.py run build_database --refresh-table edc
+```
+
 ### Création du modèles de données avec dbt
 #### 1. Commandes a exécuter
 La librarie dbt est celle choisie pour une construction rapide et simple de modèles de données optimisé pour l'analytics.

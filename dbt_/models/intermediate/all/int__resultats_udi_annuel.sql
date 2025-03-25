@@ -5,7 +5,7 @@ int__resultats_annee_uid AS (
         categorie,
         resultat,
         annee,
-        CONCAT(periode, ' - ', annee) AS periode
+        periode
     FROM
         {{ ref('int__resultats_cvm_udi_annuel') }}
         /* UNION ALL
@@ -45,7 +45,8 @@ list_uid AS (
 SELECT
     list_uid.cdreseau,
     list_uid.categorie,
-    int__resultats_annee_uid.periode,
+    list_uid.annee,
+    COALESCE(int__resultats_annee_uid.periode, 'bilan annuel') AS periode,
     COALESCE(int__resultats_annee_uid.resultat, 'Pas recherché') AS resultat
 FROM
     list_uid

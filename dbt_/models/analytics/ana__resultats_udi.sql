@@ -1,30 +1,30 @@
 WITH
 last AS (
     SELECT
-        inseecommune AS commune_code_insee,
+        periode,
+        cdreseau,
         categorie,
         last_datetimeprel,
-        resultat,
-        periode
+        resultat
     FROM
-        {{ ref('int__resultats_cvm_communes_dernier') }}
+        {{ ref('int__resultats_udi_dernier') }}
 ),
 
 yearly AS (
     SELECT
-        inseecommune AS commune_code_insee,
+        cdreseau,
         categorie,
         NULL AS last_datetimeprel,
         resultat,
         CONCAT(periode, ' - ', annee) AS periode
     FROM
-        {{ ref('int__resultats_cvm_communes_annuel') }}
+        {{ ref('int__resultats_udi_annuel') }}
 )
 
 
 SELECT
     periode,
-    commune_code_insee,
+    cdreseau,
     categorie,
     last_datetimeprel,
     resultat
@@ -33,7 +33,7 @@ FROM
 UNION ALL
 SELECT
     periode,
-    commune_code_insee,
+    cdreseau,
     categorie,
     last_datetimeprel,
     resultat

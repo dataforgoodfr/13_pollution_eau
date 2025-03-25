@@ -36,9 +36,11 @@ list_uid AS (
 SELECT
     list_uid.cdreseau,
     list_uid.categorie,
-    int__resultats_last_uid.periode,
-    COALESCE(int__resultats_last_uid.resultat, 'Pas recherché depuis 2020')
-        AS resultat
+    COALESCE(int__resultats_last_uid.periode, 'dernier prélévement') AS periode,
+    COALESCE(int__resultats_last_uid.resultat, 'Pas recherché')
+        AS resultat,
+    COALESCE(int__resultats_last_uid.last_datetimeprel, 'Pas recherché')
+        AS last_datetimeprel
 FROM
     list_uid
 LEFT JOIN

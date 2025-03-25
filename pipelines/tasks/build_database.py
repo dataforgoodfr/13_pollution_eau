@@ -24,10 +24,14 @@ from pipelines.tasks.client.udi_client import UDIClient
 from pipelines.tasks.config.config_insee import get_insee_config
 from pipelines.tasks.config.config_laposte import get_laposte_config
 from pipelines.tasks.config.config_udi import get_udi_config
+from pipelines.utils.logger import get_logger
+
+logger = get_logger(__name__)
 
 
 def execute(
     refresh_type: str = "all",
+    refresh_table: str = "all",
     custom_years: List[str] = None,
     drop_tables: bool = False,
     check_update: bool = False,
@@ -36,27 +40,31 @@ def execute(
     Execute the EDC dataset processing with specified parameters.
 
     :param refresh_type: Type of refresh to perform ("all", "last", or "custom")
+    :param refresh_table: which table to refresh ("all", "edc","commune", "udi")
     :param custom_years: List of years to process when refresh_type is "custom"
     :param drop_tables: Whether to drop edc tables in the database before data insertion.
     """
     # Build database
     duckdb_client = DuckDBClient()
-
-    data_gouv_client = DataGouvClient(duckdb_client)
-    data_gouv_client.process_edc_datasets(
-        refresh_type=refresh_type,
-        custom_years=custom_years,
-        drop_tables=drop_tables,
-        check_update=check_update,
+    logger.info(
+        f"build_database args:refresh_type={refresh_type}  refresh_table={refresh_table} custom_years={custom_years}"
     )
+    if refresh_table == "all" or refresh_table == "edc":
+        data_gouv_client = DataGouvClient(duckdb_client)
+        data_gouv_client.process_edc_datasets(
+            refresh_type=refresh_type,
+            custom_years=custom_years,
+            drop_tables=drop_tables,
+            check_update=check_update,
+        )
     # pour l'instant, les Commune et UDI a seulement la donnee de 2024.
     # il y a pas besoin d'update les deux tables si nous voulons utiliser custom_year pour update seulement edc
-    if refresh_type == "all" or refresh_type == "last":
+    if refresh_table == "all" or refresh_table == "commune":
         insee_client = CommuneClient(get_insee_config(), duckdb_client)
         insee_client.process_datasets()
         laposte = CommuneClient(get_laposte_config(), duckdb_client)
         laposte.process_datasets()
-
+    if refresh_table == "all" or refresh_table == "udi":
         udi_client = UDIClient(get_udi_config(), duckdb_client)
         udi_client.process_datasets()
 

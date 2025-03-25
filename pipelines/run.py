@@ -53,6 +53,12 @@ def run():
     help="Type of refresh to perform",
 )
 @click.option(
+    "--refresh-table",
+    type=click.Choice(["all", "edc", "commune", "udi"]),
+    default="all",
+    help="choose type of table to refresh",
+)
+@click.option(
     "--custom-years",
     type=str,
     help="Comma-separated list of years to process (for custom refresh type)",
@@ -71,7 +77,9 @@ def run():
     default=False,
     help="Apply refresh-type only on the years whose data has been modified from the source.",
 )
-def run_build_database(refresh_type, custom_years, drop_tables, check_update):
+def run_build_database(
+    refresh_type, refresh_table, custom_years, drop_tables, check_update
+):
     """Run build_database task."""
     module = importlib.import_module("tasks.build_database")
     task_func = getattr(module, "execute")
@@ -82,6 +90,7 @@ def run_build_database(refresh_type, custom_years, drop_tables, check_update):
 
     task_func(
         refresh_type=refresh_type,
+        refresh_table=refresh_table,
         custom_years=custom_years_list,
         drop_tables=drop_tables,
         check_update=check_update,

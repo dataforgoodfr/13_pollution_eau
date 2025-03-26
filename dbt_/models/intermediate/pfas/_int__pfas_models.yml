@@ -35,12 +35,11 @@ models:
         tests:
           - accepted_values:
               values:
-                - "Aucun paramètre n’a été quantifié"
-                - "Somme des 20 PFAS < 0,1 µg/L et somme des 4 PFAS < 0,02 µg/L"
-                - "Somme des 20 PFAS < 0,1 µg/L et somme des 4 PFAS >= 0,02 µg/L"
-                - "Somme des 20 PFAS >= 0,1 µg/L"
+                - "aucun_parametre_quantifie"
+                - "somme_20pfas_inf_0_1_et_4pfas_inf_0_02"
+                - "somme_20pfas_inf_0_1_et_4pfas_sup_0_02"
+                - "somme_20pfas_sup_0_1"
                 - "un_pfas_sup_valeur_sanitaire"
-                - "Erreur de classification"
 
       - name: periode
         description: "Période d'analyse des prélèvements (ici, toujours 'dernier prélèvement')."

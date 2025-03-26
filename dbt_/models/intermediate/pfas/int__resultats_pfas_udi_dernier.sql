@@ -108,16 +108,16 @@ SELECT
             nb_pfas_above_limit > 0
             THEN 'un_pfas_sup_valeur_sanitaire'
         WHEN
-            sum_20_pfas IS NULL AND nb_quantified_params = 0
-            THEN 'Aucun paramètre n’a été quantifié'
+            nb_quantified_params = 0
+            THEN 'aucun_parametre_quantifie'
         WHEN
             sum_20_pfas < 0.1 AND sum_4_pfas < 0.02
-            THEN 'Somme des 20 PFAS < 0,1 µg/L et somme des 4 PFAS < 0,02 µg/L'
+            THEN 'somme_20pfas_inf_0_1_et_4pfas_inf_0_02'
         WHEN
             sum_20_pfas < 0.1 AND sum_4_pfas >= 0.02
-            THEN 'Somme des 20 PFAS < 0,1 µg/L et somme des 4 PFAS >= 0,02 µg/L'
-        WHEN sum_20_pfas >= 0.1 THEN 'Somme des 20 PFAS >= 0,1 µg/L'
-        ELSE 'Erreur de classification'
+            THEN 'somme_20pfas_inf_0_1_et_4pfas_sup_0_02'
+        WHEN sum_20_pfas >= 0.1 THEN 'somme_20pfas_sup_0_1'
+        ELSE 'erreur'
     END AS resultat
 FROM aggregated_results
 ORDER BY datetimeprel DESC

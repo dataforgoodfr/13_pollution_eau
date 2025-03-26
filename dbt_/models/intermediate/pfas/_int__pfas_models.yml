@@ -8,12 +8,12 @@ models:
         description: "Référence unique du prélèvement."
         tests:
           - not_null
-      
+
       - name: cdreseau
         description: "Code de l'installation (UDI)."
         tests:
           - not_null
-      
+
       - name: categorie
         description: "Catégorie du paramètre analysé (ici, toujours 'pfas')."
         tests:
@@ -33,14 +33,14 @@ models:
         type: VARCHAR
         tests:
           - accepted_values:
-              values: 
+              values:
                 - "Aucun paramètre n’a été quantifié"
                 - "Somme des 20 PFAS < 0,1 µg/L et somme des 4 PFAS < 0,02 µg/L"
                 - "Somme des 20 PFAS < 0,1 µg/L et somme des 4 PFAS >= 0,02 µg/L"
                 - "Somme des 20 PFAS >= 0,1 µg/L"
-                - "Au moins 1 PFAS >= valeur sanitaire (0,1 µg/L)"
+                - "un_pfas_sup_valeur_sanitaire"
                 - "Erreur de classification"
-      
+
       - name: periode
         description: "Période d'analyse des prélèvements (ici, toujours 'dernier prélèvement')."
         type: VARCHAR

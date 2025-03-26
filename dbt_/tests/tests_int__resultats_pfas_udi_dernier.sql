@@ -3,14 +3,9 @@ FROM {{ ref('int__resultats_pfas_udi_dernier') }}
 WHERE
     (
     -- test n°1
-    -- ce referenceprel doit avoir le résultat 'Au moins 1 PFAS >= valeur
-    -- sanitaire (0,1 µg/L)'
-        referenceprel = '06800177398'
-        AND resultat != 'Au moins 1 PFAS >= valeur sanitaire (0,1 µg/L)'
-    )
-    OR
-    (
-    -- test n°2
-    -- placeholder
-        referenceprel = 'neverhappen'
+    -- l'UDI 013001457 a un prélevement le 2025-01-21 09:40:00
+    -- avec un dépassement de valeur sanitaire pour PFOS
+        cdreseau = '013001457'
+        AND last_datetimeprel = TIMESTAMP '2025-01-21 09:40:00'
+        AND resultat != 'un_pfas_sup_valeur_sanitaire'
     )

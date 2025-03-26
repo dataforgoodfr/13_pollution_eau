@@ -6,6 +6,10 @@ Args:
     - custom-years (str): List of years to process when refresh_type is "custom"
 
 Examples:
+    - build_database --refresh-table all : refresh all tables
+    - build_database --refresh-table edc : only refresh edc table
+    - build_database --refresh-table commune : only refresh commune table
+    - build_database --refresh-table udi : only refresh udi table
     - build_database --refresh-type all : Process all years
     - build_database --refresh-type last : Process last year only
     - build_database --refresh-type custom --custom-years 2018,2024 : Process only the years 2018 and 2024

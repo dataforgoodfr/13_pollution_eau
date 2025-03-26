@@ -13,7 +13,7 @@ class UDIClient(HTTPSToDuckDBClient):
         super().__init__(config, duckdb_client)
 
     def _download_data(self):
-        logger.info("Launching processing of s3 geojson")
+        logger.info("Launching download_data from s3")
         os.makedirs(CACHE_FOLDER, exist_ok=True)
         self.download_file_from_https(
             path=self.config["source"]["id"],

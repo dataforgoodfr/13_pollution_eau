@@ -1,4 +1,18 @@
 WITH
+udi AS (
+    SELECT DISTINCT
+        de_partition,
+        categorie,
+        cdreseau,
+        cdparametresiseeaux,
+        valtraduite,
+        limitequal_float
+    FROM
+        {{ ref('int__resultats_udi_communes') }}
+    WHERE
+        categorie = 'cvm'
+),
+
 udi_year AS (
     SELECT
         de_partition AS annee,
@@ -31,7 +45,7 @@ udi_year AS (
             ELSE 0
         END) AS nb_analyses_ok
     FROM
-        {{ ref('int__resultats_udi_communes') }}
+        udi
     WHERE
         categorie = 'cvm'
     GROUP BY

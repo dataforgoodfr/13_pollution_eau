@@ -1,77 +1,133 @@
 version: 2
 
 models:
-  - name: int__resultats_cvm_communes_annuel
-    description: "Resultat des analyse par commune /catégorie et par année"
+  - name: int__resultats_cvm_commune_annuel
+    description: Résultats CVM par commune pour la temporalité 'bilan annuel'
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - inseecommune
+            - annee
     columns:
-      - name: commune_code_insee
-        description: "Code INSEE de la commune du point de surveillance"
+      - name: inseecommune
+        description: "Code INSEE de la commune"
         type: VARCHAR
+      - name: annee
+        description: "Annee du prevelvement"
+        type: SMALLINT
       - name: categorie
         description: "Catégorie du paramètre (pesticides, pfas, vcm, nitrates, etc.) selon la classification établie."
         tests:
           - accepted_values:
               values: ["cvm"]
-      - name: cdparametresiseeaux
-        description: >
-          Le code SISE-Eaux du paramètre est un identifiant alphanumérique sur 7 positions maximum, associé à chaque
-          paramètre. Lorsque c'est possible, le symbole chimique est retenu comme identifiant (NO3, AS...) pour le rendre
-          signifiant.
       - name: periode
-        description: "Type de resultat"
+        description: "Période du résultat"
         type: VARCHAR
         tests:
           - accepted_values:
-              values: ['bilan annuel']
-      - name: resultat
-        description: "resultat de l'analyse de la catégorie sélectionnée"
-        type: VARCHAR
-        tests:
-          - accepted_values:
-              values: ["non quantifié", ">= 0,5 µg/L","< 0,5 µg/L"]
-      - name: annee
-        description: "Annee du prevelvement"
-        type: SMALLINT
-
-  - name: int__resultats_cvm_udi_annuel
-    description: "Resultat des prélevements par udi /catégorie et par année"
-    columns:
-      - name: cdreseau
-        description: "Code de l'installation (unité de distribution)"
-        tests:
-          - not_null
-      - name: categorie
-        description: "Catégorie du paramètre (pesticides, pfas, vcm, nitrates, etc.) selon la classification établie."
-        tests:
-          - accepted_values:
-              values: ["cvm"]
-      - name: cdparametresiseeaux
-        description: >
-          Le code SISE-Eaux du paramètre est un identifiant alphanumérique sur 7 positions maximum, associé à chaque
-          paramètre. Lorsque c'est possible, le symbole chimique est retenu comme identifiant (NO3, AS...) pour le rendre
-          signifiant.
-      - name: periode
-        description: "Type de resultat"
-        type: VARCHAR
-        tests:
-          - accepted_values:
-              values: ['bilan annuel']
-      - name: resultat
-        description: "resultat de l'analyse de la catégorie sélectionnée"
-        type: VARCHAR
-        tests:
-          - accepted_values:
-              values: ["non quantifié", ">= 0,5 µg/L","< 0,5 µg/L"]
-      - name: annee
-        description: "Annee du prevelvement"
-        type: SMALLINT
-      - name : pourcentage_depassement
-        description: "Nombre de dépassements par nombre de prélèvements (dans l'UDI et dans l'année)"
-        type: FLOAT      
+              values: ["bilan annuel"]
+      - name: nb_depassements
+      - name: nb_prelevements
+      - name: ratio_depassements
+        description: "Pourcentage de prélèvements qui dépassent la limite"
+        type: FLOAT
         tests:
           - not_null
           - dbt_expectations.expect_column_values_to_be_between:
               min_value: 0
               max_value: 1
 
+  - name: int__resultats_cvm_commune_dernier
+    description: Résultats CVM par commune pour la temporalité 'derniers prélèvements'
+    columns:
+      - name: inseecommune
+        tests:
+          - not_null
+          - unique
+      - name: categorie
+        tests:
+          - not_null
+      - name: cdparametresiseeaux
+        tests:
+          - not_null
+      - name: last_datetimeprel
+        tests:
+          - not_null
+      - name: periode
+        tests:
+          - accepted_values:
+              values: ["dernier prélévement"]
+      - name: resultat
+        tests:
+          - not_null
+          - accepted_values:
+              values:
+                - non_quantifie
+                - sup_0_5
+                - inf_0_5
 
+  - name: int__resultats_cvm_udi_annuel
+    description: Résultats CVM par UDI pour la temporalité 'bilan annuel'
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - cdreseau
+            - annee
+    columns:
+      - name: cdreseau
+        description: "Code de l'installation (unité de distribution)"
+        tests:
+          - not_null
+      - name: annee
+        description: "Annee du prevelvement"
+        type: SMALLINT
+      - name: categorie
+        description: "Catégorie du paramètre (pesticides, pfas, vcm, nitrates, etc.) selon la classification établie."
+        tests:
+          - accepted_values:
+              values: ["cvm"]
+      - name: periode
+        description: "Période du résultat"
+        type: VARCHAR
+        tests:
+          - accepted_values:
+              values: ["bilan annuel"]
+      - name: nb_depassements
+      - name: nb_prelevements
+      - name: ratio_depassements
+        description: "Pourcentage de prélèvements qui dépassent la limite"
+        type: FLOAT
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              max_value: 1
+
+  - name: int__resultats_cvm_udi_dernier
+    description: Resultats CVM par UDI pour la temporalité 'derniers prélèvements'
+    columns:
+      - name: cdreseau
+        tests:
+          - not_null
+          - unique
+      - name: categorie
+        tests:
+          - not_null
+      - name: cdparametresiseeaux
+        tests:
+          - not_null
+      - name: last_datetimeprel
+        tests:
+          - not_null
+      - name: periode
+        tests:
+          - accepted_values:
+              values: ["dernier prélévement"]
+      - name: resultat
+        tests:
+          - not_null
+          - accepted_values:
+              values:
+                - non_quantifie
+                - sup_0_5
+                - inf_0_5

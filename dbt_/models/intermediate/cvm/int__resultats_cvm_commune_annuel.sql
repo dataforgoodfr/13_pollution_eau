@@ -6,7 +6,7 @@ cvm_prels AS (
     -- Donc il n'y a pas d'unicité sur referenceprel dans cetre requête
     SELECT DISTINCT
         de_partition AS annee,
-        cdreseau,
+        inseecommune,
         referenceprel,
         datetimeprel,
         valtraduite
@@ -17,7 +17,7 @@ cvm_prels AS (
 )
 
 SELECT
-    cdreseau,
+    inseecommune,
     annee,
     'cvm' AS categorie,
     'bilan annuel' AS periode,
@@ -45,4 +45,4 @@ SELECT
 
 FROM cvm_prels
 
-GROUP BY cdreseau, annee
+GROUP BY inseecommune, annee

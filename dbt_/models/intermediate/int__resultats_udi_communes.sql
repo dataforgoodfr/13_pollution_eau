@@ -4,6 +4,7 @@ WITH resultats AS (
         cdparametresiseeaux,
         limitequal,
         de_partition,
+
         -- Correction de la colonne valtraduite qui contient les valeurs
         -- textuelles de rqana converties en valeurs numériques.
         -- Certaines valeurs textuelles telles que "Changement anormal", "OUI",

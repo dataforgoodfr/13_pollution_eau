@@ -6,7 +6,6 @@ last_pvl AS (
         cdparametresiseeaux,
         datetimeprel,
         valtraduite,
-        limitequal_float,
         ROW_NUMBER()
             OVER (
                 PARTITION BY cdreseau, cdparametresiseeaux
@@ -16,7 +15,7 @@ last_pvl AS (
     FROM
         {{ ref('int__resultats_udi_communes') }}
     WHERE
-        categorie = 'cvm' -- à supprimer pour avoir pour tout
+        categorie = 'cvm'
         AND
         -- On garde les prélèvements de moins d'un an
         CURRENT_DATE - datetimeprel < INTERVAL 1 YEAR
@@ -32,15 +31,14 @@ SELECT
         WHEN
             last_pvl.valtraduite = 0
             OR last_pvl.valtraduite IS NULL
-            OR last_pvl.limitequal_float IS NULL
-            THEN 'non quantifié'
+            THEN 'non_quantifie'
         WHEN
-            last_pvl.valtraduite >= last_pvl.limitequal_float
-            THEN '>= 0,5 µg/L'
+            last_pvl.valtraduite >= 0.5
+            THEN 'sup_0_5'
         WHEN
-            last_pvl.valtraduite < last_pvl.limitequal_float
-            THEN '< 0,5 µg/L'
-        ELSE 'Check SQL'
+            last_pvl.valtraduite < 0.5
+            THEN 'inf_0_5'
+        ELSE 'error'
     END AS resultat
 FROM
     last_pvl

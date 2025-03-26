@@ -13,6 +13,7 @@ models:
         description: "Code de l'installation (UDI)."
         tests:
           - not_null
+          - unique
 
       - name: categorie
         description: "Catégorie du paramètre analysé (ici, toujours 'pfas')."

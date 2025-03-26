@@ -5,7 +5,7 @@ SELECT
     categorie,
     resultat
 FROM
-    int__resultats_cvm_udi_dernier
+    {{ ref('int__resultats_cvm_udi_dernier') }}
 WHERE
     (
         cdreseau = '976003489'
@@ -42,7 +42,7 @@ SELECT
     categorie,
     resultat
 FROM
-    int__resultats_cvm_udi_annuel
+    {{ ref('int__resultats_cvm_udi_annuel') }}
 WHERE
     (
         cdreseau = '001001073'

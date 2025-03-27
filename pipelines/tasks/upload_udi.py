@@ -18,8 +18,6 @@ from pipelines.utils.storage_client import ObjectStorageClient
 logger = get_logger(__name__)
 
 
-
-
 def upload_udi(env: str = "dev"):
     """
     1, ici, il faut manuellement download the fichier pour l'instant.

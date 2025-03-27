@@ -5,7 +5,7 @@ import { Input } from "./ui/input";
 import { useState } from "react";
 import { Command, CommandGroup, CommandItem, CommandList } from "./ui/command";
 import { CommandEmpty } from "cmdk";
-import { X } from "lucide-react";
+import { Building2, Home, X } from "lucide-react";
 
 interface IGNQueryResult {
   type: string;
@@ -47,7 +47,7 @@ export default function PollutionMapSearchBox({
 
   async function PerformSearch(filterString: string) {
     const IGNQuery =
-      "https://data.geopf.fr/geocodage/search?autocomplete=1&limit=10&returntruegeometry=false&type=municipality&category=commune";
+      "https://data.geopf.fr/geocodage/search?autocomplete=1&limit=10&returntruegeometry=false";
     const URLIGN = new URL(IGNQuery);
     URLIGN.searchParams.set("q", filterString);
 
@@ -95,13 +95,11 @@ export default function PollutionMapSearchBox({
 
   function handleCommuneSelect(feature: IGNQueryResult) {
     setDropDownOpen(false);
-    setFilterString(
-      feature.properties.name + " (" + feature.properties.postcode + ")",
-    );
+    setFilterString(feature.properties.label);
     onCommuneFilter({
       center: feature.geometry.coordinates,
       zoom: 10,
-      communeInseeCode: feature.properties.id,
+      communeInseeCode: feature.properties.citycode,
     });
   }
 
@@ -113,19 +111,19 @@ export default function PollutionMapSearchBox({
   }
 
   return (
-    <div className="flex items-center space-x-6">
-      <div>
+    <div className="flex grow items-center space-x-6">
+      <div className="w-full">
         <label
           htmlFor="commune-select"
           className="block text-sm font-medium text-gray-700 mb-1"
         >
           Commune
         </label>
-        <div className="relative">
+        <div className="relative ">
           <Popover open={dropDownIsOpened} onOpenChange={setDropDownOpen}>
             <PopoverAnchor asChild>
               <Input
-                className="float max-w-fit rounded-sm outline-1 outline-blue-500 pr-8"
+                className="rounded-sm outline-1 outline-blue-500 pr-8"
                 key="TextInputCommune"
                 value={filterString}
                 placeholder="Saisir le nom de votre commune"
@@ -138,28 +136,49 @@ export default function PollutionMapSearchBox({
               align="start"
               sideOffset={5}
             >
-              <Command>
+              <Command className="flex w-full">
                 <CommandEmpty className="py-6 text-center text-sm text-muted-foreground">
                   Aucune commune trouvée.
                 </CommandEmpty>
-                <CommandList>
+                <CommandList className="grow">
                   <CommandGroup key="CommuneList">
-                    {communesList.map((CommuneFeature) => (
-                      <CommandItem
-                        key={CommuneFeature.properties.id}
-                        onSelect={() => handleCommuneSelect(CommuneFeature)}
-                      >
-                        <HilightLabel
-                          originalText={
-                            CommuneFeature.properties.name +
-                            " (" +
-                            CommuneFeature.properties.postcode +
-                            ")"
-                          }
-                          textToHilight={filterString}
-                        />
-                      </CommandItem>
-                    ))}
+                    {communesList.map((CommuneFeature) => {
+                      let featureType = null;
+                      switch (CommuneFeature.properties.type) {
+                        case "street":
+                        case "housenumber":
+                          featureType = <Home />;
+                          break;
+                        case "municipality":
+                        case "locality":
+                          featureType = <Building2 />;
+                          break;
+
+                        default:
+                          featureType = null;
+                          console.log(
+                            "unexpected feature type",
+                            CommuneFeature,
+                          );
+                      }
+                      return (
+                        <CommandItem
+                          className="flex grow"
+                          key={CommuneFeature.properties.id}
+                          onSelect={() => handleCommuneSelect(CommuneFeature)}
+                        >
+                          <div className="flex grow">
+                            <div className="size-5">{featureType}</div>
+                            <div className="grow gap-2 fit">
+                              <HilightLabel
+                                originalText={CommuneFeature.properties.label}
+                                textToHilight={filterString}
+                              />
+                            </div>
+                          </div>
+                        </CommandItem>
+                      );
+                    })}
                   </CommandGroup>
                 </CommandList>
               </Command>

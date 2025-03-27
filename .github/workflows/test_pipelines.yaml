@@ -37,10 +37,12 @@ jobs:
     - name: Install a specific version of uv
       uses: astral-sh/setup-uv@v5
       with:
-        version: ">=0.4.0"
+        version: ">=0.ù4.0"
 
     - name: Install dependencies
-      run: uv sync
+      run: |
+        uv sync
+        uv pip install .[pmtiles]
 
     - name: Run tests with coverage
       run: uv run pytest -s --cov=. --cov-report=term-missing

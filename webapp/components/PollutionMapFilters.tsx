@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { availableCategories } from "@/lib/polluants";
 
 type PollutionMapFiltersProps = {
@@ -55,7 +54,7 @@ export default function PollutionMapFilters({
           className="block w-64 py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
         >
           {availableCategories.map((p) => (
-            <option key={p.id} value={p.id}>
+            <option key={p.id} value={p.id} disabled={p.disabled}>
               {p.label}
             </option>
           ))}

@@ -25,7 +25,7 @@ logger = logging.getLogger(__name__)
 
 # Default tables to keep - update this list with the actual tables needed for the website
 DEFAULT_WEBSITE_TABLES = [
-    "ana__resultats_communes",
+    "web__resultats_communes",
     "cog_communes",
 ]
 

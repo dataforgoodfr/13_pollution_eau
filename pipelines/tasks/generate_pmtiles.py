@@ -1,7 +1,7 @@
 """Generate and upload merged new PMtiles file.
 
 Downloads commune GeoJSON data from OpenDataSoft, merges it with
-ana__resultats_communes from duckdb, convert to pmtiles and uploads the
+web__resultats_communes from duckdb, convert to pmtiles and uploads the
 new Pmtiles to S3.
 """
 
@@ -42,7 +42,7 @@ def execute(env: str):
     # Get results from database
     logger.info("Fetching commune results from database")
     with duckdb.connect(DUCKDB_FILE, read_only=True) as con:
-        results_df = con.sql("SELECT * FROM ana__resultats_communes").df()
+        results_df = con.sql("SELECT * FROM web__resultats_communes").df()
 
     # Process and merge data
     logger.info("Merging GeoJSON with commune results")

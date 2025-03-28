@@ -2,7 +2,7 @@ version: 2
 
 models:
   - name: int__resultats_cvm_commune_annuel
-    description: Résultats CVM par commune pour la temporalité 'bilan annuel'
+    description: Résultats CVM par commune pour la temporalité 'bilan_annuel'
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -24,8 +24,8 @@ models:
         description: "Période du résultat"
         type: VARCHAR
         tests:
-          - accepted_values:
-              values: ["bilan annuel"]
+          - dbt_utils.expression_is_true:
+              expression: "LIKE 'bilan_annuel%'"
       - name: nb_depassements
       - name: nb_prelevements
       - name: ratio_depassements
@@ -47,16 +47,23 @@ models:
       - name: categorie
         tests:
           - not_null
-      - name: cdparametresiseeaux
-        tests:
-          - not_null
-      - name: last_datetimeprel
-        tests:
-          - not_null
       - name: periode
+        type: VARCHAR
         tests:
           - accepted_values:
-              values: ["dernier prélévement"]
+              values: ["dernier_prel"]
+      - name: dernier_prel_datetime
+        type: TIMESTAMP
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: ">= CURRENT_DATE - INTERVAL 1 YEAR"
+      - name: dernier_prel_valeur
+        type: FLOAT
+      - name: nb_parametres
+        type: INT
+        tests:
+          - not_null
       - name: resultat
         tests:
           - not_null
@@ -67,7 +74,7 @@ models:
                 - inf_0_5
 
   - name: int__resultats_cvm_udi_annuel
-    description: Résultats CVM par UDI pour la temporalité 'bilan annuel'
+    description: Résultats CVM par UDI pour la temporalité 'bilan_annuel'
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -90,8 +97,8 @@ models:
         description: "Période du résultat"
         type: VARCHAR
         tests:
-          - accepted_values:
-              values: ["bilan annuel"]
+          - dbt_utils.expression_is_true:
+              expression: "LIKE 'bilan_annuel%'"
       - name: nb_depassements
       - name: nb_prelevements
       - name: ratio_depassements
@@ -113,16 +120,23 @@ models:
       - name: categorie
         tests:
           - not_null
-      - name: cdparametresiseeaux
-        tests:
-          - not_null
-      - name: last_datetimeprel
-        tests:
-          - not_null
       - name: periode
+        type: VARCHAR
         tests:
           - accepted_values:
-              values: ["dernier prélévement"]
+              values: ["dernier_prel"]
+      - name: dernier_prel_datetime
+        type: TIMESTAMP
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: ">= CURRENT_DATE - INTERVAL 1 YEAR"
+      - name: dernier_prel_valeur
+        type: FLOAT
+      - name: nb_parametres
+        type: INT
+        tests:
+          - not_null
       - name: resultat
         tests:
           - not_null

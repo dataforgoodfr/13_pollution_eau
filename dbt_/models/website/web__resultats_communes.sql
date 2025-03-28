@@ -1,3 +1,6 @@
+-- ceci est un ancien modèle
+-- TOOD: migrer vers un modèle similaire à web__resultats_udi.sql
+
 with edc_resultats as (select * from {{ ref("stg_edc__resultats") }}),
 
 edc_prelevements as (select * from {{ ref("stg_edc__prevelevements") }}),

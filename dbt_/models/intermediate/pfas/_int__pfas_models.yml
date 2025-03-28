@@ -21,7 +21,7 @@ models:
           - accepted_values:
               values: ["pfas"]
 
-      - name: last_datetimeprel
+      - name: dernier_prel_datetime
         description: "Date et heure du dernier prélèvement pris en compte dans l'analyse."
         type: TIMESTAMP
         tests:
@@ -42,8 +42,12 @@ models:
                 - "un_pfas_sup_valeur_sanitaire"
 
       - name: periode
-        description: "Période d'analyse des prélèvements (ici, toujours 'dernier prélèvement')."
+        description: "Période d'analyse des prélèvements (ici, toujours 'dernier_prel')."
         type: VARCHAR
         tests:
           - accepted_values:
-              values: ["dernier prélèvement"]
+              values: ["dernier_prel"]
+
+      - name: nb_parametres
+        description: "Nombre de paramètres analysés"
+        type: INT

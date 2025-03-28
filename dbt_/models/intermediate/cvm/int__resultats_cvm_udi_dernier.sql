@@ -24,9 +24,10 @@ last_pvl AS (
 SELECT
     last_pvl.cdreseau,
     last_pvl.categorie,
-    last_pvl.cdparametresiseeaux,
-    last_pvl.datetimeprel AS last_datetimeprel,
-    'dernier prélévement' AS periode,
+    'dernier_prel' AS periode,
+    last_pvl.datetimeprel AS dernier_prel_datetime,
+    last_pvl.valtraduite AS dernier_prel_valeur,
+    1 AS nb_parametres,
     CASE
         WHEN
             last_pvl.valtraduite = 0

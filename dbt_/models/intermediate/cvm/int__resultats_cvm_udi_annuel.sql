@@ -20,7 +20,7 @@ SELECT
     cdreseau,
     annee,
     'cvm' AS categorie,
-    'bilan annuel' AS periode,
+    'bilan_annuel_' || annee AS periode,
     count(
         DISTINCT
         CASE

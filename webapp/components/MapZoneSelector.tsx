@@ -1,32 +1,63 @@
 "use client";
-import { MouseEvent } from "react";
+import { MouseEvent, useState } from "react";
 import { Button } from "./ui/button";
 import { TooltipContent, TooltipProvider, TooltipTrigger } from "./ui/tooltip";
 import { Tooltip } from "@radix-ui/react-tooltip";
+import { useMap } from "react-map-gl/maplibre";
 
-export const ZONE_NOZONE = 0;
-export const ZONE_METROPOLE = 1;
-export const ZONE_GUADELOUPE = 2;
-export const ZONE_MARTINIQUE = 3;
-export const ZONE_MAYOTTE = 4;
-export const ZONE_LAREUNION = 5;
-export const ZONE_GUYANE = 6;
+const ZONE_NOZONE = 0;
+const ZONE_METROPOLE = 1;
+const ZONE_GUADELOUPE = 2;
+const ZONE_MARTINIQUE = 3;
+const ZONE_MAYOTTE = 4;
+const ZONE_LAREUNION = 5;
+const ZONE_GUYANE = 6;
 
-export default function MapZoneSelector({
-  selectedZone,
-  zoneChangeCallback,
-}: {
-  selectedZone: number;
-  zoneChangeCallback: (zone: number) => void;
-}) {
+type ZoneConfig = {
+  center: [number, number];
+  zoom: number;
+};
+
+export const ZONE_CONFIGS: { [key: number]: ZoneConfig } = {
+  [ZONE_METROPOLE]: {
+    center: [2.5, 46.2],
+    zoom: 5,
+  },
+  [ZONE_GUADELOUPE]: {
+    center: [-61.5, 16.2],
+    zoom: 9,
+  },
+  [ZONE_MARTINIQUE]: {
+    center: [-61, 14.7],
+    zoom: 9,
+  },
+  [ZONE_MAYOTTE]: {
+    center: [45, -12.75],
+    zoom: 9,
+  },
+  [ZONE_LAREUNION]: {
+    center: [55.5, -21.2],
+    zoom: 8,
+  },
+  [ZONE_GUYANE]: {
+    center: [-52.7, 4.3],
+    zoom: 6,
+  },
+};
+
+export default function MapZoneSelector() {
+  const { map } = useMap();
   const handleClick = (e: MouseEvent<HTMLButtonElement>) => {
-    if (zoneChangeCallback) {
-      const numZone: number = parseInt(
-        e.currentTarget.getAttribute("value") || "0",
-      );
-      zoneChangeCallback(numZone);
-    }
+    const numZone: number = parseInt(
+      e.currentTarget.getAttribute("value") || "0",
+    );
+    map?.flyTo({
+      center: ZONE_CONFIGS[numZone].center,
+      zoom: ZONE_CONFIGS[numZone].zoom,
+    });
+    setSelectedZone(numZone);
   };
+  const [selectedZone, setSelectedZone] = useState<number>(ZONE_NOZONE);
 
   const DROMS = [
     {

@@ -215,7 +215,6 @@ models:
           signifiant.
         tests:
           - not_null
-
       - name: valtraduite
         description: >
           A noter qu'une correction a été appliquée par rapport au valtraduite de la source de donnée.
@@ -268,3 +267,5 @@ models:
           Date et heure du prélèvement correspondant la date à laquelle le prélèvement d'échantillon a été réalisé. 
           Dans le cas où il n'y a pas constitution d'échantillon (mesures in situ), il s'agit de la date de la visite.
         type: DATETIME
+        tests:
+          - not_null

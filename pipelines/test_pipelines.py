@@ -4,7 +4,8 @@ import pytest
 
 
 @pytest.mark.parametrize(
-    "task", ["build_database", "upload_database", "download_database"]
+    "task",
+    ["build_database", "upload_database", "download_database"],
 )
 def test_pipeline_task(task):
     """

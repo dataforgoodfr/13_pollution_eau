@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo } from "react";
 import ReactMapGl, {
   MapLayerMouseEvent,
   ViewStateChangeEvent,
@@ -32,8 +32,6 @@ export default function PollutionMapBaseLayer({
   onFeatureClick,
   onMapStateChange,
 }: PollutionMapBaseLayerProps) {
-  const mapRef = useRef(null);
-
   useEffect(() => {
     // adds the support for PMTiles
     const protocol = new Protocol();
@@ -51,7 +49,6 @@ export default function PollutionMapBaseLayer({
       onFeatureClick(event.features[0]);
     }
   }
-
   function handleMapStateChange(e: ViewStateChangeEvent) {
     if (e.viewState && onMapStateChange) {
       onMapStateChange({
@@ -99,6 +96,7 @@ export default function PollutionMapBaseLayer({
 
   return (
     <ReactMapGl
+      id="map"
       style={{ width: "100%", height: "100%" }}
       mapStyle={mapStyle}
       {...mapState}
@@ -106,7 +104,6 @@ export default function PollutionMapBaseLayer({
       onClick={onClick}
       onMove={handleMapStateChange}
       interactiveLayerIds={["polluants"]}
-      ref={mapRef}
     />
   );
 }

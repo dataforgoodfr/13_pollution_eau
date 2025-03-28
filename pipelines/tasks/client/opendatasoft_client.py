@@ -1,7 +1,7 @@
 # pipelines/tasks/client/opendatasoft_client.py
 
 
-from pipelines.tasks.client.https_client import HTTPSClient
+from pipelines.tasks.client.core.https_client import HTTPSClient
 from pipelines.tasks.config.config_geojson import get_opendatasoft_config
 
 

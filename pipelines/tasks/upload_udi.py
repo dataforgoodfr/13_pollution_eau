@@ -1,3 +1,13 @@
+"""
+Upload udi data from database cache into s3
+
+Args:
+    - env (str): Environment to download from ("dev" or "prod")
+Examples:
+    - upload_udi --env prod : upload_udi to production environment
+    - upload_udi --env dev  : upload_udi to development environment
+"""
+
 from pathlib import Path
 
 from pipelines.config.config import get_environment, get_s3_udi_path
@@ -6,16 +16,6 @@ from pipelines.utils.logger import get_logger
 from pipelines.utils.storage_client import ObjectStorageClient
 
 logger = get_logger(__name__)
-
-"""
-upload_udi.
-
-Args:
-    - env (str): Environment to download from ("dev" or "prod")
-Examples:
-    - upload_udi --env prod : upload_udi to production environment
-    - upload_udi --env dev  : upload_udi to development environment
-"""
 
 
 def upload_udi(env: str = "dev"):

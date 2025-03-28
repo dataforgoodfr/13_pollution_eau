@@ -2,8 +2,11 @@
 Consolidate data into the database.
 
 Args:
-    - refresh-type (str): Type of refresh to perform ("all", "last", or "custom")
-    - custom-years (str): List of years to process when refresh_type is "custom"
+    - refresh-type (str) : Type of refresh to perform ("all", "last", or "custom")
+    - custom-years (str) : List of years to process when refresh_type is "custom"
+    - drop-tables        : Drop all table before ingestion if flag is added
+    - check-update       : For edc, only refresh table if source was updated since last refresh
+    - refresh-table (str): Source to refresh ("all", "edc", "commune", "udi")
 
 Examples:
     - build_database --refresh-table all : refresh all tables

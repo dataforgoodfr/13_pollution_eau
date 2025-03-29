@@ -43,6 +43,7 @@ seeds:
       - name: commentvalsanitaire2
         description: "Commentaire sur la valeur sanitaire 2"
 
+
   - name: mapping_categories
     description: "Table de mapping des catégories de paramètres de qualité de l'eau."
     columns:

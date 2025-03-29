@@ -46,12 +46,6 @@ seeds:
         description: "Valeur sanitaire 2"
       - name: commentvalsanitaire2
         description: "Commentaire sur la valeur sanitaire 2"
-      - name: de_ingestion_date
-        description: Date d'ingestion des données dans le système.
-        tests:
-          - not_null
-          - dbt_expectations.expect_column_values_to_be_of_type:
-              column_type: date
 
   - name: mapping_categories
     description: "Table de mapping des catégories de paramètres de qualité de l'eau."

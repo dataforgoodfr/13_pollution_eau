@@ -1,0 +1,829 @@
+cdparametresiseeaux,cdparametre,libmajparametre,libminparametre,casparam,categorie,souscat,detailsouscat,limitequal,valsanitaire1,commentvalsanitaire1,valsanitaire2,commentvalsanitaire2,unite
+PFOA,5347.0,ACIDE PERFLUORO-OCTANOÏQUE,Acide perfluoro-octanoïque,335-67-1,PFAS,,,,0.075,Valeur sanitaire indicative établie par l'Anses en 2017. Valeur établie pour une population adulte (> 60 kg). Valeur en cours de révision par l'Anses,,,µg/L
+PFHPA,5977.0,ACIDE PERFLUOROHEPTANOÏQUE,Acide perfluoroheptanoïque,375-85-9,PFAS,,,,0.075,Valeur sanitaire indicative établie par l'Anses en 2017. Valeur établie pour une population adulte (> 60 kg). Valeur en cours de révision par l'Anses,,,µg/L
+PFHXA,5978.0,ACIDE PERFLUOROHEXANOÏQUE,Acide perfluorohexanoïque,307-24-4,PFAS,,,,960,Valeur sanitaire indicative établie par l'Anses en 2017. Valeur établie pour une population adulte (> 60 kg). Valeur en cours de révision par l'Anses,,,µg/L
+PFPEA,5979.0,ACIDE PERFLUOROPENTANOÏQUE,Acide perfluoropentanoïque,2706-90-3,PFAS,,,,960,Valeur sanitaire indicative établie par l'Anses en 2017. Valeur établie pour une population adulte (> 60 kg). Valeur en cours de révision par l'Anses,,,µg/L
+PFBA,5980.0,ACIDE PERFLUOROBUTANOÏQUE,Acide perfluorobutanoïque,375-22-4,PFAS,,,,72,Valeur sanitaire indicative établie par l'Anses en 2017. Valeur établie pour une population adulte (> 60 kg). Valeur en cours de révision par l'Anses,,,µg/L
+PFBS,6025.0,PERFLUOROBUTANE SULFONATE,Perfluorobutane sulfonate,59933-66-3,PFAS,,,,240,Valeur sanitaire indicative établie par l'Anses en 2017. Valeur établie pour une population adulte (> 60 kg). Valeur en cours de révision par l'Anses,,,µg/L
+PFDODA,6507.0,ACIDE PERFLUORODODÉCANOIQUE,Acide perfluorododécanoique (PFDoDA),307-55-1,PFAS,,,,,Valeur sanitaire en cours d'élaboration par l'Anses,,,
+PFNA,6508.0,ACIDE PERFLUORO-NONANOÏQUE,Acide perfluoro-nonanoïque,375-95-1,PFAS,,,,,Valeur sanitaire en cours d'élaboration par l'Anses,,,
+PFDA,6509.0,ACIDE PERFLUORO-DECANOÏQUE,Acide perfluoro-decanoïque,335-76-2,PFAS,,,,,Valeur sanitaire en cours d'élaboration par l'Anses,,,
+PFUNA,6510.0,ACIDE PERFLUORO UNDECANOÏQUE,Acide perfluoro undecanoïque (PFUnA),2058-94-8,PFAS,,,,,Valeur sanitaire en cours d'élaboration par l'Anses,,,
+PFHPS,6542.0,ACIDE PERFLUOROHEPTANE SULFONIQUE,Acide perfluoroheptane sulfonique (PFHpS),375-92-8,PFAS,,,,,Valeur sanitaire en cours d'élaboration par l'Anses,,,
+PFTRDA,6549.0,ACIDE PERFLUORO TRIDECANOIQUE,Acide perfluoro tridecanoique (PFTrDA),72629-94-8,PFAS,,,,,Valeur sanitaire en cours d'élaboration par l'Anses,,,
+PFDS,6550.0,ACIDE PERFLUORODECANE SULFONIQUE ,Acide perfluorodecane sulfonique ,335-77-3,PFAS,,,,,Valeur sanitaire en cours d'élaboration par l'Anses,,,
+ASPFOS,6560.0,ACIDE PERFLUOROOCTANE SULFONIQUE,Acide perfluorooctane sulfonique (PFOS),1763-23-1,PFAS,,,,,Valeur sanitaire en cours d'élaboration par l'Anses,,,
+PFOS,6561.0,ACIDE SULFONIQUE DE PERFLUOROOCTANE,Acide sulfonique de perfluorooctane,1763-23-1,PFAS,,,,0.18,Valeur sanitaire indicative établie par l'Anses en 2017. Valeur établie pour une population adulte (> 60 kg). Valeur en cours de révision par l'Anses,,,µg/L
+PFOS,6561.0,SULFONATE DE PERFLUOROOCTANE,Sulfonate de perfluorooctane,45298-90-6,PFAS,,,,0.18,Valeur sanitaire indicative établie par l'Anses en 2017. Valeur établie pour une population adulte (> 60 kg). Valeur en cours de révision par l'Anses,,,µg/L
+PFHXS,6830.0,PERFLUOROHEXANE SULFONATE,Perfluorohexane sulfonate,355-46-4,PFAS,,,,12,Valeur sanitaire indicative établie par l'Anses en 2017. Valeur établie pour une population adulte (> 60 kg). Valeur en cours de révision par l'Anses,,,µg/L
+PFPS,8738.0,ACIDE PERFLUOROPENTANE SULFONIQUE,Acide perfluoropentane sulfonique (PFPS),2706-91-4,PFAS,,,,,Valeur sanitaire en cours d'élaboration par l'Anses,,,
+PFNS,8739.0,ACIDE PERFLUORONONANE SULFONIQUE,Acide perfluorononane sulfonique (PFNS),68259-12-1,PFAS,,,,,Valeur sanitaire en cours d'élaboration par l'Anses,,,
+PFUNDS,8740.0,ACIDE PERFLUORO UNDECANE SULFONIQUE,Acide perfluoro undecane sulfonique (PFUnDS),749786-16-1,PFAS,,,,,Valeur sanitaire en cours d'élaboration par l'Anses,,,
+PFDODS,8741.0,ACIDE PERFLUORODODÉCANE SULFONIQUE ,Acide perfluorododécane sulfonique (PFDoDS),79780-39-5,PFAS,,,,,Valeur sanitaire en cours d'élaboration par l'Anses,,,
+PFTRDS,8742.0,ACIDE PERFLUORO TRIDECANE SULFONIQUE,Acide perfluoro tridecane sulfonique (PFTrDS),791563-89-8,PFAS,,,,,Valeur sanitaire en cours d'élaboration par l'Anses,,,
+SPFAS,8847.0,SOMME DE 20 PFAS,Somme de 20 substances perfluoroalkylées (PFAS),,PFAS,,,0.1,,,,,µg/L
+CLVYL,1753.0,CHLORURE DE VINYL MONOMÈRE,Chlorure de vinyl monomère,75-01-4,CVM,,,0.5,,,,,µg/L
+14DAN,1580.0,"1,4 DIOXANE","1,4 dioxane",123-91-1,Substances industrielles,,,0.35,,,,,µg/L
+PCLAT,6219.0,PERCHLORATE,Perchlorate,14797-73-0,Substances industrielles,,,,4,Le ministère de la santé recommande de limiter l’utilisation d’eau dont la teneur en ions perchlorate dépasse 4 µg/L pour la préparation des biberons des nourrissons de moins de 6 mois ,15.0,Le ministère de la santé recommande de limiter la consommation d’eau dont la teneur en ions perchlorate dépasse 15 µg/L pour les femmes enceintes et allaitantes (protégeant ainsi fœtus et nourrissons).,µg/L
+ENDOB,1179.0,ENDOSULFAN BÉTA,Endosulfan béta,33213-65-9,pesticides,métabolites,pertinent par défaut,0.1,,,,,µg/L
+ENDOA,1178.0,ENDOSULFAN ALPHA,Endosulfan alpha,959-98-8,pesticides,métabolites,pertinent par défaut,0.1,180,,,,µg/L
+DCPMU,1929.0,"1-(3,4-DICHLOROPHÉNYL)-3-MÉTHYLURÉE","1-(3,4-dichlorophényl)-3-méthylurée",3567-62-2,pesticides,métabolites,pertinent par défaut,0.1,,,,,µg/L
+DCPU,1930.0,"1-(3,4-DICHLOROPHÉNYL)-URÉE","1-(3,4-dichlorophényl)-urée",2327-02-08,pesticides,métabolites,pertinent par défaut,0.1,,,,,µg/L
+IPPU,2847.0,1-(4-ISOPROPYLPHENYL)-URÉE,1-(4-isopropylphenyl)-urée,56046-17-4,pesticides,métabolites,pertinent par défaut,0.1,,,,,µg/L
+MMTA,6803.0,"2-AMINO-4-METHOXY-6-METHYL-1,3,5-TRIAZINE","2-amino-4-methoxy-6-methyl-1,3,5-triazine",1668-54-8,pesticides,métabolites,pertinent par défaut,0.1,,,,,µg/L
+2ANIP,6809.0,2-AMINO-N-ISO-PROPYLBENZAMIDE,2-amino-N-iso-propylbenzamide,30391-89-0,pesticides,métabolites,pertinent par défaut,0.1,,,,,µg/L
+ASDM,7716.0,"2-AMINOSULFONYL-N,N-DIMETHYLNICOTIN","2-Aminosulfonyl-N,N-dimethylnicotin",112006-75-4,pesticides,métabolites,pertinent par défaut,0.1,,,,,µg/L
+CDEPA,3283.0,"2-CHLORO-N-(2,6-DIETHYLPHENYL)ACETAMIDE","2-Chloro-N-(2,6-diethylphenyl)acetamide",6967-29-9,pesticides,métabolites,pertinent par défaut,0.1,,,,,µg/L
+BENZENA,2932.0,2-ETHYL-6-METHYLANILINE,2-ethyl-6-methylaniline,24549-06-02,pesticides,métabolites,pertinent par défaut,0.1,,,,,µg/L
+26DCB,2011.0,"2,6 DICHLOROBENZAMIDE","2,6 Dichlorobenzamide",2008-58-4,pesticides,métabolites,pertinent,0.1,110,,,,µg/L
+DEA,1943.0,"2,6-DIETHYLANILINE","2,6-Diethylaniline",579-66-8,pesticides,métabolites,pertinent par défaut,0.1,,,,,µg/L
+3KETCA,2942.0,3-KETOCARBOFURAN,3-Ketocarbofuran,16709-30-1,pesticides,métabolites,pertinent par défaut,0.1,,,,,µg/L
+34DCLA,1586.0,"3,4-DICHLOROANILINE","3,4-dichloroaniline",95-76-1,pesticides,métabolites,pertinent par défaut,0.1,,,,,µg/L
+4ISPRO,1932.0,4-ISOPROPYLANILINE,4-Isopropylaniline,99-88-7,pesticides,métabolites,pertinent par défaut,0.1,,,,,µg/L
+44DCBP,3165.0,"4,4'-DICHLOROBENZOPHENONE","4,4'-Dichlorobenzophenone",90-98-2,pesticides,métabolites,pertinent par défaut,0.1,,,,,µg/L
+ALDSN,1807.0,ALDICARBE SULFONÉ,Aldicarbe sulfoné,1646-88-4,pesticides,métabolites,pertinent par défaut,0.1,,,,,µg/L
+ALDSY,1806.0,ALDICARBE SULFOXYDE,Aldicarbe sulfoxyde,1646-87-3,pesticides,métabolites,pertinent par défaut,0.1,,,,,µg/L
+AMPA,1907.0,AMPA,AMPA,1066-51-9,pesticides,métabolites,pertinent par défaut,0.1,900,,,,µg/L
+AD2H,3160.0,ATRAZINE DÉISOPROPYL-2-HYDROXY,Atrazine déisopropyl-2-hydroxy,7313-54-4,pesticides,métabolites,pertinent par défaut,0.1,60,,,,µg/L
+ADET,1108.0,ATRAZINE DÉSÉTHYL,Atrazine déséthyl,6190-65-4,pesticides,métabolites,pertinent par défaut,0.1,60,,,,µg/L
+ADETD,1830.0,ATRAZINE DÉSÉTHYL DÉISOPROPYL,Atrazine déséthyl déisopropyl,3397-62-4,pesticides,métabolites,pertinent par défaut,0.1,60,,,,µg/L
+ADET2,3159.0,ATRAZINE DÉSÉTHYL-2-HYDROXY,Atrazine déséthyl-2-hydroxy,19988-24-0,pesticides,métabolites,pertinent par défaut,0.1,,,,,µg/L
+A2H,1832.0,ATRAZINE-2-HYDROXY,Atrazine-2-hydroxy,2163-68-0,pesticides,métabolites,pertinent par défaut,0.1,120,,,,µg/L
+ADSP,1109.0,ATRAZINE-DÉISOPROPYL,Atrazine-déisopropyl,1007-28-9,pesticides,métabolites,pertinent par défaut,0.1,60,,,,µg/L
+AUSN,7719.0,AUSN,"2-[(carbamimidoylcarbamoyl)sulfamoyl]-N,Ndimethylpyridine-3-carboxamid",2307738-55-0,pesticides,métabolites,pertinent par défaut,0.1,,,,,µg/L
+AUSN,7719.0,AUSN,"2-[(carbamimidoylcarbamoyl)sulfamoyl]-N,Ndimethylpyridine-3-carboxamid",,pesticides,métabolites,pertinent par défaut,0.1,,,,,µg/L
+DIM2ESA,6381.0,CGA 354742,CGA 354742,,pesticides,métabolites,non pertinent,0.9,,,,,µg/L
+ESADIM2,6381.0,CGA 354742,CGA 354742,,pesticides,métabolites,non pertinent,0.9,,,,,µg/L
+ESADIM1,7727.0,CGA 369873,CGA 369873,,pesticides,métabolites,non pertinent,0.9,,,,,µg/L
+DIM1ESA,7727.0,CGA 369873,CGA 369873,,pesticides,métabolites,non pertinent,0.9,,,,,µg/L
+KEP5BH,6577.0,CHLORDECONE 5B HYDRO,Chlordecone 5b Hydro,53308-47-7,pesticides,métabolites,pertinent par défaut,0.1,,,,,µg/L
+CLDZ_D,6378.0,CHLORIDAZONE DESPHÉNYL,Chloridazone desphényl,6339-19-1,pesticides,métabolites,pertinent,0.1,11,,,,µg/L
+CLDZ_MD,6379.0,CHLORIDAZONE MÉTHYL DESPHÉNYL,Chloridazone méthyl desphényl,17254-80-7,pesticides,métabolites,pertinent,0.1,110,,,,µg/L
+2CP,1471.0,CHLOROPHÉNOL-2,Chlorophénol-2,95-57-8,pesticides,métabolites,pertinent par défaut,0.1,,,,,µg/L
+4CP,1650.0,CHLOROPHÉNOL-4,Chlorophénol-4,106-48-9,pesticides,métabolites,pertinent par défaut,0.1,,,,,µg/L
+CLTHAR6,,CHLOROTHALONIL MÉTABOLITE R611965,Chlorothalonil métabolite R611965,142733-37-7,pesticides,métabolites,pertinent par défaut,0.1,,,,,µg/L
+CLTHSYN,,CHLOROTHALONIL MÉTABOLITE SYN507900,Chlorothalonil métabolite SYN507900,115044-73-0,pesticides,métabolites,pertinent par défaut,0.1,,,,,µg/L
+CLTHALS,7717.0,CHLOROTHALONIL R417888,Chlorothalonil R417888,1418095-02-9,pesticides,métabolites,pertinent,0.1,3,"Valeur sanitaire transitoire établie par l'agence allemande UBA, utilisée par la France en l'absence de Vmax fixée par l'Anses",,,µg/L
+471811R,8865.0,CHLOROTHALONIL R471811,Chlorothalonil R471811,,pesticides,métabolites,non pertinent,0.9,3,"Valeur sanitaire transitoire établie par l'agence allemande UBA, utilisée par la France en l'absence de Vmax fixée par l'Anses",,,µg/L
+R471811,8865.0,CHLOROTHALONIL R471811,Chlorothalonil R471811,,pesticides,métabolites,non pertinent,0.9,3,"Valeur sanitaire transitoire établie par l'agence allemande UBA, utilisée par la France en l'absence de Vmax fixée par l'Anses",,,µg/L
+CLTHALS,7717.0,CHLOROTHALONIL SA,Chlorothalonil SA,1418095-02-9,pesticides,métabolites,pertinent par défaut,0.1,3,"Valeur sanitaire transitoire établie par l'agence allemande UBA, utilisée par la France en l'absence de Vmax fixée par l'Anses",,,µg/L
+CLTHA4H,7715.0,CHLOROTHALONIL-4-HYDROXY,Chlorothalonil-4-hydroxy,28343-61-5,pesticides,métabolites,pertinent par défaut,0.1,3,"Valeur sanitaire transitoire établie par l'agence allemande UBA, utilisée par la France en l'absence de Vmax fixée par l'Anses",,,µg/L
+CMBA,1944.0,CMBA,CMBA,53250-83-2,pesticides,métabolites,pertinent par défaut,0.1,,,,,µg/L
+DDD24,1143.0,"DDD-2,4'","DDD-2,4'",53-19-0,pesticides,métabolites,pertinent par défaut,0.1,,,,,µg/L
+DDD44,1144.0,"DDD-4,4'","DDD-4,4'",72-54-8,pesticides,métabolites,pertinent par défaut,0.1,Absence,,,,µg/L
+DDE24,1145.0,"DDE-2,4'","DDE-2,4'",3424-82-6,pesticides,métabolites,pertinent par défaut,0.1,,,,,µg/L
+DDE44,1146.0,"DDE-4,4'","DDE-4,4'",72-55-9,pesticides,métabolites,pertinent par défaut,0.1,,,,,µg/L
+DMTE,1154.0,DEMÉTON S MÉTHYL SULFONÉ,Deméton S méthyl sulfoné,17040-19-6,pesticides,métabolites,pertinent par défaut,0.1,,,,,µg/L
+D-CTOL,7782.0,DESMÉTHYL-CHLORTOLURON,Desméthyl-chlortoluron,22175-22-0,pesticides,métabolites,pertinent par défaut,0.1,,,,,µg/L
+PIRIDM,5531.0,DESMETHYL-PIRIMICARB,Desmethyl-pirimicarb,30614-22-3,pesticides,métabolites,pertinent par défaut,0.1,,,,,µg/L
+IPPMU,2738.0,DESMÉTHYLISOPROTURON,Desméthylisoproturon,34123-57-4,pesticides,métabolites,pertinent par défaut,0.1,,,,,µg/L
+NORFLDM,2737.0,DESMETHYLNORFLURAZON,Desmethylnorflurazon,23576-24-1,pesticides,métabolites,pertinent par défaut,0.1,45,,,,µg/L
+24DCP,1486.0,"DICHLOROPHÉNOL-2,4","Dichlorophénol-2,4",120-83-2,pesticides,métabolites,pertinent par défaut,0.1,,,,,µg/L
+DC42443,8860.0,DIMÉTHACHLORE CGA 42443,"N-(2,6-dimethylphenyl)-N-(2-methoxyethyl) acétamide",1231710-71-6,pesticides,métabolites,pertinent par défaut,0.1,,,,,µg/L
+OXADIM,6380.0,DIMÉTHACHLORE OXA,Diméthachlore OXA,1086384-49-7,pesticides,métabolites,pertinent par défaut,0.1,3,"Valeur sanitaire transitoire établie par l'agence allemande UBA, utilisée par la France en l'absence de Vmax fixée par l'Anses",,,µg/L
+DMTHESA,6865.0,DIMÉTHÉNAMIDE ESA,Diméthénamide ESA,205939-58-8,pesticides,métabolites,non pertinent,0.9,3,"Valeur sanitaire transitoire établie par l'agence allemande UBA, utilisée par la France en l'absence de Vmax fixée par l'Anses",,,µg/L
+ESADMTH,6865.0,DIMÉTHÉNAMIDE ESA,Diméthénamide ESA,205939-58-8,pesticides,métabolites,non pertinent,0.9,3,"Valeur sanitaire transitoire établie par l'agence allemande UBA, utilisée par la France en l'absence de Vmax fixée par l'Anses",,,µg/L
+DMTHOXA,7735.0,DIMÉTHÉNAMIDE OXA,Diméthénamide OXA,380412-59-9,pesticides,métabolites,non pertinent,0.9,3,"Valeur sanitaire transitoire établie par l'agence allemande UBA, utilisée par la France en l'absence de Vmax fixée par l'Anses",,,µg/L
+OXADMTH,7735.0,DIMÉTHÉNAMIDE OXA,Diméthénamide OXA,380412-59-9,pesticides,métabolites,non pertinent,0.9,3,"Valeur sanitaire transitoire établie par l'agence allemande UBA, utilisée par la France en l'absence de Vmax fixée par l'Anses",,,µg/L
+ENDOS,1742.0,ENDOSULFAN SULFATE,Endosulfan sulfate,1031-07-08,pesticides,métabolites,pertinent par défaut,0.1,,,,,µg/L
+ENDRAL,2941.0,ENDRINE ALDÉHYDE,Endrine aldéhyde,7421-93-4,pesticides,métabolites,pertinent par défaut,0.1,,,,,µg/L
+CETCESA,6856.0,ESA ACETOCHLORE,ESA acetochlore,187022-11-3,pesticides,métabolites,non pertinent,0.9,,,,,µg/L
+ESACETC,6856.0,ESA ACETOCHLORE,ESA acetochlore,187022-11-3,pesticides,métabolites,non pertinent,0.9,,,,,µg/L
+ESALCL,6800.0,ESA ALACHLORE,ESA alachlore,142363-53-9,pesticides,métabolites,non pertinent,0.9,,,,,µg/L
+LCLESA,6800.0,ESA ALACHLORE,ESA alachlore,142363-53-9,pesticides,métabolites,non pertinent,0.9,,,,,µg/L
+MTZCESA,6895.0,ESA METAZACHLORE,ESA metazachlore,172960-62-2,pesticides,métabolites,non pertinent,0.9,3,"Valeur sanitaire transitoire établie par l'agence allemande UBA, utilisée par la France en l'absence de Vmax fixée par l'Anses",,,µg/L
+ESAMTZC,6895.0,ESA METAZACHLORE,ESA metazachlore,172960-62-2,pesticides,métabolites,non pertinent,0.9,3,"Valeur sanitaire transitoire établie par l'agence allemande UBA, utilisée par la France en l'absence de Vmax fixée par l'Anses",,,µg/L
+ESAMTC,6854.0,ESA METOLACHLORE,ESA metolachlore,171118-09-5,pesticides,métabolites,non pertinent,0.9,3,"Valeur sanitaire transitoire établie par l'agence allemande UBA, utilisée par la France en l'absence de Vmax fixée par l'Anses",,,µg/L
+MTCESA,6854.0,ESA METOLACHLORE,ESA metolachlore,171118-09-5,pesticides,métabolites,non pertinent,0.9,3,"Valeur sanitaire transitoire établie par l'agence allemande UBA, utilisée par la France en l'absence de Vmax fixée par l'Anses",,,µg/L
+ETSN,5528.0,ETHIOFENCARB SULFONE,Ethiofencarb sulfone,53380-23-7,pesticides,métabolites,pertinent par défaut,0.1,,,,,µg/L
+ETSY,6534.0,ETHIOFENCARB SULFOXYDE,Ethiofencarb sulfoxyde,53380-22-6,pesticides,métabolites,pertinent par défaut,0.1,,,,,µg/L
+ETU,5648.0,ETHYLENETHIOUREE,Ethylenethiouree,96-45-7,pesticides,métabolites,pertinent par défaut,0.1,,,,,µg/L
+ETNUR,6601.0,ETHYLENEUREE,Ethyleneuree,120-93-4,pesticides,métabolites,pertinent par défaut,0.1,,,,,µg/L
+FIPRO01,6262.0,FIPRONIL DÉSULFINYL,Fipronil désulfinyl,205650-65-3,pesticides,métabolites,pertinent par défaut,0.1,,,,,µg/L
+FIPRO03,6261.0,FIPRONIL SULFIDE,Fipronil sulfide,120067-83-6,pesticides,métabolites,pertinent par défaut,0.1,,,,,µg/L
+FIPRO02,6260.0,FIPRONIL SULFONE,Fipronil sulfone,120068-36-2,pesticides,métabolites,pertinent par défaut,0.1,,,,,µg/L
+ESAFLU,6864.0,FLUFENACET ESA,Flufenacet ESA,201668-32-8,pesticides,métabolites,pertinent,0.1,1,"Valeur sanitaire transitoire établie par l'agence allemande UBA, utilisée par la France en l'absence de Vmax fixée par l'Anses",,,µg/L
+OXAFLU,6863.0,FLUFÉNACET OXA,Flufénacet OXA,201668-31-7,pesticides,métabolites,pertinent par défaut,0.1,,,,,µg/L
+HEPE,1198.0,HEPTACHLORE ÉPOXYDE,Heptachlore époxyde,,pesticides,métabolites,pertinent par défaut,0.1,,,,,µg/L
+HEPEC,1748.0,HEPTACHLORE ÉPOXYDE CIS,Heptachlore époxyde cis,1024-57-3,pesticides,métabolites,pertinent par défaut,0.1,0.03,,,,µg/L
+HEPET,1749.0,HEPTACHLORE ÉPOXYDE TRANS,Heptachlore époxyde trans,28044-83-9,pesticides,métabolites,pertinent par défaut,0.1,,,,,µg/L
+3HXC,1805.0,HYDROXYCARBOFURAN-3,Hydroxycarbofuran-3,16655-82-6,pesticides,métabolites,pertinent par défaut,0.1,,,,,µg/L
+TBZH,1954.0,HYDROXYTERBUTHYLAZINE,Hydroxyterbuthylazine,66753-07-09,pesticides,métabolites,pertinent par défaut,0.1,,,,,µg/L
+MALAOX,5787.0,MALAOXON,Malaoxon,1634-78-2,pesticides,métabolites,pertinent par défaut,0.1,,,,,µg/L
+MESUO,1803.0,METHIOCARB SULFONE,Methiocarb sulfone,2179-25-1,pesticides,métabolites,pertinent par défaut,0.1,,,,,µg/L
+MESUY,1804.0,METHIOCARB SULFOXYDE,Methiocarb sulfoxyde,2635-10-1,pesticides,métabolites,pertinent par défaut,0.1,,,,,µg/L
+CARB3M,8769.0,METHYL-3-HYDROXYLPHENYLCARBAMATE,Methyl-3-hydroxylphenylcarbamate,13683-89-1,pesticides,métabolites,pertinent par défaut,0.1,,,,,µg/L
+MTCNOA,7729.0,METOLACHLOR NOA 413173,Metolachlor NOA 413173,1418095-19-8,pesticides,métabolites,non pertinent,0.9,,,,,µg/L
+NOAMTC,7729.0,METOLACHLOR NOA 413173,Metolachlor NOA 413173,1418095-19-8,pesticides,métabolites,non pertinent,0.9,,,,,µg/L
+MTC3577,7731.0,MÉTOLACHLORE MÉTABOLITE CGA 357704,Métolachlore métabolite CGA 357704,1217465-10-5,pesticides,métabolites,pertinent par défaut,0.1,,,,,µg/L
+MTC3682,7730.0,MÉTOLACHLORE MÉTABOLITE CGA 368208,Métolachlore métabolite CGA 368208,1173021-76-5,pesticides,métabolites,pertinent par défaut,0.1,,,,,µg/L
+DMST,6824.0,"N,N-DIMET-TOLYLSULPHAMID","N,N-Dimet-tolylsulphamid",66840-71-9,pesticides,métabolites,pertinent par défaut,0.1,,,,,µg/L
+DMSA,7618.0,"N,N-DIMÉTHYL-N'-PHÉNYLSULFAMIDE","N,N-diméthyl-N'-phénylsulfamide",4710-17-2,pesticides,métabolites,pertinent par défaut,0.1,,,,,µg/L
+NDMS,6384.0,"N,N-DIMETHYLSULFAMIDE","N,N-Dimethylsulfamide",3984-14-3,pesticides,métabolites,pertinent,0.1,Absence,,,,µg/L
+CETCOXA,6862.0,OXA ACETOCHLORE,OXA acetochlore,194992-44-4,pesticides,métabolites,non pertinent,0.9,,,,,µg/L
+OXACETC,6862.0,OXA ACETOCHLORE,OXA acetochlore,194992-44-4,pesticides,métabolites,non pertinent,0.9,,,,,µg/L
+OXALCL,6855.0,OXA ALACHLORE,OXA alachlore,171262-17-2,pesticides,métabolites,pertinent,0.1,50,,,,µg/L
+OXAMTZC,6894.0,OXA METAZACHLORE,OXA metazachlore,1231244-60-2,pesticides,métabolites,non pertinent,0.9,3,"Valeur sanitaire transitoire établie par l'agence allemande UBA, utilisée par la France en l'absence de Vmax fixée par l'Anses",,,µg/L
+MTZCOXA,6894.0,OXA METAZACHLORE,OXA metazachlore,1231244-60-2,pesticides,métabolites,non pertinent,0.9,3,"Valeur sanitaire transitoire établie par l'agence allemande UBA, utilisée par la France en l'absence de Vmax fixée par l'Anses",,,µg/L
+OXAMTC,6853.0,OXA METOLACHLORE,OXA metolachlore,152019-73-3,pesticides,métabolites,non pertinent,0.9,,,,,µg/L
+MTCOXA,6853.0,OXA METOLACHLORE,OXA metolachlore,152019-73-3,pesticides,métabolites,non pertinent,0.9,,,,,µg/L
+OCHA,1848.0,OXYCHLORDANE,Oxychlordane,27304-13-8,pesticides,métabolites,pertinent par défaut,0.1,,,,,µg/L
+PARAOX,5806.0,PARAOXON,Paraoxon,311-45-5,pesticides,métabolites,pertinent par défaut,0.1,,,,,µg/L
+PARM,5793.0,PARAOXON MÉTHYL,Paraoxon méthyl,950-35-6,pesticides,métabolites,pertinent par défaut,0.1,,,,,µg/L
+12345CB,1888.0,PENTACHLOROBENZÈNE,Pentachlorobenzène,608-93-5,pesticides,métabolites,pertinent par défaut,0.1,,,,,µg/L
+PHRTS,7149.0,PHORATE SULFONE,Phorate Sulfone,2588-04-07,pesticides,métabolites,pertinent par défaut,0.1,,,,,µg/L
+PHTHA,7587.0,PHTHALIMIDE,Phthalimide,85-41-6,pesticides,métabolites,pertinent par défaut,0.1,,,,,µg/L
+PIFODM,5532.0,PIRIMICARB FORMAMIDO DESMÉTHYL,Pirimicarb formamido desméthyl,27218-04-08,pesticides,métabolites,pertinent par défaut,0.1,,,,,µg/L
+PPCHL_E,6887.0,PROPACHLORE ESA,Propachlore ESA,123732-85-4,pesticides,métabolites,pertinent par défaut,0.1,,,,,µg/L
+PPCHL_O,7736.0,PROPACHLORE OXA,Propachlore OXA,70628-36-3,pesticides,métabolites,pertinent par défaut,0.1,,,,,µg/L
+PRP2H,5968.0,PROPAZINE 2-HYDROXY,Propazine 2-hydroxy,7374-53-0,pesticides,métabolites,pertinent par défaut,0.1,,,,,µg/L
+PTU,6214.0,PROPYLENE THIOUREE,Propylene thiouree,2122-19-2,pesticides,métabolites,pertinent par défaut,0.1,,,,,µg/L
+PRODES,7936.0,PROTHIOCONAZOLE-DESTHIO,Prothioconazole-Desthio,120983-64-4,pesticides,métabolites,pertinent par défaut,0.1,,,,,µg/L
+ACETSAA,7718.0,SAA ACÉTOCHLORE,SAA Acétochlore,618113-86-3,pesticides,métabolites,pertinent par défaut,0.1,,,,,µg/L
+SBAZ2H,6101.0,SEBUTHYLAZINE 2-HYDROXY,Sebuthylazine 2-hydroxy,33124-61-7,pesticides,métabolites,pertinent par défaut,0.1,,,,,µg/L
+SEBUT2H,5981.0,SEBUTHYLAZINE DÉSÉTHYL,Sebuthylazine déséthyl,37019-18-4,pesticides,métabolites,pertinent par défaut,0.1,,,,,µg/L
+SHYD,1831.0,SIMAZINE HYDROXY,Simazine hydroxy,2599-11-3,pesticides,métabolites,pertinent par défaut,0.1,2,,,,µg/L
+DD_S2,7146.0,"SOMME DDD44',DDE44',DDT24',DDT44'","Somme DDD44',DDE44',DDT24',DDT44'",,pesticides,métabolites,pertinent par défaut,0.1,,,,,µg/L
+DITHIO1,6235.0,SOMME MÉTABOLITES DITHIOCARBAMATES,Somme métabolites Dithiocarbamates,,pesticides,métabolites,pertinent par défaut,0.1,,,,,µg/L
+TERBMDE,2051.0,TERBUMÉTON-DÉSETHYL,Terbuméton-désethyl,30125-64-5,pesticides,métabolites,pertinent,0.1,,,,,µg/L
+TBZDES,2045.0,TERBUTHYLAZIN DÉSÉTHYL,Terbuthylazin déséthyl,30125-63-4,pesticides,métabolites,pertinent par défaut,0.1,12,,,,µg/L
+TBZDESH,7150.0,TERBUTHYLAZIN DÉSÉTHYL-2-HYDROXY,Terbuthylazin déséthyl-2-hydroxy,66753-06-08,pesticides,métabolites,pertinent par défaut,0.1,,,,,µg/L
+TBZLM6,,TERBUTHYLAZINE MÉTABOLITE LM6,Terbuthylazine métabolite LM6,,pesticides,métabolites,pertinent par défaut,0.1,,,,,µg/L
+THPL,7588.0,TÉTRAHYDROPHTHALIMIDE,Tétrahydrophthalimide,85-40-5,pesticides,métabolites,pertinent par défaut,0.1,,,,,µg/L
+TSON,5476.0,THIOFANOX SULFONE,Thiofanox sulfone,39184-59-3,pesticides,métabolites,pertinent par défaut,0.1,,,,,µg/L
+TSXY,5475.0,THIOFANOX SULFOXYDE,Thiofanox sulfoxyde,39184-27-5,pesticides,métabolites,pertinent par défaut,0.1,,,,,µg/L
+TRAZ2H,6102.0,TRIETAZINE 2-HYDROXY,Trietazine 2-hydroxy,13532-25-7,pesticides,métabolites,pertinent par défaut,0.1,,,,,µg/L
+TRAZDE,5971.0,TRIETAZINE DESETHYL,Trietazine desethyl,38902-68-0,pesticides,métabolites,pertinent par défaut,0.1,,,,,µg/L
+DDVP,1170.0,DICHLORVOS,Dichlorvos,62-73-7,pesticides,substances actives,,0.1,0.24,,,,µg/L
+DIAZ,1157.0,DIAZINON,Diazinon,333-41-5,pesticides,substances actives,,0.1,0.6,,,,µg/L
+CYANZ,1137.0,CYANAZINE,Cyanazine,21725-46-2,pesticides,substances actives,,0.1,0.6,,,,µg/L
+SCT,1662.0,SULCOTRIONE,Sulcotrione,99105-77-8,pesticides,substances actives,,0.1,0.9,,,,µg/L
+CFVP,1464.0,CHLORFENVINPHOS,Chlorfenvinphos,470-90-6,pesticides,substances actives,,0.1,1.5,,,,µg/L
+CYM,1139.0,CYMOXANIL,Cymoxanil,57966-95-7,pesticides,substances actives,,0.1,1.5,,,,µg/L
+KEPONE,1866.0,CHLORDÉCONE,Chlordécone,143-50-0,pesticides,substances actives,,0.1,1.5,,,,µg/L
+SMZ,1263.0,SIMAZINE,Simazine,122-34-9,pesticides,substances actives,,0.1,2,,,,µg/L
+MCPA,1212.0,"2,4-MCPA","2,4-MCPA",94-74-6,pesticides,substances actives,,0.1,2,,,,µg/L
+HCHG,1203.0,HCH GAMMA (LINDANE),HCH gamma (lindane),58-89-9,pesticides,substances actives,,0.1,2,,,,µg/L
+TERBU,1269.0,TERBUTRYNE,Terbutryne,886-50-0,pesticides,substances actives,,0.1,3,,,,µg/L
+AMNTZ,1105.0,AMINOTRIAZOLE,Aminotriazole,61-82-5,pesticides,substances actives,,0.1,3,,,,µg/L
+CARBR,1130.0,CARBOFURAN,Carbofuran,1563-66-2,pesticides,substances actives,,0.1,3,,,,µg/L
+DSEB,1491.0,DINOSEB,Dinoseb,88-85-7,pesticides,substances actives,,0.1,3,,,,µg/L
+FSLZ,1194.0,FLUSILAZOL,Flusilazol,85509-19-9,pesticides,substances actives,,0.1,3,,,,µg/L
+MTHION,1217.0,MÉTHIDATHION,Méthidathion,950-37-8,pesticides,substances actives,,0.1,3,,,,µg/L
+TBZ,1268.0,TERBUTHYLAZIN,Terbuthylazin,5915-41-3,pesticides,substances actives,,0.1,4.9,,,,µg/L
+DIQDBMD,7142.0,DIQUAT DIBROMIDE,Diquat dibromide,85-00-7,pesticides,substances actives,,0.1,6,,,,µg/L
+FOMESAF,2075.0,FOMESAFEN,Fomesafen,72178-02-0,pesticides,substances actives,,0.1,7.5,,,,µg/L
+ISP,1208.0,ISOPROTURON,Isoproturon,34123-59-6,pesticides,substances actives,,0.1,9,,,,µg/L
+FPPMP,1189.0,FENPROPIMORPHE,Fenpropimorphe,67564-91-4,pesticides,substances actives,,0.1,9,,,,µg/L
+LNR,1209.0,LINURON,Linuron,330-55-2,pesticides,substances actives,,0.1,9,,,,µg/L
+PARTHM,1233.0,PARATHION MÉTHYL,Parathion méthyl,298-00-0,pesticides,substances actives,,0.1,9,,,,µg/L
+MLNR,1227.0,MONOLINURON,Monolinuron,1746-81-2,pesticides,substances actives,,0.1,9,,,,µg/L
+MCPP,1539.0,FÉNOPROP,Fénoprop,93-72-1,pesticides,substances actives,,0.1,9,,,,µg/L
+MTC,1221.0,MÉTOLACHLORE,Métolachlore,51218-45-2,pesticides,substances actives,,0.1,10,,,,µg/L
+ACETOCH,1903.0,ACÉTOCHLORE,Acétochlore,34256-82-1,pesticides,substances actives,,0.1,10,,,,µg/L
+FNP,1214.0,MÉCOPROP,Mécoprop,93-65-2,pesticides,substances actives,,0.1,10,,,,µg/L
+OXDZ,1667.0,OXADIAZON,Oxadiazon,19666-30-9,pesticides,substances actives,,0.1,10.8,,,,µg/L
+PSFC,1092.0,PROSULFOCARBE,Prosulfocarbe,52888-80-9,pesticides,substances actives,,0.1,11,,,,µg/L
+GFST,1526.0,GLUFOSINATE,Glufosinate,51276-47-2,pesticides,substances actives,,0.1,11,,,,µg/L
+PROM,1254.0,PROMÉTHRINE,Prométhrine,7287-19-6,pesticides,substances actives,,0.1,12,,,,µg/L
+GFSTNH3,2731.0,GLUFOSINATE-AMMONIUM,Glufosinate-ammonium,77182-82-2,pesticides,substances actives,,0.1,13,,,,µg/L
+FLUTHI,1940.0,FLUFENACET,Flufenacet,142459-58-3,pesticides,substances actives,,0.1,15,,,,µg/L
+IOXY,1205.0,IOXYNIL,Ioxynil,1689-83-4,pesticides,substances actives,,0.1,15,,,,µg/L
+HXCZ,1405.0,HEXACONAZOLE,Hexaconazole,79983-71-4,pesticides,substances actives,,0.1,15,,,,µg/L
+PRQT,1522.0,PARAQUAT,Paraquat,4685-14-7,pesticides,substances actives,,0.1,15,,,,µg/L
+DIU,1177.0,DIURON,Diuron,330-54-1,pesticides,substances actives,,0.1,21,,,,µg/L
+THISUME,1913.0,THIFENSULFURON MÉTHYL,Thifensulfuron méthyl,79277-27-3,pesticides,substances actives,,0.1,22,,,,µg/L
+MESOTRI,2076.0,MÉSOTRIONE,Mésotrione,104206-82-8,pesticides,substances actives,,0.1,22,,,,µg/L
+MTBR,1515.0,MÉTOBROMURON,Métobromuron,3060-89-7,pesticides,substances actives,,0.1,24,,,,µg/L
+DCAMB,1480.0,DICAMBA,Dicamba,1918-00-9,pesticides,substances actives,,0.1,28,,,,µg/L
+CTOL,1136.0,CHLORTOLURON,Chlortoluron,15545-48-9,pesticides,substances actives,,0.1,30,,,,µg/L
+24D,1141.0,"2,4-D","2,4-D",94-75-7,pesticides,substances actives,,0.1,30,,,,µg/L
+CLMPE,1083.0,CHLORPYRIPHOS ÉTHYL,Chlorpyriphos éthyl,2921-88-2,pesticides,substances actives,,0.1,30,,,,µg/L
+TRBNURO,2064.0,TRIBENURON-MÉTHYLE,Tribenuron-méthyle,101200-48-0,pesticides,substances actives,,0.1,30,,,,µg/L
+DICHLB,1679.0,DICHLOBÉNIL,Dichlobénil,1194-65-6,pesticides,substances actives,,0.1,30,,,,µg/L
+BMUCON,1860.0,BROMUCONAZOLE,Bromuconazole,116255-48-2,pesticides,substances actives,,0.1,30,,,,µg/L
+DITHIAN,1966.0,DITHIANON,Dithianon,3347-22-6,pesticides,substances actives,,0.1,30,,,,µg/L
+VCLZ,1291.0,VINCHLOZOLINE,Vinchlozoline,50471-44-8,pesticides,substances actives,,0.1,30,,,,µg/L
+THIR,1718.0,THIRAME,Thirame,137-26-8,pesticides,substances actives,,0.1,30,,,,µg/L
+MTBZ,1225.0,MÉTRIBUZINE,Métribuzine,21087-64-9,pesticides,substances actives,,0.1,40,,,,µg/L
+FLAZASU,1939.0,FLAZASULFURON,Flazasulfuron,104040-78-0,pesticides,substances actives,,0.1,40,,,,µg/L
+FLUXA,7342.0,FLUXAPYROXAD,Fluxapyroxad,907204-31-3,pesticides,substances actives,,0.1,44,,,,µg/L
+CLTHAL,1473.0,CHLOROTHALONIL,Chlorothalonil,1897-45-6,pesticides,substances actives,,0.1,45,,,,µg/L
+FPRO,1700.0,FENPROPIDIN,Fenpropidin,67306-00-7,pesticides,substances actives,,0.1,51,,,,µg/L
+ATRZ,1107.0,ATRAZINE,Atrazine,1912-24-9,pesticides,substances actives,,0.1,60,,,,µg/L
+PROP,1256.0,PROPAZINE,Propazine,139-40-2,pesticides,substances actives,,0.1,60,,,,µg/L
+DMTH,1678.0,DIMÉTHÉNAMIDE,Diméthénamide,87674-68-8,pesticides,substances actives,,0.1,60,,,,µg/L
+CBDZ,1129.0,CARBENDAZIME,Carbendazime,10605-21-7,pesticides,substances actives,,0.1,60,,,,µg/L
+METACET,1796.0,MÉTALDÉHYDE,Métaldéhyde,108-62-3,pesticides,substances actives,,0.1,60,,,,µg/L
+NFZ,1669.0,NORFLURAZON,Norflurazon,27314-13-2,pesticides,substances actives,,0.1,60,,,,µg/L
+PROSULF,2534.0,PROSULFURON,Prosulfuron,94125-34-5,pesticides,substances actives,,0.1,60,,,,µg/L
+ISOXAFL,1945.0,ISOXAFLUTOLE,Isoxaflutole,141112-29-0,pesticides,substances actives,,0.1,60,,,,µg/L
+PPX,1535.0,PROPOXUR,Propoxur,114-26-1,pesticides,substances actives,,0.1,60,,,,µg/L
+DMTHP,5617.0,DIMETHENAMIDE-P,Dimethenamide-p,163515-14-8,pesticides,substances actives,,0.1,60,,,,µg/L
+DAL_SPD,2094.0,DALAPON SPD,Dalapon spd,75-99-0,pesticides,substances actives,,0.1,66,,,,µg/L
+DALAPON,2094.0,DALAPON 85,Dalapon 85,75-99-0,pesticides,substances actives,,0.1,66,,,,µg/L
+CHLOMEQ,2097.0,CHLOROMÉQUAT CHLORURE (UTILISER CLM,Chloroméquat chlorure (utiliser CLMQ),999-81-5,pesticides,substances actives,,0.1,68,,,,µg/L
+THBZ,1713.0,THIABENDAZOLE,Thiabendazole,148-79-8,pesticides,substances actives,,0.1,73,,,,µg/L
+IMAZ,1704.0,IMAZALILE,Imazalile,35554-44-0,pesticides,substances actives,,0.1,75,,,,µg/L
+FCLRD,1675.0,FLUROCHLORIDONE,Flurochloridone,61213-25-0,pesticides,substances actives,,0.1,89,,,,µg/L
+TBCZ,1694.0,TÉBUCONAZOLE,Tébuconazole,107534-96-3,pesticides,substances actives,,0.1,90,,,,µg/L
+PMPA,1359.0,CYPRODINIL,Cyprodinil,121552-61-2,pesticides,substances actives,,0.1,90,,,,µg/L
+MALTH,1210.0,MALATHION,Malathion,121-75-5,pesticides,substances actives,,0.1,90,,,,µg/L
+FENAMID,2057.0,FÉNAMIDONE,Fénamidone,161326-34-7,pesticides,substances actives,,0.1,90,,,,µg/L
+PYRD,1259.0,PYRIDATE,Pyridate,55512-33-9,pesticides,substances actives,,0.1,108,,,,µg/L
+PRPZ,1414.0,PROPYZAMIDE,Propyzamide,23950-58-5,pesticides,substances actives,,0.1,110,,,,µg/L
+DCP,1169.0,DICHLORPROP,Dichlorprop,120-36-5,pesticides,substances actives,,0.1,110,,,,µg/L
+PPCNZ,1257.0,PROPICONAZOLE,Propiconazole,60207-90-1,pesticides,substances actives,,0.1,120,,,,µg/L
+BOSCALI,5526.0,BOSCALID,Boscalid,188425-85-6,pesticides,substances actives,,0.1,120,,,,µg/L
+DMTM,1403.0,DIMÉTHOMORPHE,Diméthomorphe,110488-70-5,pesticides,substances actives,,0.1,150,,,,µg/L
+IMIDA,1877.0,IMIDACLOPRIDE,Imidaclopride,138261-41-3,pesticides,substances actives,,0.1,180,,,,µg/L
+CBTM,1333.0,CARBÉTAMIDE,Carbétamide,16118-49-3,pesticides,substances actives,,0.1,180,,,,µg/L
+IMAT,1695.0,IMAZAMÉTHABENZ,Imazaméthabenz,100728-84-5,pesticides,substances actives,,0.1,180,,,,µg/L
+FLUTO,2985.0,FLUTOLANIL,Flutolanil,66332-96-5,pesticides,substances actives,,0.1,200,,,,µg/L
+DIMEFUR,1870.0,DIMÉFURON,Diméfuron,34205-21-5,pesticides,substances actives,,0.1,210,,,,µg/L
+PROPAMO,6398.0,PROPAMOCARBE,Propamocarbe,24579-73-5,pesticides,substances actives,,0.1,223,,,,µg/L
+METAL,1706.0,MÉTALAXYLE,Métalaxyle,57837-19-1,pesticides,substances actives,,0.1,240,,,,µg/L
+METALM,2987.0,MÉFÉNOXAM,Méfénoxam,70630-17-0,pesticides,substances actives,,0.1,240,,,,µg/L
+NAPR,1519.0,NAPROPAMIDE,Napropamide,15299-99-7,pesticides,substances actives,,0.1,266,,,,µg/L
+PDM,1234.0,PENDIMÉTHALINE,Pendiméthaline,40487-42-1,pesticides,substances actives,,0.1,277,,,,µg/L
+BTZ,1113.0,BENTAZONE,Bentazone,25057-89-0,pesticides,substances actives,,0.1,300,,,,µg/L
+CLDZ,1133.0,CHLORIDAZONE,Chloridazone,1698-60-8,pesticides,substances actives,,0.1,300,,,,µg/L
+DIMETAC,2546.0,DIMÉTACHLORE,Dimétachlore,50563-36-5,pesticides,substances actives,,0.1,300,,,,µg/L
+CLETHO,2978.0,CLETHODIME,Clethodime,99129-21-2,pesticides,substances actives,,0.1,355,,,,µg/L
+BRMCL,1686.0,BROMACIL,Bromacil,314-40-9,pesticides,substances actives,,0.1,390,,,,µg/L
+CLOMAZO,2017.0,CLOMAZONE,Clomazone,81777-89-1,pesticides,substances actives,,0.1,400,,,,µg/L
+AZOXYST,1951.0,AZOXYSTROBINE,Azoxystrobine,131860-33-8,pesticides,substances actives,,0.1,400,,,,µg/L
+CLOPY,1810.0,CLOPYRALID,Clopyralid,1702-17-6,pesticides,substances actives,,0.1,450,,,,µg/L
+DFF,1814.0,DIFLUFÉNICANIL,Diflufénicanil,83164-33-4,pesticides,substances actives,,0.1,600,,,,µg/L
+AMIDOSU,2012.0,AMIDOSULFURON,Amidosulfuron,120923-37-7,pesticides,substances actives,,0.1,600,,,,µg/L
+PPBTX,1709.0,PIPERONIL BUTOXIDE,Piperonil butoxide,51-03-6,pesticides,substances actives,,0.1,600,,,,µg/L
+MEPIQUA,1969.0,MEPIQUAT,Mepiquat,15302-91-7,pesticides,substances actives,,0.1,600,,,,µg/L
+IMETS,1797.0,METSULFURON MÉTHYL,Metsulfuron méthyl,74223-64-6,pesticides,substances actives,,0.1,660,,,,µg/L
+ETFS,1184.0,ETHOFUMÉSATE,Ethofumésate,26225-79-6,pesticides,substances actives,,0.1,667,,,,µg/L
+DTFC,1402.0,DIETHOFENCARBE,Diethofencarbe,87130-20-9,pesticides,substances actives,,0.1,950,,,,µg/L
+FPYR,1765.0,FLUROXYPIR,Fluroxypir,69377-81-7,pesticides,substances actives,,0.1,2400,,,,µg/L
+FPYRM,2547.0,FLUROXYPIR-MEPTYL,Fluroxypir-meptyl,81406-37-3,pesticides,substances actives,,0.1,2400,,,,µg/L
+NICOSUL,1882.0,NICOSULFURON,Nicosulfuron,111991-09-4,pesticides,substances actives,,0.1,2780,,,,µg/L
+MESOSUL,2578.0,MÉSOSULFURON-MÉTHYL,Mésosulfuron-méthyl,208465-21-8,pesticides,substances actives,,0.1,3000,,,,µg/L
+IMAMOX,2986.0,IMAZAMOX,Imazamox,114311-32-9,pesticides,substances actives,,0.1,9000,,,,µg/L
+EFOSITE,1975.0,FOSETYL-ALUMINIUM,Fosetyl-aluminium,39148-24-8,pesticides,substances actives,,0.1,9000,,,,µg/L
+HCHB,1201.0,HCH BÉTA,HCH béta,319-85-7,pesticides,substances actives,,0.1,"0,017 (associée à ERI = 10-6)",,,,µg/L
+ANTHRAQ,2013.0,ANTHRAQUINONE (PESTICIDE),Anthraquinone (pesticide),84-65-1,pesticides,substances actives,,0.1,"0,5 (associée à ERI =  10-6)",,,,µg/L
+IPD,1206.0,IPRODIONE,Iprodione,36734-19-7,pesticides,substances actives,,0.1,"0,6 (associée à ERI = 10-6)",,,,µg/L
+PROCYM,1664.0,PROCYMIDONE,Procymidone,32809-16-8,pesticides,substances actives,,0.1,"0,9 (associée à ERI = 10^-6)",,,,µg/L
+ALCL,1101.0,ALACHLORE,Alachlore,15972-60-8,pesticides,substances actives,,0.1,"2 (associée à ERI =
+ 10-6)",,,,µg/L
+ETDMR,1763.0,ETHIDIMURON,Ethidimuron,30043-49-3,pesticides,substances actives,,0.1,Absence,,,,µg/L
+TAM,1661.0,TÉBUTAM,Tébutam,35256-85-0,pesticides,substances actives,,0.1,Absence,,,,µg/L
+FNUR,1500.0,FÉNURON,Fénuron,101-42-8,pesticides,substances actives,,0.1,Absence,,,,µg/L
+MTBZTZ,1216.0,MÉTABENZTHIAZURON,Métabenzthiazuron,18691-97-9,pesticides,substances actives,,0.1,Absence,,,,µg/L
+SECB,1262.0,SECBUMÉTON,Secbuméton,26259-45-0,pesticides,substances actives,,0.1,Absence,,,,µg/L
+NBR,1520.0,NÉBURON,Néburon,555-37-3,pesticides,substances actives,,0.1,Absence,,,,µg/L
+TFU,1714.0,THIAZFLURON,Thiazfluron,25366-23-8,pesticides,substances actives,,0.1,Absence,,,,µg/L
+LFLAM,1840.0,FLAMPROP-ISOPROPYL,Flamprop-isopropyl,52756-22-6,pesticides,substances actives,,0.1,Absence,,,,µg/L
+CCHOLIN,2977.0,CHLORURE DE CHOLINE,Chlorure de choline,67-48-1,pesticides,substances actives,,0.1,Absence,,,,µg/L
+METZCL,1670.0,MÉTAZACHLORE,Métazachlore,67129-08-02,pesticides,substances actives,,0.1,,,,,µg/L
+MTMI,1215.0,MÉTAMITRONE,Métamitrone,41394-05-02,pesticides,substances actives,,0.1,,,,,µg/L
+HXZN,1673.0,HEXAZINONE,Hexazinone,51235-04-02,pesticides,substances actives,,0.1,,,,,µg/L
+TERBM,1266.0,TERBUMÉTON,Terbuméton,33693-04-08,pesticides,substances actives,,0.1,,,,,µg/L
+IXB,1672.0,ISOXABEN,Isoxaben,82558-50-7,pesticides,substances actives,,0.1,,,,,µg/L
+TCPY,1288.0,TRICLOPYR,Triclopyr,55335-06-03,pesticides,substances actives,,0.1,,,,,µg/L
+PCLR,1253.0,PROCHLORAZE,Prochloraze,67747-09-05,pesticides,substances actives,,0.1,,,,,µg/L
+ODX,1666.0,OXADIXYL,Oxadixyl,77732-09-03,pesticides,substances actives,,0.1,,,,,µg/L
+EPOXCZ,1744.0,EPOXYCONAZOLE,Epoxyconazole,133855-98-8,pesticides,substances actives,,0.1,,,,,µg/L
+PMC,1528.0,PYRIMICARBE,Pyrimicarbe,23103-98-2,pesticides,substances actives,,0.1,,,,,µg/L
+GPST,1506.0,GLYPHOSATE,Glyphosate,1071-83-6,pesticides,substances actives,,0.1,,,,,µg/L
+PRMTN,1432.0,PYRIMÉTHANIL,Pyriméthanil,53112-28-0,pesticides,substances actives,,0.1,,,,,µg/L
+CPCNZ,1680.0,CYPROCONAZOL,Cyproconazol,94361-06-05,pesticides,substances actives,,0.1,,,,,µg/L
+METCONA,1879.0,METCONAZOL,Metconazol,125116-23-6,pesticides,substances actives,,0.1,,,,,µg/L
+DTERB,1176.0,DINOTERBE,Dinoterbe,1420-07-01,pesticides,substances actives,,0.1,,,,,µg/L
+QUINMR,2087.0,QUIMERAC,Quimerac,90717-03-06,pesticides,substances actives,,0.1,,,,,µg/L
+FLUDIOX,2022.0,FLUDIOXONIL,Fludioxonil,131341-86-1,pesticides,substances actives,,0.1,,,,,µg/L
+LNCE,1406.0,LENACILE,Lenacile,01/08/2164,pesticides,substances actives,,0.1,,,,,µg/L
+CNPA,1688.0,ACLONIFEN,Aclonifen,74070-46-5,pesticides,substances actives,,0.1,,,,,µg/L
+CYINE,1140.0,CYPERMÉTHRINE,Cyperméthrine,52315-07-08,pesticides,substances actives,,0.1,,,,,µg/L
+ORZ,1668.0,ORYZALIN,Oryzalin,19044-88-3,pesticides,substances actives,,0.1,,,,,µg/L
+BRXY,1125.0,BROMOXYNIL,Bromoxynil,1689-84-5,pesticides,substances actives,,0.1,,,,,µg/L
+TCNZ,1660.0,TÉTRACONAZOLE,Tétraconazole,112281-77-3,pesticides,substances actives,,0.1,,,,,µg/L
+SPIROX,2664.0,SPIROXAMINE,Spiroxamine,118134-30-8,pesticides,substances actives,,0.1,,,,,µg/L
+FLURTAM,2008.0,FLURTAMONE,Flurtamone,96525-23-4,pesticides,substances actives,,0.1,,,,,µg/L
+IODOSU,6483.0,IODOSULFURON-METHYL-SODIUM,Iodosulfuron-methyl-sodium,144550-36-7,pesticides,substances actives,,0.1,,,,,µg/L
+DIFENOC,1905.0,DIFÉNOCONAZOLE,Difénoconazole,119446-68-3,pesticides,substances actives,,0.1,,,,,µg/L
+ALDR,1103.0,ALDRINE,Aldrine,309-00-2,pesticides,substances actives,,0.03,,,,,µg/L
+AMTH,1104.0,AMÉTHRYNE,Améthryne,0834-12-8,pesticides,substances actives,,0.1,,,,,µg/L
+BENOXA,2074.0,BENOXACOR,Benoxacor,98730-04-02,pesticides,substances actives,,0.1,,,,,µg/L
+HCHD,1202.0,HCH DELTA,HCH delta,319-86-8,pesticides,substances actives,,0.1,,,,,µg/L
+HEP,1197.0,HEPTACHLORE,Heptachlore,76-44-8,pesticides,substances actives,,0.03,,,,,µg/L
+HEOD,1173.0,DIELDRINE,Dieldrine,60-57-1,pesticides,substances actives,,0.03,,,,,µg/L
+HCHA,1200.0,HCH ALPHA,HCH alpha,319-84-6,pesticides,substances actives,,0.1,,,,,µg/L
+ACET,5579.0,ACÉTAMIPRID,Acétamiprid,135410-20-7,pesticides,substances actives,,0.1,,,,,µg/L
+TRIF,1289.0,TRIFLURALINE,Trifluraline,1582-09-08,pesticides,substances actives,,0.1,,,,,µg/L
+FIPRO,2009.0,FIPRONIL,Fipronil,120068-37-3,pesticides,substances actives,,0.1,,,,,µg/L
+CLMQ,5554.0,CHLORMEQUAT,Chlormequat,7003-89-6,pesticides,substances actives,,0.1,,,,,µg/L
+CPPH,1474.0,CHLORPROPHAME,Chlorprophame,101-21-3,pesticides,substances actives,,0.1,,,,,µg/L
+SULFRN,2085.0,SULFOSULFURON,Sulfosulfuron,141776-32-1,pesticides,substances actives,,0.1,,,,,µg/L
+CYCLOXY,2729.0,CYCLOXYDIME,Cycloxydime,101205-02-1,pesticides,substances actives,,0.1,,,,,µg/L
+MNR,1228.0,MONURON,Monuron,150-68-5,pesticides,substances actives,,0.1,,,,,µg/L
+DNOC,1490.0,DINITROCRÉSOL,Dinitrocrésol,534-52-1,pesticides,substances actives,,0.1,,,,,µg/L
+DIMTH,1175.0,DIMÉTHOATE,Diméthoate,60-51-5,pesticides,substances actives,,0.1,,,,,µg/L
+TBTR,1542.0,THÉBUTHIURON,Thébuthiuron,34014-18-1,pesticides,substances actives,,0.1,,,,,µg/L
+CHLPM,1540.0,CHLORPYRIPHOS MÉTHYL,Chlorpyriphos méthyl,5598-13-0,pesticides,substances actives,,0.1,,,,,µg/L
+DCFL,1172.0,DICOFOL,Dicofol,115-32-2,pesticides,substances actives,,0.1,,,,,µg/L
+CLOT,6389.0,CLOTHIANIDINE,Clothianidine,210880-92-5,pesticides,substances actives,,0.1,,,,,µg/L
+PYRAC,2576.0,PYRACLOSTROBINE,Pyraclostrobine,175013-18-0,pesticides,substances actives,,0.1,,,,,µg/L
+DDT44,1148.0,"DDT-4,4'","DDT-4,4'",50-29-3,pesticides,substances actives,,0.1,,,,,µg/L
+FENBUCO,1906.0,FENBUCONAZOLE,Fenbuconazole,114369-43-6,pesticides,substances actives,,0.1,,,,,µg/L
+THIAMET,6390.0,THIAMETHOXAM,Thiamethoxam,153719-23-4,pesticides,substances actives,,0.1,,,,,µg/L
+PYROX,7340.0,PYROXSULAME,Pyroxsulame,422556-08-9,pesticides,substances actives,,0.1,,,,,µg/L
+QUINOXY,2028.0,QUINOXYFEN,Quinoxyfen,124495-18-7,pesticides,substances actives,,0.1,,,,,µg/L
+IMATMET,1911.0,IMAZAMÉTHABENZ-MÉTHYL,Imazaméthabenz-méthyl,81405-85-8,pesticides,substances actives,,0.1,,,,,µg/L
+PRT,1523.0,PERMÉTHRINE,Perméthrine,52645-53-1,pesticides,substances actives,,0.1,,,,,µg/L
+SEBUT,1923.0,SÉBUTHYLAZINE,Sébuthylazine,7286-69-3,pesticides,substances actives,,0.1,,,,,µg/L
+MYCLOSS,1881.0,MYCLOBUTANIL,Myclobutanil,88671-89-0,pesticides,substances actives,,0.1,,,,,µg/L
+FORASUL,2806.0,FORAMSULFURON,Foramsulfuron,173159-57-4,pesticides,substances actives,,0.1,,,,,µg/L
+DMTRY,1155.0,DESMÉTRYNE,Desmétryne,1014-69-3,pesticides,substances actives,,0.1,,,,,µg/L
+TRINEXA,2096.0,TRINÉXAPAC-ÉTHYL,Trinéxapac-éthyl,95266-40-3,pesticides,substances actives,,0.1,,,,,µg/L
+TRIFLX,2678.0,TRIFLOXYSTROBINE,Trifloxystrobine,141517-21-7,pesticides,substances actives,,0.1,,,,,µg/L
+DTINE,1149.0,DELTAMÉTHRINE,Deltaméthrine,52918-63-5,pesticides,substances actives,,0.1,,,,,µg/L
+CYBUT,1935.0,CYBUTRYNE,Cybutryne,28159-98-0,pesticides,substances actives,,0.1,,,,,µg/L
+THIACLO,5671.0,THIACLOPRIDE,Thiaclopride,111988-49-9,pesticides,substances actives,,0.1,,,,,µg/L
+KRESOXI,1950.0,KRESOXIM-MÉTHYLE,Kresoxim-méthyle,143390-89-0,pesticides,substances actives,,0.1,,,,,µg/L
+HCHTOT4,5537.0,HCH ALPHA+BETA+DELTA+GAMMA,HCH alpha+beta+delta+gamma,,pesticides,substances actives,,0.1,,,,,µg/L
+CANT,7500.0,CHLORANTRANILIPROLE,Chlorantraniliprole,500008-45-7,pesticides,substances actives,,0.1,,,,,µg/L
+BFNX,1119.0,BIFENOX,Bifenox,42576-02-03,pesticides,substances actives,,0.1,,,,,µg/L
+TLL,1281.0,TRIALLATE,Triallate,2303-17-5,pesticides,substances actives,,0.1,,,,,µg/L
+DDT24,1147.0,"DDT-2,4'","DDT-2,4'",0789-02-06,pesticides,substances actives,,0.1,,,,,µg/L
+FLOAMD,6393.0,FLONICAMIDE,Flonicamide,158062-67-0,pesticides,substances actives,,0.1,,,,,µg/L
+FTFL,1503.0,FLUTRIAFOL,Flutriafol,76674-21-0,pesticides,substances actives,,0.1,,,,,µg/L
+245T,1264.0,"2,4,5-T","2,4,5-T",93-76-5,pesticides,substances actives,,0.1,,,,,µg/L
+BFLN,1112.0,BENFLURALINE,Benfluraline,1861-40-1,pesticides,substances actives,,0.1,,,,,µg/L
+FENOXY,1967.0,FENOXYCARBE,Fenoxycarbe,79127-80-3,pesticides,substances actives,,0.1,,,,,µg/L
+DIQUAT,1699.0,DIQUAT,Diquat,2764-72-9,pesticides,substances actives,,0.1,,,,,µg/L
+FLORAS,2810.0,FLORASULAM,Florasulam,145701-23-1,pesticides,substances actives,,0.1,,,,,µg/L
+CBRYL,1463.0,CARBARYL,Carbaryl,63-25-2,pesticides,substances actives,,0.1,,,,,µg/L
+CHINE,1094.0,LAMBDA CYHALOTHRINE,Lambda Cyhalothrine,91465-08-06,pesticides,substances actives,,0.1,,,,,µg/L
+MCPB,1213.0,"2,4-MCPB","2,4-MCPB",94-81-5,pesticides,substances actives,,0.1,,,,,µg/L
+BFINE,1120.0,BIFENTHRINE,Bifenthrine,82657-04-03,pesticides,substances actives,,0.1,,,,,µg/L
+TRSULFM,2991.0,TRIFLUSULFURON-METHYL,Triflusulfuron-methyl,126535-15-7,pesticides,substances actives,,0.1,,,,,µg/L
+PACLOBU,2545.0,PACLOBUTRAZOLE,Paclobutrazole,76738-62-0,pesticides,substances actives,,0.1,,,,,µg/L
+TDMF,1544.0,TRIADIMÉFON,Triadiméfon,43121-43-3,pesticides,substances actives,,0.1,,,,,µg/L
+PARTH,1232.0,PARATHION ÉTHYL,Parathion éthyl,56-38-2,pesticides,substances actives,,0.1,,,,,µg/L
+MTZ,1222.0,MÉTOXURON,Métoxuron,19937-59-8,pesticides,substances actives,,0.1,,,,,µg/L
+OXYFLUO,1952.0,OXYFLUORFENE,Oxyfluorfene,42874-03-03,pesticides,substances actives,,0.1,,,,,µg/L
+DFB,1488.0,DIFLUBENZURON,Diflubenzuron,35367-38-5,pesticides,substances actives,,0.1,,,,,µg/L
+TEFLUTH,1953.0,TEFLUTHRINE,Tefluthrine,79538-32-2,pesticides,substances actives,,0.1,,,,,µg/L
+EPROP,1495.0,ETHOPROPHOS,Ethoprophos,13194-48-4,pesticides,substances actives,,0.1,,,,,µg/L
+ASULAME,1965.0,ASULAME,Asulame,3337-71-1,pesticides,substances actives,,0.1,,,,,µg/L
+METRAF,5654.0,METRAFENONE,Metrafenone,220899-03-6,pesticides,substances actives,,0.1,,,,,µg/L
+BIX,7345.0,BIXAFEN,Bixafen,581809-46-3,pesticides,substances actives,,0.1,,,,,µg/L
+ENDOT,1743.0,ENDOSULFAN TOTAL,Endosulfan total,115-29-7,pesticides,substances actives,,0.1,,,,,µg/L
+ZOXAMID,2858.0,ZOXAMIDE,Zoxamide,156052-68-5,pesticides,substances actives,,0.1,,,,,µg/L
+BAX,1687.0,BÉNALAXYL,Bénalaxyl,71626-11-4,pesticides,substances actives,,0.1,,,,,µg/L
+PENCYCU,1887.0,PENCYCURON,Pencycuron,66063-05-06,pesticides,substances actives,,0.1,,,,,µg/L
+TRITO,7087.0,TRITOSULFURON,Tritosulfuron,142469-14-5,pesticides,substances actives,,0.1,,,,,µg/L
+PYRMM,1261.0,PYRIMIPHOS MÉTHYL,Pyrimiphos méthyl,29232-93-7,pesticides,substances actives,,0.1,,,,,µg/L
+FLUAZB,1825.0,FLUAZIFOP BUTYL,Fluazifop butyl,69806-50-4,pesticides,substances actives,,0.1,,,,,µg/L
+FENHEXA,2743.0,FENHEXAMID,Fenhexamid,126833-17-8,pesticides,substances actives,,0.1,,,,,µg/L
+MTHC,1510.0,MÉTHIOCARB,Méthiocarb,2032-65-7,pesticides,substances actives,,0.1,,,,,µg/L
+ACIFLUO,1970.0,ACIFLUORFEN,Acifluorfen,50594-66-6,pesticides,substances actives,,0.1,,,,,µg/L
+RSFU,1892.0,RIMSULFURON,Rimsulfuron,122931-48-0,pesticides,substances actives,,0.1,,,,,µg/L
+PICOX,2669.0,PICOXYSTROBINE,Picoxystrobine,117428-22-5,pesticides,substances actives,,0.1,,,,,µg/L
+TCM,7517.0,THIENCARBAZONE-METHYL,Thiencarbazone-methyl,317815-83-1,pesticides,substances actives,,0.1,,,,,µg/L
+24DB,1142.0,"2,4-DB","2,4-DB",94-82-6,pesticides,substances actives,,0.1,,,,,µg/L
+FOSTHIA,2744.0,FOSTHIAZATE,Fosthiazate,98886-44-3,pesticides,substances actives,,0.1,,,,,µg/L
+PYMET,5416.0,PYMÉTROZINE,Pymétrozine,123312-89-0,pesticides,substances actives,,0.1,,,,,µg/L
+PROTHIO,5603.0,PROTHIOCONAZOLE,Prothioconazole,178928-70-6,pesticides,substances actives,,0.1,,,,,µg/L
+PICLO,1708.0,PICLORAME,Piclorame,01/02/1918,pesticides,substances actives,,0.1,,,,,µg/L
+FLUPYR,2565.0,FLUPYRSULFURON-MÉTHYLE,Flupyrsulfuron-méthyle,144740-54-5,pesticides,substances actives,,0.1,,,,,µg/L
+MTMY,1218.0,MÉTHOMYL,Méthomyl,16752-77-5,pesticides,substances actives,,0.1,,,,,µg/L
+PINOX,7057.0,PINOXADEN,Pinoxaden,243973-20-8,pesticides,substances actives,,0.1,,,,,µg/L
+PHM,1665.0,PHOXIME,Phoxime,14816-18-3,pesticides,substances actives,,0.1,,,,,µg/L
+FLUQUIN,2056.0,FLUQUINCONAZOLE,Fluquinconazole,136426-54-5,pesticides,substances actives,,0.1,,,,,µg/L
+IPROVAL,2951.0,IPROVALICARB,Iprovalicarb,140923-17-7,pesticides,substances actives,,0.1,,,,,µg/L
+FMTH,1501.0,FLUOMÉTURON,Fluométuron,2164-17-2,pesticides,substances actives,,0.1,,,,,µg/L
+PHOSL,1237.0,PHOSALONE,Phosalone,2310-17-0,pesticides,substances actives,,0.1,,,,,µg/L
+ENDR,1181.0,ENDRINE,Endrine,72-20-8,pesticides,substances actives,,0.1,,,,,µg/L
+ACYINE,1812.0,ALPHAMÉTHRINE,Alphaméthrine,67375-30-8,pesticides,substances actives,,0.1,,,,,µg/L
+MOL,1707.0,MOLINATE,Molinate,2212-67-1,pesticides,substances actives,,0.1,,,,,µg/L
+FLPIDE,7499.0,FLUOPICOLIDE,Fluopicolide,239110-15-7,pesticides,substances actives,,0.1,,,,,µg/L
+OXDM,1231.0,OXYDÉMÉTON MÉTHYL,Oxydéméton méthyl,0301-12-2,pesticides,substances actives,,0.1,,,,,µg/L
+CYAZOF,5567.0,CYAZOFAMIDE,Cyazofamide,120116-88-3,pesticides,substances actives,,0.1,,,,,µg/L
+PROMN,1711.0,PROMÉTON,Prométon,1610-18-0,pesticides,substances actives,,0.1,,,,,µg/L
+FENOXA,1973.0,FÉNOXAPROP-ÉTHYL,Fénoxaprop-éthyl,66441-23-4,pesticides,substances actives,,0.1,,,,,µg/L
+PECNZ,1762.0,PENCONAZOLE,Penconazole,66246-88-6,pesticides,substances actives,,0.1,,,,,µg/L
+BTRON,1531.0,BUTURON,Buturon,3766-60-7,pesticides,substances actives,,0.1,,,,,µg/L
+TDMN,1280.0,TRIADIMENOL,Triadimenol,55219-65-3,pesticides,substances actives,,0.1,,,,,µg/L
+PPCHL,1712.0,PROPACHLORE,Propachlore,1918-16-7,pesticides,substances actives,,0.1,,,,,µg/L
+MTX,1511.0,MÉTHOXYCHLORE,Méthoxychlore,72-43-5,pesticides,substances actives,,0.1,,,,,µg/L
+BTTNL,1529.0,BITERTANOL,Bitertanol,55179-31-2,pesticides,substances actives,,0.1,,,,,µg/L
+TITCNZ,2992.0,TRITICONAZOLE,Triticonazole,131983-72-7,pesticides,substances actives,,0.1,,,,,µg/L
+CLOQMEX,2018.0,CLOQUINTOCET-MEXYL,Cloquintocet-mexyl,99607-70-2,pesticides,substances actives,,0.1,,,,,µg/L
+PETHO,7519.0,PETHOXAMIDE,Pethoxamide,106700-29-2,pesticides,substances actives,,0.1,,,,,µg/L
+ESFENV,1809.0,ESFENVALÉRATE,Esfenvalérate,66230-04-04,pesticides,substances actives,,0.1,,,,,µg/L
+CYSUL,7801.0,CYPROSULFAMIDE,Cyprosulfamide,221667-31-8,pesticides,substances actives,,0.1,,,,,µg/L
+BRXYOC,1941.0,BROMOXYNIL OCTANOATE,Bromoxynil octanoate,1689-99-2,pesticides,substances actives,,0.1,,,,,µg/L
+DINICO,1871.0,DINICONAZOLE,Diniconazole,83657-24-3,pesticides,substances actives,,0.1,,,,,µg/L
+CARBOX,2975.0,CARBOXINE,Carboxine,5234-68-4,pesticides,substances actives,,0.1,,,,,µg/L
+TBZDE,1895.0,TÉBUFÉNOZIDE,Tébufénozide,112410-23-8,pesticides,substances actives,,0.1,,,,,µg/L
+TFBZURO,1897.0,TEFLUBENZURON,Teflubenzuron,83121-18-0,pesticides,substances actives,,0.1,,,,,µg/L
+FLUAZF,6545.0,FLUAZIFOP,Fluazifop,69335-91-7,pesticides,substances actives,,0.1,,,,,µg/L
+CPC,1684.0,CHLOROPHACINONE,Chlorophacinone,3691-35-8,pesticides,substances actives,,0.1,,,,,µg/L
+SITN,5477.0,SIMÉTRYNE,Simétryne,1014-70-6,pesticides,substances actives,,0.1,,,,,µg/L
+CYROMAZ,2897.0,CYROMAZINE,Cyromazine,66215-27-8,pesticides,substances actives,,0.1,,,,,µg/L
+MEFENPD,2930.0,MEFENPYR DIETHYL,Mefenpyr diethyl,135590-91-9,pesticides,substances actives,,0.1,,,,,µg/L
+BROMADI,1859.0,BROMADIOLONE,Bromadiolone,28772-56-7,pesticides,substances actives,,0.1,,,,,µg/L
+QUIZO,2069.0,QUIZALOFOP,Quizalofop,76578-12-6,pesticides,substances actives,,0.1,,,,,µg/L
+FERI,1185.0,FÉNARIMOL,Fénarimol,60168-88-9,pesticides,substances actives,,0.1,,,,,µg/L
+THIOPM,1717.0,THIOPHANATE MÉTHYL,Thiophanate méthyl,23564-05-08,pesticides,substances actives,,0.1,,,,,µg/L
+OXYM,1850.0,OXAMYL,Oxamyl,23135-22-0,pesticides,substances actives,,0.1,,,,,µg/L
+THIODIC,1093.0,THIODICARBE,Thiodicarbe,59669-26-0,pesticides,substances actives,,0.1,,,,,µg/L
+THIDIAZ,5934.0,THIDIAZURON,Thidiazuron,51707-55-2,pesticides,substances actives,,0.1,,,,,µg/L
+BUT,1126.0,BUTRALINE,Butraline,33629-47-9,pesticides,substances actives,,0.1,,,,,µg/L
+CSFU,1353.0,CHLORSULFURON,Chlorsulfuron,64902-72-3,pesticides,substances actives,,0.1,,,,,µg/L
+CLODINA,2095.0,CLODINAFOP-PROPARGYL,Clodinafop-propargyl,105512-06-9,pesticides,substances actives,,0.1,,,,,µg/L
+MPNI,5533.0,MÉPANIPYRIM,Mépanipyrim,110235-47-7,pesticides,substances actives,,0.1,,,,,µg/L
+COMLI,1696.0,CYCLURON,Cycluron,2163-69-1,pesticides,substances actives,,0.1,,,,,µg/L
+FXAS,5638.0,FLUOXASTROBINE,Fluoxastrobine,361377-29-9,pesticides,substances actives,,0.1,,,,,µg/L
+PROPAQU,1972.0,PROPAQUIZAFOP,Propaquizafop,111479-05-1,pesticides,substances actives,,0.1,,,,,µg/L
+CADUSAF,1863.0,CADUSAFOS,Cadusafos,95465-99-9,pesticides,substances actives,,0.1,,,,,µg/L
+AZINE,1110.0,AZINPHOS ÉTHYL,Azinphos éthyl,2642-71-9,pesticides,substances actives,,0.1,,,,,µg/L
+CLAHA,7010.0,CHLORDANE ALPHA,Chlordane alpha,5103-71-9,pesticides,substances actives,,0.1,,,,,µg/L
+TEMBO,7086.0,TEMBOTRIONE,Tembotrione,335104-84-2,pesticides,substances actives,,0.1,,,,,µg/L
+FOLPEL,1192.0,FOLPEL,Folpel,0133-07-03,pesticides,substances actives,,0.1,,,,,µg/L
+TBPYR,1896.0,TÉBUFENPYRAD,Tébufenpyrad,119168-77-3,pesticides,substances actives,,0.1,,,,,µg/L
+FLUAZN,2984.0,FLUAZINAM,Fluazinam,79622-59-6,pesticides,substances actives,,0.1,,,,,µg/L
+DCFMT,1171.0,DICLOFOP MÉTHYL,Diclofop méthyl,51338-27-3,pesticides,substances actives,,0.1,,,,,µg/L
+IALDR,1207.0,ISODRINE,Isodrine,465-73-6,pesticides,substances actives,,0.1,,,,,µg/L
+TRIASUL,1914.0,TRIASULFURON,Triasulfuron,82097-50-5,pesticides,substances actives,,0.1,,,,,µg/L
+FENIT,1187.0,FENITROTHION,Fenitrothion,122-14-5,pesticides,substances actives,,0.1,,,,,µg/L
+HXFLUMU,1875.0,HEXAFLUMURON,Hexaflumuron,86479-06-03,pesticides,substances actives,,0.1,,,,,µg/L
+CYFLTH,1681.0,CYFLUTHRINE,Cyfluthrine,68359-37-5,pesticides,substances actives,,0.1,,,,,µg/L
+CARFENE,2976.0,CARFENTRAZONE ÉTHYLE,Carfentrazone éthyle,128639-02-1,pesticides,substances actives,,0.1,,,,,µg/L
+CLBROMU,2016.0,CHLORBROMURON,Chlorbromuron,13360-45-7,pesticides,substances actives,,0.1,,,,,µg/L
+FLUXR,1676.0,FLUFÉNOXURON,Flufénoxuron,101463-69-8,pesticides,substances actives,,0.1,,,,,µg/L
+VMDT,1290.0,VAMIDOTHION,Vamidothion,2275-23-2,pesticides,substances actives,,0.1,,,,,µg/L
+ADC,1102.0,ALDICARBE,Aldicarbe,0116-06-03,pesticides,substances actives,,0.1,,,,,µg/L
+OOA,1230.0,OMÉTHOATE,Ométhoate,1113-02-06,pesticides,substances actives,,0.1,,,,,µg/L
+CHLX,1683.0,CHLOROXURON,Chloroxuron,1982-47-4,pesticides,substances actives,,0.1,,,,,µg/L
+HALOX,2047.0,HALOXYFOP,Haloxyfop,69806-34-4,pesticides,substances actives,,0.1,,,,,µg/L
+MCPO,2750.0,MECOPROP-1-OCTYL ESTER,Mecoprop-1-octyl ester,161922-37-8,pesticides,substances actives,,0.1,,,,,µg/L
+HCHE,2046.0,HCH EPSILON,HCH epsilon,07/10/6108,pesticides,substances actives,,0.1,,,,,µg/L
+FOSETYL,1816.0,FOSETYL,Fosetyl,15845-66-6,pesticides,substances actives,,0.1,,,,,µg/L
+CLAHB,1757.0,CHLORDANE BÉTA,Chlordane béta,5103-74-2,pesticides,substances actives,,0.1,,,,,µg/L
+PYRX,1663.0,PYRIFÉNOX,Pyrifénox,88283-41-4,pesticides,substances actives,,0.1,,,,,µg/L
+IMAZAPY,2090.0,IMAZAPYR,Imazapyr,81334-34-1,pesticides,substances actives,,0.1,,,,,µg/L
+ETHION,1183.0,ETHION,Ethion,0563-12-2,pesticides,substances actives,,0.1,,,,,µg/L
+FLUMIOX,2023.0,FLUMIOXAZINE,Flumioxazine,103361-09-7,pesticides,substances actives,,0.1,,,,,µg/L
+EKALUX,1891.0,QUINALPHOS,Quinalphos,13593-03-08,pesticides,substances actives,,0.1,,,,,µg/L
+METOSUL,1912.0,MÉTOSULAM,Métosulam,139528-85-1,pesticides,substances actives,,0.1,,,,,µg/L
+TTAZINE,5842.0,TRIETAZINE,Trietazine,1912-26-1,pesticides,substances actives,,0.1,,,,,µg/L
+BUPIRI,1861.0,BUPIRIMATE,Bupirimate,41483-43-6,pesticides,substances actives,,0.1,,,,,µg/L
+ETHPH,2093.0,ETHEPHON,Ethephon,16672-87-0,pesticides,substances actives,,0.1,,,,,µg/L
+HTZ,1876.0,HEXYTHIAZOX,Hexythiazox,78587-05-0,pesticides,substances actives,,0.1,,,,,µg/L
+TAUFLU,1193.0,FLUVALINATE-TAU,Fluvalinate-tau,102851-06-9,pesticides,substances actives,,0.1,,,,,µg/L
+FENTH,1190.0,FENTHION,Fenthion,55-38-9,pesticides,substances actives,,0.1,,,,,µg/L
+BENFURA,2924.0,BENFURACARBE,Benfuracarbe,82560-54-1,pesticides,substances actives,,0.1,,,,,µg/L
+PPIT,1255.0,PROPARGITE,Propargite,2312-35-8,pesticides,substances actives,,0.1,,,,,µg/L
+TERB,1267.0,TERBUPHOS,Terbuphos,13071-79-9,pesticides,substances actives,,0.1,,,,,µg/L
+DCLORMI,2929.0,DICHLORMIDE,Dichlormide,37764-25-3,pesticides,substances actives,,0.1,,,,,µg/L
+FONO,1674.0,FONOFOS,Fonofos,944-22-9,pesticides,substances actives,,0.1,,,,,µg/L
+DMTHY,5737.0,DIMETHAMETRYN,Dimethametryn,22936-75-0,pesticides,substances actives,,0.1,,,,,µg/L
+MEFENA,1968.0,MEFENACET,Mefenacet,73250-68-7,pesticides,substances actives,,0.1,,,,,µg/L
+BEFLU,7522.0,BEFLUBUTAMIDE,Beflubutamide,113614-08-7,pesticides,substances actives,,0.1,,,,,µg/L
+HXPEE,1833.0,HALOXYFOP ÉTHOXYÉTHYL,Haloxyfop éthoxyéthyl,87237-48-7,pesticides,substances actives,,0.1,,,,,µg/L
+MANDIP,6399.0,MANDIPROPAMIDE,Mandipropamide,374726-62-2,pesticides,substances actives,,0.1,,,,,µg/L
+FEINE,1188.0,FENPROPATHRINE,Fenpropathrine,39515-41-8,pesticides,substances actives,,0.1,,,,,µg/L
+SIDURON,1893.0,SIDURON,Siduron,1982-49-6,pesticides,substances actives,,0.1,,,,,µg/L
+TCF,1287.0,TRICHLORFON,Trichlorfon,52-68-6,pesticides,substances actives,,0.1,,,,,µg/L
+ACNT,1310.0,ACRINATHRINE,Acrinathrine,101007-06-1,pesticides,substances actives,,0.1,,,,,µg/L
+FLUOPYR,7649.0,FLUOPYRAM,Fluopyram,658066-35-4,pesticides,substances actives,,0.1,,,,,µg/L
+AZACONA,2014.0,AZACONAZOLE,Azaconazole,60207-31-0,pesticides,substances actives,,0.1,,,,,µg/L
+TRFLUM,1902.0,TRIFLUMURON,Triflumuron,64628-44-0,pesticides,substances actives,,0.1,,,,,µg/L
+HYDMAL,5645.0,HYDRAZIDE MALEÏQUE,Hydrazide maleïque,123-33-1,pesticides,substances actives,,0.1,,,,,µg/L
+TCVP,1277.0,TÉTRACHLORVINPHOS,Tétrachlorvinphos,22248-79-9,pesticides,substances actives,,0.1,,,,,µg/L
+DCFT,1159.0,DICHLOFENTHION,Dichlofenthion,97-17-6,pesticides,substances actives,,0.1,,,,,µg/L
+PNCB,1538.0,QUINTOZÈNE,Quintozène,82-68-8,pesticides,substances actives,,0.1,,,,,µg/L
+QUIZOET,2070.0,QUIZALOFOP ÉTHYLE,Quizalofop éthyle,76578-14-8,pesticides,substances actives,,0.1,,,,,µg/L
+TRIAZ,2990.0,TRIAZOXIDE,Triazoxide,72459-58-6,pesticides,substances actives,,0.1,,,,,µg/L
+34DCPA,1532.0,PROPANIL,Propanil,709-98-8,pesticides,substances actives,,0.1,,,,,µg/L
+INDOXAC,5483.0,INDOXACARBE,Indoxacarbe,173584-44-6,pesticides,substances actives,,0.1,,,,,µg/L
+TRZAMAT,1901.0,TRIAZAMATE,Triazamate,112143-82-5,pesticides,substances actives,,0.1,,,,,µg/L
+PYRIDAB,1890.0,PYRIDABÈNE,Pyridabène,96489-71-3,pesticides,substances actives,,0.1,,,,,µg/L
+DIPHAM,5478.0,DIPHENYLAMINE,Diphenylamine,122-39-4,pesticides,substances actives,,0.1,,,,,µg/L
+CHINOME,1865.0,CHINOMÉTHIONATE,Chinométhionate,02/01/2439,pesticides,substances actives,,0.1,,,,,µg/L
+DCHLOPH,2981.0,DICHOROPHÈNE,Dichorophène,97-23-4,pesticides,substances actives,,0.1,,,,,µg/L
+SPINO,5610.0,SPINOSAD,Spinosad,168316-95-8,pesticides,substances actives,,0.1,,,,,µg/L
+THIOBEN,1764.0,THIOBENCARDE,Thiobencarde,28249-77-6,pesticides,substances actives,,0.1,,,,,µg/L
+PPMD,1238.0,PHOSPHAMIDON,Phosphamidon,13171-21-6,pesticides,substances actives,,0.1,,,,,µg/L
+BEND,1329.0,BENDIOCARBE,Bendiocarbe,22781-23-3,pesticides,substances actives,,0.1,,,,,µg/L
+CYFLU,7748.0,CYFLUFENAMIDE,Cyflufenamide,180409-60-3,pesticides,substances actives,,0.1,,,,,µg/L
+NUARIMO,1883.0,NUARIMOL,Nuarimol,63284-71-9,pesticides,substances actives,,0.1,,,,,µg/L
+FLURIDO,1974.0,FLURIDONE,Fluridone,59756-60-4,pesticides,substances actives,,0.1,,,,,µg/L
+FAMOXAD,2020.0,FAMOXADONE,Famoxadone,131807-57-3,pesticides,substances actives,,0.1,,,,,µg/L
+TRIFORI,1802.0,TRIFORINE,Triforine,26644-46-2,pesticides,substances actives,,0.1,,,,,µg/L
+FURALAX,1908.0,FURALAXYL,Furalaxyl,57646-30-7,pesticides,substances actives,,0.1,,,,,µg/L
+TMT,2071.0,THIOMÉTON,Thiométon,640-15-3,pesticides,substances actives,,0.1,,,,,µg/L
+IOXYOCT,1942.0,IOXYNIL OCTANOATE,Ioxynil octanoate,3861-47-0,pesticides,substances actives,,0.1,,,,,µg/L
+PMPT,1260.0,PYRIMIPHOS ÉTHYL,Pyrimiphos éthyl,23505-41-1,pesticides,substances actives,,0.1,,,,,µg/L
+DCPADH,2966.0,CHLORTHAL-DIMÉTHYL,Chlorthal-diméthyl,1861-32-1,pesticides,substances actives,,0.1,,,,,µg/L
+SPITET,7506.0,SPIROTETRAMAT,Spirotetramat,203313-25-1,pesticides,substances actives,,0.1,,,,,µg/L
+AZIMSUL,2937.0,AZIMSULFURON,Azimsulfuron,120162-55-2,pesticides,substances actives,,0.1,,,,,µg/L
+TBIL,1659.0,TERBACILE,Terbacile,5902-51-2,pesticides,substances actives,,0.1,,,,,µg/L
+MVPH,1226.0,MÉVINPHOS,Mévinphos,7786-34-7,pesticides,substances actives,,0.1,,,,,µg/L
+DLL,1156.0,DIALLATE,Diallate,2303-16-4,pesticides,substances actives,,0.1,,,,,µg/L
+BRPH,1124.0,BROMOPHOS MÉTHYL,Bromophos méthyl,2104-96-3,pesticides,substances actives,,0.1,,,,,µg/L
+CAPT,1128.0,CAPTANE,Captane,0133-06-02,pesticides,substances actives,,0.1,,,,,µg/L
+PENOXU,6394.0,PENOXSULAM,Penoxsulam,219714-96-2,pesticides,substances actives,,0.1,,,,,µg/L
+DSYST,1492.0,DISYSTON,Disyston,0298-04-04,pesticides,substances actives,,0.1,,,,,µg/L
+PHOSMET,1971.0,PHOSMET,Phosmet,0732-11-6,pesticides,substances actives,,0.1,,,,,µg/L
+PHENM,1236.0,PHENMÉDIPHAME,Phenmédiphame,13684-63-4,pesticides,substances actives,,0.1,,,,,µg/L
+DNOCP,5619.0,DINOCAP,Dinocap,39300-45-3,pesticides,substances actives,,0.1,,,,,µg/L
+AZIN,1111.0,AZINPHOS MÉTHYL,Azinphos méthyl,86-50-0,pesticides,substances actives,,0.1,,,,,µg/L
+DMTSM,1153.0,DEMETON S MÉTHYL,Demeton S méthyl,919-86-8,pesticides,substances actives,,0.1,,,,,µg/L
+TRCYCLA,2898.0,TRICYCLAZOLE,Tricyclazole,41814-78-2,pesticides,substances actives,,0.1,,,,,µg/L
+UNCAZ,7482.0,UNICONAZOLE,Uniconazole,83657-22-1,pesticides,substances actives,,0.1,,,,,µg/L
+ETOF,5624.0,ETOFENPROX,Etofenprox,80844-07-01,pesticides,substances actives,,0.1,,,,,µg/L
+FENCL,1186.0,FENCHLORPHOS,Fenchlorphos,299-84-3,pesticides,substances actives,,0.1,,,,,µg/L
+PZP,1258.0,PYRAZOPHOS,Pyrazophos,13457-18-6,pesticides,substances actives,,0.1,,,,,µg/L
+DIMOX,5748.0,DIMOXYSTROBINE,Dimoxystrobine,149961-52-4,pesticides,substances actives,,0.1,,,,,µg/L
+IMAZAQU,2860.0,IMIZAQUINE,Imizaquine,81335-37-7,pesticides,substances actives,,0.1,,,,,µg/L
+FLURPRI,2024.0,FLURPRIMIDOL,Flurprimidol,56425-91-3,pesticides,substances actives,,0.1,,,,,µg/L
+TBZMETA,6283.0,TERBUTHYLAZIN ET SES MÉTABOLITES,Terbuthylazin et ses métabolites,,pesticides,substances actives,,0.1,,,,,µg/L
+SMETOLA,2974.0,S-MÉTOLACHLORE,S-Métolachlore,,pesticides,substances actives,,0.1,,,,,µg/L
+PICONA,5665.0,PICOLINAFEN,Picolinafen,137641-05-5,pesticides,substances actives,,0.1,,,,,µg/L
+AZAMETI,2015.0,AZAMÉTIPHOS,Azamétiphos,35575-96-3,pesticides,substances actives,,0.1,,,,,µg/L
+SILTF,5609.0,SILTHIOFAM,Silthiofam,175217-20-6,pesticides,substances actives,,0.1,,,,,µg/L
+BRMTH,1502.0,BIORESMETHRINE,Bioresmethrine,28434-01-07,pesticides,substances actives,,0.1,,,,,µg/L
+BROMOE,1123.0,BROMOPHOS ÉTHYL,Bromophos éthyl,4824-78-6,pesticides,substances actives,,0.1,,,,,µg/L
+PPTP,1533.0,PROPÉTAMPHOS,Propétamphos,31218-83-4,pesticides,substances actives,,0.1,,,,,µg/L
+EPTC,1182.0,EPTC,EPTC,759-94-4,pesticides,substances actives,,0.1,,,,,µg/L
+PHRT,1525.0,PHORATE,Phorate,0298-02-02,pesticides,substances actives,,0.1,,,,,µg/L
+IPCONA,7508.0,IPCONAZOLE,Ipconazole,125225-28-7,pesticides,substances actives,,0.1,,,,,µg/L
+HALOXYR,1909.0,HALOXYFOP-MÉTHYL (R),Haloxyfop-méthyl (R),72619-32-0,pesticides,substances actives,,0.1,,,,,µg/L
+TLFND,1719.0,TOLYLFLUANIDE,Tolylfluanide,731-27-1,pesticides,substances actives,,0.1,,,,,µg/L
+IOXYM,2871.0,IOXYNIL-MÉTHYL,Ioxynil-méthyl,3336-40-1,pesticides,substances actives,,0.1,,,,,µg/L
+CLMP,1134.0,CHLORMÉPHOS,Chlorméphos,24934-91-6,pesticides,substances actives,,0.1,,,,,µg/L
+DICOUM,2982.0,DIFENACOUM,Difenacoum,56073-07-05,pesticides,substances actives,,0.1,,,,,µg/L
+COUMATE,2019.0,COUMATÉTRALYL,Coumatétralyl,5836-29-3,pesticides,substances actives,,0.1,,,,,µg/L
+PPHM,1534.0,PROPHAME,Prophame,122-42-9,pesticides,substances actives,,0.1,,,,,µg/L
+COUMAF,2972.0,COUMAFÈNE,Coumafène,81-81-2,pesticides,substances actives,,0.1,,,,,µg/L
+TRZPH,1657.0,TRIAZOPHOS,Triazophos,24017-47-8,pesticides,substances actives,,0.1,,,,,µg/L
+DILONE,2983.0,DIFETHIALONE,Difethialone,104653-34-1,pesticides,substances actives,,0.1,,,,,µg/L
+HEPTENO,1910.0,HEPTÉNOPHOS,Hepténophos,23560-59-0,pesticides,substances actives,,0.1,,,,,µg/L
+DCPP,2544.0,DICHLORPROP-P,Dichlorprop-P,15165-67-0,pesticides,substances actives,,0.1,,,,,µg/L
+ISOXADI,2807.0,ISOXADIFEN-ÉTHYLE,Isoxadifen-éthyle,163520-33-0,pesticides,substances actives,,0.1,,,,,µg/L
+OFURACE,2027.0,OFURACE,Ofurace,58810-48-3,pesticides,substances actives,,0.1,,,,,µg/L
+TTDIFON,1900.0,TETRADIFON,Tetradifon,116-29-0,pesticides,substances actives,,0.1,,,,,µg/L
+MEPRONI,1878.0,MÉPRONIL,Mépronil,55814-41-0,pesticides,substances actives,,0.1,,,,,µg/L
+PYRPF,5499.0,PYRIPROXYFEN,Pyriproxyfen,95737-68-1,pesticides,substances actives,,0.1,,,,,µg/L
+FURATHI,2567.0,FURATHIOCARBE,Furathiocarbe,65907-30-4,pesticides,substances actives,,0.1,,,,,µg/L
+OXDG,2068.0,OXADIARGYL,Oxadiargyl,39807-15-3,pesticides,substances actives,,0.1,,,,,µg/L
+ISPV,1829.0,ISOFENVOS,Isofenvos,25311-71-1,pesticides,substances actives,,0.1,,,,,µg/L
+LUFENUR,2026.0,LUFÉNURON,Lufénuron,103055-07-8,pesticides,substances actives,,0.1,,,,,µg/L
+BUPROFZ,1862.0,BUPROFÉZINE,Buprofézine,69327-76-0,pesticides,substances actives,,0.1,,,,,µg/L
+COUM,1682.0,COUMAPHOS,Coumaphos,56-72-4,pesticides,substances actives,,0.1,,,,,µg/L
+IODOFEN,2025.0,IODOFENPHOS,Iodofenphos,18181-70-9,pesticides,substances actives,,0.1,,,,,µg/L
+PPCBS,5602.0,PROPOXYCARBAZONE-SODIUM,Propoxycarbazone-sodium,181274-15-7,pesticides,substances actives,,0.1,,,,,µg/L
+CBPT,1131.0,CARBOPHÉNOTION,Carbophénotion,786-19-6,pesticides,substances actives,,0.1,,,,,µg/L
+FVAL,1701.0,FENVALÉRATE,Fenvalérate,51630-58-1,pesticides,substances actives,,0.1,,,,,µg/L
+TEDP,1894.0,SULFOTEPP,Sulfotepp,3689-24-5,pesticides,substances actives,,0.1,,,,,µg/L
+PROFENO,1889.0,PROFÉNOFOS,Profénofos,41198-08-07,pesticides,substances actives,,0.1,,,,,µg/L
+FLUAZPB,1404.0,FLUAZIFOP-P-BUTYL,Fluazifop-P-butyl,79241-46-6,pesticides,substances actives,,0.1,,,,,µg/L
+NITROF,1229.0,NITROFÈNE,Nitrofène,1836-75-5,pesticides,substances actives,,0.1,,,,,µg/L
+FENOB,5763.0,FENOBUCARBE,Fenobucarbe,3766-81-2,pesticides,substances actives,,0.1,,,,,µg/L
+CHLFLUA,2950.0,CHLORFLUAZURON,Chlorfluazuron,71422-67-8,pesticides,substances actives,,0.1,,,,,µg/L
+METIL,1698.0,DIMÉTILAN,Dimétilan,644-64-4,pesticides,substances actives,,0.1,,,,,µg/L
+ROTENON,2029.0,ROTÉNONE,Roténone,83-79-4,pesticides,substances actives,,0.1,,,,,µg/L
+ETHIOPH,1874.0,ETHIOPHENCARBE,Ethiophencarbe,29973-13-5,pesticides,substances actives,,0.1,,,,,µg/L
+CINOSUL,5481.0,CINOSULFURON,Cinosulfuron,94593-91-6,pesticides,substances actives,,0.1,,,,,µg/L
+ETXSUL,5527.0,ETHOXYSULFURON,Ethoxysulfuron,126801-58-9,pesticides,substances actives,,0.1,,,,,µg/L
+BENSULH,5512.0,BENSULFURON-METHYL,Bensulfuron-methyl,83055-99-6,pesticides,substances actives,,0.1,,,,,µg/L
+AMITZ,1308.0,AMITRAZE,Amitraze,33089-61-1,pesticides,substances actives,,0.1,,,,,µg/L
+643PYRD,6358.0,PYRIDAFOL,Pyridafol,40020-01-07,pesticides,substances actives,,0.1,,,,,µg/L
+DIFXUR,5524.0,DIFENOXURON,Difenoxuron,14214-32-5,pesticides,substances actives,,0.1,,,,,µg/L
+MEFLUID,2568.0,MÉFLUIDIDE,Méfluidide,53780-34-0,pesticides,substances actives,,0.1,,,,,µg/L
+SEDAX,7724.0,SEDAXANE,Sedaxane,874967-67-6,pesticides,substances actives,,0.1,,,,,µg/L
+SFOMTH,5507.0,SULFOMETHURON-METHYL,Sulfomethuron-methyl,74222-97-2,pesticides,substances actives,,0.1,,,,,µg/L
+CLRMTH,5522.0,CHLORIMURON-ETHYL,Chlorimuron-ethyl,90982-32-4,pesticides,substances actives,,0.1,,,,,µg/L
+PYRAZET,6386.0,PYRAZOSULFURON ÉTHYL,Pyrazosulfuron éthyl,93697-74-6,pesticides,substances actives,,0.1,,,,,µg/L
+DAIMURO,5930.0,DAIMURON,Daimuron,42609-52-9,pesticides,substances actives,,0.1,,,,,µg/L
+ETHAMH,5529.0,ETHAMETSULFURON-METHYL,Ethametsulfuron-methyl,97780-06-08,pesticides,substances actives,,0.1,,,,,µg/L
+HASULM,5508.0,HALOSULFURON-METHYL,Halosulfuron-methyl,100784-20-1,pesticides,substances actives,,0.1,,,,,µg/L
+OXSULFH,5510.0,OXASULFURON,Oxasulfuron,144651-06-9,pesticides,substances actives,,0.1,,,,,µg/L
+FCLURO,5969.0,FORCHLORFENURON,Forchlorfenuron,68157-60-8,pesticides,substances actives,,0.1,,,,,µg/L
+IMBCAZ,7510.0,IMIBENCONAZOLE,Imibenconazole,86598-92-7,pesticides,substances actives,,0.1,,,,,µg/L
+ETRIM,5760.0,ETRIMFOS,Etrimfos,38260-54-7,pesticides,substances actives,,0.1,,,,,µg/L
+CHLORB,1336.0,CHLORBUFAME,Chlorbufame,1967-16-4,pesticides,substances actives,,0.1,,,,,µg/L
+ACP,1100.0,ACÉPHATE,Acéphate,30560-19-1,pesticides,substances actives,,0.1,,,,,µg/L
+METHACR,5792.0,MÉTHACRIFOS,Méthacrifos,62610-77-9,pesticides,substances actives,,0.1,,,,,µg/L
+PYRAZXF,6530.0,PYRAZOXYFEN,Pyrazoxyfen,71561-11-0,pesticides,substances actives,,0.1,,,,,µg/L
+IMAZAQU,2860.0,IMAZAQUINE,Imazaquine,81335-37-7,pesticides,substances actives,,0.1,,,,,µg/L
+ASM,5581.0,ACIBENZOLAR S MÉTHYL,Acibenzolar s méthyl,135158-54-2,pesticides,substances actives,,0.1,,,,,µg/L
+MTHDP,1671.0,MÉTHAMIDOPHOS,Méthamidophos,10265-92-6,pesticides,substances actives,,0.1,,,,,µg/L
+MCPPP,2084.0,MÉCOPROP-P,Mécoprop-p,16484-77-8,pesticides,substances actives,,0.1,,,,,µg/L
+ABATE,1898.0,TÉMÉPHOS,Téméphos,3383-96-8,pesticides,substances actives,,0.1,,,,,µg/L
+SPINOA,7438.0,SPINOSYNE A,Spinosyne A,131929-60-7,pesticides,substances actives,,0.1,,,,,µg/L
+SPINOD,7439.0,SPINOSYNE D,Spinosyne D,131929-63-0,pesticides,substances actives,,0.1,,,,,µg/L
+DAMZD,5597.0,DAMINOZIDE,Daminozide,1596-84-5,pesticides,substances actives,,0.1,,,,,µg/L
+BCYFLTH,3209.0,BETACYFLUTHRINE,Betacyfluthrine,68359-37-5,pesticides,substances actives,,0.1,,,,,µg/L
+PHENTHO,5813.0,PHENTOATE,Phentoate,07/03/2597,pesticides,substances actives,,0.1,,,,,µg/L
+QUINO,7723.0,QUINOCLAMINE,Quinoclamine,2797-51-5,pesticides,substances actives,,0.1,,,,,µg/L
+CPT,1127.0,CAPTAFOL,Captafol,01/06/2425,pesticides,substances actives,,0.1,,,,,µg/L
+AZODRIN,1880.0,MONOCROTOPHOS,Monocrotophos,6923-22-4,pesticides,substances actives,,0.1,,,,,µg/L
+ATRATN,5698.0,ATRATON,Atraton,1610-17-9,pesticides,substances actives,,0.1,,,,,µg/L
+TOLM,5675.0,TOLCLOFOS-METHYL,Tolclofos-methyl,57018-04-09,pesticides,substances actives,,0.1,,,,,µg/L
+CLTHIO,5723.0,CHLORTHIOPHOS,Chlorthiophos,60238-56-4,pesticides,substances actives,,0.1,,,,,µg/L
+DODINE,2933.0,DODINE,Dodine,03/10/2439,pesticides,substances actives,,0.1,,,,,µg/L
+MTFEN,5511.0,METHOXYFENOSIDE,Methoxyfenoside,161050-58-4,pesticides,substances actives,,0.1,,,,,µg/L
+BENSLD,6595.0,BENSULIDE,Bensulide,741-58-2,pesticides,substances actives,,0.1,,,,,µg/L
+PRETILA,1949.0,PRETILACHLORE,Pretilachlore,51218-49-6,pesticides,substances actives,,0.1,,,,,µg/L
+24DIE,2872.0,"2,4-D-ISOPROPYL ESTER","2,4-D-isopropyl ester",94-11-1,pesticides,substances actives,,0.1,,,,,µg/L
+AMETO,7842.0,AMETOCTRADINE,Ametoctradine,865318-97-4,pesticides,substances actives,,0.1,,,,,µg/L
+BRPPL,1685.0,BROMOPROPYLATE,Bromopropylate,18181-80-1,pesticides,substances actives,,0.1,,,,,µg/L
+DIOXA,5743.0,DIOXACARBE,Dioxacarbe,6988-21-2,pesticides,substances actives,,0.1,,,,,µg/L
+PROQUI,7422.0,PROQUINAZID,Proquinazid,189278-12-4,pesticides,substances actives,,0.1,,,,,µg/L
+DEHAME,2980.0,DESMEDIPHAME,Desmediphame,13684-56-5,pesticides,substances actives,,0.1,,,,,µg/L
+FLAMPM,6539.0,FLAMPROP-MÉTHYL,Flamprop-méthyl,52756-25-9,pesticides,substances actives,,0.1,,,,,µg/L
+MIR,5438.0,MIREX,Mirex,2385-85-5,pesticides,substances actives,,0.1,,,,,µg/L
+ATRZMET,6282.0,ATRAZINE ET SES MÉTABOLITES,Atrazine et ses métabolites,,pesticides,substances actives,,0.1,,,,,µg/L
+ISAZO,1976.0,ISAZOPHOS,Isazophos,42509-80-8,pesticides,substances actives,,0.1,,,,,µg/L
+TCBAZ,5922.0,TIOCARBAZIL,Tiocarbazil,36756-79-3,pesticides,substances actives,,0.1,,,,,µg/L
+PROME,1710.0,PROMÉCARBE,Promécarbe,2631-37-0,pesticides,substances actives,,0.1,,,,,µg/L
+HYMEX,5646.0,HYMEXAZOL,Hymexazol,10004-44-1,pesticides,substances actives,,0.1,,,,,µg/L
+AMINP,7580.0,AMINOPYRALID,Aminopyralid,150114-71-9,pesticides,substances actives,,0.1,,,,,µg/L
+CLRNB,1341.0,CHLORONEB,Chloroneb,2675-77-6,pesticides,substances actives,,0.1,,,,,µg/L
+DICRO,5525.0,DICROTOPHOS,Dicrotophos,141-66-2,pesticides,substances actives,,0.1,,,,,µg/L
+BUTIL,7038.0,BUTILATE,Butilate,2008-41-5,pesticides,substances actives,,0.1,,,,,µg/L
+CYCLOA,5568.0,CYCLOATE,Cycloate,1134-23-2,pesticides,substances actives,,0.1,,,,,µg/L
+PIPERO,5819.0,PIPEROPHOS,Piperophos,24151-93-7,pesticides,substances actives,,0.1,,,,,µg/L
+ANILO,6594.0,ANILOPHOS,Anilophos,64249-01-0,pesticides,substances actives,,0.1,,,,,µg/L
+PYDAP,5606.0,PYRIDAPHENTHION,Pyridaphenthion,119-12-0,pesticides,substances actives,,0.1,,,,,µg/L
+ISOPC,5781.0,ISOPROCARB,Isoprocarb,2631-40-5,pesticides,substances actives,,0.1,,,,,µg/L
+CYHABU,5569.0,CYHALOFOP BUTYL,Cyhalofop butyl,122008-85-9,pesticides,substances actives,,0.1,,,,,µg/L
+BENVCI,7460.0,BENTHIAVALICARBE-ISOPROPYL,Benthiavalicarbe-isopropyl,177406-68-7,pesticides,substances actives,,0.1,,,,,µg/L
+ZCYINE,7521.0,ZETACYPERMETHRINE,Zetacypermethrine,97955-44-7,pesticides,substances actives,,0.1,,,,,µg/L
+NALED,1516.0,NALED,Naled,300-76-5,pesticides,substances actives,,0.1,,,,,µg/L
+DCLFNFD,1360.0,DICHLOFLUANIDE,Dichlofluanide,1085-98-9,pesticides,substances actives,,0.1,,,,,µg/L
+PYRETHR,2062.0,PYRÉTHRINE,Pyréthrine,8003-34-7,pesticides,substances actives,,0.1,,,,,µg/L
+QUIZPE,6637.0,QUIZALOFOP-P-ÉTHYL,Quizalofop-p-éthyl,100646-51-3,pesticides,substances actives,,0.1,,,,,µg/L
+AMINC,5523.0,AMINOCARBE,Aminocarbe,2032-59-9,pesticides,substances actives,,0.1,,,,,µg/L
+CLAN,1132.0,CHLORDANE,Chlordane,57-74-9,pesticides,substances actives,,0.1,,,,,µg/L
+TRIMC,5695.0,TRIMETHACARBE,Trimethacarbe,2686-99-9,pesticides,substances actives,,0.1,,,,,µg/L
+FNFS,1499.0,PHÉNAMIPHOS,Phénamiphos,22224-92-6,pesticides,substances actives,,0.1,,,,,µg/L
+MCP244,2751.0,"MCPP-2,4,4-TRIMETHYLPENTYL ESTER","MCPP-2,4,4-trimethylpentyl ester",217487-13-3,pesticides,substances actives,,0.1,,,,,µg/L
+MCP2OE,2754.0,MCPP-2 OTYL ESTER,MCPP-2 otyl ester,28473-03-02,pesticides,substances actives,,0.1,,,,,µg/L
+MCPA1B,2745.0,MCPA-1-BUTYL ESTER,MCPA-1-butyl ester,1713-12-8,pesticides,substances actives,,0.1,,,,,µg/L
+MCP2EE,2753.0,MCPP- 2-ETHYLHEXYL ESTER,MCPP- 2-ethylhexyl ester,71526-69-7,pesticides,substances actives,,0.1,,,,,µg/L
+MCP2BE,2752.0,MCPP-2-BUTOXYETHYL ESTER,MCPP-2-butoxyethyl ester,23359-62-8,pesticides,substances actives,,0.1,,,,,µg/L
+MCPNIB,2870.0,MECOPROP-N/ISO-BUTYL ESTER (MÉLANGE),Mecoprop-n/iso-butyl ester (mélange),,pesticides,substances actives,,0.1,,,,,µg/L
+MCPME,2755.0,MCPP-METHYL ESTER,MCPP-methyl ester,2786-19-8,pesticides,substances actives,,0.1,,,,,µg/L
+PYCL,6611.0,PYRACLOFOS,Pyraclofos,77458-01-06,pesticides,substances actives,,0.1,,,,,µg/L
+FENIS,5627.0,FENIZON,Fenizon,80-38-6,pesticides,substances actives,,0.1,,,,,µg/L
+EPN,1873.0,EPN,EPN,2104-64-5,pesticides,substances actives,,0.1,,,,,µg/L
+PYFE,5509.0,PYRAFLUFEN ÉTHYL,Pyraflufen éthyl,129630-19-9,pesticides,substances actives,,0.1,,,,,µg/L
+ABAMECT,2007.0,ABAMECTIN,Abamectin,71751-41-2,pesticides,substances actives,,0.1,,,,,µg/L
+VALIF,8045.0,VALIFENALATE,Valifenalate,283159-90-0,pesticides,substances actives,,0.1,,,,,µg/L
+FENOT,5970.0,FENOTHIOCARBE,Fenothiocarbe,62850-32-2,pesticides,substances actives,,0.1,,,,,µg/L
+PRXP,7442.0,PROXIMPHAN,Proximphan,2828-42-4,pesticides,substances actives,,0.1,,,,,µg/L
+DIMEP,7142.0,DIMÉPIPÉRATE,Dimépipérate,61432-55-1,pesticides,substances actives,,0.1,,,,,µg/L
+BUTAM,5710.0,BUTAMIFOS,Butamifos,36335-67-8,pesticides,substances actives,,0.1,,,,,µg/L
+MEPHOS,5791.0,MEPHOSFOLAN,Mephosfolan,0950-10-7,pesticides,substances actives,,0.1,,,,,µg/L
+EDIF,5751.0,EDIFENPHOS,Edifenphos,17109-49-8,pesticides,substances actives,,0.1,,,,,µg/L
+PYBUT,5826.0,PYRIBUTICARB,Pyributicarb,88678-67-5,pesticides,substances actives,,0.1,,,,,µg/L
+PRPA,6964.0,PROPAPHOS,Propaphos,7292-16-2,pesticides,substances actives,,0.1,,,,,µg/L
+DIMET,6972.0,DIMÉTHYLVINPHOS,Diméthylvinphos,2274-67-1,pesticides,substances actives,,0.1,,,,,µg/L
+FAMP,5761.0,FAMPHUR,Famphur,52-85-7,pesticides,substances actives,,0.1,,,,,µg/L
+TECNAZ,5413.0,TECNAZENE,Tecnazene,117-18-0,pesticides,substances actives,,0.1,,,,,µg/L
+TETRAS,5837.0,TETRASUL,Tetrasul,2227-13-6,pesticides,substances actives,,0.1,,,,,µg/L
+CLFSON,5553.0,CHLORFENSON,Chlorfenson,80-33-1,pesticides,substances actives,,0.1,,,,,µg/L
+FRAZ,7441.0,FURILAZOLE,Furilazole,121776-33-8,pesticides,substances actives,,0.1,,,,,µg/L
+PROFOX,8046.0,PROFOXYDIM,Profoxydim,139001-49-3,pesticides,substances actives,,0.1,,,,,µg/L
+FENAZAQ,2742.0,FÉNAZAQUIN,Fénazaquin,120928-09-8,pesticides,substances actives,,0.1,,,,,µg/L
+4C2MPH,1634.0,CHLORO-4 MÉTHYLPHÉNOL-2,Chloro-4 Méthylphénol-2,1570-64-5,pesticides,substances actives,,0.1,,,,,µg/L
+FCLAZE,7513.0,FENCHLORAZOLE ETHYL,Fenchlorazole ethyl,103112-35-2,pesticides,substances actives,,0.1,,,,,µg/L
+TCLNAT,1720.0,TRICHLORONAT,Trichloronat,327-98-0,pesticides,substances actives,,0.1,,,,,µg/L
+BUFENC,7502.0,BUFENCARBE,Bufencarbe,8065-36-9,pesticides,substances actives,,0.1,,,,,µg/L
+CRUFOM,5725.0,CRUFOMATE,Crufomate,299-86-5,pesticides,substances actives,,0.1,,,,,µg/L
+CROTOX,5724.0,CROTOXYPHOS,Crotoxyphos,7700-17-6,pesticides,substances actives,,0.1,,,,,µg/L
+SULPRO,5831.0,SULPROFOS,Sulprofos,35400-43-2,pesticides,substances actives,,0.1,,,,,µg/L
+ALLYXY,7501.0,ALLYXYCARBE,Allyxycarbe,6392-46-7,pesticides,substances actives,,0.1,,,,,µg/L
+TEBUPI,7511.0,TEBUPIRIMFOS,Tebupirimfos,96182-53-5,pesticides,substances actives,,0.1,,,,,µg/L
+MEXAC,7143.0,MEXACARBATE,Mexacarbate,315-18-4,pesticides,substances actives,,0.1,,,,,µg/L
+MCPAEE,6942.0,"2,4-D 2-ETHYLHEXYL","2,4-D 2-Ethylhexyl",1928-43-4,pesticides,substances actives,,0.1,,,,,µg/L
+MERPHO,5840.0,MERPHOS,Merphos,150-50-5,pesticides,substances actives,,0.1,,,,,µg/L
+AMIDIT,5697.0,AMIDITHION,Amidithion,919-76-6,pesticides,substances actives,,0.1,,,,,µg/L
+CYANFP,5726.0,CYANOFENPHOS,Cyanofenphos,13067-93-1,pesticides,substances actives,,0.1,,,,,µg/L
+IBP,5777.0,IPROBENFOS (IBP),Iprobenfos (IBP),26087-47-8,pesticides,substances actives,,0.1,,,,,µg/L
+AMIPRM,7516.0,AMIPROFOS-METHYL,Amiprofos-methyl,36001-88-4,pesticides,substances actives,,0.1,,,,,µg/L
+MECARB,5789.0,MECARBAM,Mecarbam,2595-54-2,pesticides,substances actives,,0.1,,,,,µg/L
+ISOXAT,5784.0,ISOXATHION,Isoxathion,18854-01-08,pesticides,substances actives,,0.1,,,,,µg/L
+SETHOX,1808.0,SETHOXYDIM,Sethoxydim,74051-80-2,pesticides,substances actives,,0.1,,,,,µg/L
+MTOLC,5796.0,METOLCARB,Metolcarb,1129-41-5,pesticides,substances actives,,0.1,,,,,µg/L
+TLINE,1658.0,TRALOMÉTHRINE,Tralométhrine,66841-25-6,pesticides,substances actives,,0.1,,,,,µg/L
+PPCBS,5602.0,PROPOXYCARBAZONE,Propoxycarbazone,181274-15-7,pesticides,substances actives,,0.1,,,,,µg/L
+EMAM,8102.0,EMAMECTINE,Emamectine,119791-41-2,pesticides,substances actives,,0.1,,,,,µg/L
+MITC,2722.0,MÉTHYL ISOTHIOCYANATE,Méthyl isothiocyanate,556-61-6,pesticides,substances actives,,0.1,,,,,µg/L
+FNAP,5691.0,FÉNOXAPROP,Fénoxaprop,95617-09-07,pesticides,substances actives,,0.1,,,,,µg/L
+24DME,2873.0,"2,4-D-METHYL ESTER","2,4-D-methyl ester",1928-38-7,pesticides,substances actives,,0.1,,,,,µg/L
+MDNOCP,1677.0,MEPTYLDINOCAP,Meptyldinocap,131-72-6,pesticides,substances actives,,0.1,,,,,µg/L
+MANC,1211.0,MANCOZÈBE,Mancozèbe,07/01/8018,pesticides,substances actives,,0.1,,,,,µg/L
+DMT,1550.0,DÉMÉTON,Déméton,8065-48-3,pesticides,substances actives,,0.1,,,,,µg/L
+KARBUT,7505.0,KARBUTILATE,Karbutilate,4849-32-5,pesticides,substances actives,,0.1,,,,,µg/L
+ISMTZN,5780.0,ISOMETHIOZIN,Isomethiozin,57052-04-07,pesticides,substances actives,,0.1,,,,,µg/L
+AZYPRO,5699.0,AZIPROTRYNE,Aziprotryne,4658-28-0,pesticides,substances actives,,0.1,,,,,µg/L
+TBUC,5835.0,TERBUCARB,Terbucarb,02/11/1918,pesticides,substances actives,,0.1,,,,,µg/L
+FENFU,1843.0,FENFURAN,Fenfuran,24691-80-3,pesticides,substances actives,,0.1,,,,,µg/L
+FORME,1703.0,FORMÉTANATE,Formétanate,22259-30-9,pesticides,substances actives,,0.1,,,,,µg/L
+SYSTOX,1150.0,DÉMÉTON-O,Déméton-O,0298-03-03,pesticides,substances actives,,0.1,,,,,µg/L
+CLOFEN,1868.0,CLOFENTÉZINE,Clofentézine,74115-24-5,pesticides,substances actives,,0.1,,,,,µg/L
+THIOPE,7514.0,THIOPHANATE ETHYL,Thiophanate ethyl,23564-06-09,pesticides,substances actives,,0.1,,,,,µg/L
+DMTS,1152.0,DÉMÉTON-S,Déméton-S,126-75-0,pesticides,substances actives,,0.1,,,,,µg/L
+MCPA2E,2748.0,MCPA-ETHYL ESTER,MCPA-ethyl ester,2698-38-6,pesticides,substances actives,,0.1,,,,,µg/L
+PRTT,5683.0,PERMÉTHRINE-TRANS,Perméthrine-trans,61949-77-7,pesticides,substances actives,,0.1,,,,,µg/L
+PRTC,5682.0,PERMÉTHRINE-CIS,Perméthrine-cis,61949-76-6,pesticides,substances actives,,0.1,,,,,µg/L
+DBCP,1479.0,"DIBROMO-1,2-CHLORO-3PROPANE","Dibromo-1,2-chloro-3propane",96-12-8,pesticides,substances actives,,0.1,,,,,µg/L
+DPLLTH,1697.0,DÉPALLETHRINE,Dépallethrine,584-79-2,pesticides,substances actives,,0.1,,,,,µg/L
+CNEB,1341.0,CHLORONEB,Chloroneb,2675-77-6,pesticides,substances actives,,0.1,,,,,µg/L
+BIFE,5545.0,BIFENAZATE,Bifenazate,149877-41-8,pesticides,substances actives,,0.1,,,,,µg/L
+BENO,1407.0,BENOMYL,Benomyl,17804-35-2,pesticides,substances actives,,0.1,,,,,µg/L
+PRIM,5488.0,PRIMISULFURON MÉTHYL,Primisulfuron méthyl,86209-51-0,pesticides,substances actives,,0.1,,,,,µg/L
+EU,5484.0,ETHYLUREE (PESTICIDE),Ethyluree (pesticide),625-52-5,pesticides,substances actives,,0.1,,,,,µg/L
+THIOCY2,7512.0,THIOCYCLAM HYDROGEN OXALATE,Thiocyclam hydrogen oxalate,31895-22-4,pesticides,substances actives,,0.1,,,,,µg/L
+FENOXP,5628.0,FENOXAPROP-P-ETHYL,Fenoxaprop-p-ethyl,71283-80-2,pesticides,substances actives,,0.1,,,,,µg/L
+HMTRIM,7585.0,HEPTAMETHYLTRISILOXANE MODIFIÉ,heptamethyltrisiloxane modifié,27306-78-1,pesticides,substances actives,,0.1,,,,,µg/L
+TMETH,5921.0,TÉTRAMÉTHRINE,Tétraméthrine,7696-12-0,pesticides,substances actives,,0.1,,,,,µg/L
+CLAQ,1758.0,CHLORDANE GAMMA,Chlordane gamma,5566-34-7,pesticides,substances actives,,0.1,,,,,µg/L
+CYTHIO,7503.0,CYTHIOATE,Cythioate,115-93-5,pesticides,substances actives,,0.1,,,,,µg/L
+BAM,7423.0,BENALAXYL-M,Benalaxyl-M,98243-83-5,pesticides,substances actives,,0.1,,,,,µg/L
+ACEQ,8047.0,ACEQUINOCYL,Acequinocyl,57960-19-7,pesticides,substances actives,,0.1,,,,,µg/L
+ETOXAZ,5625.0,ETOXAZOLE,Etoxazole,153233-91-1,pesticides,substances actives,,0.1,,,,,µg/L
+SDDTDE,6497.0,"SOMME  DDT, DDD, DDE","Somme  DDT, DDD, DDE",,pesticides,substances actives,,0.1,,,,,µg/L
+CARBOSU,1864.0,CARBOSULFAN,Carbosulfan,55285-14-8,pesticides,substances actives,,0.1,,,,,µg/L
+DDTS,3268.0,DDT SOMME,DDT somme,,pesticides,substances actives,,0.1,,,,,µg/L
+DCBUT,1904.0,DICLOBUTRAZOL,Diclobutrazol,75736-33-3,pesticides,substances actives,,0.1,,,,,µg/L
+TNC,7097.0,TRANS-NONACHLORE,Trans-nonachlore,39765-80-5,pesticides,substances actives,,0.1,,,,,µg/L
+PARATH,6947.0,PARATHIONS (ÉTHYL+MÉTHYL),Parathions (éthyl+méthyl),,pesticides,substances actives,,0.1,,,,,µg/L
+TFX,1715.0,THIOFANOX,Thiofanox,39196-18-4,pesticides,substances actives,,0.1,,,,,µg/L
+SPIDIC,8044.0,SPIRODICLOFEN,Spirodiclofen,148477-71-8,pesticides,substances actives,,0.1,,,,,µg/L
+BZDN,1607.0,BENZIDINE (PESTICIDE),Benzidine (pesticide),92-87-5,pesticides,substances actives,,0.1,,,,,µg/L
+CLTHIAM,1813.0,CHLORTHIAMIDE,Chlorthiamide,1918-13-4,pesticides,substances actives,,0.1,,,,,µg/L
+MCPAME,2749.0,MCPA-METHYL ESTER,MCPA-methyl ester,2436-73-9,pesticides,substances actives,,0.1,,,,,µg/L
+ZIRA,1722.0,ZIRAME,Zirame,137-30-4,pesticides,substances actives,,0.1,,,,,µg/L
+DITALM,5745.0,DITALIMFOS,Ditalimfos,5131-24-8,pesticides,substances actives,,0.1,,,,,µg/L
+TERBMME,6284.0,TERBUMÉTON ET SES MÉTABOLITES,Terbuméton et ses métabolites,,pesticides,substances actives,,0.1,,,,,µg/L
+MCPABE,6552.0,"2,4-D-BUTOTYL","2,4-D-butotyl",1929-73-3,pesticides,substances actives,,0.1,,,,,µg/L
+HCET,1656.0,HEXACHLOROÉTHANE (PESTICIDE),Hexachloroéthane (pesticide),67-72-1,pesticides,substances actives,,0.1,,,,,µg/L
+NPA,1937.0,NAPTALAME,Naptalame,132-66-1,pesticides,substances actives,,0.1,,,,,µg/L
+TRIADEM,1811.0,TRIDEMORPHE,Tridemorphe,81412-43-3,pesticides,substances actives,,0.1,,,,,µg/L
+SULFOSA,2077.0,SULFOSATE,Sulfosate,81591-81-3,pesticides,substances actives,,0.1,,,,,µg/L
+TOXAPHE,1279.0,TOXAPHÈNE,Toxaphène,8001-35-2,pesticides,substances actives,,0.1,,,,,µg/L
+BANCOL,5542.0,BENSULTAP,Bensultap,17606-31-4,pesticides,substances actives,,0.1,,,,,µg/L
+CINIDON,2938.0,CINIDON-ETHYL,Cinidon-ethyl,142891-20-1,pesticides,substances actives,,0.1,,,,,µg/L
+SPINE,8041.0,SPINETORAM,Spinetoram,935545-74-7,pesticides,substances actives,,0.1,,,,,µg/L
+SPIMES,7738.0,SPIROMESIFEN,Spiromesifen,283594-90-1,pesticides,substances actives,,0.1,,,,,µg/L
+MILB,5655.0,MILBEMECTIN,Milbemectin,51596-10-2,pesticides,substances actives,,0.1,,,,,µg/L
+ISNRRN,6597.0,ISONORURON,Isonoruron,28805-78-9,pesticides,substances actives,,0.1,,,,,µg/L
+FENP,5630.0,FENPYROXIMATE,Fenpyroximate,134098-61-6,pesticides,substances actives,,0.1,,,,,µg/L
+PHNTN,2061.0,PHENOTHRINE,Phenothrine,26002-80-2,pesticides,substances actives,,0.1,,,,,µg/L
+13DCP,1654.0,"DICHLOROPROPANE-1,3","Dichloropropane-1,3",142-28-9,pesticides,substances actives,,0.1,,,,,µg/L
+PTPD,7509.0,PENTHIOPYRAD,Penthiopyrad,183675-82-3,pesticides,substances actives,,0.1,,,,,µg/L
+FMTHN,1504.0,FORMOTHION,Formothion,2540-82-1,pesticides,substances actives,,0.1,,,,,µg/L
+PHDC,5668.0,PROHEXADIONE-CALCIUM,Prohexadione-calcium,127277-53-6,pesticides,substances actives,,0.1,,,,,µg/L
+HALM,8664.0,HALAUXIFEN-METHYL,Halauxifen-methyl,943831-98-9,pesticides,substances actives,,0.1,,,,,µg/L
+CYTP,7871.0,CYANTRANILIPROLE,Cyantraniliprole,736994-63-1,pesticides,substances actives,,0.1,,,,,µg/L
+AZA,8582.0,AZADIRACHTIN,Azadirachtin,11141-17-6,pesticides,substances actives,,0.1,,,,,µg/L
+SULFO,8786.0,SULFOXAFLOR,Sulfoxaflor,946578-00-3,pesticides,substances actives,,0.1,,,,,µg/L
+MDB,,MANDESTROBINE,Mandestrobine,173662-97-0,pesticides,substances actives,,0.1,,,,,µg/L
+OTP,7872.0,OXATHIAPIPROLIN,Oxathiapiprolin,1003318-67-9,pesticides,substances actives,,0.1,,,,,µg/L
+ISOF,,ISOFETAMID,Isofetamid,875915-78-9,pesticides,substances actives,,0.1,,,,,µg/L
+PYRF,8583.0,PYRIOFENONE,Pyriofenone,688046-61-9,pesticides,substances actives,,0.1,,,,,µg/L
+FPDF,,FLUPYRADIFURONE,Flupyradifurone,951659-40-8,pesticides,substances actives,,0.1,,,,,µg/L
+GAINE,8744.0,GAMMA CYHALOTHRINE,Gamma Cyhalothrine,76703-62-3,pesticides,substances actives,,0.1,,,,,µg/L
+DCPA,1867.0,CHLORTHAL,Chlorthal,2136-79-0,pesticides,substances actives,,0.1,,,,,µg/L
+ISCBMD,5779.0,ISOCARBAMIDE,Isocarbamide,30979-48-7,pesticides,substances actives,,0.1,,,,,µg/L
+ISCBPS,6596.0,ISOCARBOPHOS,Isocarbophos,24353-61-5,pesticides,substances actives,,0.1,,,,,µg/L
+BTCBX,7148.0,BUTOCARBOXIM,Butocarboxim,34681-10-2,pesticides,substances actives,,0.1,,,,,µg/L
+CARPRO,7147.0,CARPROPAMIDE,Carpropamide,104030-54-8,pesticides,substances actives,,0.1,,,,,µg/L
+DIPHNM,5614.0,DIPHENAMIDE,Diphenamide,957-51-7,pesticides,substances actives,,0.1,,,,,µg/L
+PYROQU,5828.0,PYROQUILON,Pyroquilon,57369-32-1,pesticides,substances actives,,0.1,,,,,µg/L
+ISPTLN,5783.0,ISOPROTHIOLANE,Isoprothiolane,50512-35-1,pesticides,substances actives,,0.1,,,,,µg/L
+PYRACA,5825.0,PYRACARBOLID,Pyracarbolid,24691-76-7,pesticides,substances actives,,0.1,,,,,µg/L
+MFTC,,MÉFENTRIFLUCONAZOLE,Méfentrifluconazole,1417782-03-6,pesticides,substances actives,,0.1,,,,,µg/L
+BRM,1530.0,BROMOMÉTHANE,Bromométhane,74-83-9,pesticides,substances actives,,0.1,,,,,µg/L
+DMTT,1869.0,DAZOMET,Dazomet,533-74-4,pesticides,substances actives,,0.1,,,,,µg/L
+MBT,2542.0,MONOBUTYLÉTAIN CATION (PESTICIDE),Monobutylétain cation (pesticide),78763-54-9,pesticides,substances actives,,0.1,,,,,µg/L
+BROD,5546.0,BRODIFACOUM,Brodifacoum,56073-10-0,pesticides,substances actives,,0.1,,,,,µg/L
+CYHAL,1138.0,CYHALOTHRINE,Cyhalothrine,68085-85-8,pesticides,substances actives,,0.1,,,,,µg/L
+PRTF,5824.0,PROTHIOFOS,Prothiofos,34643-46-4,pesticides,substances actives,,0.1,,,,,µg/L
+MANEB,1705.0,MANÈBE,Manèbe,12427-38-2,pesticides,substances actives,,0.1,,,,,µg/L
+FENBUOX,2078.0,FENBUTATIN OXYDE,Fenbutatin oxyde,13356-08-06,pesticides,substances actives,,0.1,,,,,µg/L
+RESM,2859.0,RESMETHRINE,Resmethrine,10453-86-8,pesticides,substances actives,,0.1,,,,,µg/L
+NHFOSAM,5649.0,FOSAMINE AMMONIUM,Fosamine ammonium,25954-13-6,pesticides,substances actives,,0.1,,,,,µg/L
+PCH,2988.0,PROPAMOCARBE HYDROCHLORIDE,Propamocarbe hydrochloride,25606-41-1,pesticides,substances actives,,0.1,,,,,µg/L
+PRQTDC,5661.0,PARAQUAT DICHLORIDE,Paraquat dichloride,1910-42-5,pesticides,substances actives,,0.1,,,,,µg/L
+MFTC,8686.0,MÉFENTRIFLUCONAZOLE,Méfentrifluconazole,1417782-03-6,pesticides,substances actives,,0.1,,,,,µg/L
+MCPA2EH,2746.0,MCPA-2-ETHYLHEXYL,MCPA-2-ethylhexyl,29450-45-1,pesticides,substances actives,,0.1,,,,,µg/L
+MCPABU,2747.0,MCPA-BUTOTYL,MCPA-butotyl,19480-43-4,pesticides,substances actives,,0.1,,,,,µg/L
+MEPIQU1,2089.0,MEPIQUAT CHLORURE (UTILISER MEPIQUA,Mepiquat chlorure (utiliser MEPIQUA),24307-26-4,pesticides,substances actives,,0.1,,,,,µg/L
+AMISUL,8043.0,AMISULBRON,Amisulbron,348635-87-0,pesticides,substances actives,,0.1,,,,,µg/L
+PESTOT,6276.0,TOTAL DES PESTICIDES ANALYSÉS,Total des pesticides analysés,,pesticides,,,0.5,,,,,µg/L

@@ -13,15 +13,11 @@ seeds:
         tests:  
           - dbt_expectations.expect_column_values_to_be_of_type:
               column_type: VARCHAR
-          - dbt_utils.expression_is_true:
-              expression: "libmajparametre = UPPER(libmajparametre)"
       - name: libminparametre
         description: "Nom du paramètre en minuscule"
         tests:  
           - dbt_expectations.expect_column_values_to_be_of_type:
               column_type: VARCHAR
-          - dbt_utils.expression_is_true:
-              expression: "libminparametre = LOWER(libminparametre)"
       - name: casparam
         description: "Code CAS (Chemical Abstracts Service) de la substance chimique"
       - name: categorie

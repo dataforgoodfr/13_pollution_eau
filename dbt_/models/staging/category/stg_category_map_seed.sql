@@ -6,7 +6,7 @@ SELECT
     casparam::VARCHAR AS casparam,
     categorie::VARCHAR AS categorie,
     souscat::VARCHAR AS souscat,
-    detailsouscat:VARCHAR AS detailsouscat,
+    detailsouscat::VARCHAR AS detailsouscat,
     limitequal::VARCHAR AS limitequal,
     valsanitaire1::VARCHAR AS valsanitaire1,
     commentvalsanitaire1::VARCHAR AS commentvalsanitaire1,
@@ -14,5 +14,5 @@ SELECT
     commentvalsanitaire2::VARCHAR AS commentvalsanitaire2,
     unite::VARCHAR AS unite,
     2025::SMALLINT AS de_partition,
-    CURRENT_DATE AS de_ingestion_date,
+    CURRENT_DATE AS de_ingestion_date
 FROM {{ ref('mapping_categories_v2') }}

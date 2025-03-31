@@ -55,7 +55,7 @@ interface UDI {
 }
 
 export const mockData: { [key: string]: UDI } = {
-  "UDI12345": {
+  UDI12345: {
     id: "UDI12345",
     nom: "Clermont-Ferrand Est",
     communes_desservies: [
@@ -72,14 +72,21 @@ export const mockData: { [key: string]: UDI } = {
             statut_couleur: "#FBBD6C",
             statut_couleur_background: "#FB726C",
             statut_picto: "warning",
-            status_polluants: [{ polluant_nom: "PFOA", polluant_categorie: "PFAS" }],
+            status_polluants: [
+              { polluant_nom: "PFOA", polluant_categorie: "PFAS" },
+            ],
           },
           {
             statut: "Absence de tests péocuppante",
             statut_couleur: "#FB726C",
             statut_couleur_background: "#FB726C",
             statut_picto: "red cross",
-            status_polluants: [{ polluant_nom: "Chlorothalonil R45423737", polluant_categorie: "Pesticides" }],
+            status_polluants: [
+              {
+                polluant_nom: "Chlorothalonil R45423737",
+                polluant_categorie: "Pesticides",
+              },
+            ],
           },
         ],
         categories: [
@@ -87,7 +94,8 @@ export const mockData: { [key: string]: UDI } = {
             categorie_id: "pfas",
             categorie: "PFAS",
             statut_titre: "Seuil de qualité dépassé pour certains paramètres",
-            statut_description: "Les PFAS (substances per- et polyfluoroalkylées) sont des polluants persistants qui peuvent contaminer l’eau potable via les rejets industriels, les mousses anti-incendie et les produits de consommation courants. Les PFAS sont des polluants persistants associés à des risques de cancers, perturbations endocriniennes, toxicité hépatique et rénale, troubles immunitaires et effets sur le développement fœtal et infantile.",
+            statut_description:
+              "Les PFAS (substances per- et polyfluoroalkylées) sont des polluants persistants qui peuvent contaminer l’eau potable via les rejets industriels, les mousses anti-incendie et les produits de consommation courants. Les PFAS sont des polluants persistants associés à des risques de cancers, perturbations endocriniennes, toxicité hépatique et rénale, troubles immunitaires et effets sur le développement fœtal et infantile.",
             statut_couleur: "#FBBD6C",
             statut_couleur_background: "#FB726C",
             statut_picto: "red cross",
@@ -100,7 +108,9 @@ export const mockData: { [key: string]: UDI } = {
                 bloc_couleur: "#FB726C",
                 bloc_couleur_background: "#FB726C",
                 bloc_picto: "red cross",
-                bloc_polluants: [{ polluant_nom: "Isofetamide", polluant_valeur: "0.09 µg/L" }],
+                bloc_polluants: [
+                  { polluant_nom: "Isofetamide", polluant_valeur: "0.09 µg/L" },
+                ],
               },
               {
                 bloc_nom: "Seuil qualité dépassé",
@@ -108,7 +118,10 @@ export const mockData: { [key: string]: UDI } = {
                 bloc_couleur_background: "#FB726C",
                 bloc_picto: "warning",
                 bloc_polluants: [
-                  { polluant_nom: "Oxathiapiprolin", polluant_valeur: "0.15 µg/L" },
+                  {
+                    polluant_nom: "Oxathiapiprolin",
+                    polluant_valeur: "0.15 µg/L",
+                  },
                   { polluant_nom: "Pyriofenone", polluant_valeur: "0.15 µg/L" },
                 ],
               },
@@ -148,7 +161,8 @@ export const mockData: { [key: string]: UDI } = {
             categorie_id: "cvm",
             categorie: "CVM",
             statut_titre: "Seuil de qualité dépassé pour certains paramètres",
-            statut_description: "Une exposition prolongée au CVM par l’eau peut avoir des effets graves sur la santé humaine, notamment des cancers du foie, des troubles neurologiques, et des problèmes de reproduction.",
+            statut_description:
+              "Une exposition prolongée au CVM par l’eau peut avoir des effets graves sur la santé humaine, notamment des cancers du foie, des troubles neurologiques, et des problèmes de reproduction.",
             statut_couleur: "#FBBD6C",
             statut_couleur_background: "#FB726C",
             statut_picto: "red cross",
@@ -168,7 +182,9 @@ export const mockData: { [key: string]: UDI } = {
                 bloc_couleur: "#FBBD6C",
                 bloc_couleur_background: "#FB726C",
                 bloc_picto: "warning",
-                bloc_polluants: [{ polluant_nom: "CVM", polluant_valeur: "0.15 µg/L" }],
+                bloc_polluants: [
+                  { polluant_nom: "CVM", polluant_valeur: "0.15 µg/L" },
+                ],
               },
               {
                 bloc_nom: "Détecté en faible quantité",
@@ -197,7 +213,8 @@ export const mockData: { [key: string]: UDI } = {
             categorie_id: "pesticides",
             categorie: "Pesticides",
             statut_titre: "Seuil de qualité dépassé pour certains paramètres",
-            statut_description: "Les pesticides sont des substances chimiques utilisées pour lutter contre les organismes nuisibles dans l'agriculture et l'entretien des espaces verts. Ils comprennent les herbicides, fongicides et insecticides, et peuvent contaminer les sols, l'air et les ressources en eau. Une exposition prolongée ou répétée peut avoir des effets graves sur la santé humaine ; notamment des troubles neurologiques, cancers, perturbations endocriniennes et effets sur la reproduction.",
+            statut_description:
+              "Les pesticides sont des substances chimiques utilisées pour lutter contre les organismes nuisibles dans l'agriculture et l'entretien des espaces verts. Ils comprennent les herbicides, fongicides et insecticides, et peuvent contaminer les sols, l'air et les ressources en eau. Une exposition prolongée ou répétée peut avoir des effets graves sur la santé humaine ; notamment des troubles neurologiques, cancers, perturbations endocriniennes et effets sur la reproduction.",
             statut_couleur: "#FBBD6C",
             statut_couleur_background: "#FB726C",
             statut_picto: "red cross",
@@ -210,7 +227,9 @@ export const mockData: { [key: string]: UDI } = {
                 bloc_couleur: "#FB726C",
                 bloc_couleur_background: "#FB726C",
                 bloc_picto: null,
-                bloc_polluants: [{ polluant_nom: "Isofetamide", polluant_valeur: "0.09 µg/L" }],
+                bloc_polluants: [
+                  { polluant_nom: "Isofetamide", polluant_valeur: "0.09 µg/L" },
+                ],
               },
               {
                 bloc_nom: "Seuil qualité dépassé",
@@ -218,7 +237,10 @@ export const mockData: { [key: string]: UDI } = {
                 bloc_couleur_background: "#FB726C",
                 bloc_picto: null,
                 bloc_polluants: [
-                  { polluant_nom: "Oxathiapiprolin", polluant_valeur: "0.15 µg/L" },
+                  {
+                    polluant_nom: "Oxathiapiprolin",
+                    polluant_valeur: "0.15 µg/L",
+                  },
                   { polluant_nom: "Pyriofenone", polluant_valeur: "0.15 µg/L" },
                 ],
               },
@@ -262,7 +284,12 @@ export const mockData: { [key: string]: UDI } = {
                     bloc_couleur: "#FB726C",
                     bloc_couleur_background: "#FB726C",
                     bloc_picto: null,
-                    bloc_polluants: [{ polluant_nom: "Isofetamide", polluant_valeur: "0.09 µg/L" }],
+                    bloc_polluants: [
+                      {
+                        polluant_nom: "Isofetamide",
+                        polluant_valeur: "0.09 µg/L",
+                      },
+                    ],
                   },
                   {
                     bloc_nom: "Seuil qualité dépassé",
@@ -270,8 +297,14 @@ export const mockData: { [key: string]: UDI } = {
                     bloc_couleur_background: "#FB726C",
                     bloc_picto: null,
                     bloc_polluants: [
-                      { polluant_nom: "Oxathiapiprolin", polluant_valeur: "0.15 µg/L" },
-                      { polluant_nom: "Pyriofenone", polluant_valeur: "0.15 µg/L" },
+                      {
+                        polluant_nom: "Oxathiapiprolin",
+                        polluant_valeur: "0.15 µg/L",
+                      },
+                      {
+                        polluant_nom: "Pyriofenone",
+                        polluant_valeur: "0.15 µg/L",
+                      },
                     ],
                   },
                   {
@@ -280,7 +313,10 @@ export const mockData: { [key: string]: UDI } = {
                     bloc_couleur_background: "#FB726C",
                     bloc_picto: null,
                     bloc_polluants: [
-                      { polluant_nom: "Gamma Cyhalothrine", polluant_valeur: null },
+                      {
+                        polluant_nom: "Gamma Cyhalothrine",
+                        polluant_valeur: null,
+                      },
                       { polluant_nom: "Pyriofenone", polluant_valeur: null },
                     ],
                   },
@@ -290,7 +326,10 @@ export const mockData: { [key: string]: UDI } = {
                     bloc_couleur_background: "#FB726C",
                     bloc_picto: null,
                     bloc_polluants: [
-                      { polluant_nom: "Gamma Cyhalothrine", polluant_valeur: null },
+                      {
+                        polluant_nom: "Gamma Cyhalothrine",
+                        polluant_valeur: null,
+                      },
                       { polluant_nom: "Pyriofenone", polluant_valeur: null },
                     ],
                   },
@@ -300,7 +339,10 @@ export const mockData: { [key: string]: UDI } = {
                     bloc_couleur_background: "#FB726C",
                     bloc_picto: null,
                     bloc_polluants: [
-                      { polluant_nom: "Oxathiapiprolin", polluant_valeur: null },
+                      {
+                        polluant_nom: "Oxathiapiprolin",
+                        polluant_valeur: null,
+                      },
                       { polluant_nom: "Pyriofenone", polluant_valeur: null },
                     ],
                   },
@@ -314,7 +356,12 @@ export const mockData: { [key: string]: UDI } = {
                     bloc_couleur: "#FB726C",
                     bloc_couleur_background: "#FB726C",
                     bloc_picto: null,
-                    bloc_polluants: [{ polluant_nom: "Isofetamide", polluant_valeur: "0.09 µg/L" }],
+                    bloc_polluants: [
+                      {
+                        polluant_nom: "Isofetamide",
+                        polluant_valeur: "0.09 µg/L",
+                      },
+                    ],
                   },
                   {
                     bloc_nom: "Seuil qualité dépassé",
@@ -322,8 +369,14 @@ export const mockData: { [key: string]: UDI } = {
                     bloc_couleur_background: "#FB726C",
                     bloc_picto: null,
                     bloc_polluants: [
-                      { polluant_nom: "Oxathiapiprolin", polluant_valeur: "0.15 µg/L" },
-                      { polluant_nom: "Pyriofenone", polluant_valeur: "0.15 µg/L" },
+                      {
+                        polluant_nom: "Oxathiapiprolin",
+                        polluant_valeur: "0.15 µg/L",
+                      },
+                      {
+                        polluant_nom: "Pyriofenone",
+                        polluant_valeur: "0.15 µg/L",
+                      },
                     ],
                   },
                   {
@@ -332,7 +385,10 @@ export const mockData: { [key: string]: UDI } = {
                     bloc_couleur_background: "#FB726C",
                     bloc_picto: null,
                     bloc_polluants: [
-                      { polluant_nom: "Gamma Cyhalothrine", polluant_valeur: null },
+                      {
+                        polluant_nom: "Gamma Cyhalothrine",
+                        polluant_valeur: null,
+                      },
                       { polluant_nom: "Pyriofenone", polluant_valeur: null },
                     ],
                   },
@@ -342,7 +398,10 @@ export const mockData: { [key: string]: UDI } = {
                     bloc_couleur_background: "#FB726C",
                     bloc_picto: null,
                     bloc_polluants: [
-                      { polluant_nom: "Gamma Cyhalothrine", polluant_valeur: null },
+                      {
+                        polluant_nom: "Gamma Cyhalothrine",
+                        polluant_valeur: null,
+                      },
                       { polluant_nom: "Pyriofenone", polluant_valeur: null },
                     ],
                   },
@@ -352,7 +411,10 @@ export const mockData: { [key: string]: UDI } = {
                     bloc_couleur_background: "#FB726C",
                     bloc_picto: null,
                     bloc_polluants: [
-                      { polluant_nom: "Oxathiapiprolin", polluant_valeur: null },
+                      {
+                        polluant_nom: "Oxathiapiprolin",
+                        polluant_valeur: null,
+                      },
                       { polluant_nom: "Pyriofenone", polluant_valeur: null },
                     ],
                   },

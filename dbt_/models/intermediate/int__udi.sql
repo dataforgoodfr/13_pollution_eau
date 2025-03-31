@@ -7,3 +7,7 @@ select
 
 from {{ ref('int__lien_commune_cdreseau') }}
 group by cdreseau
+
+-- TODO: on pourrait garder une partition avec "de_partition".
+-- A noter néanmoins que la seule dépendance à ce modèle (web__resultats_udi)
+-- ne le requiert pas.

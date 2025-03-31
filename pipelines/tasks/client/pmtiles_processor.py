@@ -7,8 +7,18 @@ from pipelines.utils.storage_client import ObjectStorageClient
 
 logger = get_logger(__name__)
 
+config = {
+    "communes": "georef-france-commune-prelevement.pmtiles",
+    "udi": "georef-france-udi-prelevement.pmtiles",
+}
+
 
 class PmtilesProcessor:
+    def __init__(self, type="communes"):
+        if type not in config.keys():
+            raise Exception(f"type {type} must be in {config.keys()}")
+        self.upload_file_path = config[type]
+
     def convert_geojson_to_pmtiles(
         self, geojson_file: str, pmtiles_file: str, layer="datacommunes"
     ):
@@ -44,7 +54,7 @@ class PmtilesProcessor:
         This requires setting the correct environment variables for the Scaleway credentials
         """
         s3 = ObjectStorageClient()
-        s3_path = get_s3_path_pmtiles(env)
+        s3_path = get_s3_path_pmtiles(env, self.upload_file_path)
 
         s3.upload_object(local_path=pmtils_path, file_key=s3_path, public_read=True)
         logger.info(f"✅ pmtils uploaded to s3://{s3.bucket_name}/{s3_path}")

@@ -1,5 +1,5 @@
 import pandas as pd
-
+import json
 from pipelines.tasks.client.core.duckdb_client import DuckDBClient
 from pipelines.utils.logger import get_logger
 
@@ -33,7 +33,8 @@ class GeoJSONProcessor:
                 if isinstance(valeur, dict):
                     output.update(valeur)
                 else:
-                    output.update({col_name: valeur})
+                    if pd.isna(valeur):
+                        output.update({col_name: valeur})
         return output
 
     @staticmethod
@@ -46,6 +47,8 @@ class GeoJSONProcessor:
     def generate_geojson(self):
         results_df = self.conn.sql(f"SELECT * FROM {self.config['result_table']}").df()
         geom_df = self.conn.sql(f"SELECT * FROM {self.config['geom_table']};").df()
+        geom_df = geom_df.rename(columns={"geom": "geometry"})
+        geom_df["geometry"] = geom_df["geometry"].map(lambda x: json.loads(x))
 
         results_df_lookup = (
             results_df.groupby(self.config["groupby_columns"])
@@ -65,6 +68,9 @@ class GeoJSONProcessor:
             left_on=self.config["geom_join_column"],
             right_on=self.config["result_join_column"],
         )
+        output_df = output_df.fillna(
+            ""
+        )  # some lines are present in geojson but not in results
         output_df["properties"] = output_df.apply(
             lambda row: self.create_properties(row), axis=1
         )

@@ -4,7 +4,6 @@
 import os
 from pathlib import Path
 
-from pipelines.tasks.client.core.https_client import HTTPSClient
 from pipelines.tasks.client.core.https_to_duck_client import HTTPSToDuckDBClient
 from pipelines.tasks.config.common import (
     CACHE_FOLDER,

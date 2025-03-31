@@ -24,12 +24,15 @@ def execute(env: str):
     Args:
         env: Environment to use ("dev" or "prod")
     """
+    generate_pmtiles(env, "communes")
 
+
+def generate_pmtiles(env, type):
     logger.info("Starting GeoJSON generation process")
 
     # Initialize clients
-    geojson_processor = GeoJSONProcessor("communes")
-    pmtiles_processor = PmtilesProcessor()
+    geojson_processor = GeoJSONProcessor(type)
+    pmtiles_processor = PmtilesProcessor(type)
 
     # Process and merge data
     logger.info("Merging GeoJSON with commune results")

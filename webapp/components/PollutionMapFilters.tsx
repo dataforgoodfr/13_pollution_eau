@@ -25,7 +25,7 @@ export default function PollutionMapFilters({
   const availableYears = ["2024", "2023", "2022", "2021", "2020"];
 
   return (
-    <div className="flex  space-x-6">
+    <div className="flex space-x-6">
       <div className="shadow-sm">
         <Select>
           <SelectTrigger

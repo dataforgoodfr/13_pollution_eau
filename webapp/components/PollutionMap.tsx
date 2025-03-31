@@ -46,7 +46,7 @@ export default function PollutionMap() {
           onFeatureClick={setFeatureDetails}
         />
 
-        <div className="absolute top-4 right-4 left-4 z-10 px-2  flex justify-between">
+        <div className="absolute top-4 right-4 left-4 z-10 px-2 flex justify-between overflow-x-auto scrollbar-hide">
           <PollutionMapFilters
             year={year}
             setYear={setYear}

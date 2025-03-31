@@ -114,16 +114,16 @@ export default function PollutionMapSearchBox({
   }
 
   return (
-    <div className="flex items-center space-x-6">
+    <div className="flex items-center ml-6">
       <div>
-        <div className="relatives hadow-sm rounded-lg">
+        <div className="relatives hadow-sm">
           <Popover open={dropDownIsOpened} onOpenChange={setDropDownOpen}>
             <PopoverAnchor asChild>
               <div className="flex items-center relative">
                 <GlobeIcon className="absolute left-3 text-gray-400 pointer-events-none" />
                 <div className="mx-1 ">
                   <Input
-                    className="max-w-fit min-w-[256px] outline-1 outline-blue-500 pl-7 bg-white"
+                    className="max-w-fit min-w-[256px] outline-1 outline-blue-500 pl-7 bg-white rounded-2xl"
                     key="TextInputCommune"
                     value={filterString}
                     placeholder="Saisir votre adresse ou votre ville"

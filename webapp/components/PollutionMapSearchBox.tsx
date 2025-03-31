@@ -123,10 +123,10 @@ export default function PollutionMapSearchBox({
                 <GlobeIcon className="absolute left-3 text-gray-400 pointer-events-none" />
                 <div className="mx-1 ">
                   <Input
-                    className="max-w-fit min-w-[256px] outline-1 outline-blue-500 pl-7 bg-white rounded-2xl"
+                    className="max-w-fit min-w-[220px] outline-1 outline-blue-500 pl-7 bg-white rounded-2xl"
                     key="TextInputCommune"
                     value={filterString}
-                    placeholder="Saisir votre adresse ou votre ville"
+                    placeholder="Saisir votre votre commune"
                     onChange={HandleFilterChange}
                   />
                 </div>

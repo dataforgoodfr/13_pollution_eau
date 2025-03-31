@@ -33,7 +33,6 @@ export default function PollutionMap() {
       setCommuneInseeCode(null);
     }
   };
-  console.log("aaa", year, categoryType, communeInseeCode);
   return (
     <div className="relative w-full h-full flex flex-col">
       <MapProvider>

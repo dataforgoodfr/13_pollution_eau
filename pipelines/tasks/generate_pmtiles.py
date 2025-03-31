@@ -5,15 +5,13 @@ ana__resultats_communes from duckdb, convert to pmtiles and uploads the
 new Pmtiles to S3.
 """
 
+import json
 import os
 
-import duckdb
-from tasks.client.opendatasoft_client import OpenDataSoftClient
-from tasks.config.common import CACHE_FOLDER, DUCKDB_FILE
+from tasks.config.common import CACHE_FOLDER
 
 from pipelines.tasks.client.geojson_processor import GeoJSONProcessor
 from pipelines.tasks.client.pmtiles_processor import PmtilesProcessor
-from pipelines.tasks.config.config_geojson import get_opendatasoft_config
 from pipelines.utils.logger import get_logger
 
 logger = get_logger(__name__)
@@ -30,31 +28,20 @@ def execute(env: str):
     logger.info("Starting GeoJSON generation process")
 
     # Initialize clients
-    opendatasoft = OpenDataSoftClient(config=get_opendatasoft_config())
-    geojson_processor = GeoJSONProcessor()
+    geojson_processor = GeoJSONProcessor("communes")
     pmtiles_processor = PmtilesProcessor()
-
-    # Download GeoJSON
-    geojson_path = os.path.join(CACHE_FOLDER, "georef-france-commune.geojson")
-    logger.info("Downloading GeoJSON from OpenDataSoft")
-    opendatasoft.download_geojson(output_path=geojson_path)
-
-    # Get results from database
-    logger.info("Fetching commune results from database")
-    with duckdb.connect(DUCKDB_FILE, read_only=True) as con:
-        results_df = con.sql("SELECT * FROM ana__resultats_communes").df()
 
     # Process and merge data
     logger.info("Merging GeoJSON with commune results")
     geojson_output_path = os.path.join(
         CACHE_FOLDER, "new-georef-france-commune-prelevement.geojson"
     )
-    geojson_processor.merge_geojson_with_results(
-        geojson_path=geojson_path,
-        results_df=results_df,
-        output_path=geojson_output_path,
-    )
-    logger.info(f"✅ new-GeoJSON processed and stored at: {geojson_output_path}")
+    geojson = geojson_processor.generate_geojson()
+
+    with open(geojson_output_path, "w", encoding="utf-8") as f:
+        json.dump(geojson, f)
+
+    logger.info(f"✅ GeoJSON processed and stored at: {geojson_output_path}")
 
     logger.info("Convert new-GeoJSON to pmtiles")
     pmtils_output_path = os.path.join(

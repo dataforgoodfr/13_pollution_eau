@@ -2,23 +2,57 @@ version: 2
 
 models:
   - name: web__resultats_communes
-    description: "Resultat des prélevement par commune et par année"
+    description: "Resultats des prélevements par commune, par période et catégorie de polluant"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - commune_code_insee
+            - periode
+            - categorie
     columns:
       - name: commune_code_insee
-        description: "Code INSEE de la commune du point de surveillance"
+        description: "Code INSEE de la commune"
         type: VARCHAR
+        tests:
+          - not_null
       - name: commune_nom
-        description: "Nom de la commune du point de surveillance"
+        description: "Nom de la commune"
         type: VARCHAR
-      - name: annee
-        description: "Annee du prevelvement"
-        type: SMALLINT
-      - name: resultat_cvm
-        description: "resultat du prélevement cvm (Chlorure de vinyl monomère)"
+      - name: periode
+        description: "Période de l'analyse (bilan annuel ou dernier prélèvement)"
         type: VARCHAR
         tests:
           - accepted_values:
-              values: ["conforme", "non conforme", "non analysé"]
+              values:
+                - bilan_annuel_2020
+                - bilan_annuel_2021
+                - bilan_annuel_2022
+                - bilan_annuel_2023
+                - bilan_annuel_2024
+                - bilan_annuel_2025
+                - dernier_prel
+      - name: categorie
+        description: "Catégorie du polluant analysé"
+        type: VARCHAR
+        tests:
+          - not_null
+          - accepted_values:
+              values: ["cvm", "pfas"]
+      - name: resultat
+        description: "Résultat qualitatif de l'analyse"
+        type: VARCHAR
+      - name: ratio
+        description: "Ratio des valeurs par rapport à la limite réglementaire"
+        type: FLOAT
+      - name: dernier_prel_datetime
+        description: "Date et heure du dernier prélèvement"
+        type: TIMESTAMP
+      - name: dernier_prel_valeur
+        description: "Valeur du dernier prélèvement"
+        type: FLOAT
+      - name: nb_parametres
+        description: "Nombre de paramètres analysés"
+        type: INTEGER
 
   - name: web__resultats_udi
     description: "Resultats des prélevements par unité de distribution (UDI) par période et catégorie de polluant"

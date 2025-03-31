@@ -1,5 +1,12 @@
 "use client";
-
+import {
+  Select,
+  SelectValue,
+  SelectTrigger,
+  SelectContent,
+  SelectItem,
+} from "@/components/ui/select";
+import { CalendarIcon, BlendingModeIcon } from "@radix-ui/react-icons";
 import { availableCategories } from "@/lib/polluants";
 
 type PollutionMapFiltersProps = {
@@ -18,47 +25,47 @@ export default function PollutionMapFilters({
   const availableYears = ["2024", "2023", "2022", "2021", "2020"];
 
   return (
-    <div className="flex items-center space-x-6">
-      <div>
-        <label
-          htmlFor="year-select"
-          className="block text-sm font-medium text-gray-700 mb-1"
-        >
-          Année
-        </label>
-        <select
-          id="year-select"
-          value={year}
-          onChange={(e) => setYear(e.target.value)}
-          className="block w-32 py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-        >
-          {availableYears.map((y) => (
-            <option key={y} value={y}>
-              {y}
-            </option>
-          ))}
-        </select>
+    <div className="flex  space-x-6">
+      <div className="shadow-sm">
+        <Select>
+          <SelectTrigger
+            className="SelectTrigger bg-white rounded-2xl"
+            aria-label="year-select"
+          >
+            <CalendarIcon />
+            <div className="block mx-1">
+              <SelectValue placeholder="Année" />
+            </div>
+            <SelectContent>
+              {availableYears.map((y) => (
+                <SelectItem className="items-left" key={y} value={y}>
+                  {y}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </SelectTrigger>
+        </Select>
       </div>
 
-      <div>
-        <label
-          htmlFor="category-select"
-          className="block text-sm font-medium text-gray-700 mb-1"
-        >
-          Type de polluant
-        </label>
-        <select
-          id="category-select"
-          value={categoryType}
-          onChange={(e) => setCategoryType(e.target.value)}
-          className="block w-64 py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-        >
-          {availableCategories.map((p) => (
-            <option key={p.id} value={p.id} disabled={p.disabled}>
-              {p.label}
-            </option>
-          ))}
-        </select>
+      <div className="shadow-sm">
+        <Select>
+          <SelectTrigger
+            className="SelectTrigger bg-white rounded-2xl"
+            aria-label="category-select"
+          >
+            <BlendingModeIcon />
+            <div className="block mx-1">
+              <SelectValue placeholder="Polluant" className="mx-1" />
+            </div>
+            <SelectContent>
+              {availableCategories.map((p) => (
+                <SelectItem key={p.id} value={p.id} disabled={p.disabled}>
+                  {p.label.toUpperCase()}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </SelectTrigger>
+        </Select>
       </div>
     </div>
   );

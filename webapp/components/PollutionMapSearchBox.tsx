@@ -4,6 +4,7 @@ import { Popover, PopoverAnchor, PopoverContent } from "./ui/popover";
 import { Input } from "./ui/input";
 import { useState } from "react";
 import { Command, CommandGroup, CommandItem, CommandList } from "./ui/command";
+import { GlobeIcon } from "@radix-ui/react-icons";
 import { CommandEmpty } from "cmdk";
 import { X } from "lucide-react";
 
@@ -115,22 +116,21 @@ export default function PollutionMapSearchBox({
   return (
     <div className="flex items-center space-x-6">
       <div>
-        <label
-          htmlFor="commune-select"
-          className="block text-sm font-medium text-gray-700 mb-1"
-        >
-          Commune
-        </label>
-        <div className="relative">
+        <div className="relatives hadow-sm rounded-lg">
           <Popover open={dropDownIsOpened} onOpenChange={setDropDownOpen}>
             <PopoverAnchor asChild>
-              <Input
-                className="float max-w-fit rounded-sm outline-1 outline-blue-500 pr-8"
-                key="TextInputCommune"
-                value={filterString}
-                placeholder="Saisir le nom de votre commune"
-                onChange={HandleFilterChange}
-              />
+              <div className="flex items-center relative">
+                <GlobeIcon className="absolute left-3 text-gray-400 pointer-events-none" />
+                <div className="mx-1 ">
+                  <Input
+                    className="max-w-fit min-w-[256px] outline-1 outline-blue-500 pl-7 bg-white"
+                    key="TextInputCommune"
+                    value={filterString}
+                    placeholder="Saisir votre adresse ou votre ville"
+                    onChange={HandleFilterChange}
+                  />
+                </div>
+              </div>
             </PopoverAnchor>
             <PopoverContent
               asChild={true}

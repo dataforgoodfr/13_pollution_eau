@@ -46,16 +46,16 @@ export default function PollutionMap() {
           onFeatureClick={setFeatureDetails}
         />
 
-        <div className="absolute top-4 left-4 right-4 z-10 bg-white p-3 rounded-lg shadow-lg flex justify-between">
-          <PollutionMapSearchBox
-            communeInseeCode={communeInseeCode}
-            onCommuneFilter={handleCommuneSelect}
-          />
+        <div className="absolute top-4 right-4 left-4 z-10 px-2  flex justify-between">
           <PollutionMapFilters
             year={year}
             setYear={setYear}
             categoryType={categoryType}
             setCategoryType={setCategoryType}
+          />
+          <PollutionMapSearchBox
+            communeInseeCode={communeInseeCode}
+            onCommuneFilter={handleCommuneSelect}
           />
         </div>
 

@@ -6,8 +6,7 @@ from urllib.parse import urlparse
 
 from tqdm import tqdm
 
-from pipelines.tasks.client.duckdb_client import DuckDBClient
-from pipelines.tasks.client.https_client import HTTPSClient
+from pipelines.tasks.client.core.https_client import HTTPSClient
 from pipelines.tasks.config.common import (
     CACHE_FOLDER,
     clear_cache,
@@ -19,10 +18,11 @@ from pipelines.tasks.config.config_edc import get_edc_config
 
 
 class DataGouvClient(HTTPSClient):
-    def __init__(self, base_url: str = "https://www.data.gouv.fr/"):
+    def __init__(self, duckdb_client, base_url: str = "https://www.data.gouv.fr/"):
         super().__init__(base_url)
         self.base_url = base_url
         self.datasets_path = "fr/datasets/r/"
+        self.duckdb_client = duckdb_client
         self.config_edc = get_edc_config()
 
     def _extract_dataset_datetime(self, dataset_id: str) -> str:
@@ -72,8 +72,7 @@ class DataGouvClient(HTTPSClient):
             "Check that EDC dataset are up to date according to www.data.gouv.fr"
         )
 
-        duckdb_client = DuckDBClient()
-        conn = duckdb_client.conn
+        conn = self.duckdb_client.conn
 
         for year in years:
             logger.info(f"   Check EDC dataset datetime for {year}")
@@ -171,7 +170,6 @@ class DataGouvClient(HTTPSClient):
         extract_file(zip_file=zip_file, extract_folder=extract_folder)
 
         logger.info("   Creating or updating tables in the database...")
-        duckdb_client = DuckDBClient()
 
         files = self.config_edc["files"]
 
@@ -187,13 +185,13 @@ class DataGouvClient(HTTPSClient):
                         year=year,
                     ),
                 )
-                if duckdb_client.check_table_existence(
+                if self.duckdb_client.check_table_existence(
                     table_name=file_info["table_name"]
                 ):
-                    duckdb_client.delete_from_table(
+                    self.duckdb_client.delete_from_table(
                         table_name=file_info["table_name"],
                         filters=[
-                            duckdb_client.SQLFilters(
+                            self.duckdb_client.SQLFilters(
                                 colname="de_partition",
                                 filter_value=year,
                                 coltype="INTEGER",
@@ -206,7 +204,7 @@ class DataGouvClient(HTTPSClient):
                 else:
                     ingest_type = "CREATE"
 
-                duckdb_client.ingest_from_csv(
+                self.duckdb_client.ingest_from_csv(
                     ingest_type=ingest_type,
                     table_name=file_info["table_name"],
                     de_partition=year,
@@ -214,9 +212,6 @@ class DataGouvClient(HTTPSClient):
                     filepath=filepath,
                 )
                 pbar.update(1)
-
-        # duckdb_client.close()
-
         logger.info("   Cleaning up cache...")
         clear_cache()
 
@@ -269,15 +264,12 @@ class DataGouvClient(HTTPSClient):
             years_to_update = self._get_edc_dataset_years_to_update(years_to_update)
         else:
             if drop_tables or (refresh_type == "all"):
-                duckdb_client = DuckDBClient()
-
                 tables_names = [
                     file_info["table_name"]
                     for file_info in self.config_edc["files"].values()
                 ]
 
-                duckdb_client.drop_tables(table_names=tables_names)
-                # duckdb_client.close()
+                self.duckdb_client.drop_tables(table_names=tables_names)
 
         logger.info(
             f"Launching processing of EDC datasets for years: {years_to_update}"

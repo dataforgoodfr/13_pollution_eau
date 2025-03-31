@@ -1,16 +1,16 @@
 # pipelines/tasks/geojson_processor.py
 
 import json
-import logging
 from pathlib import Path
 
 import pandas as pd
 from tqdm import tqdm
 
 from pipelines.config.config import get_s3_path_geojson
+from pipelines.utils.logger import get_logger
 from pipelines.utils.storage_client import ObjectStorageClient
 
-logger = logging.getLogger(__name__)
+logger = get_logger(__name__)
 
 
 class GeoJSONProcessor:
@@ -40,7 +40,10 @@ class GeoJSONProcessor:
         results_lookup = (
             results_df.groupby("commune_code_insee")
             .apply(
-                lambda x: {row["annee"]: row["resultat_cvm"] for _, row in x.iterrows()}
+                lambda x: {
+                    f"resultat_cvm_{row['annee']}": row["resultat_cvm"]
+                    for _, row in x.iterrows()
+                }
             )
             .to_dict()
         )
@@ -61,11 +64,10 @@ class GeoJSONProcessor:
                 properties = {
                     "commune_code_insee": code_insee,
                     "commune_nom": name_insee,
-                    "resultat_cvm": results_lookup.get(code_insee, {}),
                 }
+                properties.update(results_lookup.get(code_insee, {}))
 
                 feature["properties"] = properties
-
         # Get communes names from database
         communes_db_names = dict(
             zip(results_df["commune_code_insee"], results_df["commune_nom"])

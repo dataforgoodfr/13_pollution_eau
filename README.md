@@ -108,6 +108,11 @@ uv run pipelines/run.py run build_database --refresh-type custom --custom-years 
 uv run pipelines/run.py run build_database --refresh-type last --drop-tables
 ```
 
+5. Chosisez une table specifique to refresh 
+```bash
+uv run pipelines/run.py run build_database --refresh-table edc
+```
+
 ### Création du modèles de données avec dbt
 #### 1. Commandes a exécuter
 La librarie dbt est celle choisie pour une construction rapide et simple de modèles de données optimisé pour l'analytics.
@@ -134,6 +139,28 @@ Les modèles de données sont organisés dans le dossier `dbt_/models`. La struc
 
 #### Documentation
 La documentation du projet dbt est disponible sur le lien suivant: [documentation dbt](https://dataforgood.fr/13_pollution_eau/#!/overview)
+
+### Création des pmtiles
+La génération des fichiers PMTiles nécessite une dépendance optionnelle. Pour l'installer, utilisez la commande suivante :
+```bash
+uv pip install .[pmtiles]
+```
+
+Une fois cette dépendance installée, vous pouvez générer les PMTiles et les uploader sur S3 en exécutant la commande suivante :
+```bash
+uv run ./pipelines/run.py run generate_pmtiles 
+```
+Le fichier PMTiles sera accessible à l'URL suivante :
+
+➡️ dev: https://pollution-eau-s3.s3.fr-par.scw.cloud/dev/pmtiles/georef-france-commune-prelevement.pmtiles
+
+➡️ prod: https://pollution-eau-s3.s3.fr-par.scw.cloud/dev/pmtiles/georef-france-commune-prelevement.pmtiles
+
+Si vous souhaitez télécharger ce fichier PMTiles via la commande CLI, utilisez :
+```bash
+uv run ./pipelines/run.py run download_pmtiles 
+```
+
 
 ### Comment télécharger la base de données
 
@@ -195,7 +222,7 @@ L'option `-s` permet d'afficher les prints dans le terminal.
 Lancer la commande suivante pour s'assurer que le code satisfait bien tous les pre commit avant de créer votre pull request
 
 ```bash
-pre-commit run --all-files
+uv run pre-commit run --all-files
 ```
 
 ## Déploiement du site avec Docker

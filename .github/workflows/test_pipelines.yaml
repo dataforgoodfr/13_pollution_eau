@@ -40,7 +40,9 @@ jobs:
         version: ">=0.4.0"
 
     - name: Install dependencies
-      run: uv sync
+      run: |
+        uv sync
+        uv pip install .[pmtiles]
 
     - name: Run tests with coverage
       run: uv run pytest -s --cov=. --cov-report=term-missing

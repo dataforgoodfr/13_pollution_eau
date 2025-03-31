@@ -1,8 +1,10 @@
 """Generate and upload merged new PMtiles file.
+For both UDI and communes data:
+- Get geom data from duck db
+- Get prelevement results from duckdb, merge with geom, convert to pmtiles and uploads the new Pmtiles to S3.
 
-Downloads commune GeoJSON data from OpenDataSoft, merges it with
-ana__resultats_communes from duckdb, convert to pmtiles and uploads the
-new Pmtiles to S3.
+Args:
+    - env (str): Environment to download from ("dev" or "prod")
 """
 
 import json
@@ -35,9 +37,9 @@ def generate_pmtiles(env, type):
     pmtiles_processor = PmtilesProcessor(type)
 
     # Process and merge data
-    logger.info("Merging GeoJSON with commune results")
+    logger.info(f"Merging GeoJSON with {type} results")
     geojson_output_path = os.path.join(
-        CACHE_FOLDER, "new-georef-france-commune-prelevement.geojson"
+        CACHE_FOLDER, f"new-georef-france-{type}-prelevement.geojson"
     )
     geojson = geojson_processor.generate_geojson()
 
@@ -48,10 +50,10 @@ def generate_pmtiles(env, type):
 
     logger.info("Convert new-GeoJSON to pmtiles")
     pmtils_output_path = os.path.join(
-        CACHE_FOLDER, "georef-france-commune-prelevement.pmtiles"
+        CACHE_FOLDER, f"georef-france-{type}-prelevement.pmtiles"
     )
     pmtiles_processor.convert_geojson_to_pmtiles(
-        geojson_output_path, pmtils_output_path, "datacommunes"
+        geojson_output_path, pmtils_output_path, f"data_{type}"
     )
 
     logger.info("Uploading pmtiles to S3")

@@ -20,7 +20,7 @@ class PmtilesProcessor:
         self.upload_file_path = config[type]
 
     def convert_geojson_to_pmtiles(
-        self, geojson_file: str, pmtiles_file: str, layer="datacommunes"
+        self, geojson_file: str, pmtiles_file: str, layer="data_communes"
     ):
         """Convert a GeoJSON file to PMTiles format using Tippecanoe."""
         # try:

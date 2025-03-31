@@ -27,7 +27,7 @@ export default function PollutionMapFilters({
   return (
     <div className="flex space-x-6">
       <div className="shadow-sm">
-        <Select>
+        <Select value={year} onValueChange={(y) => setYear(y)}>
           <SelectTrigger
             className="SelectTrigger bg-white rounded-2xl"
             aria-label="year-select"
@@ -36,19 +36,19 @@ export default function PollutionMapFilters({
             <div className="block mx-1">
               <SelectValue placeholder="Année" />
             </div>
-            <SelectContent>
-              {availableYears.map((y) => (
-                <SelectItem className="items-left" key={y} value={y}>
-                  {y}
-                </SelectItem>
-              ))}
-            </SelectContent>
           </SelectTrigger>
+          <SelectContent>
+            {availableYears.map((y) => (
+              <SelectItem className="items-left" key={y} value={y}>
+                {y}
+              </SelectItem>
+            ))}
+          </SelectContent>
         </Select>
       </div>
 
       <div className="shadow-sm">
-        <Select>
+        <Select value={categoryType} onValueChange={setCategoryType}>
           <SelectTrigger
             className="SelectTrigger bg-white rounded-2xl"
             aria-label="category-select"
@@ -57,14 +57,14 @@ export default function PollutionMapFilters({
             <div className="block mx-1">
               <SelectValue placeholder="Polluant" className="mx-1" />
             </div>
-            <SelectContent>
-              {availableCategories.map((p) => (
-                <SelectItem key={p.id} value={p.id} disabled={p.disabled}>
-                  {p.label.toUpperCase()}
-                </SelectItem>
-              ))}
-            </SelectContent>
           </SelectTrigger>
+          <SelectContent>
+            {availableCategories.map((p) => (
+              <SelectItem key={p.id} value={p.id} disabled={p.disabled}>
+                {p.label.toUpperCase()}
+              </SelectItem>
+            ))}
+          </SelectContent>
         </Select>
       </div>
     </div>

@@ -1,7 +1,7 @@
 """Generate and upload merged new PMtiles file.
 For both UDI and communes data:
 - Get geom data from duck db
-- Get prelevement results from duckdb, merge with geom, convert to pmtiles and uploads the new Pmtiles to S3.
+- Get sample results from duckdb, merge with geom, convert to pmtiles and uploads the new Pmtiles to S3.
 
 Args:
     - env (str): Environment to download from ("dev" or "prod")

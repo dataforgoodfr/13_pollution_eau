@@ -49,6 +49,7 @@ jobs:
     - name: test dbt
       run: |
         cd dbt_
+        uv run dbt deps
         uv run dbt build || { echo "dbt build failed"; exit 1; }
 
     - name: test pmtiles generation

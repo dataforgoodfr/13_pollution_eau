@@ -31,7 +31,7 @@ def execute(env: str):
 
 
 def generate_pmtiles(env, type):
-    logger.info("Starting GeoJSON generation process")
+    logger.info(f"Starting {type} GeoJSON generation process")
 
     # Initialize clients
     geojson_processor = GeoJSONProcessor(type)
@@ -49,11 +49,11 @@ def generate_pmtiles(env, type):
 
     logger.info(f"✅ GeoJSON processed and stored at: {geojson_output_path}")
 
-    # logger.info("Uploading pmtiles to S3")
+    # logger.info("Uploading geojson to S3")
     # url = geojson_processor.upload_geojson_to_storage(
-    #     env, pmtils_path=geojson_output_path
+    #     env, file_path=geojson_output_path
     # )
-    # logger.info(f"pmtiles s3 pubic Url: {url}")
+    # logger.info(f"geojson in s3 pubic Url: {url}")
 
     logger.info("Convert new-GeoJSON to pmtiles")
     pmtils_output_path = os.path.join(
@@ -67,4 +67,4 @@ def generate_pmtiles(env, type):
     url = pmtiles_processor.upload_pmtils_to_storage(
         env, pmtils_path=pmtils_output_path
     )
-    logger.info(f"pmtiles s3 pubic Url: {url}")
+    logger.info(f"pmtiles in s3 pubic Url: {url}")

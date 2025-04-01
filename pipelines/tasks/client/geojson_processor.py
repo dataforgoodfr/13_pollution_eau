@@ -27,7 +27,7 @@ config = {
         "groupby_columns": ["cdreseau", "nomreseaux"],
         "result_join_column": "cdreseau",
         "geom_join_column": "code_udi",
-        "upload_file_name": "georef-france-communes-prelevement.geojson",
+        "upload_file_name": "georef-france-udi-prelevement.geojson",
     },
 }
 
@@ -87,6 +87,12 @@ class GeoJSONProcessor:
 
     def generate_geojson(self):
         results_df = self.conn.sql(f"SELECT * FROM {self.config['result_table']}").df()
+        results_df["dernier_prel_datetime"] = results_df[
+            "dernier_prel_datetime"
+        ].dt.strftime(
+            "%Y-%m-%d %H:%M:%S"
+        )  # convert timestamp to string because timestamp not json seriaziable
+        results_df = results_df.astype(object).where(pd.notnull(results_df), "")
         geom_df = self.conn.sql(f"SELECT * FROM {self.config['geom_table']};").df()
         geom_df = geom_df.rename(columns={"geom": "geometry"})
         geom_df["geometry"] = geom_df["geometry"].map(lambda x: json.loads(x))

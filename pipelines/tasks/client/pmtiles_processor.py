@@ -7,17 +7,14 @@ from pipelines.utils.storage_client import ObjectStorageClient
 
 logger = get_logger(__name__)
 
-config = {
-    "communes": "georef-france-commune-prelevement.pmtiles",
-    "udi": "georef-france-udi-prelevement.pmtiles",
-}
+types = ["communes", "udi"]
 
 
 class PmtilesProcessor:
     def __init__(self, type="communes"):
-        if type not in config.keys():
-            raise Exception(f"type {type} must be in {config.keys()}")
-        self.upload_file_path = config[type]
+        if type not in types:
+            raise Exception(f"type {type} must be in {types}")
+        self.upload_file_path = f"georef-france-{type}-prelevement.pmtiles"
 
     def convert_geojson_to_pmtiles(
         self, geojson_file: str, pmtiles_file: str, layer="data_communes"

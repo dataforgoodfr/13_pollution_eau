@@ -3,8 +3,10 @@ import json
 import pandas as pd
 from tqdm import tqdm
 
+from pipelines.config.config import get_s3_path_geojson
 from pipelines.tasks.client.core.duckdb_client import DuckDBClient
 from pipelines.utils.logger import get_logger
+from pipelines.utils.storage_client import ObjectStorageClient
 
 tqdm.pandas()
 
@@ -17,6 +19,7 @@ config = {
         "groupby_columns": ["commune_code_insee", "commune_nom"],
         "result_join_column": "commune_code_insee",
         "geom_join_column": "com_code",
+        "upload_file_name": "georef-france-communes-prelevement.geojson",
     },
     "udi": {
         "result_table": "web__resultats_udi",
@@ -24,6 +27,7 @@ config = {
         "groupby_columns": ["cdreseau", "nomreseaux"],
         "result_join_column": "cdreseau",
         "geom_join_column": "code_udi",
+        "upload_file_name": "georef-france-communes-prelevement.geojson",
     },
 }
 
@@ -112,3 +116,18 @@ class GeoJSONProcessor:
 
         output_geojson = self.create_geojson(output_df)
         return output_geojson
+
+    def upload_geojson_to_storage(self, env: str, file_path: str):
+        """
+        Upload the Pmtiles file to Storage Object depending on the environment
+        This requires setting the correct environment variables for the Scaleway credentials
+        """
+        s3 = ObjectStorageClient()
+        s3_path = get_s3_path_geojson(env, self.config["upload_file_name"])
+
+        s3.upload_object(local_path=file_path, file_key=s3_path, public_read=True)
+        logger.info(f"✅ pmtils uploaded to s3://{s3.bucket_name}/{s3_path}")
+        url = (
+            f"https://{s3.bucket_name}.{s3.endpoint_url.split('https://')[1]}/{s3_path}"
+        )
+        return url

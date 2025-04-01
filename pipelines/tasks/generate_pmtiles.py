@@ -49,6 +49,12 @@ def generate_pmtiles(env, type):
 
     logger.info(f"✅ GeoJSON processed and stored at: {geojson_output_path}")
 
+    # logger.info("Uploading pmtiles to S3")
+    # url = geojson_processor.upload_geojson_to_storage(
+    #     env, pmtils_path=geojson_output_path
+    # )
+    # logger.info(f"pmtiles s3 pubic Url: {url}")
+
     logger.info("Convert new-GeoJSON to pmtiles")
     pmtils_output_path = os.path.join(
         CACHE_FOLDER, f"georef-france-{type}-prelevement.pmtiles"

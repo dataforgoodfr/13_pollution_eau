@@ -50,7 +50,8 @@ jobs:
       run: |
         cd dbt_
         uv run dbt deps
-        uv run dbt build || { echo "dbt build failed"; exit 1; }
+        uv run dbt seed
+        uv run dbt run
 
     - name: test pmtiles generation
       run: |

@@ -12,6 +12,7 @@ import os
 
 from tasks.config.common import CACHE_FOLDER
 
+from pipelines.tasks.client.core.duckdb_client import DuckDBClient
 from pipelines.tasks.client.geojson_processor import GeoJSONProcessor
 from pipelines.tasks.client.pmtiles_processor import PmtilesProcessor
 from pipelines.utils.logger import get_logger
@@ -26,15 +27,17 @@ def execute(env: str):
     Args:
         env: Environment to use ("dev" or "prod")
     """
-    generate_pmtiles(env, "communes")
-    generate_pmtiles(env, "udi")
+    duckdb_client = DuckDBClient()
+    generate_pmtiles(env, duckdb_client, "communes")
+    generate_pmtiles(env, duckdb_client, "udi")
+    duckdb_client.close()
 
 
-def generate_pmtiles(env, type):
+def generate_pmtiles(env, type, duckdb_client):
     logger.info(f"Starting {type} GeoJSON generation process")
 
     # Initialize clients
-    geojson_processor = GeoJSONProcessor(type)
+    geojson_processor = GeoJSONProcessor(type, duckdb_client)
     pmtiles_processor = PmtilesProcessor(type)
 
     # Process and merge data

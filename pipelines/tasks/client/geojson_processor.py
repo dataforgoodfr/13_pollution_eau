@@ -4,7 +4,11 @@ import pandas as pd
 from tqdm import tqdm
 
 from pipelines.config.config import get_s3_path_geojson
-from pipelines.tasks.client.core.duckdb_client import DuckDBClient
+from pipelines.tasks.config.config_geojson import (
+    col_input,
+    config_merge_geo,
+    list_column_result,
+)
 from pipelines.utils.logger import get_logger
 from pipelines.utils.storage_client import ObjectStorageClient
 
@@ -12,43 +16,13 @@ tqdm.pandas()
 
 logger = get_logger(__name__)
 
-config = {
-    "communes": {
-        "result_table": "web__resultats_communes",
-        "geom_table": "stg_communes__opendatasoft_json",
-        "groupby_columns": ["commune_code_insee", "commune_nom"],
-        "result_join_column": "commune_code_insee",
-        "geom_join_column": "com_code",
-        "upload_file_name": "georef-france-communes-prelevement.geojson",
-    },
-    "udi": {
-        "result_table": "web__resultats_udi",
-        "geom_table": "stg_udi_json",
-        "groupby_columns": ["cdreseau", "nomreseaux"],
-        "result_join_column": "cdreseau",
-        "geom_join_column": "code_udi",
-        "upload_file_name": "georef-france-udi-prelevement.geojson",
-    },
-}
-
-col_input = ["periode", "categorie"]
-
-list_column_result = [
-    "resultat",
-    "ratio",
-    "dernier_prel_datetime",
-    "dernier_prel_valeur",
-    "nb_parametres",
-]
-
 
 class GeoJSONProcessor:
-    def __init__(self, type):
-        duckdb_client = DuckDBClient()
+    def __init__(self, type, duckdb_client):
         self.conn = duckdb_client.conn
-        if type not in config.keys():
-            raise Exception(f"type {type} must be in {config.keys()}")
-        self.config = config[type]
+        if type not in config_merge_geo.keys():
+            raise Exception(f"type {type} must be in {config_merge_geo.keys()}")
+        self.config = config_merge_geo[type]
 
     @staticmethod
     def create_properties(row):

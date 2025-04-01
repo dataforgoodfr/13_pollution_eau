@@ -17,8 +17,32 @@ def get_opendatasoft_config() -> dict:
         },
     }
 
-    return {
-        "base_url": "https://public.opendatasoft.com/api/explore/v2.1/catalog/datasets/",
-        "dataset_name": "georef-france-commune",
-        "chunk_size": 8192,
-    }
+
+config_merge_geo = {
+    "communes": {
+        "result_table": "web__resultats_communes",
+        "geom_table": "stg_communes__opendatasoft_json",
+        "groupby_columns": ["commune_code_insee", "commune_nom"],
+        "result_join_column": "commune_code_insee",
+        "geom_join_column": "com_code",
+        "upload_file_name": "georef-france-communes-prelevement.geojson",
+    },
+    "udi": {
+        "result_table": "web__resultats_udi",
+        "geom_table": "stg_udi_json",
+        "groupby_columns": ["cdreseau", "nomreseaux"],
+        "result_join_column": "cdreseau",
+        "geom_join_column": "code_udi",
+        "upload_file_name": "georef-france-udi-prelevement.geojson",
+    },
+}
+
+col_input = ["periode", "categorie"]
+
+list_column_result = [
+    "resultat",
+    "ratio",
+    "dernier_prel_datetime",
+    "dernier_prel_valeur",
+    "nb_parametres",
+]

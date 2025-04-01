@@ -2,12 +2,15 @@ import subprocess
 from pathlib import Path
 
 from pipelines.config.config import get_s3_path_pmtiles
+from pipelines.tasks.config.config_geojson import (
+    config_merge_geo,
+)
 from pipelines.utils.logger import get_logger
 from pipelines.utils.storage_client import ObjectStorageClient
 
 logger = get_logger(__name__)
 
-types = ["communes", "udi"]
+types = config_merge_geo.keys()
 
 
 class PmtilesProcessor:

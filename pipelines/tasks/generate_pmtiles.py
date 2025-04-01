@@ -28,8 +28,8 @@ def execute(env: str):
         env: Environment to use ("dev" or "prod")
     """
     duckdb_client = DuckDBClient()
-    generate_pmtiles(env, duckdb_client, "communes")
-    generate_pmtiles(env, duckdb_client, "udi")
+    generate_pmtiles(env, "communes", duckdb_client)
+    generate_pmtiles(env, "udi", duckdb_client)
     duckdb_client.close()
 
 

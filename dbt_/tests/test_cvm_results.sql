@@ -54,14 +54,14 @@ WHERE
         cdreseau = '001001073'
         AND categorie = 'cvm'
         AND annee = '2024'
-        AND nb_depassements != 1
+        AND nb_depassements != 0
     )
     OR
     (
         cdreseau = '001001073'
         AND categorie = 'cvm'
         AND annee = '2024'
-        AND ratio_depassements != 0.25
+        AND ratio_depassements != 0
     )
     OR
     (
@@ -89,7 +89,7 @@ WHERE
         cdreseau = '095004048'
         AND categorie = 'cvm'
         AND annee = '2024'
-        AND nb_prelevements != 12
+        AND nb_prelevements != 21
     )
     OR
     (
@@ -97,4 +97,15 @@ WHERE
         AND categorie = 'cvm'
         AND annee = '2022'
         AND nb_depassements != 2
+    )
+    OR
+    (
+        cdreseau = '032000209'
+        AND categorie = 'cvm'
+        AND annee = '2024'
+        AND (
+            ratio_depassements != 0.25
+            OR
+            nb_prelevements != 4
+        )
     )

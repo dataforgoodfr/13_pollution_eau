@@ -27,6 +27,7 @@ def execute(env: str):
         env: Environment to use ("dev" or "prod")
     """
     generate_pmtiles(env, "communes")
+    generate_pmtiles(env, "udi")
 
 
 def generate_pmtiles(env, type):

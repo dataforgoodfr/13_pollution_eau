@@ -1,20 +1,41 @@
-import pandas as pd
 import json
+
+import pandas as pd
+from tqdm import tqdm
+
 from pipelines.tasks.client.core.duckdb_client import DuckDBClient
 from pipelines.utils.logger import get_logger
+
+tqdm.pandas()
 
 logger = get_logger(__name__)
 
 config = {
     "communes": {
-        "result_table": "ana__resultats_communes",
+        "result_table": "web__resultats_communes",
         "geom_table": "stg_communes__opendatasoft_json",
         "groupby_columns": ["commune_code_insee", "commune_nom"],
         "result_join_column": "commune_code_insee",
         "geom_join_column": "com_code",
     },
-    "udi": {},
+    "udi": {
+        "result_table": "web__resultats_udi",
+        "geom_table": "stg_udi_json",
+        "groupby_columns": ["cdreseau", "nomreseaux"],
+        "result_join_column": "cdreseau",
+        "geom_join_column": "code_udi",
+    },
 }
+
+col_input = ["periode", "categorie"]
+
+list_column_result = [
+    "resultat",
+    "ratio",
+    "dernier_prel_datetime",
+    "dernier_prel_valeur",
+    "nb_parametres",
+]
 
 
 class GeoJSONProcessor:
@@ -44,6 +65,22 @@ class GeoJSONProcessor:
         output.update({"features": features})
         return output
 
+    @staticmethod
+    def process_group(df_group):
+        output = {}
+        for _, row in df_group.iterrows():
+            name = ""
+            for col in col_input:
+                if name == "":
+                    name += row[col]
+                else:
+                    name += "_" + row[col]
+
+            output.update(
+                {name + "_" + result: row[result] for result in list_column_result}
+            )
+        return output
+
     def generate_geojson(self):
         results_df = self.conn.sql(f"SELECT * FROM {self.config['result_table']}").df()
         geom_df = self.conn.sql(f"SELECT * FROM {self.config['geom_table']};").df()
@@ -52,11 +89,8 @@ class GeoJSONProcessor:
 
         results_df_lookup = (
             results_df.groupby(self.config["groupby_columns"])
-            .apply(
-                lambda x: {
-                    f"resultat_cvm_{row['annee']}": row["resultat_cvm"]
-                    for _, row in x.iterrows()
-                },
+            .progress_apply(
+                lambda x: self.process_group(x),
                 include_groups=False,
             )
             .reset_index(name="resultats_dict")

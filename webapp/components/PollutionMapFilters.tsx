@@ -1,22 +1,28 @@
 "use client";
 
-import { useState } from "react";
 import { availableCategories } from "@/lib/polluants";
 
 type PollutionMapFiltersProps = {
-  year: string;
-  setYear: (year: string) => void;
+  period: string;
+  setPeriod: (year: string) => void;
   categoryType: string;
   setCategoryType: (type: string) => void;
 };
 
 export default function PollutionMapFilters({
-  year,
-  setYear,
+  period,
+  setPeriod,
   categoryType,
   setCategoryType,
 }: PollutionMapFiltersProps) {
-  const availableYears = ["2024", "2023", "2022", "2021", "2020"];
+  const availablePeriods = [
+    { value: "dernier_prel", label: "Dernier relevé" },
+    { value: "bilan_annuel_2024", label: "Bilan 2024" },
+    { value: "bilan_annuel_2023", label: "Bilan 2023" },
+    { value: "bilan_annuel_2022", label: "Bilan 2022" },
+    { value: "bilan_annuel_2021", label: "Bilan 2021" },
+    { value: "bilan_annuel_2020", label: "Bilan 2020" },
+  ];
 
   return (
     <div className="flex items-center space-x-6">
@@ -29,13 +35,13 @@ export default function PollutionMapFilters({
         </label>
         <select
           id="year-select"
-          value={year}
-          onChange={(e) => setYear(e.target.value)}
+          value={period}
+          onChange={(e) => setPeriod(e.target.value)}
           className="block w-32 py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
         >
-          {availableYears.map((y) => (
-            <option key={y} value={y}>
-              {y}
+          {availablePeriods.map((p) => (
+            <option key={p.value} value={p.value}>
+              {p.label}
             </option>
           ))}
         </select>

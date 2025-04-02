@@ -5,18 +5,19 @@ import ReactMapGl, {
   MapLayerMouseEvent,
   ViewStateChangeEvent,
 } from "react-map-gl/maplibre";
-import maplibregl, { MapGeoJSONFeature } from "maplibre-gl";
+import maplibregl from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 import { Protocol } from "pmtiles";
 
 import { DEFAULT_MAP_STYLE, getDefaultLayers } from "@/app/config";
 
 type PollutionMapBaseLayerProps = {
-  year: string;
+  period: string;
   categoryType: string;
+  displayMode: "communes" | "udis";
   communeInseeCode: string | null;
   mapState: { longitude: number; latitude: number; zoom: number };
-  onFeatureClick: (feature: MapGeoJSONFeature) => void;
+  setDataPanel: (data: Record<string, string | number | null> | null) => void;
   onMapStateChange?: (coords: {
     longitude: number;
     latitude: number;
@@ -25,11 +26,12 @@ type PollutionMapBaseLayerProps = {
 };
 
 export default function PollutionMapBaseLayer({
-  year,
+  period,
   categoryType,
+  displayMode,
   communeInseeCode,
   mapState,
-  onFeatureClick,
+  setDataPanel,
   onMapStateChange,
 }: PollutionMapBaseLayerProps) {
   useEffect(() => {
@@ -41,14 +43,15 @@ export default function PollutionMapBaseLayer({
     };
   }, []);
 
-  const propertyId = `resultat_${categoryType}_${year}`;
+  const propertyId = `${period}_${categoryType}_resultat`;
 
   function onClick(event: MapLayerMouseEvent) {
     if (event.features && event.features.length > 0) {
       console.log("Properties:", event.features[0].properties);
-      onFeatureClick(event.features[0]);
+      setDataPanel(event.features[0].properties);
     }
   }
+
   function handleMapStateChange(e: ViewStateChangeEvent) {
     if (e.viewState && onMapStateChange) {
       onMapStateChange({
@@ -62,29 +65,75 @@ export default function PollutionMapBaseLayer({
   const mapStyle = useMemo(() => {
     const dynamicLayers: maplibregl.LayerSpecification[] = [
       {
-        id: "polluants",
+        id: "communes-layer",
         type: "fill",
-        source: "polluants",
-        "source-layer": "datacommunes",
+        source: "communes",
+        "source-layer": "data_communes",
         paint: {
           "fill-color": [
             "case",
-            ["==", ["get", propertyId], "conforme"],
-            "#00ff00", // Green for "conforme"
-            ["==", ["get", propertyId], "non analysé"],
-            "#808080", // Grey for "non analysé"
-            ["==", ["get", propertyId], "non conforme"],
-            "#ff0000", // Red for "non conforme"
+            ["==", ["get", propertyId], "aucun_parametre_quantifie"],
+            "#75D3B4",
+            [
+              "==",
+              ["get", propertyId],
+              "somme_20pfas_inf_0_1_et_4pfas_inf_0_02",
+            ],
+            "#B4E681",
+            [
+              "==",
+              ["get", propertyId],
+              "somme_20pfas_inf_0_1_et_4pfas_sup_0_02",
+            ],
+            "#EFE765",
+            ["==", ["get", propertyId], "somme_20pfas_sup_0_1"],
+            "#FBBD6C",
             "#808080", // Default color (grey) for any other value
           ],
           "fill-opacity": 0.5,
         },
-        // Ajout d'un filtre pour mettre en évidence la commune sélectionnée si présente
+        layout: {
+          visibility: displayMode === "communes" ? "visible" : "none",
+        },
         ...(communeInseeCode
           ? {
               filter: ["==", ["get", "commune_code_insee"], communeInseeCode],
             }
           : {}),
+      },
+      {
+        id: "udis-layer",
+        type: "fill",
+        source: "udis",
+        "source-layer": "data_udi",
+        paint: {
+          "fill-color": [
+            "case",
+            ["==", ["get", propertyId], "aucun_parametre_quantifie"],
+            "#75D3B4",
+            [
+              "==",
+              ["get", propertyId],
+              "somme_20pfas_inf_0_1_et_4pfas_inf_0_02",
+            ],
+            "#B4E681",
+            [
+              "==",
+              ["get", propertyId],
+              "somme_20pfas_inf_0_1_et_4pfas_sup_0_02",
+            ],
+            "#EFE765",
+            ["==", ["get", propertyId], "somme_20pfas_sup_0_1"],
+            "#FBBD6C",
+            "#808080", // Default color (grey) for any other value
+          ],
+          "fill-opacity": 0.5,
+        },
+        layout: {
+          visibility: displayMode === "udis" ? "visible" : "none",
+        },
+        // Filter for UDIs if applicable
+        // ...(someUdiCode ? { filter: ["==", ["get", "udi_code"], someUdiCode] } : {}),
       },
     ];
 
@@ -92,7 +141,10 @@ export default function PollutionMapBaseLayer({
       ...DEFAULT_MAP_STYLE,
       layers: [...getDefaultLayers(), ...dynamicLayers],
     } as maplibregl.StyleSpecification;
-  }, [propertyId, communeInseeCode]);
+  }, [propertyId, communeInseeCode, displayMode]);
+
+  const interactiveLayerIds =
+    displayMode === "communes" ? ["communes-layer"] : ["udis-layer"];
 
   return (
     <ReactMapGl
@@ -103,7 +155,7 @@ export default function PollutionMapBaseLayer({
       mapLib={maplibregl}
       onClick={onClick}
       onMove={handleMapStateChange}
-      interactiveLayerIds={["polluants"]}
+      interactiveLayerIds={interactiveLayerIds}
     />
   );
 }

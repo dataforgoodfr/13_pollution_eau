@@ -21,8 +21,8 @@ export default function PollutionMapDetailPanel({
   const codeInsee = data.commune_code_insee || "N/A";
 
   // Filter out null/empty properties
-  const nonEmptyProperties = Object.entries(data).filter(([_, value]) => {
-    return value !== null && value !== "" && value !== 0;
+  const nonEmptyProperties = Object.entries(data).filter(([, value]) => {
+    return value !== null && value !== "";
   });
 
   return (
@@ -60,7 +60,7 @@ export default function PollutionMapDetailPanel({
           <div className="space-y-2">
             {nonEmptyProperties.map(([key, value], index) => (
               <div key={index} className="text-sm">
-                <span className="font-medium">{key}:</span> {value.toString()}
+                <span className="font-medium">{key}:</span> {value}
               </div>
             ))}
           </div>

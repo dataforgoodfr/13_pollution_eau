@@ -1,4 +1,5 @@
 export const resultatsDetails = {
+  // pfas
   aucun_parametre_quantifie: {
     label: "Aucun paramètre quantifié",
     color: "#75D3B4",
@@ -20,6 +21,19 @@ export const resultatsDetails = {
   },
   un_pfas_sup_valeur_sanitaire: {
     label: "Au moins un paramètre au dessus de la limite sanitaire",
+    color: "#FB726C",
+  },
+  // cvm
+  non_quantifie: {
+    label: "CVM non quantifié",
+    color: "#75D3B4",
+  },
+  inf_0_5: {
+    label: "CVM quantifié mais < 0,5 µg/L",
+    color: "#EFE765",
+  },
+  sup_0_5: {
+    label: "CVM > 0,5 µg/L (fait passer l'affichage total polluant en rouge)",
     color: "#FB726C",
   },
 };

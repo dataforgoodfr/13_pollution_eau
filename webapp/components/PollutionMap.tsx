@@ -13,7 +13,7 @@ import MapZoneSelector from "./MapZoneSelector";
 
 export default function PollutionMap() {
   const [period, setPeriod] = useState("dernier_prel");
-  const [categoryType, setCategoryType] = useState("pfas");
+  const [category, setCategory] = useState("pfas");
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [displayMode, setDisplayMode] = useState<"communes" | "udis">("udis");
   const [mapState, setMapState] = useState<{
@@ -42,7 +42,7 @@ export default function PollutionMap() {
       <MapProvider>
         <PollutionMapBaseLayer
           period={period}
-          categoryType={categoryType}
+          category={category}
           displayMode={displayMode}
           communeInseeCode={communeInseeCode}
           mapState={mapState}
@@ -58,8 +58,8 @@ export default function PollutionMap() {
           <PollutionMapFilters
             period={period}
             setPeriod={setPeriod}
-            categoryType={categoryType}
-            setCategoryType={setCategoryType}
+            category={category}
+            setCategory={setCategory}
             // displayMode={displayMode}
             // setDisplayMode={setDisplayMode}
           />
@@ -70,7 +70,7 @@ export default function PollutionMap() {
         </div>
 
         {/* <div className="absolute bottom-6 right-4 z-10 bg-white p-3 rounded-lg shadow-lg">
-        <PollutionMapLegend categoryType={categoryType} />
+        <PollutionMapLegend category={category} />
       </div> */}
 
         {dataPanel && (

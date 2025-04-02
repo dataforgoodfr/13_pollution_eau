@@ -5,15 +5,15 @@ import { availableCategories } from "@/lib/polluants";
 type PollutionMapFiltersProps = {
   period: string;
   setPeriod: (year: string) => void;
-  categoryType: string;
-  setCategoryType: (type: string) => void;
+  category: string;
+  setCategory: (type: string) => void;
 };
 
 export default function PollutionMapFilters({
   period,
   setPeriod,
-  categoryType,
-  setCategoryType,
+  category,
+  setCategory,
 }: PollutionMapFiltersProps) {
   const availablePeriods = [
     { value: "dernier_prel", label: "Dernier relevé" },
@@ -56,8 +56,8 @@ export default function PollutionMapFilters({
         </label>
         <select
           id="category-select"
-          value={categoryType}
-          onChange={(e) => setCategoryType(e.target.value)}
+          value={category}
+          onChange={(e) => setCategory(e.target.value)}
           className="block w-64 py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
         >
           {availableCategories.map((p) => (

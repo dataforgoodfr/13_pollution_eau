@@ -8,12 +8,13 @@ import ReactMapGl, {
 import maplibregl from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 import { Protocol } from "pmtiles";
+import { generateColorExpression } from "@/lib/colorMapping";
 
 import { DEFAULT_MAP_STYLE, getDefaultLayers } from "@/app/config";
 
 type PollutionMapBaseLayerProps = {
   period: string;
-  categoryType: string;
+  category: string;
   displayMode: "communes" | "udis";
   communeInseeCode: string | null;
   mapState: { longitude: number; latitude: number; zoom: number };
@@ -27,7 +28,7 @@ type PollutionMapBaseLayerProps = {
 
 export default function PollutionMapBaseLayer({
   period,
-  categoryType,
+  category,
   displayMode,
   communeInseeCode,
   mapState,
@@ -42,8 +43,6 @@ export default function PollutionMapBaseLayer({
       maplibregl.removeProtocol("pmtiles");
     };
   }, []);
-
-  const propertyId = `${period}_${categoryType}_resultat`;
 
   function onClick(event: MapLayerMouseEvent) {
     if (event.features && event.features.length > 0) {
@@ -70,26 +69,7 @@ export default function PollutionMapBaseLayer({
         source: "communes",
         "source-layer": "data_communes",
         paint: {
-          "fill-color": [
-            "case",
-            ["==", ["get", propertyId], "aucun_parametre_quantifie"],
-            "#75D3B4",
-            [
-              "==",
-              ["get", propertyId],
-              "somme_20pfas_inf_0_1_et_4pfas_inf_0_02",
-            ],
-            "#B4E681",
-            [
-              "==",
-              ["get", propertyId],
-              "somme_20pfas_inf_0_1_et_4pfas_sup_0_02",
-            ],
-            "#EFE765",
-            ["==", ["get", propertyId], "somme_20pfas_sup_0_1"],
-            "#FBBD6C",
-            "#808080", // Default color (grey) for any other value
-          ],
+          "fill-color": generateColorExpression(category, period),
           "fill-opacity": 0.5,
         },
         layout: {
@@ -107,26 +87,7 @@ export default function PollutionMapBaseLayer({
         source: "udis",
         "source-layer": "data_udi",
         paint: {
-          "fill-color": [
-            "case",
-            ["==", ["get", propertyId], "aucun_parametre_quantifie"],
-            "#75D3B4",
-            [
-              "==",
-              ["get", propertyId],
-              "somme_20pfas_inf_0_1_et_4pfas_inf_0_02",
-            ],
-            "#B4E681",
-            [
-              "==",
-              ["get", propertyId],
-              "somme_20pfas_inf_0_1_et_4pfas_sup_0_02",
-            ],
-            "#EFE765",
-            ["==", ["get", propertyId], "somme_20pfas_sup_0_1"],
-            "#FBBD6C",
-            "#808080", // Default color (grey) for any other value
-          ],
+          "fill-color": generateColorExpression(category, period),
           "fill-opacity": 0.5,
         },
         layout: {
@@ -141,7 +102,7 @@ export default function PollutionMapBaseLayer({
       ...DEFAULT_MAP_STYLE,
       layers: [...getDefaultLayers(), ...dynamicLayers],
     } as maplibregl.StyleSpecification;
-  }, [propertyId, communeInseeCode, displayMode]);
+  }, [communeInseeCode, displayMode, category, period]);
 
   const interactiveLayerIds =
     displayMode === "communes" ? ["communes-layer"] : ["udis-layer"];

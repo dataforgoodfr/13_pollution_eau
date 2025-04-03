@@ -1,0 +1,40 @@
+version: 2
+
+models:
+  - name: int__resultats_nitrites_udi_dernier
+    description: Resultats nitrites par UDI pour la temporalité 'derniers prélèvements'
+    columns:
+      - name: cdreseau
+        tests:
+          - not_null
+          - unique
+      - name: categorie
+        tests:
+          - not_null
+          - accepted_values:
+              values: ["nitrite"]
+      - name: periode
+        type: VARCHAR
+        tests:
+          - accepted_values:
+              values: ["dernier_prel"]
+      - name: dernier_prel_datetime
+        type: TIMESTAMP
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: ">= CURRENT_DATE - INTERVAL 1 YEAR"
+      - name: dernier_prel_valeur
+        type: FLOAT
+      - name: nb_parametres
+        type: INT
+        tests:
+          - not_null
+      - name: resultat
+        tests:
+          - not_null
+          - accepted_values:
+              values:
+                - non_quantifie
+                - conforme
+                - non_conforme

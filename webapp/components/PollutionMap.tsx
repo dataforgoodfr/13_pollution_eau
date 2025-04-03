@@ -32,7 +32,6 @@ export default function PollutionMap() {
       setCommuneInseeCode(null);
     }
   };
-
   return (
     <div className="relative w-full h-full flex">
       <MapProvider>

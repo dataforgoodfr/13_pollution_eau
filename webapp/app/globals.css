@@ -114,6 +114,10 @@
   }
 }
 
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
 @keyframes slide-in-from-right {
   from {
     transform: translateX(100%);
@@ -125,4 +129,6 @@
 
 .animate-slide-in-from-right {
   animation: slide-in-from-right 3s ease-out;
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
 }

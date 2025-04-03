@@ -23,12 +23,12 @@ class GeoJSONProcessor:
         if type not in config_merge_geo.keys():
             raise Exception(f"type {type} must be in {config_merge_geo.keys()}")
         self.config = config_merge_geo[type]
+        self.col_resultats_dict = "resultats_dict"
 
-    @staticmethod
-    def create_properties(row):
+    def create_properties(self, row):
         output = {}
         for col_name, valeur in row.items():
-            if col_name != "geometry":
+            if col_name in self.config["groupby_columns"] + [self.col_resultats_dict]:
                 if isinstance(valeur, dict):
                     output.update(valeur)
                 else:
@@ -76,7 +76,7 @@ class GeoJSONProcessor:
                 lambda x: self.process_group(x),
                 include_groups=False,
             )
-            .reset_index(name="resultats_dict")
+            .reset_index(name=self.col_resultats_dict)
         )
         output_df = pd.merge(
             geom_df,

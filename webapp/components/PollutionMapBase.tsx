@@ -46,6 +46,7 @@ export default function PollutionMapBaseLayer({
 
   function onClick(event: MapLayerMouseEvent) {
     if (event.features && event.features.length > 0) {
+      console.log("zoom level:", mapState.zoom);
       console.log("Properties:", event.features[0].properties);
       setDataPanel(event.features[0].properties);
     }
@@ -95,6 +96,26 @@ export default function PollutionMapBaseLayer({
         },
         // Filter for UDIs if applicable
         // ...(someUdiCode ? { filter: ["==", ["get", "udi_code"], someUdiCode] } : {}),
+      },
+      {
+        id: "udis-border-layer",
+        type: "line",
+        source: "udis",
+        "source-layer": "data_udi",
+        paint: {
+          "line-color": "#7F7F7F",
+          "line-width": [
+            "interpolate",
+            ["linear"],
+            ["zoom"],
+            0, 0.0,  // At zoom level 0, line width is 0px
+            6, 0.0, // At zoom level 6, line width is 0px
+            20, 2.0  // At zoom level 20, line width is 2.0px
+          ],
+        },
+        layout: {
+          visibility: displayMode === "udis" ? "visible" : "none",
+        },
       },
     ];
 

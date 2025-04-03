@@ -16,23 +16,21 @@ L'objectif est de consolider, analyser et cartographier les données sur la qual
 
 ### Data Pipelines
 
-- [Installation de Python](#installation-de-python)
+Installer [uv](https://docs.astral.sh/uv/getting-started/installation/#installing-uv). Ce projet utilise uv pour la gestion des dépendances Python.
 
-Ce projet utilise [uv](https://docs.astral.sh/uv/) pour la gestion des dépendances Python. Il est préréquis pour l'installation de ce projet.
+  Installation sur Windows
 
-Installation sur Windows
+  ```bash
+  powershell -c "irm https://astral.sh/uv/install.ps1 | iex"
+  ```
 
-```bash
-powershell -c "irm https://astral.sh/uv/install.ps1 | iex"
-```
+  Installation sur Mac ou linux
 
-Installation sur Mac ou linux
+  ```bash
+  curl -LsSf https://astral.sh/uv/install.sh | sh
+  ```
 
-```bash
-curl -LsSf https://astral.sh/uv/install.sh | sh
-```
-
-Une fois installé, il suffit de lancer la commande suivante pour installer la version de Python adéquate, créer un environnement virtuel et installer les dépendances du projet.
+- Lancez la commande suivante pour installer la version de Python adéquate, créer un environnement virtuel et installer les dépendances du projet.
 
 ```bash
 uv sync
@@ -60,21 +58,23 @@ Allez dans settings, python interpreter, add interpreter, puis selectionnez exis
 
 utilisez les commandes `uv run` pour lancer un script Python depuis votre terminal
 
-- [Installation de Node.js](#installation-de-nodejs) (pour le développement du site web)
+### Site web
 
-Pour le développement du site web, il est nécessaire d'installer Node.js. Pour cela, il suffit de suivre les instructions sur le [site officiel](https://nodejs.org/).
+- Installez [Node.js](https://nodejs.org/) ou [NVM](https://github.com/nvm-sh/nvm?tab=readme-ov-file#install--update-script)
 
-Pour installer les dépendances du site web, il suffit de lancer les commandes suivantes :
+  ```bash
+  curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
+  nvm install 22
+  ```
 
-```bash
-cd webapp
-npm install
-```
+- Installez les dépendances du site web:
 
-Veuillez copier `./webapp/example.env` comme `./webapp/.env`.
+  ```bash
+  cd webapp
+  npm install
+  ```
 
-Ensuite, vous pouvez lancer `npm run start` et ouvrir le navigateur pour voir la carte.
-
+- Lancer `npm run dev` et ouvrir le navigateur sur http://localhost:3000 pour voir la carte.
 
 ## Data Processing
 
@@ -108,6 +108,11 @@ uv run pipelines/run.py run build_database --refresh-type custom --custom-years 
 uv run pipelines/run.py run build_database --refresh-type last --drop-tables
 ```
 
+5. Chosisez une table specifique to refresh 
+```bash
+uv run pipelines/run.py run build_database --refresh-table edc
+```
+
 ### Création du modèles de données avec dbt
 #### 1. Commandes a exécuter
 La librarie dbt est celle choisie pour une construction rapide et simple de modèles de données optimisé pour l'analytics.
@@ -134,6 +139,49 @@ Les modèles de données sont organisés dans le dossier `dbt_/models`. La struc
 
 #### Documentation
 La documentation du projet dbt est disponible sur le lien suivant: [documentation dbt](https://dataforgood.fr/13_pollution_eau/#!/overview)
+
+### Création des pmtiles
+La génération des fichiers PMTiles nécessite une dépendance optionnelle. Pour l'installer, utilisez la commande suivante :
+```bash
+uv pip install .[pmtiles]
+```
+
+Une fois cette dépendance installée, vous pouvez générer les PMTiles et les uploader sur S3 en exécutant la commande suivante :
+```bash
+uv run ./pipelines/run.py run generate_pmtiles 
+```
+#### Le fichier PMTiles sera accessible à l'URL suivante :
+
+Communes
+
+➡️ dev: https://pollution-eau-s3.s3.fr-par.scw.cloud/dev/pmtiles/georef-france-communes-prelevement.pmtiles
+
+➡️ prod: https://pollution-eau-s3.s3.fr-par.scw.cloud/dev/pmtiles/georef-france-communes-prelevement.pmtiles
+
+UDI
+
+➡️ dev: https://pollution-eau-s3.s3.fr-par.scw.cloud/dev/pmtiles/georef-france-udi-prelevement.pmtiles
+
+➡️ prod: https://pollution-eau-s3.s3.fr-par.scw.cloud/dev/pmtiles/georef-france-udi-prelevement.pmtiles
+
+#### Le fichier Geojson sera accessible à l'URL suivante:
+
+Le fichier est mis à jours manuellement et que pour dev. Demandez aux DE si vous avez besoin d'une mise à jour.
+
+Communes
+
+➡️ dev:  https://pollution-eau-s3.s3.fr-par.scw.cloud/dev/geojson/georef-france-communes-prelevement.geojson
+
+UDI
+
+➡️ dev:  https://pollution-eau-s3.s3.fr-par.scw.cloud/dev/geojson/georef-france-udi-prelevement.geojson
+
+
+Si vous souhaitez télécharger ce fichier PMTiles via la commande CLI, utilisez :
+```bash
+uv run ./pipelines/run.py run download_pmtiles 
+```
+
 
 ### Comment télécharger la base de données
 
@@ -195,8 +243,22 @@ L'option `-s` permet d'afficher les prints dans le terminal.
 Lancer la commande suivante pour s'assurer que le code satisfait bien tous les pre commit avant de créer votre pull request
 
 ```bash
-pre-commit run --all-files
+uv run pre-commit run --all-files
 ```
+
+## Déploiement du site avec Docker
+
+Un fichier `Dockerfile` est disponible pour déployer le site web avec Docker.
+
+Pour créer et exécuter l'image Docker en local (à la racine du projet) :
+
+```bash
+docker build --build-arg NEXT_PUBLIC_PROTOMAPS_API_KEY="your-api-key-here" -t pollution-eau-app .
+
+docker run -p 8080:8080 --rm pollution-eau-app
+```
+
+Le site sera alors accessible à l'adresse http://localhost:8080.
 
 ## How to contribute
 Pour contribuer, il est recommandé d'utiliser un fork du projet. Cela permet d'éviter la gestion des demandes d'accès au dépôt principal.

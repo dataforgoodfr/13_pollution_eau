@@ -29,14 +29,30 @@ models:
         type: VARCHAR
 
       - name: de_partition
-        description: Année de récupération des données. Ceci est un champ ajouté automatiquement lors de l'ingestion des données.
+        description: Année de récupération des données. "de" signifie "data engineering". Ce champ est ajouté automatiquement lors de l'ingestion des données.
         type: SMALLINT
         tests:
+          - not_null
           - dbt_utils.expression_is_true:
               expression: ">= 2020"
+
+      - name: de_ingestion_date
+        description: Date d'ingestion des données dans le système.
+        type: DATE
+
+      - name: de_dataset_datetime
+        description: Horodatage du jeu de données source.
+        type: VARCHAR
     
   - name: stg_edc__resultats
-    description: "Liste des communes et leurs prélévements"
+    description: "Résultats d'analyse des prélèvements d'eau. Unicité par combinaison de referenceprel + cdparametresiseeaux + referenceanl + de_partition."
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - referenceprel
+            - cdparametresiseeaux
+            - referenceanl
+            - de_partition
     columns:
       - name: cddept
         description: "Département gestionnaire (DD-ARS)"
@@ -52,6 +68,8 @@ models:
           paramètre. Lorsque c'est possible, le symbole chimique est retenu comme identifiant (NO3, AS...) pour le rendre
           signifiant.
         type: VARCHAR(10)
+        tests:
+          - not_null
 
       - name: cdparametre
         description: >
@@ -136,11 +154,20 @@ models:
         type: VARCHAR
 
       - name: de_partition
-        description: Année de récupération des données. Ceci est un champ ajouté automatiquement lors de l'ingestion des données.
+        description: Année de récupération des données. "de" signifie "data engineering". Ce champ est ajouté automatiquement lors de l'ingestion des données.
         type: SMALLINT
         tests:
+          - not_null
           - dbt_utils.expression_is_true:
               expression: ">= 2020"
+
+      - name: de_ingestion_date
+        description: Date d'ingestion des données dans le système.
+        type: DATE
+
+      - name: de_dataset_datetime
+        description: Horodatage du jeu de données source.
+        type: VARCHAR
 
   - name: stg_edc__prevelevements
     description: "Liste des prélèvements"
@@ -290,12 +317,22 @@ models:
         tests:
           - accepted_values:
               values: ["blanc", "C", "N", "S", "D"]
+
       - name: de_partition
-        description: Année de récupération des données. Ceci est un champ ajouté automatiquement lors de l'ingestion des données.
+        description: Année de récupération des données. "de" signifie "data engineering". Ce champ est ajouté automatiquement lors de l'ingestion des données.
         type: SMALLINT
         tests:
+          - not_null
           - dbt_utils.expression_is_true:
               expression: ">= 2020"
+
+      - name: de_ingestion_date
+        description: Date d'ingestion des données dans le système.
+        type: DATE
+
+      - name: de_dataset_datetime
+        description: Horodatage du jeu de données source.
+        type: VARCHAR
       
       
   

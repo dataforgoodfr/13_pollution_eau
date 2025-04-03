@@ -1,29 +1,39 @@
 "use client";
 
 import { useEffect, useMemo } from "react";
-import ReactMapGl, { MapLayerMouseEvent } from "react-map-gl/maplibre";
+import ReactMapGl, {
+  MapLayerMouseEvent,
+  ViewStateChangeEvent,
+} from "react-map-gl/maplibre";
 import maplibregl from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 import { Protocol } from "pmtiles";
-import layers from "protomaps-themes-base";
-import {
-  MAPLIBRE_MAP,
-  DEFAULT_MAP_STYLE,
-  getDefaultLayers,
-} from "@/app/config";
+import { generateColorExpression } from "@/lib/colorMapping";
+
+import { DEFAULT_MAP_STYLE, getDefaultLayers } from "@/app/config";
 
 type PollutionMapBaseLayerProps = {
-  year: string;
-  categoryType: string;
-  selectedCommune: any | null;
-  onFeatureClick: (feature: any) => void;
+  period: string;
+  category: string;
+  displayMode: "communes" | "udis";
+  communeInseeCode: string | null;
+  mapState: { longitude: number; latitude: number; zoom: number };
+  setDataPanel: (data: Record<string, string | number | null> | null) => void;
+  onMapStateChange?: (coords: {
+    longitude: number;
+    latitude: number;
+    zoom: number;
+  }) => void;
 };
 
 export default function PollutionMapBaseLayer({
-  year,
-  categoryType,
-  selectedCommune,
-  onFeatureClick,
+  period,
+  category,
+  displayMode,
+  communeInseeCode,
+  mapState,
+  setDataPanel,
+  onMapStateChange,
 }: PollutionMapBaseLayerProps) {
   useEffect(() => {
     // adds the support for PMTiles
@@ -34,47 +44,57 @@ export default function PollutionMapBaseLayer({
     };
   }, []);
 
-  const propertyId = `resultat_${categoryType}_${year}`;
-
   function onClick(event: MapLayerMouseEvent) {
     if (event.features && event.features.length > 0) {
       console.log("Properties:", event.features[0].properties);
-      onFeatureClick(event.features[0]);
+      setDataPanel(event.features[0].properties);
     }
   }
 
-  useEffect(() => {
-    if (selectedCommune) {
-      console.log("Should zoom to:", selectedCommune);
+  function handleMapStateChange(e: ViewStateChangeEvent) {
+    if (e.viewState && onMapStateChange) {
+      onMapStateChange({
+        longitude: e.viewState.longitude,
+        latitude: e.viewState.latitude,
+        zoom: e.viewState.zoom,
+      });
     }
-  }, [selectedCommune]);
+  }
 
   const mapStyle = useMemo(() => {
     const dynamicLayers: maplibregl.LayerSpecification[] = [
       {
-        id: "polluants",
+        id: "communes-layer",
         type: "fill",
-        source: "polluants",
-        "source-layer": "datacommunes",
+        source: "communes",
+        "source-layer": "data_communes",
         paint: {
-          "fill-color": [
-            "case",
-            ["==", ["get", propertyId], "conforme"],
-            "#00ff00", // Green for "conforme"
-            ["==", ["get", propertyId], "non analysé"],
-            "#808080", // Grey for "non analysé"
-            ["==", ["get", propertyId], "non conforme"],
-            "#ff0000", // Red for "non conforme"
-            "#808080", // Default color (grey) for any other value
-          ],
+          "fill-color": generateColorExpression(category, period),
           "fill-opacity": 0.5,
         },
-        // Ajout d'un filtre pour mettre en évidence la commune sélectionnée si présente
-        ...(selectedCommune
+        layout: {
+          visibility: displayMode === "communes" ? "visible" : "none",
+        },
+        ...(communeInseeCode
           ? {
-              filter: ["==", ["get", "code_insee"], selectedCommune.code_insee],
+              filter: ["==", ["get", "commune_code_insee"], communeInseeCode],
             }
           : {}),
+      },
+      {
+        id: "udis-layer",
+        type: "fill",
+        source: "udis",
+        "source-layer": "data_udi",
+        paint: {
+          "fill-color": generateColorExpression(category, period),
+          "fill-opacity": 0.5,
+        },
+        layout: {
+          visibility: displayMode === "udis" ? "visible" : "none",
+        },
+        // Filter for UDIs if applicable
+        // ...(someUdiCode ? { filter: ["==", ["get", "udi_code"], someUdiCode] } : {}),
       },
     ];
 
@@ -82,16 +102,21 @@ export default function PollutionMapBaseLayer({
       ...DEFAULT_MAP_STYLE,
       layers: [...getDefaultLayers(), ...dynamicLayers],
     } as maplibregl.StyleSpecification;
-  }, [propertyId, selectedCommune]);
+  }, [communeInseeCode, displayMode, category, period]);
+
+  const interactiveLayerIds =
+    displayMode === "communes" ? ["communes-layer"] : ["udis-layer"];
 
   return (
     <ReactMapGl
+      id="map"
       style={{ width: "100%", height: "100%" }}
       mapStyle={mapStyle}
-      initialViewState={MAPLIBRE_MAP.initialViewState}
+      {...mapState}
       mapLib={maplibregl}
       onClick={onClick}
-      interactiveLayerIds={["polluants"]}
+      onMove={handleMapStateChange}
+      interactiveLayerIds={interactiveLayerIds}
     />
   );
 }

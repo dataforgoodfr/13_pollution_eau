@@ -3,50 +3,84 @@
 import { useState } from "react";
 import PollutionMapBaseLayer from "@/components/PollutionMapBase";
 import PollutionMapFilters from "@/components/PollutionMapFilters";
-// import PollutionMapSearchBox from "@/components/PollutionMapSearchBox";
-// import PollutionMapLegend from "@/components/PollutionMapLegend";
 import PollutionMapDetailPanel from "@/components/PollutionMapDetailPanel";
+import PollutionMapSearchBox, {
+  CommuneFilterResult,
+} from "./PollutionMapSearchBox";
+import { MAPLIBRE_MAP } from "@/app/config";
+import { MapProvider } from "react-map-gl/maplibre";
+import MapZoneSelector from "./MapZoneSelector";
 
 export default function PollutionMap() {
-  // États partagés entre les composants
-  const [year, setYear] = useState("2024");
-  const [categoryType, setCategoryType] = useState("cvm");
-  const [selectedCommune, setSelectedCommune] = useState(null);
-  const [selectedFeature, setSelectedFeature] = useState(null);
+  const [period, setPeriod] = useState("dernier_prel");
+  const [category, setCategory] = useState("pfas");
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [displayMode, setDisplayMode] = useState<"communes" | "udis">("udis");
+  const [mapState, setMapState] = useState<{
+    longitude: number;
+    latitude: number;
+    zoom: number;
+  }>(MAPLIBRE_MAP.initialViewState);
+  const [communeInseeCode, setCommuneInseeCode] = useState<string | null>(null);
+  const [dataPanel, setDataPanel] = useState<Record<
+    string,
+    string | number | null
+  > | null>(null);
+
+  const handleCommuneSelect = (result: CommuneFilterResult | null) => {
+    if (result) {
+      const { center, zoom, communeInseeCode } = result;
+      setMapState({ longitude: center[0], latitude: center[1], zoom });
+      setCommuneInseeCode(communeInseeCode);
+    } else {
+      setCommuneInseeCode(null);
+    }
+  };
 
   return (
     <div className="relative w-full h-full flex flex-col">
-      <PollutionMapBaseLayer
-        year={year}
-        categoryType={categoryType}
-        selectedCommune={selectedCommune}
-        onFeatureClick={setSelectedFeature}
-      />
-
-      <div className="absolute top-4 left-4 right-4 z-10 bg-white p-3 rounded-lg shadow-lg flex justify-between">
-        {/* <PollutionMapSearchBox
-          onSelect={setSelectedCommune}
-          selectedCommune={selectedCommune}
-        /> */}
-        <PollutionMapFilters
-          year={year}
-          setYear={setYear}
-          categoryType={categoryType}
-          setCategoryType={setCategoryType}
+      <MapProvider>
+        <PollutionMapBaseLayer
+          period={period}
+          category={category}
+          displayMode={displayMode}
+          communeInseeCode={communeInseeCode}
+          mapState={mapState}
+          onMapStateChange={setMapState}
+          setDataPanel={setDataPanel}
         />
-      </div>
 
-      {/* <div className="absolute bottom-6 right-4 z-10 bg-white p-3 rounded-lg shadow-lg">
-        <PollutionMapLegend categoryType={categoryType} />
+        <div className="absolute top-4 left-4 right-4 z-10 bg-white p-3 rounded-lg shadow-lg flex justify-between">
+          <PollutionMapSearchBox
+            communeInseeCode={communeInseeCode}
+            onCommuneFilter={handleCommuneSelect}
+          />
+          <PollutionMapFilters
+            period={period}
+            setPeriod={setPeriod}
+            category={category}
+            setCategory={setCategory}
+            // displayMode={displayMode}
+            // setDisplayMode={setDisplayMode}
+          />
+        </div>
+
+        <div className="absolute top-24 right-12 z-10 p-3">
+          <MapZoneSelector />
+        </div>
+
+        {/* <div className="absolute bottom-6 right-4 z-10 bg-white p-3 rounded-lg shadow-lg">
+        <PollutionMapLegend category={category} />
       </div> */}
 
-      {selectedFeature && (
-        <PollutionMapDetailPanel
-          feature={selectedFeature}
-          onClose={() => setSelectedFeature(null)}
-          className="absolute bottom-6 left-4 z-10 bg-white p-3 rounded-lg shadow-lg max-w-xs"
-        />
-      )}
+        {dataPanel && (
+          <PollutionMapDetailPanel
+            data={dataPanel}
+            onClose={() => setDataPanel(null)}
+            className="absolute bottom-6 left-4 z-10 bg-white p-3 rounded-lg shadow-lg max-w-xs"
+          />
+        )}
+      </MapProvider>
     </div>
   );
 }

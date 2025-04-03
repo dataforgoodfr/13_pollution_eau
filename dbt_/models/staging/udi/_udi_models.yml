@@ -1,0 +1,20 @@
+version: 2
+
+models:
+  - name: stg_udi
+    description: "Unités de distribution (UDI) et infofactures"
+    columns:
+      - name: code_udi
+        description: "Code de UDI"
+        type: VARCHAR
+      - name: code_ins
+        description: "Code de l'installation (unité de distribution)"
+        type: VARCHAR
+      - name: ins_nom
+        description: "Nom de l'installation (unité de distribution)"
+        type: VARCHAR
+      - name: geom
+        description: "le tracé de UDI"
+        type: GEOMETRY
+  - name: stg_udi_json
+    description: "Unités de distribution (UDI) et infofactures avec geometry as json"

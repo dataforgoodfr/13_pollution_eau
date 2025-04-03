@@ -1,6 +1,7 @@
 export const availableCategories = [
   { id: "cvm", label: "Chlorure de Vinyle Monomère" },
   { id: "pesticides", label: "Pesticides" },
+  { id: "pfas", label: "PFAS" },
 ];
 
 export function formatCategoryName(id: string) {

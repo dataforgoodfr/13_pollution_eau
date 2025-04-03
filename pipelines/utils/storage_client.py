@@ -1,15 +1,16 @@
-import os
 import io
-import logging
+import os
+
 import boto3
+import pandas as pd
 from botocore.client import Config
 from botocore.exceptions import ClientError
-import pandas as pd
 from tqdm import tqdm
 
-"""Client class to interact with Scaleway Object Storage."""
+from pipelines.utils.logger import get_logger
 
-logger = logging.getLogger(__name__)
+logger = get_logger(__name__)
+"""Client class to interact with Scaleway Object Storage."""
 
 
 class ObjectStorageClient:
@@ -72,7 +73,7 @@ class ObjectStorageClient:
                 )
         except ClientError as e:
             logger.error(
-                "Error deleting object '%s' from S3 bucket '%s': %s",
+                "download_object '%s' from S3 bucket '%s': %s",
                 file_key,
                 self.bucket_name,
                 e,
@@ -89,6 +90,8 @@ class ObjectStorageClient:
                 file_key,
                 ExtraArgs={"ACL": "public-read"} if public_read else None,
             )
+            url = f"https://{self.bucket_name}.{self.endpoint_url.split('https://')[1]}/{file_key}"
+            return url
         except ClientError as e:
             logger.error(
                 "Boto Client Error upload_object '%s' to bucket '%s': %s",

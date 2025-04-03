@@ -1,0 +1,147 @@
+version: 2
+
+models:
+  - name: int__resultats_sub_indus_commune_annuel
+    description: Résultats CVM par commune pour la temporalité 'bilan_annuel'
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - inseecommune
+            - annee
+    columns:
+      - name: inseecommune
+        description: "Code INSEE de la commune"
+        type: VARCHAR
+      - name: annee
+        description: "Annee du prevelvement"
+        type: SMALLINT
+      - name: categorie
+        description: "Catégorie du paramètre (pesticides, pfas, vcm, nitrates, etc.) selon la classification établie."
+        tests:
+          - accepted_values:
+              values: ["cvm"]
+      - name: periode
+        description: "Période du résultat"
+        type: VARCHAR
+        tests:
+          - dbt_utils.expression_is_true:
+              expression: "LIKE 'bilan_annuel%'"
+      - name: nb_depassements
+      - name: nb_prelevements
+      - name: ratio_depassements
+        description: "Pourcentage de prélèvements qui dépassent la limite"
+        type: FLOAT
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              max_value: 1
+
+  - name: int__resultats_sub_indus_commune_dernier
+    description: Résultats CVM par commune pour la temporalité 'derniers prélèvements'
+    columns:
+      - name: inseecommune
+        tests:
+          - not_null
+          - unique
+      - name: categorie
+        tests:
+          - not_null
+      - name: periode
+        type: VARCHAR
+        tests:
+          - accepted_values:
+              values: ["dernier_prel"]
+      - name: dernier_prel_datetime
+        type: TIMESTAMP
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: ">= CURRENT_DATE - INTERVAL 1 YEAR"
+      - name: dernier_prel_valeur
+        type: FLOAT
+      - name: nb_parametres
+        type: INT
+        tests:
+          - not_null
+      - name: resultat
+        tests:
+          - not_null
+          - accepted_values:
+              values:
+                - non_quantifie
+                - sup_0_5
+                - inf_0_5
+
+  - name: int__resultats_sub_indus_udi_annuel
+    description: Résultats CVM par UDI pour la temporalité 'bilan_annuel'
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - cdreseau
+            - annee
+    columns:
+      - name: cdreseau
+        description: "Code de l'installation (unité de distribution)"
+        tests:
+          - not_null
+      - name: annee
+        description: "Annee du prevelvement"
+        type: SMALLINT
+      - name: categorie
+        description: "Catégorie du paramètre (pesticides, pfas, vcm, nitrates, etc.) selon la classification établie."
+        tests:
+          - accepted_values:
+              values: ["cvm"]
+      - name: periode
+        description: "Période du résultat"
+        type: VARCHAR
+        tests:
+          - dbt_utils.expression_is_true:
+              expression: "LIKE 'bilan_annuel%'"
+      - name: nb_depassements
+      - name: nb_prelevements
+      - name: ratio_depassements
+        description: "Pourcentage de prélèvements qui dépassent la limite"
+        type: FLOAT
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              max_value: 1
+
+  - name: int__resultats_sub_indus_udi_dernier
+    description: Resultats CVM par UDI pour la temporalité 'derniers prélèvements'
+    columns:
+      - name: cdreseau
+        tests:
+          - not_null
+          - unique
+      - name: categorie
+        tests:
+          - not_null
+      - name: periode
+        type: VARCHAR
+        tests:
+          - accepted_values:
+              values: ["dernier_prel"]
+      - name: dernier_prel_datetime
+        type: TIMESTAMP
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: ">= CURRENT_DATE - INTERVAL 1 YEAR"
+      - name: dernier_prel_valeur
+        type: FLOAT
+      - name: nb_parametres
+        type: INT
+        tests:
+          - not_null
+      - name: resultat
+        tests:
+          - not_null
+          - accepted_values:
+              values:
+                - non_quantifie
+                - sup_0_5
+                - inf_0_5

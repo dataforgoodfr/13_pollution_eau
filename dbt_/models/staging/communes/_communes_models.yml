@@ -47,3 +47,8 @@ models:
       
   - name: stg_communes__laposte
     description: "Liste des communes et leurs unités de distribution chargé depuis le site de la poste https://datanova.laposte.fr/datasets/laposte-hexasmal"
+  - name: stg_communes__opendatasoft
+    description: Tracé geojson des communes chargé depuis https://public.opendatasoft.com/explore/dataset/georef-france-commune/information
+  - name: stg_communes__opendatasoft_json
+    description: stg_communes__opendatasoft avec geom stocké en tant que json au lieu d'objet geometry
+  

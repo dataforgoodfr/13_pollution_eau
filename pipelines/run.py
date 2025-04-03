@@ -1,21 +1,15 @@
 import importlib
-import logging
 import os
 
 import click
 
 # Importer et charger les variables d'environnement depuis config.py
 from pipelines.config.config import get_environment, load_env_variables
+from pipelines.utils.logger import get_logger
 
 load_env_variables()
 
-# Configure logging
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-)
-
-logger = logging.getLogger(__name__)
+logger = get_logger(__name__)
 
 
 @click.group()
@@ -59,6 +53,12 @@ def run():
     help="Type of refresh to perform",
 )
 @click.option(
+    "--refresh-table",
+    type=click.Choice(["all", "edc", "commune", "udi"]),
+    default="all",
+    help="choose type of table to refresh",
+)
+@click.option(
     "--custom-years",
     type=str,
     help="Comma-separated list of years to process (for custom refresh type)",
@@ -77,7 +77,9 @@ def run():
     default=False,
     help="Apply refresh-type only on the years whose data has been modified from the source.",
 )
-def run_build_database(refresh_type, custom_years, drop_tables, check_update):
+def run_build_database(
+    refresh_type, refresh_table, custom_years, drop_tables, check_update
+):
     """Run build_database task."""
     module = importlib.import_module("tasks.build_database")
     task_func = getattr(module, "execute")
@@ -88,6 +90,7 @@ def run_build_database(refresh_type, custom_years, drop_tables, check_update):
 
     task_func(
         refresh_type=refresh_type,
+        refresh_table=refresh_table,
         custom_years=custom_years_list,
         drop_tables=drop_tables,
         check_update=check_update,
@@ -142,26 +145,39 @@ def run_upload_database(env):
     task_func(env)
 
 
-@run.command("generate_geojson")
+@run.command("upload_udi")
 @click.option(
     "--env",
     type=click.Choice(["dev", "prod"]),
     default=None,
     help="Environment to upload to. It will override environment defined in .env",
 )
-def run_generate_geojson(env):
-    """Generate and upload merged new GeoJSON file."""
-    if env is not None:
-        os.environ["ENV"] = env
+def run_upload_udi(env):
+    """Upload database to S3."""
     env = get_environment(default="dev")
-    logger.info(f"Running on env {env}")
-
-    module = importlib.import_module("tasks.generate_geojson")
+    module = importlib.import_module("tasks.upload_udi")
     task_func = getattr(module, "execute")
     task_func(env)
 
 
-@run.command("download_geojson")
+@run.command("generate_pmtiles")
+@click.option(
+    "--env",
+    type=click.Choice(["dev", "prod"]),
+    default="dev",
+    help="Environment to upload to. It will override environment defined in .env",
+)
+def run_generate_pmtiles(env):
+    """Generate and upload merged new GeoJSON file."""
+    env = get_environment(default=env)
+    logger.info(f"Running on env {env}")
+
+    module = importlib.import_module("tasks.generate_pmtiles")
+    task_func = getattr(module, "execute")
+    task_func(env)
+
+
+@run.command("download_pmtiles")
 @click.option(
     "--env",
     type=click.Choice(["dev", "prod"]),
@@ -172,10 +188,10 @@ def run_generate_geojson(env):
     "--use-boto3",
     is_flag=True,
     default=False,
-    help="Download GeoJSON via Boto3 (instead of HTTPS).",
+    help="Download PMtiles via Boto3 (instead of HTTPS).",
 )
-def run_download_geojson(env, use_boto3):
-    """Download GeoJSON file from S3.
+def run_download_pmtiles(env, use_boto3):
+    """Download PMtiles file from S3.
 
     Args:
         env: The environment to download from ("dev" or "prod").
@@ -186,7 +202,7 @@ def run_download_geojson(env, use_boto3):
     env = get_environment(default="prod")
     logger.info(f"Running on env {env}")
 
-    module = importlib.import_module("tasks.download_geojson")
+    module = importlib.import_module("tasks.download_pmtiles")
     task_func = getattr(module, "execute")
     task_func(env, use_boto3)
 

@@ -11,14 +11,14 @@ Examples:
     - download_database --use-boto3 : Download database from S3 storage
 """
 
-import logging
 from abc import ABC, abstractmethod
 
 from pipelines.config.config import get_s3_path
 from pipelines.tasks.config.common import DUCKDB_FILE, download_file_from_https
+from pipelines.utils.logger import get_logger
 from pipelines.utils.storage_client import ObjectStorageClient
 
-logger = logging.getLogger(__name__)
+logger = get_logger(__name__)
 
 
 class DatabaseDownloadStrategy(ABC):

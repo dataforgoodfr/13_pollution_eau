@@ -177,14 +177,20 @@ models:
       - name: dateprel
         description: "Date du prélèvement"
         type: DATE
+        tests:
+          - not_null
 
       - name: heureprel
         description: "Heure du prélèvement au format 'Hh:MM'"
         type: VARCHAR
 
       - name: datetimeprel
-        description: "Date et heure du prélèvement combinées en un timestamp"
+        description: >
+          Date et heure du prélèvement combinées en un timestamp.
+          Quand l'heure est manquante ou sous un format invalide, nous utilisons par défaut 09h00.
         type: TIMESTAMP
+        tests:
+          - not_null
 
       - name: de_partition
         description: "Année de récupération des données"
@@ -195,7 +201,6 @@ models:
     description: >
       Table des résultats de prélèvements ventilés par UDI et commune, 
       pour les catégories d'intérêt (pesticides, pfas, vcm, etc.).
-      Exclut les catégories 'non classé' et 'paramètre organoleptique'.
     columns:
       - name: referenceprel
         description: "Code SISE-Eaux du prélèvement"
@@ -210,9 +215,23 @@ models:
           signifiant.
         tests:
           - not_null
-
       - name: valtraduite
-        description: '{{ doc("val_traduite_docs") }}'
+        description: >
+          A noter qu'une correction a été appliquée par rapport au valtraduite de la source de donnée.
+          Les valeurs textuelles telles que "Changement anormal", "OUI", "PRESENCE" ont été converties en 0 car considérées comme non quantifiées.
+          Les valeurs purement numériques restent inchangées.
+          Exemples:
+            - 'Changement anormal' → 0
+            - 'OUI' → 0  
+            - 'PRESENCE' → 0
+            - '1,0' → 1
+            - '>1' → 1
+
+          Ci-dessous, la documentation de la source de donnée :
+
+          ---
+
+          {{ doc("val_traduite_docs") }}
 
       - name: limitequal
         description: "Limite(s) de qualité du paramètre concerné en vigueur au moment du prélèvement pour le type d'eau considéré."
@@ -248,3 +267,90 @@ models:
           Date et heure du prélèvement correspondant la date à laquelle le prélèvement d'échantillon a été réalisé. 
           Dans le cas où il n'y a pas constitution d'échantillon (mesures in situ), il s'agit de la date de la visite.
         type: DATETIME
+        tests:
+          - not_null
+
+  - name: int__udi
+    description: "Liste des UDI (unités de distribution) avec leurs communes desservies"
+    columns:
+      - name: cdreseau
+        description: "Code de l'installation (unité de distribution)"
+        type: VARCHAR
+        tests:
+          - not_null
+          - unique
+
+      - name: inseecommunes
+        description: "Liste des codes INSEE des communes desservies par l'UDI, séparés par des virgules"
+        type: VARCHAR
+
+      - name: quartiers
+        description: "Liste de tous les quartiers distincts desservis par l'UDI, séparés par des virgules"
+        type: VARCHAR
+
+      - name: nomreseaux
+        description: "Liste de tous les noms distincts associés à l'UDI, séparés par des virgules"
+        type: VARCHAR
+
+  - name: int__union_resultats_udi
+    description: "Résultats UDIs (union de tous les résultats par catégorie)"
+    columns:
+      - name: cdreseau
+        description: "Code de l'installation (unité de distribution)"
+        tests:
+          - not_null
+      - name: periode
+        description: "Période du résultat"
+        tests:
+          - not_null
+        type: VARCHAR
+      - name: categorie
+        description: "Catégorie (pesticides, pfas, vcm, nitrates, etc.)"
+        tests:
+          - not_null
+      - name: resultat
+        description: "Résultat"
+        type: VARCHAR
+      - name: ratio
+        description: "Ratio de dépassements"
+        type: FLOAT
+      - name: dernier_prel_datetime
+        description: "Date du dernier prelevement"
+        type: DATE
+      - name: dernier_prel_valeur
+        description: "Valeur du dernier prelevement"
+        type: FLOAT
+      - name: nb_parametres
+        description: "Nombre de paramètres analysés"
+        type: INT
+
+  - name: int__union_resultats_commune
+    description: "Résultats communes (union de tous les résultats par catégorie)"
+    columns:
+      - name: inseecommune
+        description: "Code INSEE de la commune"
+        type: VARCHAR
+      - name: periode
+        description: "Période du résultat"
+        tests:
+          - not_null
+        type: VARCHAR
+      - name: categorie
+        description: "Catégorie (pesticides, pfas, vcm, nitrates, etc.)"
+        tests:
+          - not_null
+      - name: resultat
+        description: "Résultat"
+        type: VARCHAR
+      - name: ratio
+        description: "Ratio de dépassements"
+        type: FLOAT
+      - name: dernier_prel_datetime
+        description: "Date du dernier prelevement"
+        type: DATE
+      - name: dernier_prel_valeur
+        description: "Valeur du dernier prelevement"
+        type: FLOAT
+      - name: nb_parametres
+        description: "Nombre de paramètres analysés"
+        type: INT

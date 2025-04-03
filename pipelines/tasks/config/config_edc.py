@@ -33,7 +33,7 @@ def get_edc_config() -> Dict:
                     "zipfile": "dis-2025.zip",
                 },
                 "2024": {
-                    "id": "84a67a3b-08a7-4001-98e6-231c74a98139",
+                    "id": "a631e486-c790-42d0-8368-6a42b1a3dc1d",
                     "zipfile": "dis-2024.zip",
                 },
                 "2023": {

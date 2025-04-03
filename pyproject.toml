@@ -35,6 +35,11 @@ dev = [
     "pytest-cov>=6.0.0,<7"
 ]
 
+[project.optional-dependencies]
+pmtiles = [
+  "tippecanoe>=2.72.0,<3"
+]
+
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"

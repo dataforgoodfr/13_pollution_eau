@@ -32,7 +32,7 @@ class GeoJSONProcessor:
                 if isinstance(valeur, dict):
                     output.update(valeur)
                 else:
-                    if pd.isna(valeur):
+                    if not pd.isna(valeur):
                         output.update({col_name: valeur})
         return output
 
@@ -70,7 +70,6 @@ class GeoJSONProcessor:
         geom_df = self.conn.sql(f"SELECT * FROM {self.config['geom_table']};").df()
         geom_df = geom_df.rename(columns={"geom": "geometry"})
         geom_df["geometry"] = geom_df["geometry"].map(lambda x: json.loads(x))
-
         results_df_lookup = (
             results_df.groupby(self.config["groupby_columns"])
             .progress_apply(

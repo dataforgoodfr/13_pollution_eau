@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { availableCategories } from "@/lib/polluants";
 
 type PollutionMapFiltersProps = {

@@ -1,7 +1,7 @@
 export const availableCategories = [
   { id: "cvm", label: "Chlorure de Vinyle Monomère", disabled: false },
   { id: "pesticides", label: "Pesticide", disabled: true },
-  { id: "pfas", label: "Pfas", disabled: false },
+  { id: "pfas", label: "PFAS", disabled: false },
   { id: "metauxlourds", label: "Métaux lourds", disabled: true },
   { id: "mineral", label: "Minéral", disabled: true },
   { id: "microbio", label: "Microbio", disabled: true },

@@ -11,7 +11,7 @@ export default function Home() {
         </h1>
       </header>
 
-      <main className="relative flex-1 w-full">
+      <main className="relative flex-1 w-full" id="main">
         <ResizableWrapper>
           <PollutionMap />
         </ResizableWrapper>

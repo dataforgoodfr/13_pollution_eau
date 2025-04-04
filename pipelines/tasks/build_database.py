@@ -27,6 +27,7 @@ from typing import List
 from pipelines.tasks.client.commune_client import CommuneClient
 from pipelines.tasks.client.core.duckdb_client import DuckDBClient
 from pipelines.tasks.client.datagouv_client import DataGouvClient
+from pipelines.tasks.client.opendatasoft_client import OpenDataSoftClient
 from pipelines.tasks.client.udi_client import UDIClient
 from pipelines.tasks.config.config_insee import get_insee_config
 from pipelines.tasks.config.config_laposte import get_laposte_config
@@ -71,6 +72,8 @@ def execute(
         insee_client.process_datasets()
         laposte = CommuneClient(get_laposte_config(), duckdb_client)
         laposte.process_datasets()
+        opendatasoft = OpenDataSoftClient(duckdb_client)
+        opendatasoft.process_datasets()
     if refresh_table == "all" or refresh_table == "udi":
         udi_client = UDIClient(get_udi_config(), duckdb_client)
         udi_client.process_datasets()

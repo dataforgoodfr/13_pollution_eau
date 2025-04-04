@@ -3,37 +3,27 @@
 import { formatCategoryName } from "@/lib/polluants";
 
 type PollutionMapDetailPanelProps = {
-  feature: any;
+  data: Record<string, string | number | null> | null;
   onClose: () => void;
   className?: string;
 };
 
 export default function PollutionMapDetailPanel({
-  feature,
+  data,
   onClose,
   className = "",
 }: PollutionMapDetailPanelProps) {
-  if (!feature || !feature.properties) {
+  if (!data) {
     return null;
   }
 
-  const properties = feature.properties;
+  const communeName = data.commune_nom || "Commune inconnue";
+  const codeInsee = data.commune_code_insee || "N/A";
 
-  const communeName = properties.commune_nom || "Commune inconnue";
-  const codeInsee = properties.commune_code_insee || "N/A";
-
-  const categoryResults = Object.keys(properties)
-    .filter((key) => key.startsWith("resultat_"))
-    .map((key) => {
-      // Extraire le type de polluant et l'année du nom de la propriété
-      const [, category, year] = key.split("_");
-      return {
-        category,
-        year,
-        result: properties[key],
-      };
-    })
-    .sort((a, b) => b.year.localeCompare(a.year)); // Trier par année décroissante
+  // Filter out null/empty properties
+  const nonEmptyProperties = Object.entries(data).filter(([, value]) => {
+    return value !== null && value !== "";
+  });
 
   return (
     <div className={`${className} overflow-y-auto max-h-96`}>
@@ -63,25 +53,14 @@ export default function PollutionMapDetailPanel({
 
       <div className="border-t border-gray-200 pt-3">
         <h4 className="text-sm font-medium text-gray-700 mb-2">
-          Résultats des analyses
+          Données disponibles
         </h4>
 
-        {categoryResults.length > 0 ? (
+        {nonEmptyProperties.length > 0 ? (
           <div className="space-y-2">
-            {categoryResults.map((item, index) => (
-              <div key={index} className="bg-gray-50 p-2 rounded text-sm">
-                <div className="flex justify-between space-x-2">
-                  <span className="font-medium capitalize">
-                    {formatCategoryName(item.category)}
-                  </span>
-                  <span className="text-gray-500">{item.year}</span>
-                </div>
-                <div className="mt-1 flex items-center">
-                  <StatusIndicator status={item.result} />
-                  <span className="ml-2 capitalize">
-                    {item.result || "non disponible"}
-                  </span>
-                </div>
+            {nonEmptyProperties.map(([key, value], index) => (
+              <div key={index} className="text-sm">
+                <span className="font-medium">{key}:</span> {value}
               </div>
             ))}
           </div>

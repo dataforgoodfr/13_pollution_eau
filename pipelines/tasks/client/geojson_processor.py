@@ -1,145 +1,112 @@
-# pipelines/tasks/geojson_processor.py
-
 import json
-from pathlib import Path
 
 import pandas as pd
 from tqdm import tqdm
 
 from pipelines.config.config import get_s3_path_geojson
+from pipelines.tasks.config.config_geojson import (
+    col_input,
+    config_merge_geo,
+    list_column_result,
+)
 from pipelines.utils.logger import get_logger
 from pipelines.utils.storage_client import ObjectStorageClient
+
+tqdm.pandas()
 
 logger = get_logger(__name__)
 
 
 class GeoJSONProcessor:
-    def __init__(self):
-        self.communes_in_db_not_in_geojson = set()
-        self.communes_in_geojson_not_in_db = set()
+    def __init__(self, type, duckdb_client):
+        self.conn = duckdb_client.conn
+        if type not in config_merge_geo.keys():
+            raise Exception(f"type {type} must be in {config_merge_geo.keys()}")
+        self.config = config_merge_geo[type]
+        self.col_resultats_dict = "resultats_dict"
 
-    def merge_geojson_with_results(
-        self, geojson_path: str, results_df: pd.DataFrame, output_path: str
-    ) -> str:
-        """
-        Merge GeoJSON with commuunes analysed data
-
-        Args:
-            geojson_path: Path to input GeoJSON file
-            results_df: DataFrame containing commune results
-            output_path: Path where to save the merged GeoJSON
-        """
-        # Load GeoJSON
-        with open(geojson_path, "r") as f:
-            data_geo = json.load(f)
-
-        # Process features
-        data_geo_features = data_geo["features"]
-
-        # Create lookup dict for faster processing
-        results_lookup = (
-            results_df.groupby("commune_code_insee")
-            .apply(
-                lambda x: {
-                    f"resultat_cvm_{row['annee']}": row["resultat_cvm"]
-                    for _, row in x.iterrows()
-                }
-            )
-            .to_dict()
-        )
-
-        # Track communes in GeoJSON
-        communes_in_geojson = {}
-
-        # Process features
-        for feature in tqdm(data_geo_features, desc="Processing communes"):
-            code_insee = feature["properties"].get("com_code")
-            name_insee = feature["properties"].get("com_name")
-
-            if code_insee:
-                code_insee = code_insee[0]
-                name_insee = name_insee[0]
-                communes_in_geojson[code_insee] = name_insee
-
-                properties = {
-                    "commune_code_insee": code_insee,
-                    "commune_nom": name_insee,
-                }
-                properties.update(results_lookup.get(code_insee, {}))
-
-                feature["properties"] = properties
-        # Get communes names from database
-        communes_db_names = dict(
-            zip(results_df["commune_code_insee"], results_df["commune_nom"])
-        )
-
-        # Find missing communes in both sets
-        self.communes_in_db_not_in_geojson = set(communes_db_names.keys()) - set(
-            communes_in_geojson.keys()
-        )
-        self.communes_in_geojson_not_in_db = set(communes_in_geojson.keys()) - set(
-            communes_db_names.keys()
-        )
-
-        # Save missing communes to csv file
-        output_dir = Path(output_path).parent
-        missing_communes_file = output_dir / "missing_communes.csv"
-
-        missing_data = {
-            "commune_code_insee": (
-                list(self.communes_in_db_not_in_geojson)
-                + list(self.communes_in_geojson_not_in_db)
-            ),
-            "commune_nom": (
-                [
-                    communes_db_names.get(code, "N/A")
-                    for code in self.communes_in_db_not_in_geojson
-                ]
-                + [
-                    communes_in_geojson.get(code, "N/A")
-                    for code in self.communes_in_geojson_not_in_db
-                ]
-            ),
-            "source": (
-                ["database"] * len(self.communes_in_db_not_in_geojson)
-                + ["geojson"] * len(self.communes_in_geojson_not_in_db)
-            ),
-        }
-        pd.DataFrame(missing_data).to_csv(missing_communes_file, index=False)
-
-        # Log results
-        if (
-            not self.communes_in_db_not_in_geojson
-            and not self.communes_in_geojson_not_in_db
-        ):
-            logger.info("✅ All communes are present in both database and GeoJSON")
-        else:
-            logger.warning("❌ Some communes are missing in either database or GeoJSON")
-            logger.info(
-                f"Found {len(self.communes_in_db_not_in_geojson)} communes in databse not in GeoJSON"
-            )
-            logger.info(
-                f"Found {len(self.communes_in_geojson_not_in_db)} communes in GeoJSON not in database"
-            )
-            logger.info(
-                f"Full list of missing communes saved to: {missing_communes_file}"
-            )
-
-        # Save result
-        new_geojson = {"type": "FeatureCollection", "features": data_geo_features}
-        with open(output_path, "w", encoding="utf-8") as f:
-            json.dump(new_geojson, f)
-
-        return output_path
+    def create_properties(self, row):
+        output = {}
+        for col_name, valeur in row.items():
+            if col_name in self.config["groupby_columns"] + [self.col_resultats_dict]:
+                if isinstance(valeur, dict):
+                    output.update(valeur)
+                else:
+                    if not pd.isna(valeur):
+                        output.update({col_name: valeur})
+        return output
 
     @staticmethod
-    def upload_geojson_to_storage(env: str, geojson_path: str):
+    def create_geojson(df):
+        output = {"type": "FeatureCollection"}
+        features = df[["type", "geometry", "properties"]].to_dict(orient="records")
+        output.update({"features": features})
+        return output
+
+    @staticmethod
+    def process_group(df_group):
+        output = {}
+        for _, row in df_group.iterrows():
+            name = ""
+            for col in col_input:
+                if name == "":
+                    name += row[col]
+                else:
+                    name += "_" + row[col]
+
+            output.update(
+                {name + "_" + result: row[result] for result in list_column_result}
+            )
+        return output
+
+    def generate_geojson(self):
+        results_df = self.conn.sql(f"SELECT * FROM {self.config['result_table']}").df()
+        results_df["dernier_prel_datetime"] = results_df[
+            "dernier_prel_datetime"
+        ].dt.strftime(
+            "%Y-%m-%d %H:%M:%S"
+        )  # convert timestamp to string because timestamp not json seriaziable
+        results_df = results_df.astype(object).where(pd.notnull(results_df), "")
+        geom_df = self.conn.sql(f"SELECT * FROM {self.config['geom_table']};").df()
+        geom_df = geom_df.rename(columns={"geom": "geometry"})
+        geom_df["geometry"] = geom_df["geometry"].map(lambda x: json.loads(x))
+        results_df_lookup = (
+            results_df.groupby(self.config["groupby_columns"])
+            .progress_apply(
+                lambda x: self.process_group(x),
+                include_groups=False,
+            )
+            .reset_index(name=self.col_resultats_dict)
+        )
+        output_df = pd.merge(
+            geom_df,
+            results_df_lookup,
+            how="left",
+            left_on=self.config["geom_join_column"],
+            right_on=self.config["result_join_column"],
+        )
+        output_df = output_df.fillna(
+            ""
+        )  # some lines are present in geojson but not in results
+        output_df["properties"] = output_df.apply(
+            lambda row: self.create_properties(row), axis=1
+        )
+        output_df["type"] = "Feature"
+
+        output_geojson = self.create_geojson(output_df)
+        return output_geojson
+
+    def upload_geojson_to_storage(self, env: str, file_path: str):
         """
-        Upload the GeoJSON file to Storage Object depending on the environment
+        Upload the Pmtiles file to Storage Object depending on the environment
         This requires setting the correct environment variables for the Scaleway credentials
         """
         s3 = ObjectStorageClient()
-        s3_path = get_s3_path_geojson(env)
+        s3_path = get_s3_path_geojson(env, self.config["upload_file_name"])
 
-        s3.upload_object(local_path=geojson_path, file_key=s3_path, public_read=True)
-        logger.info(f"✅ GeoJSON uploaded to s3://{s3.bucket_name}/{s3_path}")
+        s3.upload_object(local_path=file_path, file_key=s3_path, public_read=True)
+        logger.info(f"✅ pmtils uploaded to s3://{s3.bucket_name}/{s3_path}")
+        url = (
+            f"https://{s3.bucket_name}.{s3.endpoint_url.split('https://')[1]}/{s3_path}"
+        )
+        return url

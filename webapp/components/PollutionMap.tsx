@@ -1,12 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, JSX } from "react";
 import PollutionMapBaseLayer from "@/components/PollutionMapBase";
 import PollutionMapFilters from "@/components/PollutionMapFilters";
 import PollutionMapDetailPanel from "@/components/PollutionMapDetailPanel";
-import PollutionMapSearchBox, {
-  CommuneFilterResult,
-} from "./PollutionMapSearchBox";
+import PollutionMapSearchBox, { FilterResult } from "./PollutionMapSearchBox";
 import { MAPLIBRE_MAP } from "@/app/config";
 import { MapProvider } from "react-map-gl/maplibre";
 import MapZoneSelector from "./MapZoneSelector";
@@ -21,22 +19,33 @@ export default function PollutionMap() {
     latitude: number;
     zoom: number;
   }>(MAPLIBRE_MAP.initialViewState);
-  const [communeInseeCode, setCommuneInseeCode] = useState<string | null>(null);
+  const [selectedZoneCode, setSelectedZoneCode] = useState<string | null>(null);
   const [dataPanel, setDataPanel] = useState<Record<
     string,
     string | number | null
   > | null>(null);
+  const [marker, setMarker] = useState<{
+    longitude: number;
+    latitude: number;
+    content: JSX.Element;
+  } | null>(null);
 
-  const handleCommuneSelect = (result: CommuneFilterResult | null) => {
+  const handleAddressSelect = (result: FilterResult | null) => {
     if (result) {
-      const { center, zoom, communeInseeCode } = result;
+      const { center, zoom, communeInseeCode, address } = result;
       setMapState({ longitude: center[0], latitude: center[1], zoom });
-      setCommuneInseeCode(communeInseeCode);
+      setSelectedZoneCode(communeInseeCode);
+      //LookupUDI(center);
+      setMarker({
+        longitude: center[0],
+        latitude: center[1],
+        content: <>{address}</>,
+      });
     } else {
-      setCommuneInseeCode(null);
+      setSelectedZoneCode(null);
+      setMarker(null);
     }
   };
-
   return (
     <div className="relative w-full h-full flex flex-col">
       <MapProvider>
@@ -44,17 +53,15 @@ export default function PollutionMap() {
           period={period}
           category={category}
           displayMode={displayMode}
-          communeInseeCode={communeInseeCode}
+          selectedZoneCode={selectedZoneCode}
           mapState={mapState}
           onMapStateChange={setMapState}
           setDataPanel={setDataPanel}
+          marker={marker}
+          setMarker={setMarker}
         />
 
-        <div className="absolute top-4 left-4 right-4 z-10 bg-white p-3 rounded-lg shadow-lg flex justify-between">
-          <PollutionMapSearchBox
-            communeInseeCode={communeInseeCode}
-            onCommuneFilter={handleCommuneSelect}
-          />
+        <div className="absolute top-4 right-4 left-4 z-10 px-2 flex justify-between overflow-x-auto scrollbar-hide">
           <PollutionMapFilters
             period={period}
             setPeriod={setPeriod}
@@ -62,6 +69,10 @@ export default function PollutionMap() {
             setCategory={setCategory}
             // displayMode={displayMode}
             // setDisplayMode={setDisplayMode}
+          />
+          <PollutionMapSearchBox
+            communeInseeCode={selectedZoneCode}
+            onAddressFilter={handleAddressSelect}
           />
         </div>
 
@@ -83,4 +94,16 @@ export default function PollutionMap() {
       </MapProvider>
     </div>
   );
+}
+
+async function LookupUDI(center: [number, number]) {
+  /*try {
+    const fecthUrl =
+      "/api/UDILookup?Lon=" + center[0] + "&Lat=" + center[1] + "";
+    console.log("Lookup UDI", fecthUrl);
+    const response = await fetch(fecthUrl);
+    const UDIInfo = await response.json();
+
+    alert("UDI "+UDIInfo.nomUDI)
+  } catch (ex) {}*/
 }

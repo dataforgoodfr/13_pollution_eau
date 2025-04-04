@@ -32,13 +32,23 @@ split_nitrites AS (
                 WHEN
                     last_pvl.cdparametresiseeaux = 'NO3'
                     THEN last_pvl.valtraduite
+                ELSE 0
             END
         ) AS valtraduite_no3,
         MAX(
             CASE
                 WHEN
+                    last_pvl.cdparametresiseeaux = 'NO2'
+                    THEN last_pvl.valtraduite
+                ELSE 0
+            END
+        ) AS valtraduite_no2,
+        MAX(
+            CASE
+                WHEN
                     last_pvl.cdparametresiseeaux = 'NO3_NO2'
                     THEN last_pvl.valtraduite
+                ELSE 0
             END
         ) AS valtraduite_no3_no2
     FROM
@@ -58,18 +68,26 @@ SELECT
     split_nitrites.nb_parametres,
     CASE
         WHEN
-            split_nitrites.valtraduite_no3 IS NULL
-            OR split_nitrites.valtraduite_no3_no2 IS NULL
-            OR split_nitrites.valtraduite_no3 = 0
-            OR split_nitrites.valtraduite_no3_no2 = 0
+            split_nitrites.nb_parametres != 3
+            OR (
+                split_nitrites.valtraduite_no3 = 0
+                AND split_nitrites.valtraduite_no2 = 0
+                AND split_nitrites.valtraduite_no3_no2 = 0
+            )
             THEN 'non_quantifie'
         WHEN
-            split_nitrites.valtraduite_no3 < 0.5
+            split_nitrites.nb_parametres = 3
+            AND split_nitrites.valtraduite_no3 < 50
+            AND split_nitrites.valtraduite_no2 < 0.5
             AND split_nitrites.valtraduite_no3_no2 < 1
             THEN 'conforme'
         WHEN
-            split_nitrites.valtraduite_no3 >= 0.5
-            OR split_nitrites.valtraduite_no3_no2 >= 1
+            split_nitrites.nb_parametres = 3
+            AND (
+                split_nitrites.valtraduite_no3 >= 50
+                OR split_nitrites.valtraduite_no2 >= 0.5
+                OR split_nitrites.valtraduite_no3_no2 >= 1
+            )
             THEN 'non_conforme'
         ELSE 'error'
     END AS resultat

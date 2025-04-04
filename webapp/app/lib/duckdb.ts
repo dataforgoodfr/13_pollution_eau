@@ -23,4 +23,9 @@ const db = await DuckDBInstance.create(dbFilePath, {
   threads: "4",
 });
 
+// Load the geospatial extension
+const connection = await db.connect();
+await connection.run("INSTALL spatial;");
+await connection.run("LOAD spatial;");
+
 export default db;

@@ -2,15 +2,25 @@ import subprocess
 from pathlib import Path
 
 from pipelines.config.config import get_s3_path_pmtiles
+from pipelines.tasks.config.config_geojson import (
+    config_merge_geo,
+)
 from pipelines.utils.logger import get_logger
 from pipelines.utils.storage_client import ObjectStorageClient
 
 logger = get_logger(__name__)
 
+types = config_merge_geo.keys()
+
 
 class PmtilesProcessor:
+    def __init__(self, type="communes"):
+        if type not in types:
+            raise Exception(f"type {type} must be in {types}")
+        self.upload_file_path = f"georef-france-{type}-prelevement.pmtiles"
+
     def convert_geojson_to_pmtiles(
-        self, geojson_file: str, pmtiles_file: str, layer="datacommunes"
+        self, geojson_file: str, pmtiles_file: str, layer="data_communes"
     ):
         """Convert a GeoJSON file to PMTiles format using Tippecanoe."""
         # try:
@@ -44,7 +54,7 @@ class PmtilesProcessor:
         This requires setting the correct environment variables for the Scaleway credentials
         """
         s3 = ObjectStorageClient()
-        s3_path = get_s3_path_pmtiles(env)
+        s3_path = get_s3_path_pmtiles(env, self.upload_file_path)
 
         s3.upload_object(local_path=pmtils_path, file_key=s3_path, public_read=True)
         logger.info(f"✅ pmtils uploaded to s3://{s3.bucket_name}/{s3_path}")

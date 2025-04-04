@@ -42,7 +42,18 @@ jobs:
     - name: Install dependencies
       run: |
         uv sync
-        uv pip install .[pmtiles]
 
     - name: Run tests with coverage
       run: uv run pytest -s --cov=. --cov-report=term-missing
+
+    - name: test dbt
+      run: |
+        cd dbt_
+        uv run dbt deps
+        uv run dbt seed
+        uv run dbt run
+
+    - name: test pmtiles generation
+      run: |
+        uv pip install .[pmtiles]
+        uv run pipelines/run.py run generate_pmtiles --env dev

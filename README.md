@@ -150,11 +150,32 @@ Une fois cette dépendance installée, vous pouvez générer les PMTiles et les 
 ```bash
 uv run ./pipelines/run.py run generate_pmtiles 
 ```
-Le fichier PMTiles sera accessible à l'URL suivante :
+#### Le fichier PMTiles sera accessible à l'URL suivante :
 
-➡️ dev: https://pollution-eau-s3.s3.fr-par.scw.cloud/dev/pmtiles/georef-france-commune-prelevement.pmtiles
+Communes
 
-➡️ prod: https://pollution-eau-s3.s3.fr-par.scw.cloud/dev/pmtiles/georef-france-commune-prelevement.pmtiles
+➡️ dev: https://pollution-eau-s3.s3.fr-par.scw.cloud/dev/pmtiles/georef-france-communes-prelevement.pmtiles
+
+➡️ prod: https://pollution-eau-s3.s3.fr-par.scw.cloud/dev/pmtiles/georef-france-communes-prelevement.pmtiles
+
+UDI
+
+➡️ dev: https://pollution-eau-s3.s3.fr-par.scw.cloud/dev/pmtiles/georef-france-udi-prelevement.pmtiles
+
+➡️ prod: https://pollution-eau-s3.s3.fr-par.scw.cloud/dev/pmtiles/georef-france-udi-prelevement.pmtiles
+
+#### Le fichier Geojson sera accessible à l'URL suivante:
+
+Le fichier est mis à jours manuellement et que pour dev. Demandez aux DE si vous avez besoin d'une mise à jour.
+
+Communes
+
+➡️ dev:  https://pollution-eau-s3.s3.fr-par.scw.cloud/dev/geojson/georef-france-communes-prelevement.geojson
+
+UDI
+
+➡️ dev:  https://pollution-eau-s3.s3.fr-par.scw.cloud/dev/geojson/georef-france-udi-prelevement.geojson
+
 
 Si vous souhaitez télécharger ce fichier PMTiles via la commande CLI, utilisez :
 ```bash

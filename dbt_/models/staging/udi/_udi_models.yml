@@ -16,3 +16,5 @@ models:
       - name: geom
         description: "le tracé de UDI"
         type: GEOMETRY
+  - name: stg_udi_json
+    description: "Unités de distribution (UDI) et infofactures avec geometry as json"

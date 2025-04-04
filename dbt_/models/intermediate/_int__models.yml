@@ -269,3 +269,88 @@ models:
         type: DATETIME
         tests:
           - not_null
+
+  - name: int__udi
+    description: "Liste des UDI (unités de distribution) avec leurs communes desservies"
+    columns:
+      - name: cdreseau
+        description: "Code de l'installation (unité de distribution)"
+        type: VARCHAR
+        tests:
+          - not_null
+          - unique
+
+      - name: inseecommunes
+        description: "Liste des codes INSEE des communes desservies par l'UDI, séparés par des virgules"
+        type: VARCHAR
+
+      - name: quartiers
+        description: "Liste de tous les quartiers distincts desservis par l'UDI, séparés par des virgules"
+        type: VARCHAR
+
+      - name: nomreseaux
+        description: "Liste de tous les noms distincts associés à l'UDI, séparés par des virgules"
+        type: VARCHAR
+
+  - name: int__union_resultats_udi
+    description: "Résultats UDIs (union de tous les résultats par catégorie)"
+    columns:
+      - name: cdreseau
+        description: "Code de l'installation (unité de distribution)"
+        tests:
+          - not_null
+      - name: periode
+        description: "Période du résultat"
+        tests:
+          - not_null
+        type: VARCHAR
+      - name: categorie
+        description: "Catégorie (pesticides, pfas, vcm, nitrates, etc.)"
+        tests:
+          - not_null
+      - name: resultat
+        description: "Résultat"
+        type: VARCHAR
+      - name: ratio
+        description: "Ratio de dépassements"
+        type: FLOAT
+      - name: dernier_prel_datetime
+        description: "Date du dernier prelevement"
+        type: DATE
+      - name: dernier_prel_valeur
+        description: "Valeur du dernier prelevement"
+        type: FLOAT
+      - name: nb_parametres
+        description: "Nombre de paramètres analysés"
+        type: INT
+
+  - name: int__union_resultats_commune
+    description: "Résultats communes (union de tous les résultats par catégorie)"
+    columns:
+      - name: inseecommune
+        description: "Code INSEE de la commune"
+        type: VARCHAR
+      - name: periode
+        description: "Période du résultat"
+        tests:
+          - not_null
+        type: VARCHAR
+      - name: categorie
+        description: "Catégorie (pesticides, pfas, vcm, nitrates, etc.)"
+        tests:
+          - not_null
+      - name: resultat
+        description: "Résultat"
+        type: VARCHAR
+      - name: ratio
+        description: "Ratio de dépassements"
+        type: FLOAT
+      - name: dernier_prel_datetime
+        description: "Date du dernier prelevement"
+        type: DATE
+      - name: dernier_prel_valeur
+        description: "Valeur du dernier prelevement"
+        type: FLOAT
+      - name: nb_parametres
+        description: "Nombre de paramètres analysés"
+        type: INT

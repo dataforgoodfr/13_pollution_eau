@@ -30,9 +30,13 @@ export const DEFAULT_MAP_STYLE: maplibregl.StyleSpecification = {
       url: `https://api.protomaps.com/tiles/v4.json?key=${MAPLIBRE_MAP.protomaps.api_key}`,
       attribution: '<a href="https://osm.org/copyright">© OpenStreetMap</a>',
     },
-    polluants: {
+    communes: {
       type: "vector",
-      url: "pmtiles://s3/upload/datacommunes.pmtiles",
+      url: "pmtiles://s3/prod/pmtiles/georef-france-communes-prelevement.pmtiles",
+    },
+    udis: {
+      type: "vector",
+      url: "pmtiles://s3/prod/pmtiles/georef-france-udi-prelevement.pmtiles",
     },
   },
   layers: [], // layers will be added dynamically in the Map component

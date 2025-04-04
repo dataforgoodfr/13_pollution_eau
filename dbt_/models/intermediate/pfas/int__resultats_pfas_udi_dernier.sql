@@ -43,7 +43,7 @@ aggregated_results AS (
         referenceprel,
         cdreseau,
         MIN(datetimeprel) AS datetimeprel,
-        COUNT(DISTINCT cdparametresiseeaux) AS nb_params,
+        COUNT(DISTINCT cdparametresiseeaux) AS nb_parametres,
         -- La somme des 20 PFAS est disponible comme un paramètre (SPFAS)
         MAX(
             CASE WHEN cdparametresiseeaux = 'SPFAS' THEN valtraduite ELSE 0 END
@@ -101,8 +101,9 @@ SELECT
     referenceprel,
     cdreseau,
     'pfas' AS categorie,
-    datetimeprel AS last_datetimeprel,
-    'dernier prélèvement' AS periode,
+    datetimeprel AS dernier_prel_datetime,
+    'dernier_prel' AS periode,
+    nb_parametres,
     CASE
         WHEN
             nb_pfas_above_limit > 0

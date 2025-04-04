@@ -10,24 +10,31 @@ import { CalendarIcon, BlendingModeIcon } from "@radix-ui/react-icons";
 import { availableCategories } from "@/lib/polluants";
 
 type PollutionMapFiltersProps = {
-  year: string;
-  setYear: (year: string) => void;
-  categoryType: string;
-  setCategoryType: (type: string) => void;
+  period: string;
+  setPeriod: (year: string) => void;
+  category: string;
+  setCategory: (type: string) => void;
 };
 
 export default function PollutionMapFilters({
-  year,
-  setYear,
-  categoryType,
-  setCategoryType,
+  period,
+  setPeriod,
+  category,
+  setCategory,
 }: PollutionMapFiltersProps) {
-  const availableYears = ["2024", "2023", "2022", "2021", "2020"];
+  const availablePeriods = [
+    { value: "dernier_prel", label: "Dernier relevé" },
+    { value: "bilan_annuel_2024", label: "Bilan 2024" },
+    { value: "bilan_annuel_2023", label: "Bilan 2023" },
+    { value: "bilan_annuel_2022", label: "Bilan 2022" },
+    { value: "bilan_annuel_2021", label: "Bilan 2021" },
+    { value: "bilan_annuel_2020", label: "Bilan 2020" },
+  ];
 
   return (
     <div className="flex space-x-6">
       <div className="shadow-sm">
-        <Select value={year} onValueChange={(y) => setYear(y)}>
+        <Select value={period} onValueChange={(y) => setPeriod(y)}>
           <SelectTrigger
             className="SelectTrigger bg-white rounded-2xl"
             aria-label="year-select"
@@ -38,9 +45,9 @@ export default function PollutionMapFilters({
             </div>
           </SelectTrigger>
           <SelectContent>
-            {availableYears.map((y) => (
-              <SelectItem className="items-left" key={y} value={y}>
-                {y}
+            {availablePeriods.map((p) => (
+              <SelectItem className="items-left" key={p.value} value={p.value}>
+                {p.label}
               </SelectItem>
             ))}
           </SelectContent>
@@ -48,7 +55,7 @@ export default function PollutionMapFilters({
       </div>
 
       <div className="shadow-sm">
-        <Select value={categoryType} onValueChange={setCategoryType}>
+        <Select value={category} onValueChange={setCategory}>
           <SelectTrigger
             className="SelectTrigger bg-white rounded-2xl"
             aria-label="category-select"

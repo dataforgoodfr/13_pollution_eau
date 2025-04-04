@@ -13,28 +13,28 @@ WHERE
     (
         cdreseau = '976003489'
         AND categorie = 'cvm'
-        AND last_datetimeprel = '2024-07-16 08:30:00'
+        AND dernier_prel_datetime = '2024-07-16 08:30:00'
         AND resultat != 'non_quantifie'
     )
     OR
     (
         cdreseau = '001000241'
         AND categorie = 'cvm'
-        AND last_datetimeprel = '2024-12-31 14:00:00'
+        AND dernier_prel_datetime = '2024-12-31 14:00:00'
         AND resultat != 'non_quantifie'
     )
     OR
     (
         cdreseau = '087003637'
         AND categorie = 'cvm'
-        AND last_datetimeprel = '2024-07-04 10:50:00'
+        AND dernier_prel_datetime = '2024-07-04 10:50:00'
         AND resultat != 'sup_0_5'
     )
     OR
     (
         cdreseau = '095004048'
         AND categorie = 'cvm'
-        AND last_datetimeprel = '2024-07-23 08:26:00'
+        AND dernier_prel_datetime = '2024-07-23 08:26:00'
         AND resultat != 'inf_0_5'
     )
 UNION ALL
@@ -54,14 +54,14 @@ WHERE
         cdreseau = '001001073'
         AND categorie = 'cvm'
         AND annee = '2024'
-        AND nb_depassements != 1
+        AND nb_depassements != 0
     )
     OR
     (
         cdreseau = '001001073'
         AND categorie = 'cvm'
         AND annee = '2024'
-        AND ratio_depassements != 0.25
+        AND ratio_depassements != 0
     )
     OR
     (
@@ -89,7 +89,7 @@ WHERE
         cdreseau = '095004048'
         AND categorie = 'cvm'
         AND annee = '2024'
-        AND nb_prelevements != 12
+        AND nb_prelevements != 21
     )
     OR
     (
@@ -97,4 +97,15 @@ WHERE
         AND categorie = 'cvm'
         AND annee = '2022'
         AND nb_depassements != 2
+    )
+    OR
+    (
+        cdreseau = '032000209'
+        AND categorie = 'cvm'
+        AND annee = '2024'
+        AND (
+            ratio_depassements != 0.25
+            OR
+            nb_prelevements != 4
+        )
     )

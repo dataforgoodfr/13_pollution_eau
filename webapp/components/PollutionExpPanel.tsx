@@ -2,12 +2,7 @@
 import {
   Dialog,
   DialogPortal,
-  DialogOverlay,
-  DialogTrigger,
   DialogClose,
-  DialogContent,
-  DialogHeader,
-  DialogFooter,
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog";
@@ -17,42 +12,41 @@ import * as DialogPrimitive from "@radix-ui/react-dialog";
 import MapZoneSelector from "./MapZoneSelector";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
-import { POLLUTANT_CATEGORIES } from "@/lib/polluantConfig";
+import { POLLUTANT_CATEGORIES, IPollutantCategory } from "@/lib/polluantConfig";
 import {
   Card,
   CardHeader,
-  CardFooter,
-  CardTitle,
   CardDescription,
   CardContent,
 } from "@/components/ui/card";
 
-// import { styled, keyframes } from '@stitches/react';
-
-// Animation for sliding in from the right
-// const slideIn = keyframes({
-//   '0%': { transform: 'translateX(100%)' },
-//   '100%': { transform: 'translateX(0)' },
-// });
-
-// Styled component for the panel
-// const DialogContent = styled(Dialog.Content, {
-//   position: 'fixed',
-//   top: 0,
-//   right: 0,
-//   bottom: 0,
-//   width: '300px', // Adjust width as needed
-//   backgroundColor: 'white',
-//   boxShadow: '-10px 0 15px -5px rgba(0, 0, 0, 0.1)',
-//   padding: '20px',
-//   animation: `${slideIn} 150ms cubic-bezier(0.16, 1, 0.3, 1)`,
-//   // Add other styling as needed
-// });
-interface PollutionExpPanelProps {
+interface IPollutionExpPanelProps {
   categorieId: string;
 }
 
-function Tag({ content }) {
+type polluantDetailTag = keyof Pick<
+  IPollutantCategory,
+  "exposureSources" | "healthRisks" | "regulation"
+>;
+
+interface IPollutionDetailExpProps {
+  polluant: IPollutantCategory;
+  tag: polluantDetailTag;
+}
+
+interface IResultCardProps {
+  des: string;
+  result: string;
+  bgColor: string;
+}
+
+interface IExplicationCardProps {
+  bgColor: string;
+  quesion: string;
+  answer: string;
+}
+
+function Tag({ content }: { content: string }) {
   return (
     <div className="bg-yellow-300 py-1 px-3 rounded-2xl w-fit mb-4">
       {content}
@@ -60,7 +54,10 @@ function Tag({ content }) {
   );
 }
 
-function PolluantDetailExplication({ polluant, tag }) {
+function PolluantDetailExplication({
+  polluant,
+  tag,
+}: IPollutionDetailExpProps) {
   return (
     <div className="">
       <Tag content={tag} />
@@ -69,7 +66,7 @@ function PolluantDetailExplication({ polluant, tag }) {
   );
 }
 
-function ResultCard({ des, result, bgColor }) {
+function ResultCard({ des, result, bgColor }: IResultCardProps) {
   return (
     <Card className="shadow-none rounded-lg">
       <CardHeader className="p-2 pt-3">
@@ -84,7 +81,7 @@ function ResultCard({ des, result, bgColor }) {
   );
 }
 
-function ExplicationCard({ bgColor, quesion, answer }) {
+function ExplicationCard({ bgColor, quesion, answer }: IExplicationCardProps) {
   return (
     <Card className={`${bgColor} shadow-none rounded-lg`}>
       <CardHeader className="p-4 pb-0">
@@ -101,13 +98,20 @@ function ExplicationCard({ bgColor, quesion, answer }) {
 // Usage example
 export default function PollutionExpPanel({
   categorieId = "cvm",
-}: PollutionExpPanelProps) {
+}: IPollutionExpPanelProps) {
   const [isOpen, setIsOpen] = useState(true);
   const [container, setContainer] = useState<HTMLElement | null>(null);
   useEffect(() => {
+    // give the dialog a container, the default one is <body>,
+    // here use <main> as its container to facilate the side panel position
     const main = document.getElementById("main");
     setContainer(main);
   }, []);
+
+  useEffect(() => {
+    // if the categorie changed, we reopen the dialog to show the relative information with new polluant
+    setIsOpen(true);
+  }, [categorieId]);
 
   const toggleOpen = () => {
     setIsOpen((o) => !o);
@@ -118,19 +122,18 @@ export default function PollutionExpPanel({
   const polluant = POLLUTANT_CATEGORIES.filter(
     (p) => p.id == categorieId.toLowerCase(),
   );
-  console.log("cvm", polluant);
 
   return (
     <div>
       <div
-        className={`absolute top-24 right-12 z-10  p-3 ${isOpen ? "right-[350px]" : "right-0"} border-r-0`}
+        className={`relative top-24 right-12 z-10  p-3 ${isOpen ? "right-[400px]" : "right-24"} border-r-0`}
       >
         <MapZoneSelector />
       </div>
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <button
           onClick={toggleOpen}
-          className={`absolute ${isOpen ? "right-[286px]" : "right-0"} top-1/2 -mt-10 h-12 bg-white flex justify-center items-center transition-all duration-200`}
+          className={`absolute ${isOpen ? "right-[346px]" : "right-0"} top-1/2 -mt-10 h-12 bg-white flex justify-center items-center transition-all duration-200`}
         >
           {isOpen ? <ChevronRight /> : <ChevronLeft />}
         </button>
@@ -139,14 +142,14 @@ export default function PollutionExpPanel({
           <DialogPrimitive.Content
             id="content"
             className="
-          absolute top-2.5 right-2.5 bottom-1.5 z-50 w-[320px] border bg-accent
-          duration-200 data-[state=open]:animate-in
-          data-[state=closed]:animate-out data-[state=closed]:fade-out-0
-          data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95
-          data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-right-0
-          data-[state=open]:slide-in-from-right-1/2
-          overflow-y-auto
-          "
+              absolute top-2.5 right-2.5 bottom-1.5 z-50 w-[360px] border bg-accent
+              duration-200 data-[state=open]:animate-in
+              data-[state=closed]:animate-out data-[state=closed]:fade-out-0
+              data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95
+              data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-right-0
+              data-[state=open]:slide-in-from-right-1/2
+              overflow-y-auto
+              "
           >
             <DialogClose
               onClick={handleClose}
@@ -199,7 +202,7 @@ export default function PollutionExpPanel({
                   return (
                     <PolluantDetailExplication
                       key={k}
-                      tag={k}
+                      tag={k as polluantDetailTag}
                       polluant={polluant[0]}
                     />
                   );

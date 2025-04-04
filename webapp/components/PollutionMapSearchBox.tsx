@@ -126,7 +126,7 @@ export default function PollutionMapSearchBox({
                     className="max-w-fit min-w-[220px] outline-1 outline-blue-500 pl-7 bg-white rounded-2xl"
                     key="TextInputCommune"
                     value={filterString}
-                    placeholder="Saisir votre votre commune"
+                    placeholder="Saisir votre commune"
                     onChange={HandleFilterChange}
                   />
                 </div>

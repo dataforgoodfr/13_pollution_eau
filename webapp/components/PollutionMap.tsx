@@ -14,6 +14,7 @@ import { MapProvider } from "react-map-gl/maplibre";
 
 export default function PollutionMap() {
   const [year, setYear] = useState("2024");
+
   const [categoryType, setCategoryType] = useState("cvm");
   const [mapState, setMapState] = useState<{
     longitude: number;
@@ -35,7 +36,7 @@ export default function PollutionMap() {
   return (
     <div className="relative w-full h-full flex">
       <MapProvider>
-        <div className="relative mapzone w-full h-full">
+        <div className="relative mapzone w-full h-full ">
           <PollutionMapBaseLayer
             year={year}
             categoryType={categoryType}
@@ -45,16 +46,16 @@ export default function PollutionMap() {
             onFeatureClick={setFeatureDetails}
           />
 
-          <div className="absolute top-4 left-4 right-4 z-10 bg-white p-3 rounded-lg shadow-lg flex justify-between">
-            <PollutionMapSearchBox
-              communeInseeCode={communeInseeCode}
-              onCommuneFilter={handleCommuneSelect}
-            />
+          <div className="filter_search_container w-3/4 relative p-3 rounded-lg flex justify-between z-60 pointer-events-auto">
             <PollutionMapFilters
               year={year}
               setYear={setYear}
               categoryType={categoryType}
               setCategoryType={setCategoryType}
+            />
+            <PollutionMapSearchBox
+              communeInseeCode={communeInseeCode}
+              onCommuneFilter={handleCommuneSelect}
             />
           </div>
         </div>
@@ -65,7 +66,7 @@ export default function PollutionMap() {
           className="relative right-0 h-full  flex justify-center"
           id="side_panel"
         >
-          <PollutionExpPanel categorieId="cvm" />
+          <PollutionExpPanel categorieId={categoryType} />
         </div>
         {featureDetails && (
           <PollutionMapDetailPanel

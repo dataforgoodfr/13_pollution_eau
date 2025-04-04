@@ -126,9 +126,3 @@
     transform: translateX(0);
   }
 }
-
-.animate-slide-in-from-right {
-  animation: slide-in-from-right 3s ease-out;
-.scrollbar-hide::-webkit-scrollbar {
-  display: none;
-}

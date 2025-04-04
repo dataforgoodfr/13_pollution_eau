@@ -6,7 +6,7 @@ import { useState } from "react";
 import { Command, CommandGroup, CommandItem, CommandList } from "./ui/command";
 import { GlobeIcon } from "@radix-ui/react-icons";
 import { CommandEmpty } from "cmdk";
-import { X } from "lucide-react";
+import { Building2, Home, X } from "lucide-react";
 
 interface IGNQueryResult {
   type: string;
@@ -26,19 +26,20 @@ interface IGNQueryResult {
 interface IGNQueryResponse {
   features: IGNQueryResult[];
 }
-export type CommuneFilterResult = {
+export type FilterResult = {
   center: [number, number];
   zoom: number;
   communeInseeCode: string;
+  address: string;
 };
 
 interface PollutionMapsSearchBoxProps {
-  onCommuneFilter: (communeFilter: CommuneFilterResult | null) => void;
+  onAddressFilter: (communeFilter: FilterResult | null) => void;
   communeInseeCode: string | null;
 }
 
 export default function PollutionMapSearchBox({
-  onCommuneFilter,
+  onAddressFilter: onCommuneFilter,
   //communeInseeCode,
 }: PollutionMapsSearchBoxProps) {
   const [filterString, setFilterString] = useState("");
@@ -48,7 +49,7 @@ export default function PollutionMapSearchBox({
 
   async function PerformSearch(filterString: string) {
     const IGNQuery =
-      "https://data.geopf.fr/geocodage/search?autocomplete=1&limit=10&returntruegeometry=false&type=municipality&category=commune";
+      "https://data.geopf.fr/geocodage/search?autocomplete=1&limit=20&returntruegeometry=false";
     const URLIGN = new URL(IGNQuery);
     URLIGN.searchParams.set("q", filterString);
 
@@ -57,6 +58,7 @@ export default function PollutionMapSearchBox({
       const data: IGNQueryResponse = await response.json();
 
       if (data.features) {
+        console.log("fetch data :", data.features);
         setCommunesList(data.features);
         setDropDownOpen(true);
       } else {
@@ -94,15 +96,14 @@ export default function PollutionMapSearchBox({
     }
   }
 
-  function handleCommuneSelect(feature: IGNQueryResult) {
+  function handleAddressSelect(feature: IGNQueryResult) {
     setDropDownOpen(false);
-    setFilterString(
-      feature.properties.name + " (" + feature.properties.postcode + ")",
-    );
+    setFilterString(feature.properties.label);
     onCommuneFilter({
       center: feature.geometry.coordinates,
       zoom: 10,
-      communeInseeCode: feature.properties.id,
+      communeInseeCode: feature.properties.citycode,
+      address: feature.properties.label,
     });
   }
 
@@ -126,8 +127,13 @@ export default function PollutionMapSearchBox({
                     className="max-w-fit min-w-[220px] outline-1 outline-blue-500 pl-7 bg-white rounded-2xl"
                     key="TextInputCommune"
                     value={filterString}
-                    placeholder="Saisir votre votre commune"
+                    placeholder="Saisir votre adresse ou commune"
                     onChange={HandleFilterChange}
+                    onFocus={() => {
+                      if (filterString?.length >= 3) {
+                        setDropDownOpen(true);
+                      }
+                    }}
                   />
                 </div>
               </div>
@@ -140,26 +146,40 @@ export default function PollutionMapSearchBox({
             >
               <Command>
                 <CommandEmpty className="py-6 text-center text-sm text-muted-foreground">
-                  Aucune commune trouvée.
+                  Aucune adresse trouvée.
                 </CommandEmpty>
                 <CommandList>
                   <CommandGroup key="CommuneList">
-                    {communesList.map((CommuneFeature) => (
-                      <CommandItem
-                        key={CommuneFeature.properties.id}
-                        onSelect={() => handleCommuneSelect(CommuneFeature)}
-                      >
-                        <HilightLabel
-                          originalText={
-                            CommuneFeature.properties.name +
-                            " (" +
-                            CommuneFeature.properties.postcode +
-                            ")"
-                          }
-                          textToHilight={filterString}
-                        />
-                      </CommandItem>
-                    ))}
+                    {communesList.map((feature) => {
+                      let featureType = <Home />;
+
+                      switch (feature.properties.type) {
+                        case "street":
+                        case "housenumber":
+                          featureType = <Home />;
+                          break;
+                        default:
+                          featureType = <Building2 />;
+                      }
+                      return (
+                        <CommandItem
+                          className="flex grow"
+                          key={feature.properties.id}
+                          value={feature.properties.id}
+                          onSelect={() => handleAddressSelect(feature)}
+                        >
+                          <div className="flex grow">
+                            <div className="size-5">{featureType}</div>
+                            <div className="grow gap-2 fit">
+                              <HilightLabel
+                                originalText={feature.properties.label}
+                                textToHilight={filterString}
+                              />
+                            </div>
+                          </div>
+                        </CommandItem>
+                      );
+                    })}
                   </CommandGroup>
                 </CommandList>
               </Command>

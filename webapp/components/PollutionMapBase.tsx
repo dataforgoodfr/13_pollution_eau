@@ -1,14 +1,17 @@
 "use client";
 
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, JSX } from "react";
 import ReactMapGl, {
   MapLayerMouseEvent,
+  Marker,
+  Popup,
   ViewStateChangeEvent,
 } from "react-map-gl/maplibre";
 import maplibregl from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 import { Protocol } from "pmtiles";
 import { generateColorExpression } from "@/lib/colorMapping";
+import { MapPin } from "lucide-react";
 
 import { DEFAULT_MAP_STYLE, getDefaultLayers } from "@/app/config";
 
@@ -16,7 +19,7 @@ type PollutionMapBaseLayerProps = {
   period: string;
   category: string;
   displayMode: "communes" | "udis";
-  communeInseeCode: string | null;
+  selectedZoneCode: string | null;
   mapState: { longitude: number; latitude: number; zoom: number };
   setDataPanel: (data: Record<string, string | number | null> | null) => void;
   onMapStateChange?: (coords: {
@@ -24,16 +27,30 @@ type PollutionMapBaseLayerProps = {
     latitude: number;
     zoom: number;
   }) => void;
+  marker: {
+    longitude: number;
+    latitude: number;
+    content: JSX.Element;
+  } | null;
+  setMarker: (
+    marker: {
+      longitude: number;
+      latitude: number;
+      content: JSX.Element;
+    } | null,
+  ) => void;
 };
 
 export default function PollutionMapBaseLayer({
   period,
   category,
   displayMode,
-  communeInseeCode,
+  selectedZoneCode,
   mapState,
   setDataPanel,
   onMapStateChange,
+  marker,
+  //setMarker,
 }: PollutionMapBaseLayerProps) {
   useEffect(() => {
     // adds the support for PMTiles
@@ -76,9 +93,9 @@ export default function PollutionMapBaseLayer({
         layout: {
           visibility: displayMode === "communes" ? "visible" : "none",
         },
-        ...(communeInseeCode
+        ...(selectedZoneCode
           ? {
-              filter: ["==", ["get", "commune_code_insee"], communeInseeCode],
+              filter: ["==", ["get", "commune_code_insee"], selectedZoneCode],
             }
           : {}),
       },
@@ -126,7 +143,7 @@ export default function PollutionMapBaseLayer({
       ...DEFAULT_MAP_STYLE,
       layers: [...getDefaultLayers(), ...dynamicLayers],
     } as maplibregl.StyleSpecification;
-  }, [communeInseeCode, displayMode, category, period]);
+  }, [selectedZoneCode, displayMode, category, period]);
 
   const interactiveLayerIds =
     displayMode === "communes" ? ["communes-layer"] : ["udis-layer"];
@@ -141,6 +158,35 @@ export default function PollutionMapBaseLayer({
       onClick={onClick}
       onMove={handleMapStateChange}
       interactiveLayerIds={interactiveLayerIds}
-    />
+    >
+      {marker ? (
+        <>
+          <Marker longitude={marker.longitude} latitude={marker.latitude}>
+            <MapPin
+              size={32}
+              className="text-primary-foreground"
+              strokeWidth={1}
+              stroke="black"
+              fill="white"
+              color="white"
+            />
+          </Marker>
+          <Popup
+            longitude={marker.longitude}
+            latitude={marker.latitude}
+            anchor="bottom"
+            className="-mt-5"
+            closeButton={false}
+            closeOnClick={false}
+          >
+            <span className="font-bold ">{marker.content}</span>
+            <br />
+            <span className="opacity-35">
+              Cette adresse est désservie par une unité de distribution.
+            </span>
+          </Popup>
+        </>
+      ) : null}
+    </ReactMapGl>
   );
 }

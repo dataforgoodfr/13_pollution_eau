@@ -6,7 +6,6 @@ import PollutionMapFilters from "@/components/PollutionMapFilters";
 import PollutionMapDetailPanel from "@/components/PollutionMapDetailPanel";
 import PollutionExpPanel from "@/components/PollutionExpPanel";
 import PollutionMapSearchBox, { FilterResult } from "./PollutionMapSearchBox";
-import { MapGeoJSONFeature } from "maplibre-gl";
 import { MAPLIBRE_MAP } from "@/app/config";
 import { MapProvider } from "react-map-gl/maplibre";
 
@@ -21,7 +20,6 @@ export default function PollutionMap() {
     latitude: number;
     zoom: number;
   }>(MAPLIBRE_MAP.initialViewState);
-  useState<MapGeoJSONFeature | null>(null);
   // const handleCommuneSelect = (result: CommuneFilterResult | null) => {
   const [selectedZoneCode, setSelectedZoneCode] = useState<string | null>(null);
   const [dataPanel, setDataPanel] = useState<Record<

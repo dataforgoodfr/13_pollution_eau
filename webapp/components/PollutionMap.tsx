@@ -8,6 +8,7 @@ import PollutionMapSearchBox, { FilterResult } from "./PollutionMapSearchBox";
 import { MAPLIBRE_MAP } from "@/app/config";
 import { MapProvider } from "react-map-gl/maplibre";
 import MapZoneSelector from "./MapZoneSelector";
+import { clsx } from "clsx";
 
 export default function PollutionMap() {
   const [period, setPeriod] = useState("dernier_prel");
@@ -29,6 +30,7 @@ export default function PollutionMap() {
     latitude: number;
     content: JSX.Element;
   } | null>(null);
+  const [sidePanelOpen, setSidePanelOpen] = useState(false);
 
   const handleAddressSelect = (result: FilterResult | null) => {
     if (result) {
@@ -61,7 +63,7 @@ export default function PollutionMap() {
           setMarker={setMarker}
         />
 
-        <div className="absolute top-4 right-4 left-4 z-10 px-2 flex justify-between overflow-x-auto scrollbar-hide">
+        <div className="absolute top-4 left-4 z-10 flex overflow-x-auto scrollbar-hide">
           <PollutionMapFilters
             period={period}
             setPeriod={setPeriod}
@@ -70,14 +72,53 @@ export default function PollutionMap() {
             // displayMode={displayMode}
             // setDisplayMode={setDisplayMode}
           />
+        </div>
+
+        <div
+          className={clsx(
+            "absolute top-4 right-20 z-9 transition-all duration-300",
+            sidePanelOpen && "mr-80",
+          )}
+        >
           <PollutionMapSearchBox
             communeInseeCode={selectedZoneCode}
             onAddressFilter={handleAddressSelect}
           />
         </div>
 
-        <div className="absolute top-24 right-12 z-10 p-3">
+        <div
+          className={clsx(
+            "absolute top-4 right-4 z-8 transition-all duration-300",
+            sidePanelOpen && "mr-80",
+          )}
+        >
           <MapZoneSelector />
+        </div>
+
+        {/* Right side panel with handle */}
+        <div className="absolute top-0 right-0 h-full z-10">
+          {/* Panel handle - always visible */}
+          <div
+            className="absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-6 cursor-pointer z-20"
+            onClick={() => setSidePanelOpen(!sidePanelOpen)}
+          >
+            <div className="bg-white text-gray-600 shadow-md rounded-l-md flex items-center justify-center h-16 w-6">
+              <div className="text-lg">{sidePanelOpen ? "›" : "‹"}</div>
+            </div>
+          </div>
+
+          {/* Panel content */}
+          <div
+            className={`bg-white transition-all duration-300 h-full overflow-y-auto ${
+              sidePanelOpen ? "w-80 opacity-100" : "w-0 opacity-0"
+            }`}
+          >
+            <div className="p-6 pt-16">
+              <h2 className="text-xl font-bold mb-4">Panel Content</h2>
+              <p>This is your right side panel content.</p>
+              {/* Add your panel content here */}
+            </div>
+          </div>
         </div>
 
         {/* <div className="absolute bottom-6 right-4 z-10 bg-white p-3 rounded-lg shadow-lg">

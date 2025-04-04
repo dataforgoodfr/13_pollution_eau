@@ -1,0 +1,27 @@
+version: 2
+
+models:
+  - name: stg_category_map
+    description: "stage model of mapping_categories_v2 seed"
+    columns:
+      - name: categorie
+        tests:
+          - not_null
+      - name: de_ingestion_date
+        description: Date d'ingestion des données dans le système.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: date
+      - name: limitequal
+        tests:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: float
+      - name: valsanitaire1
+        tests:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: float
+      - name: valsanitaire2
+        tests:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: float

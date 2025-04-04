@@ -19,7 +19,7 @@ models:
         description: "Catégorie du paramètre (pesticides, pfas, vcm, nitrates, etc.) selon la classification établie."
         tests:
           - accepted_values:
-              values: ["cvm"]
+              values: ["substances_industrielles_14DAN","substances_industrielles_PCLAT"]
       - name: periode
         description: "Période du résultat"
         type: VARCHAR
@@ -46,7 +46,8 @@ models:
           - unique
       - name: categorie
         tests:
-          - not_null
+          - accepted_values:
+              values: ["substances_industrielles_14DAN","substances_industrielles_PCLAT"]
       - name: periode
         type: VARCHAR
         tests:
@@ -70,8 +71,12 @@ models:
           - accepted_values:
               values:
                 - non_quantifie
-                - sup_0_5
-                - inf_0_5
+                - sup_0_35
+                - inf_0_35
+                - sup_4
+                - inf_4
+                - sup_15
+                - inf_15
 
   - name: int__resultats_sub_indus_udi_annuel
     description: Résultats CVM par UDI pour la temporalité 'bilan_annuel'
@@ -92,7 +97,7 @@ models:
         description: "Catégorie du paramètre (pesticides, pfas, vcm, nitrates, etc.) selon la classification établie."
         tests:
           - accepted_values:
-              values: ["cvm"]
+              values: ["substances_industrielles_14DAN","substances_industrielles_PCLAT"]
       - name: periode
         description: "Période du résultat"
         type: VARCHAR
@@ -119,7 +124,8 @@ models:
           - unique
       - name: categorie
         tests:
-          - not_null
+          - accepted_values:
+              values: ["substances_industrielles_14DAN","substances_industrielles_PCLAT"]
       - name: periode
         type: VARCHAR
         tests:
@@ -143,5 +149,9 @@ models:
           - accepted_values:
               values:
                 - non_quantifie
-                - sup_0_5
-                - inf_0_5
+                - sup_0_35
+                - inf_0_35
+                - sup_4
+                - inf_4
+                - sup_15
+                - inf_15

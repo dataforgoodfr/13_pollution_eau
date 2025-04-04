@@ -126,14 +126,14 @@ export default function PollutionExpPanel({
   return (
     <div>
       <div
-        className={`relative top-24 right-12 z-10  p-3 ${isOpen ? "right-[400px]" : "right-24"} border-r-0`}
+        className={`absolute top-24 right-12 z-10  p-3 ${isOpen ? "right-[400px]" : "right-24"} border-r-0`}
       >
         <MapZoneSelector />
       </div>
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <button
           onClick={toggleOpen}
-          className={`absolute ${isOpen ? "right-[346px]" : "right-0"} top-1/2 -mt-10 h-12 bg-white flex justify-center items-center transition-all duration-200`}
+          className={`absolute ${isOpen ? "right-[346px]" : "right-0"} top-[calc(50%-30px)] -mt-10 h-12 bg-white flex shadow-xl justify-center items-center transition-all duration-200`}
         >
           {isOpen ? <ChevronRight /> : <ChevronLeft />}
         </button>

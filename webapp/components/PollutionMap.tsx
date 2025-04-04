@@ -79,8 +79,8 @@ export default function PollutionMap() {
             marker={marker}
             setMarker={setMarker}
           />
-
-          <div className="absolute top-4 right-4 left-4 z-10 px-2 flex justify-between overflow-x-auto scrollbar-hide">
+          <div className="w-3/4 relative p-3 rounded-lg flex justify-between z-60 pointer-events-auto">
+            {/* <div className="absolute top-4 right-4 left-4 z-10 px-2 flex justify-between overflow-x-auto scrollbar-hide"> */}
             <PollutionMapFilters
               period={period}
               setPeriod={setPeriod}

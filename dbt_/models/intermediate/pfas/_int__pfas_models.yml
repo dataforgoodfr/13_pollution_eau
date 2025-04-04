@@ -1,4 +1,4 @@
-version: 1
+version: 2
 
 models:
   - name: int__resultats_pfas_udi_dernier
@@ -51,3 +51,84 @@ models:
       - name: nb_parametres
         description: "Nombre de paramètres analysés"
         type: INT
+
+  - name: int__resultats_pfas_udi_annuel
+    description: >
+        Bilan annuel des prélèvements d’eau potable pour les PFAS à l’échelle des UDI (Unités de distribution d’eau).
+        Ce modèle agrège les résultats des prélèvements d’une année donnée en identifiant les dépassements de seuils
+        sanitaires, ainsi que ceux liés aux sommes de 4 et 20 PFAS.
+    columns:
+        - name: cdreseau
+          description: "Code de l’unité de distribution d’eau (UDI)."
+          tests:
+            - not_null
+
+        - name: annee
+          description: "Année du prélèvement (extraite de la colonne 'de_partition')."
+          tests:
+            - not_null
+
+        - name: categorie
+          description: "Catégorie du paramètre analysé (ici, toujours 'pfas')."
+          tests:
+            - accepted_values:
+                values: ["pfas"]
+
+        - name: periode
+          description: "Période d’analyse, définie sous la forme 'bilan_annuel_<année>'."
+          tests:
+            - not_null
+
+        - name: nb_prelevements
+          description: "Nombre total de prélèvements uniques réalisés pour l’UDI au cours de l’année."
+          tests:
+            - not_null
+
+        - name: nb_depassements_vs
+          description: >
+            Nombre de prélèvements pour lesquels au moins un PFAS dépasse sa valeur sanitaire définie
+            (liste limitée à certains PFAS pour lesquels une valeur est disponible).
+          tests:
+            - not_null
+
+        - name: ratio_depassements_vs
+          description: "Ratio des prélèvements avec dépassement de valeur sanitaire (nb_depassements_vs / nb_prelevements)."
+          tests:
+            - not_null
+            - dbt_utils.accepted_range:
+              min_value: 0
+              max_value: 1
+              inclusive: true
+
+        - name: nb_depassements_20_pfas
+          description: >
+            Nombre de prélèvements pour lesquels la somme des 20 PFAS dépasse le seuil de 0.1 µg/L.
+          tests:
+            - not_null
+
+        - name: ratio_depassements_20_pfas
+          description: >
+            Ratio des prélèvements avec dépassement de la somme des 20 PFAS (>= 0.1 µg/L).
+          tests:
+            - not_null
+            - dbt_utils.accepted_range:
+              min_value: 0
+              max_value: 1
+              inclusive: true
+
+        - name: nb_depassements_4_pfas
+          description: >
+            Nombre de prélèvements pour lesquels la somme des 4 PFAS réglementaires dépasse le seuil de 0.1 µg/L.
+          tests:
+            - not_null
+
+        - name: ratio_depassements_4_pfas
+          description: >
+            Ratio des prélèvements avec dépassement de la somme des 4 PFAS (>= 0.1 µg/L).
+          tests:
+            - not_null
+            - dbt_utils.accepted_range:
+              min_value: 0
+              max_value: 1
+              inclusive: true
+

@@ -5,13 +5,8 @@ import PollutionMapBaseLayer from "@/components/PollutionMapBase";
 import PollutionMapFilters from "@/components/PollutionMapFilters";
 import PollutionMapDetailPanel from "@/components/PollutionMapDetailPanel";
 import PollutionExpPanel from "@/components/PollutionExpPanel";
-
-import PollutionMapSearchBox, {
-  CommuneFilterResult,
-  FilterResult,
-} from "./PollutionMapSearchBox";
+import PollutionMapSearchBox, { FilterResult } from "./PollutionMapSearchBox";
 import { MapGeoJSONFeature } from "maplibre-gl";
-// import PollutionMapSearchBox, { FilterResult } from "./PollutionMapSearchBox";
 import { MAPLIBRE_MAP } from "@/app/config";
 import { MapProvider } from "react-map-gl/maplibre";
 
@@ -26,9 +21,7 @@ export default function PollutionMap() {
     latitude: number;
     zoom: number;
   }>(MAPLIBRE_MAP.initialViewState);
-  const [communeInseeCode, setCommuneInseeCode] = useState<string | null>(null);
-  const [featureDetails, setFeatureDetails] =
-    useState<MapGeoJSONFeature | null>(null);
+  useState<MapGeoJSONFeature | null>(null);
   // const handleCommuneSelect = (result: CommuneFilterResult | null) => {
   const [selectedZoneCode, setSelectedZoneCode] = useState<string | null>(null);
   const [dataPanel, setDataPanel] = useState<Record<
@@ -61,13 +54,6 @@ export default function PollutionMap() {
     <div className="relative w-full h-full flex">
       <MapProvider>
         <div className="relative mapzone w-full h-full ">
-          {/* <PollutionMapBaseLayer
-            year={year}
-            categoryType={categoryType}
-            communeInseeCode={communeInseeCode}
-            mapState={mapState}
-            onMapStateChange={setMapState}
-            onFeatureClick={setFeatureDetails} */}
           <PollutionMapBaseLayer
             period={period}
             category={category}
@@ -80,7 +66,6 @@ export default function PollutionMap() {
             setMarker={setMarker}
           />
           <div className="w-3/4 relative p-3 rounded-lg flex justify-between z-60 pointer-events-auto">
-            {/* <div className="absolute top-4 right-4 left-4 z-10 px-2 flex justify-between overflow-x-auto scrollbar-hide"> */}
             <PollutionMapFilters
               period={period}
               setPeriod={setPeriod}
@@ -94,12 +79,6 @@ export default function PollutionMap() {
               onAddressFilter={handleAddressSelect}
             />
           </div>
-          {/* <div className="absolute top-24 right-12 z-10 p-3">
-          <MapZoneSelector />
-        </div> */}
-          {/* <div className="absolute bottom-6 right-4 z-10 bg-white p-3 rounded-lg shadow-lg">
-        <PollutionMapLegend category={category} />
-      </div> */}
           <div
             className="relative right-0 h-full  flex justify-center"
             id="side_panel"

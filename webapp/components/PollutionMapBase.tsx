@@ -88,7 +88,7 @@ export default function PollutionMapBaseLayer({
         "source-layer": "data_communes",
         paint: {
           "fill-color": generateColorExpression(category, period),
-          "fill-opacity": 0.5,
+          "fill-opacity": 0.8,
         },
         layout: {
           visibility: displayMode === "communes" ? "visible" : "none",
@@ -106,7 +106,7 @@ export default function PollutionMapBaseLayer({
         "source-layer": "data_udi",
         paint: {
           "fill-color": generateColorExpression(category, period),
-          "fill-opacity": 0.5,
+          "fill-opacity": 0.8,
         },
         layout: {
           visibility: displayMode === "udis" ? "visible" : "none",

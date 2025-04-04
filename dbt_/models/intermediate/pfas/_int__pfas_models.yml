@@ -96,9 +96,9 @@ models:
           tests:
             - not_null
             - dbt_utils.accepted_range:
-              min_value: 0
-              max_value: 1
-              inclusive: true
+                min_value: 0
+                max_value: 1
+                inclusive: true
 
         - name: nb_depassements_20_pfas
           description: >
@@ -112,9 +112,9 @@ models:
           tests:
             - not_null
             - dbt_utils.accepted_range:
-              min_value: 0
-              max_value: 1
-              inclusive: true
+                min_value: 0
+                max_value: 1
+                inclusive: true
 
         - name: nb_depassements_4_pfas
           description: >
@@ -128,7 +128,7 @@ models:
           tests:
             - not_null
             - dbt_utils.accepted_range:
-              min_value: 0
-              max_value: 1
-              inclusive: true
+                min_value: 0
+                max_value: 1
+                inclusive: true
 

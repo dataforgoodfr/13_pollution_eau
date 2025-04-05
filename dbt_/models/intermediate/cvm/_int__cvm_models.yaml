@@ -27,7 +27,9 @@ models:
           - dbt_utils.expression_is_true:
               expression: "LIKE 'bilan_annuel%'"
       - name: nb_depassements
+        type: INT
       - name: nb_prelevements
+        type: INT
       - name: ratio_depassements
         description: "Pourcentage de prélèvements qui dépassent la limite"
         type: FLOAT

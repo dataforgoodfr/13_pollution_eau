@@ -33,3 +33,15 @@ SELECT
     nb_parametres
 FROM
     {{ ref('int__resultats_cvm_udi_dernier') }}
+UNION ALL
+SELECT
+    cdreseau,
+    periode,
+    categorie,
+    resultat,
+    null AS ratio,
+    dernier_prel_datetime,
+    null AS dernier_prel_valeur,
+    nb_parametres
+FROM
+    {{ ref('int__resultats_nitrites_udi_dernier') }}

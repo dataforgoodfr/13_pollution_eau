@@ -68,12 +68,9 @@ SELECT
     split_nitrites.nb_parametres,
     CASE
         WHEN
-            split_nitrites.nb_parametres != 3
-            OR (
-                split_nitrites.valtraduite_no3 = 0
-                AND split_nitrites.valtraduite_no2 = 0
-                AND split_nitrites.valtraduite_no3_no2 = 0
-            )
+            split_nitrites.valtraduite_no3 = 0
+            AND split_nitrites.valtraduite_no2 = 0
+            AND split_nitrites.valtraduite_no3_no2 = 0
             THEN 'non_quantifie'
         WHEN
             split_nitrites.nb_parametres = 3
@@ -82,13 +79,18 @@ SELECT
             AND split_nitrites.valtraduite_no3_no2 < 1
             THEN 'conforme'
         WHEN
-            split_nitrites.nb_parametres = 3
-            AND (
-                split_nitrites.valtraduite_no3 >= 50
-                OR split_nitrites.valtraduite_no2 >= 0.5
-                OR split_nitrites.valtraduite_no3_no2 >= 1
-            )
+            split_nitrites.valtraduite_no3 >= 50
+            OR split_nitrites.valtraduite_no2 >= 0.5
+            OR split_nitrites.valtraduite_no3_no2 >= 1
             THEN 'non_conforme'
+        WHEN
+            split_nitrites.nb_parametres != 3
+            AND (
+                split_nitrites.valtraduite_no3 < 50
+                OR split_nitrites.valtraduite_no2 < 0.5
+                OR split_nitrites.valtraduite_no3_no2 < 1
+            )
+            THEN 'non_quantifie'
         ELSE 'error'
     END AS resultat
 FROM

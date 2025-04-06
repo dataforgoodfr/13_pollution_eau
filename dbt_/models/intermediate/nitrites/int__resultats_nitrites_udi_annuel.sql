@@ -51,12 +51,9 @@ SELECT
         DISTINCT
         CASE
             WHEN
-                prels.nb_parametres = 3
-                AND (
-                    prels.valtraduite_no3 >= 50
-                    OR prels.valtraduite_no2 >= 0.5
-                    OR prels.valtraduite_no3_no2 >= 1
-                )
+                prels.valtraduite_no3 >= 50
+                OR prels.valtraduite_no2 >= 0.5
+                OR prels.valtraduite_no3_no2 >= 1
                 THEN prels.referenceprel
         END
     ) AS nb_depassements,
@@ -66,12 +63,9 @@ SELECT
             DISTINCT
             CASE
                 WHEN
-                    prels.nb_parametres = 3
-                    AND (
-                        prels.valtraduite_no3 >= 50
-                        OR prels.valtraduite_no2 >= 0.5
-                        OR prels.valtraduite_no3_no2 >= 1
-                    )
+                    prels.valtraduite_no3 >= 50
+                    OR prels.valtraduite_no2 >= 0.5
+                    OR prels.valtraduite_no3_no2 >= 1
                     THEN prels.referenceprel
             END
         )::float

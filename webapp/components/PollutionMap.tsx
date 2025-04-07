@@ -8,6 +8,7 @@ import PollutionMapSearchBox, { FilterResult } from "./PollutionMapSearchBox";
 import { MAPLIBRE_MAP } from "@/app/config";
 import { MapProvider } from "react-map-gl/maplibre";
 import MapZoneSelector from "./MapZoneSelector";
+import clsx from "clsx";
 
 export default function PollutionMap() {
   const [period, setPeriod] = useState("dernier_prel");

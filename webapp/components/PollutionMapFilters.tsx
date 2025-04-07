@@ -70,8 +70,6 @@ export default function PollutionMapFilters({
     setCategory(v);
   };
 
-  console.log("cat", category);
-
   return (
     <div className="flex space-x-6 p-2">
       <div className="shadow-sm">

@@ -4,6 +4,18 @@ import db from "@/app/lib/duckdb";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
+  // Set CORS headers to allow requests from any origin
+  const corsHeaders = {
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Methods": "GET, OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type, Authorization",
+  };
+
+  // Handle OPTIONS request for CORS preflight
+  if (req.method === "OPTIONS") {
+    return NextResponse.json({}, { headers: corsHeaders });
+  }
+
   const { searchParams } = new URL(req.url);
   const lonParam = searchParams.get("lon");
   const latParam = searchParams.get("lat");
@@ -11,7 +23,7 @@ export async function GET(req: NextRequest) {
   if (lonParam == null || latParam == null) {
     return NextResponse.json(
       { message: "Paramètres manquants: lon et lat sont requis" },
-      { status: 400 },
+      { status: 400, headers: corsHeaders },
     );
   }
   const lon = parseFloat(lonParam);
@@ -27,7 +39,7 @@ export async function GET(req: NextRequest) {
   ) {
     return NextResponse.json(
       { message: "Paramètres invalides" },
-      { status: 400 },
+      { status: 400, headers: corsHeaders },
     );
   }
 
@@ -51,12 +63,12 @@ export async function GET(req: NextRequest) {
     if (result.currentRowCount > 0) {
       return NextResponse.json(
         { id: result.getRowObjectsJson()[0]["code_udi"] },
-        { status: 200 },
+        { status: 200, headers: corsHeaders },
       );
     } else {
       return NextResponse.json(
         { message: "Aucune UDI ne correspond à ces coordonnées" },
-        { status: 404 },
+        { status: 404, headers: corsHeaders },
       );
     }
   } catch (error) {
@@ -66,7 +78,7 @@ export async function GET(req: NextRequest) {
         message:
           "Une erreur interne s'est produite. Veuillez réessayer ultérieurement.",
       },
-      { status: 500 },
+      { status: 500, headers: corsHeaders },
     );
   } finally {
     await connection.close();

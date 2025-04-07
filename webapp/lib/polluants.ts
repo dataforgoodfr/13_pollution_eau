@@ -1,18 +1,90 @@
 export const availableCategories = [
-  { id: "cvm", label: "Chlorure de Vinyle Monomère", disabled: false },
-  { id: "pesticides", label: "Pesticide", disabled: true },
-  { id: "pfas", label: "PFAS", disabled: false },
-  { id: "metauxlourds", label: "Métaux lourds", disabled: true },
-  { id: "mineral", label: "Minéral", disabled: true },
-  { id: "microbio", label: "Microbio", disabled: true },
-  { id: "radioactivité", label: "Radioactivité", disabled: true },
-  { id: "medicament", label: "Médicament", disabled: true },
-  { id: "nitrite", label: "Nitrites", disabled: true },
-  { id: "phtalate", label: "Phtalate", disabled: true },
-  { id: "phenol", label: "Phénol", disabled: true },
-  { id: "hap", label: "Hap", disabled: true },
-  { id: "perchlorate", label: "Perchlorate", disabled: true },
-  { id: "dioxine_et_furane", label: "Dioxine et Furane", disabled: true },
+  {
+    id: "tous polluants",
+    nom_affichage: "Tous les polluants",
+    disable: false,
+    enfants: [],
+  },
+  { id: "pfas", nom_affichage: "PFAS", enfants: [], disable: false },
+  {
+    id: "pesticides",
+    nom_affichage: "Pesticides",
+    disable: false,
+    enfants: [
+      {
+        id: "substances actives",
+        nom_affichage: "Substances actives",
+        disable: false,
+        enfants: [],
+      },
+      {
+        id: "métabolite de pesticide",
+        nom_affichage: "Métabolites",
+        disable: false,
+        enfants: [
+          {
+            id: "substances actives",
+            nom_affichage: "Métabolites ESA-métachlore",
+            enfants: [],
+            disable: false,
+          },
+          {
+            id: "substances actives",
+            nom_affichage: "Métabolites Chlorothalonil R471811",
+            enfants: [],
+            disable: false,
+          },
+          {
+            id: "substances actives",
+            nom_affichage: "Métabolites Chloridazone desphényl",
+            enfants: [],
+            disable: false,
+          },
+          {
+            id: "substances actives",
+            nom_affichage: "Métabolites Atrazine déséthyl",
+            enfants: [],
+            disable: false,
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: "nitrite",
+    nom_affichage: "Nitrates et Nitrites",
+    disable: false,
+    enfants: [],
+  },
+  { id: "cvm", nom_affichage: "CVM", disable: false, enfants: [] },
+  {
+    id: "substances industrielles",
+    nom_affichage: "Substances industrielles",
+    disable: true,
+    enfants: [
+      {
+        id: "1,4-dioxane",
+        nom_affichage: "1,4-Dioxane",
+        disable: false,
+        enfants: [],
+      },
+      {
+        id: "perchlorate",
+        nom_affichage: "Perchlorate",
+        disable: false,
+        enfants: [],
+      },
+    ],
+  },
+  {
+    id: "métaux lourds",
+    nom_affichage: "Métaux lourds",
+    disable: true,
+    enfants: [
+      { id: "arsenic", nom_affichage: "Arsenic", disable: false, enfants: [] },
+      { id: "plomb", nom_affichage: "Plomb", disable: false, enfants: [] },
+    ],
+  },
 ];
 
 export function formatCategoryName(id: string) {

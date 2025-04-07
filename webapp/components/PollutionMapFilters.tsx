@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/select";
 import { CalendarIcon, BlendingModeIcon } from "@radix-ui/react-icons";
 import { availableCategories } from "@/lib/polluants";
+import clsx from "clsx";
 
 type PollutionMapFiltersProps = {
   period: string;
@@ -31,8 +32,48 @@ export default function PollutionMapFilters({
     { value: "bilan_annuel_2020", label: "Bilan 2020" },
   ];
 
+  const renderTreeItems = (
+    items: typeof availableCategories,
+    hierarchie = 1,
+    parentName = "",
+  ) => {
+    let cln = "";
+    if (hierarchie == 1) {
+      cln = "pl-2";
+    } else if (hierarchie == 2) {
+      cln = "pl-6";
+    } else {
+      cln = "pl-10";
+    }
+
+    return items.map((item) => {
+      const key = parentName
+        ? parentName + "_" + item.nom_affichage
+        : item.nom_affichage;
+
+      return (
+        <div key={key}>
+          <SelectItem
+            key={key}
+            value={item.nom_affichage.toLowerCase()}
+            disabled={item.disable}
+            className={cln}
+          >
+            {item.nom_affichage}
+          </SelectItem>
+          {item.enfants && renderTreeItems(item.enfants, hierarchie + 1, key)}
+        </div>
+      );
+    });
+  };
+  const onValueChange = (v: string) => {
+    setCategory(v);
+  };
+
+  console.log("cat", category);
+
   return (
-    <div className="flex space-x-6">
+    <div className="flex space-x-6 p-2">
       <div className="shadow-sm">
         <Select value={period} onValueChange={(y) => setPeriod(y)}>
           <SelectTrigger
@@ -54,10 +95,10 @@ export default function PollutionMapFilters({
         </Select>
       </div>
 
-      <div className="shadow-sm">
-        <Select value={category} onValueChange={setCategory}>
+      <div className="shadow-sm polluant_selector">
+        <Select value={category} onValueChange={onValueChange}>
           <SelectTrigger
-            className="SelectTrigger bg-white rounded-2xl"
+            className={clsx("bg-white rounded-2xl")}
             aria-label="category-select"
           >
             <BlendingModeIcon />
@@ -65,13 +106,7 @@ export default function PollutionMapFilters({
               <SelectValue placeholder="Polluant" className="mx-1" />
             </div>
           </SelectTrigger>
-          <SelectContent>
-            {availableCategories.map((p) => (
-              <SelectItem key={p.id} value={p.id} disabled={p.disabled}>
-                {p.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
+          <SelectContent>{renderTreeItems(availableCategories)}</SelectContent>
         </Select>
       </div>
     </div>

@@ -113,7 +113,3 @@
     @apply bg-background text-foreground;
   }
 }
-
-/* .scrollbar-hide::-webkit-scrollbar {
-  display: none;
-} */

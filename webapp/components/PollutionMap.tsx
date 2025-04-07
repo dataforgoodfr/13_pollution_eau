@@ -61,7 +61,7 @@ export default function PollutionMap() {
           setMarker={setMarker}
         />
 
-        <div className="absolute top-4 right-4 left-4 z-10 px-2 flex justify-between overflow-x-auto scrollbar-hide">
+        <div className="absolute top-2 left-4 z-10 flex overflow-x-auto scrollbar-hide">
           <PollutionMapFilters
             period={period}
             setPeriod={setPeriod}
@@ -70,6 +70,14 @@ export default function PollutionMap() {
             // displayMode={displayMode}
             // setDisplayMode={setDisplayMode}
           />
+        </div>
+
+        <div
+          className={clsx(
+            "absolute top-2 right-20 z-9 transition-all duration-300",
+            sidePanelOpen && "mr-80",
+          )}
+        >
           <PollutionMapSearchBox
             communeInseeCode={selectedZoneCode}
             onAddressFilter={handleAddressSelect}

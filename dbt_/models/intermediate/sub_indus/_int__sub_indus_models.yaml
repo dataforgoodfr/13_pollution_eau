@@ -12,6 +12,8 @@ models:
       - name: inseecommune
         description: "Code INSEE de la commune"
         type: VARCHAR
+        tests:
+          - not_null
       - name: annee
         description: "Annee du prevelvement"
         type: SMALLINT

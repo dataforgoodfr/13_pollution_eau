@@ -27,7 +27,7 @@ SELECT
     last_pvl.datetimeprel AS dernier_prel_datetime,
     last_pvl.valtraduite AS dernier_prel_valeur,
     1 AS nb_parametres,
-    'substances_industrielles_' || last_pvl.cdparametresiseeaux AS categorie,
+    'sub_indus_' || last_pvl.cdparametresiseeaux AS categorie,
     CASE
         WHEN
             last_pvl.valtraduite = 0
@@ -42,15 +42,15 @@ SELECT
             AND last_pvl.cdparametresiseeaux = '14DAN'
             THEN 'inf_0_35'
         WHEN
+            last_pvl.valtraduite >= 15
+            AND last_pvl.cdparametresiseeaux = 'PCLAT'
+            THEN 'sup_15'
+        WHEN
             last_pvl.valtraduite >= 4 AND last_pvl.cdparametresiseeaux = 'PCLAT'
             THEN 'sup_4'
         WHEN
             last_pvl.valtraduite < 4 AND last_pvl.cdparametresiseeaux = 'PCLAT'
             THEN 'inf_4'
-        WHEN
-            last_pvl.valtraduite >= 15
-            AND last_pvl.cdparametresiseeaux = 'PCLAT'
-            THEN 'sup_15'
         WHEN
             last_pvl.valtraduite < 15 AND last_pvl.cdparametresiseeaux = 'PCLAT'
             THEN 'inf_15'

@@ -19,7 +19,7 @@ models:
         description: "Catégorie du paramètre (pesticides, pfas, vcm, nitrates, etc.) selon la classification établie."
         tests:
           - accepted_values:
-              values: ["substances_industrielles_14DAN","substances_industrielles_PCLAT"]
+              values: ["sub_indus_14DAN","sub_indus_PCLAT"]
       - name: periode
         description: "Période du résultat"
         type: VARCHAR
@@ -47,7 +47,7 @@ models:
       - name: categorie
         tests:
           - accepted_values:
-              values: ["substances_industrielles_14DAN","substances_industrielles_PCLAT"]
+              values: ["sub_indus_14DAN","sub_indus_PCLAT"]
       - name: periode
         type: VARCHAR
         tests:
@@ -97,7 +97,7 @@ models:
         description: "Catégorie du paramètre (pesticides, pfas, vcm, nitrates, etc.) selon la classification établie."
         tests:
           - accepted_values:
-              values: ["substances_industrielles_14DAN","substances_industrielles_PCLAT"]
+              values: ["sub_indus_14DAN","sub_indus_PCLAT"]
       - name: periode
         description: "Période du résultat"
         type: VARCHAR
@@ -125,7 +125,7 @@ models:
       - name: categorie
         tests:
           - accepted_values:
-              values: ["substances_industrielles_14DAN","substances_industrielles_PCLAT"]
+              values: ["sub_indus_14DAN","sub_indus_PCLAT"]
       - name: periode
         type: VARCHAR
         tests:

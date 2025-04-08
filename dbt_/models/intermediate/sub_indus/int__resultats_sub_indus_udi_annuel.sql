@@ -19,7 +19,7 @@ prels AS (
 SELECT
     cdreseau,
     annee,
-    'substances_industrielles_' || cdparametresiseeaux AS categorie,
+    'sub_indus_' || cdparametresiseeaux AS categorie,
     'bilan_annuel_' || annee AS periode,
     count(
         DISTINCT

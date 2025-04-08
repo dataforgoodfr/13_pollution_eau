@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useRef, useEffect, useCallback } from "react";
-import useWindowSize from "@/hooks/useWindowSize";
 import clsx from "clsx";
 
 export const ResizableWrapper = ({
@@ -10,19 +9,9 @@ export const ResizableWrapper = ({
   children: React.ReactNode;
 }) => {
   const [dimensions, setDimensions] = useState({ width: 500, height: 400 });
-  const windowSize = useWindowSize();
   const [isResizing, setIsResizing] = useState(false);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const rafRef = useRef<number | null>(null);
-
-  useEffect(() => {
-    if (!isResizing && windowSize.height && windowSize.width) {
-      setDimensions({
-        width: windowSize.width - 20,
-        height: windowSize.height - 80,
-      });
-    }
-  }, [windowSize.height, windowSize.width, isResizing]);
 
   const handleMouseDown = useCallback(() => {
     setIsResizing(true);

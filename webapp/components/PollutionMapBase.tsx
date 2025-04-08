@@ -151,11 +151,7 @@ export default function PollutionMapBaseLayer({
   return (
     <ReactMapGl
       id="map"
-      style={{
-        width: "100%",
-        height: "100%",
-        position: "absolute",
-      }}
+      style={{ width: "100%", height: "100%" }}
       mapStyle={mapStyle}
       {...mapState}
       mapLib={maplibregl}

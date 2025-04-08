@@ -68,7 +68,7 @@ export default function PollutionMapFilters({
           <SelectContent>
             {availableCategories.map((p) => (
               <SelectItem key={p.id} value={p.id} disabled={p.disabled}>
-                {p.label.toUpperCase()}
+                {p.label}
               </SelectItem>
             ))}
           </SelectContent>

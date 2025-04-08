@@ -1,6 +1,6 @@
 "use client";
-import { InfoCircledIcon } from "@radix-ui/react-icons";
-import { getCategoryById, ICategory } from "@/lib/polluants";
+import { Info } from "lucide-react";
+import { getCategoryById } from "@/lib/polluants";
 import {
   Card,
   CardHeader,
@@ -8,11 +8,6 @@ import {
   CardContent,
 } from "@/components/ui/card";
 import { X } from "lucide-react";
-
-type categoryDetailTag = keyof Pick<
-  ICategory,
-  "exposureSources" | "healthRisks" | "regulation"
->;
 
 function Tag({ content }: { content: string }) {
   return (
@@ -58,7 +53,7 @@ function ExplicationCard({
     <Card className={`${bgColor} shadow-none rounded-lg`}>
       <CardHeader className="p-4 pb-0">
         <CardDescription className={`rounded-3xl flex items-center gap-1`}>
-          <InfoCircledIcon />
+          <Info />
           {quesion}
         </CardDescription>
       </CardHeader>

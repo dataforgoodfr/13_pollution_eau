@@ -93,7 +93,7 @@ export default function PollutionMapFilters({
         </Select>
       </div>
 
-      <div className="shadow-sm polluant_selector">
+      <div className="shadow-sm">
         <Select value={category} onValueChange={onValueChange}>
           <SelectTrigger
             className={clsx("bg-white rounded-2xl")}

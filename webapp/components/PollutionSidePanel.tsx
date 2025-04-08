@@ -9,32 +9,10 @@ import {
 } from "@/components/ui/card";
 import { X } from "lucide-react";
 
-interface IPollutionExpPanelProps {
-  categorieId: string;
-  onClose?: () => void;
-}
-
 type polluantDetailTag = keyof Pick<
   IPollutantCategory,
   "exposureSources" | "healthRisks" | "regulation"
 >;
-
-interface IPollutionDetailExpProps {
-  polluant: IPollutantCategory;
-  tag: polluantDetailTag;
-}
-
-interface IResultCardProps {
-  des: string;
-  result: string;
-  bgColor: string;
-}
-
-interface IExplicationCardProps {
-  bgColor: string;
-  quesion: string;
-  answer: string;
-}
 
 function Tag({ content }: { content: string }) {
   return (
@@ -47,7 +25,10 @@ function Tag({ content }: { content: string }) {
 function PolluantDetailExplication({
   polluant,
   tag,
-}: IPollutionDetailExpProps) {
+}: {
+  polluant: IPollutantCategory;
+  tag: polluantDetailTag;
+}) {
   return (
     <div className="">
       <Tag content={tag} />
@@ -56,7 +37,15 @@ function PolluantDetailExplication({
   );
 }
 
-function ResultCard({ des, result, bgColor }: IResultCardProps) {
+function ResultCard({
+  des,
+  result,
+  bgColor,
+}: {
+  des: string;
+  result: string;
+  bgColor: string;
+}) {
   return (
     <Card className="shadow-none rounded-lg">
       <CardHeader className="p-2 pt-3">
@@ -71,7 +60,15 @@ function ResultCard({ des, result, bgColor }: IResultCardProps) {
   );
 }
 
-function ExplicationCard({ bgColor, quesion, answer }: IExplicationCardProps) {
+function ExplicationCard({
+  bgColor,
+  quesion,
+  answer,
+}: {
+  bgColor: string;
+  quesion: string;
+  answer: string;
+}) {
   return (
     <Card className={`${bgColor} shadow-none rounded-lg`}>
       <CardHeader className="p-4 pb-0">
@@ -86,10 +83,13 @@ function ExplicationCard({ bgColor, quesion, answer }: IExplicationCardProps) {
 }
 
 // Usage example
-export default function PollutionExpPanel({
+export default function PollutionSidePanel({
   categorieId = "cvm",
   onClose,
-}: IPollutionExpPanelProps) {
+}: {
+  categorieId: string;
+  onClose?: () => void;
+}) {
   const polluant = POLLUTANT_CATEGORIES.filter(
     (p) => p.id == categorieId.toLowerCase(),
   );

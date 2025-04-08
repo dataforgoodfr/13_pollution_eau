@@ -4,7 +4,7 @@ import { useState, JSX } from "react";
 import PollutionMapBaseLayer from "@/components/PollutionMapBase";
 import PollutionMapFilters from "@/components/PollutionMapFilters";
 import PollutionMapDetailPanel from "@/components/PollutionMapDetailPanel";
-import PollutionExpPanel from "@/components/PollutionExpPanel";
+import PollutionSidePanel from "@/components/PollutionSidePanel";
 import PollutionMapSearchBox, { FilterResult } from "./PollutionMapSearchBox";
 import { MAPLIBRE_MAP } from "@/app/config";
 import { MapProvider } from "react-map-gl/maplibre";
@@ -114,7 +114,7 @@ export default function PollutionMap() {
               sidePanelOpen ? "w-80 opacity-100" : "w-0 opacity-0"
             }`}
           >
-            <PollutionExpPanel
+            <PollutionSidePanel
               categorieId={category}
               onClose={() => setSidePanelOpen(false)}
             />

@@ -31,8 +31,28 @@ split_nitrites AS (
             CASE
                 WHEN
                     last_pvl.cdparametresiseeaux = 'NO3'
+                    THEN last_pvl.datetimeprel
+            END
+        ) AS dernier_prel_datetime_n03,
+        MAX(
+            CASE
+                WHEN
+                    last_pvl.cdparametresiseeaux = 'NO2'
+                    THEN last_pvl.datetimeprel
+            END
+        ) AS dernier_prel_datetime_n02,
+        MAX(
+            CASE
+                WHEN
+                    last_pvl.cdparametresiseeaux = 'NO3_NO2'
+                    THEN last_pvl.datetimeprel
+            END
+        ) AS dernier_prel_datetime_no3_no2,
+        MAX(
+            CASE
+                WHEN
+                    last_pvl.cdparametresiseeaux = 'NO3'
                     THEN last_pvl.valtraduite
-                ELSE 0
             END
         ) AS valtraduite_no3,
         MAX(
@@ -40,7 +60,6 @@ split_nitrites AS (
                 WHEN
                     last_pvl.cdparametresiseeaux = 'NO2'
                     THEN last_pvl.valtraduite
-                ELSE 0
             END
         ) AS valtraduite_no2,
         MAX(
@@ -48,7 +67,6 @@ split_nitrites AS (
                 WHEN
                     last_pvl.cdparametresiseeaux = 'NO3_NO2'
                     THEN last_pvl.valtraduite
-                ELSE 0
             END
         ) AS valtraduite_no3_no2
     FROM
@@ -68,10 +86,32 @@ SELECT
     split_nitrites.nb_parametres,
     CASE
         WHEN
-            split_nitrites.valtraduite_no3 = 0
-            AND split_nitrites.valtraduite_no2 = 0
-            AND split_nitrites.valtraduite_no3_no2 = 0
-            THEN 'non_quantifie'
+            DATE_DIFF(
+                'day',
+                LEAST(
+                    split_nitrites.dernier_prel_datetime_n03,
+                    split_nitrites.dernier_prel_datetime_n02,
+                    split_nitrites.dernier_prel_datetime_no3_no2
+                ),
+                GREATEST(
+                    split_nitrites.dernier_prel_datetime_n03,
+                    split_nitrites.dernier_prel_datetime_n02,
+                    split_nitrites.dernier_prel_datetime_no3_no2
+                )
+            ) >= 30
+            OR split_nitrites.valtraduite_no2 IS NULL
+            OR split_nitrites.valtraduite_no3 IS NULL
+            THEN 'donnee_manquante'
+        WHEN
+            split_nitrites.valtraduite_no3_no2 IS NULL
+            AND split_nitrites.valtraduite_no2 IS NOT NULL
+            AND split_nitrites.valtraduite_no3 IS NOT NULL
+            AND split_nitrites.valtraduite_no3 < 50
+            AND split_nitrites.valtraduite_no2 < 0.5
+            AND split_nitrites.valtraduite_no3 / 50
+            + split_nitrites.valtraduite_no2 / 3
+            < 1
+            THEN 'conforme'
         WHEN
             split_nitrites.nb_parametres = 3
             AND split_nitrites.valtraduite_no3 < 50
@@ -83,14 +123,14 @@ SELECT
             OR split_nitrites.valtraduite_no2 >= 0.5
             OR split_nitrites.valtraduite_no3_no2 >= 1
             THEN 'non_conforme'
-        WHEN
+        /*        WHEN
             split_nitrites.nb_parametres != 3
             AND (
                 split_nitrites.valtraduite_no3 < 50
                 OR split_nitrites.valtraduite_no2 < 0.5
                 OR split_nitrites.valtraduite_no3_no2 < 1
             )
-            THEN 'non_quantifie'
+            THEN 'non_quantifie'*/
         ELSE 'error'
     END AS resultat
 FROM

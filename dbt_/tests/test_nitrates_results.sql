@@ -42,7 +42,7 @@ WHERE
         cdreseau = '073002059'
         AND categorie = 'nitrite'
         AND dernier_prel_datetime = '2024-10-23 09:28:00'
-        AND resultat != 'non_quantifie'
+        AND resultat != 'donnee_manquante'
         AND nb_parametres = 1
     )
     OR
@@ -50,7 +50,7 @@ WHERE
         cdreseau = '088002296'
         AND categorie = 'nitrite'
         AND dernier_prel_datetime = '2024-09-27 12:00:00'
-        AND resultat != 'non_quantifie'
+        AND resultat != 'donnee_manquante'
         AND nb_parametres = 1
     )
     OR
@@ -58,14 +58,14 @@ WHERE
         cdreseau = '095000346'
         AND categorie = 'nitrite'
         AND dernier_prel_datetime = '2024-12-17 08:55:00'
-        AND resultat != 'non_conforme'
+        AND resultat != 'donnee_manquante'
     )
     OR
     (
         cdreseau = '973000028'
         AND categorie = 'nitrite'
         AND dernier_prel_datetime = '2024-12-17 08:55:00'
-        AND resultat != 'non_quantifie'
+        AND resultat != 'conforme'
         AND nb_parametres = 2
     )
     OR
@@ -73,6 +73,6 @@ WHERE
         cdreseau = '976003554'
         AND categorie = 'nitrite'
         AND dernier_prel_datetime = '2024-11-12 10:00:00'
-        AND resultat != 'non_quantifie'
+        AND resultat != 'donnee_manquante'
         AND nb_parametres = 2
     )

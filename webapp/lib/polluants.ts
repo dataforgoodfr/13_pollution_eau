@@ -96,5 +96,5 @@ export const availableCategories: ICategory[] = [
 
 export function formatCategoryName(id: string) {
   const category = availableCategories.find((category) => category.id === id);
-  return category ? category.label : id;
+  return category ? category.nom_affichage : id;
 }

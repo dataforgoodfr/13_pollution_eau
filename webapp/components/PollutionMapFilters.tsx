@@ -77,10 +77,6 @@ export default function PollutionMapFilters({
     { value: "bilan_annuel_2020", label: "Bilan 2020" },
   ];
 
-  const onValueChange = (v: string) => {
-    setCategory(v);
-  };
-
   return (
     <div className="flex space-x-6 p-2">
       <div className="shadow-sm">
@@ -105,7 +101,7 @@ export default function PollutionMapFilters({
       </div>
 
       <div className="shadow-sm">
-        <Select value={category} onValueChange={onValueChange}>
+        <Select value={category} onValueChange={setCategory}>
           <SelectTrigger
             className="bg-white rounded-2xl"
             aria-label="category-select"

@@ -1,4 +1,11 @@
-export const availableCategories = [
+export interface ICategory {
+  id: string;
+  nom_affichage: string;
+  disable: boolean;
+  enfants: ICategory[];
+}
+
+export const availableCategories: ICategory[] = [
   {
     id: "tous polluants",
     nom_affichage: "Tous les polluants",

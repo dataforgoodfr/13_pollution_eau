@@ -6,8 +6,9 @@ import {
   SelectContent,
   SelectItem,
 } from "@/components/ui/select";
+import { memo } from "react";
 import { FlaskConical, CalendarDays } from "lucide-react";
-import { availableCategories } from "@/lib/polluants";
+import { availableCategories, ICategory } from "@/lib/polluants";
 import clsx from "clsx";
 
 type PollutionMapFiltersProps = {
@@ -16,6 +17,51 @@ type PollutionMapFiltersProps = {
   category: string;
   setCategory: (type: string) => void;
 };
+
+type CategoryItemsProps = {
+  items: ICategory[];
+  hierarchie?: number;
+  parentName?: string;
+};
+
+const CategoryItems = memo(
+  ({ items, hierarchie = 1, parentName = "" }: CategoryItemsProps) => {
+    let cln = "";
+    if (hierarchie == 1) {
+      cln = "pl-6";
+    } else if (hierarchie == 2) {
+      cln = "pl-10";
+    } else {
+      cln = "pl-14";
+    }
+    return items.map((item) => {
+      const key = parentName
+        ? parentName + "_" + item.nom_affichage
+        : item.nom_affichage;
+
+      return (
+        <div key={key}>
+          <SelectItem
+            key={key}
+            value={item.nom_affichage.toLowerCase()}
+            disabled={item.disable}
+            className={cln}
+          >
+            {item.nom_affichage}
+          </SelectItem>
+          {item.enfants && (
+            <CategoryItems
+              items={item.enfants}
+              hierarchie={hierarchie + 1}
+              parentName={key}
+            />
+          )}
+        </div>
+      );
+    });
+  },
+);
+CategoryItems.displayName = "CategoryItems";
 
 export default function PollutionMapFilters({
   period,
@@ -32,40 +78,6 @@ export default function PollutionMapFilters({
     { value: "bilan_annuel_2020", label: "Bilan 2020" },
   ];
 
-  const renderTreeItems = (
-    items: typeof availableCategories,
-    hierarchie = 1,
-    parentName = "",
-  ) => {
-    let cln = "";
-    if (hierarchie == 1) {
-      cln = "pl-6";
-    } else if (hierarchie == 2) {
-      cln = "pl-10";
-    } else {
-      cln = "pl-14";
-    }
-
-    return items.map((item) => {
-      const key = parentName
-        ? parentName + "_" + item.nom_affichage
-        : item.nom_affichage;
-
-      return (
-        <div key={key}>
-          <SelectItem
-            key={key}
-            value={item.nom_affichage.toLowerCase()}
-            disabled={item.disable}
-            className={cln}
-          >
-            {item.nom_affichage}
-          </SelectItem>
-          {item.enfants && renderTreeItems(item.enfants, hierarchie + 1, key)}
-        </div>
-      );
-    });
-  };
   const onValueChange = (v: string) => {
     setCategory(v);
   };
@@ -105,7 +117,7 @@ export default function PollutionMapFilters({
             </div>
           </SelectTrigger>
           <SelectContent className="rounded-xl">
-            {renderTreeItems(availableCategories)}
+            <CategoryItems items={availableCategories} />
           </SelectContent>
         </Select>
       </div>

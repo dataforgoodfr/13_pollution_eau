@@ -13,7 +13,7 @@ import { clsx } from "clsx";
 
 export default function PollutionMap() {
   const [period, setPeriod] = useState("dernier_prel");
-  const [category, setCategory] = useState("tous les polluants");
+  const [category, setCategory] = useState("tous-polluants");
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [displayMode, setDisplayMode] = useState<"communes" | "udis">("udis");
   const [mapState, setMapState] = useState<{
@@ -115,7 +115,7 @@ export default function PollutionMap() {
             }`}
           >
             <PollutionSidePanel
-              categorieId={category}
+              category={category}
               onClose={() => setSidePanelOpen(false)}
             />
           </div>

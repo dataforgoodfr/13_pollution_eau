@@ -42,7 +42,7 @@ const CategoryItems = memo(
         <div key={key}>
           <SelectItem
             key={key}
-            value={item.nom_affichage.toLowerCase()}
+            value={item.id}
             disabled={item.disable}
             className={cln}
           >

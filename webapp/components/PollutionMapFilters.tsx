@@ -104,7 +104,9 @@ export default function PollutionMapFilters({
               <SelectValue placeholder="Polluant" className="mx-1" />
             </div>
           </SelectTrigger>
-          <SelectContent>{renderTreeItems(availableCategories)}</SelectContent>
+          <SelectContent className="rounded-xl">
+            {renderTreeItems(availableCategories)}
+          </SelectContent>
         </Select>
       </div>
     </div>

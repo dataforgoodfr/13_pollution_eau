@@ -9,7 +9,6 @@ import {
 import { memo } from "react";
 import { FlaskConical, CalendarDays } from "lucide-react";
 import { availableCategories, ICategory } from "@/lib/polluants";
-import clsx from "clsx";
 
 type PollutionMapFiltersProps = {
   period: string;
@@ -108,7 +107,7 @@ export default function PollutionMapFilters({
       <div className="shadow-sm">
         <Select value={category} onValueChange={onValueChange}>
           <SelectTrigger
-            className={clsx("bg-white rounded-2xl")}
+            className="bg-white rounded-2xl"
             aria-label="category-select"
           >
             <FlaskConical size={16} className="text-gray-400" />

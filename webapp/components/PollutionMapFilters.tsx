@@ -6,7 +6,7 @@ import {
   SelectContent,
   SelectItem,
 } from "@/components/ui/select";
-import { CalendarIcon, BlendingModeIcon } from "@radix-ui/react-icons";
+import { FlaskConical, CalendarDays } from "lucide-react";
 import { availableCategories } from "@/lib/polluants";
 import clsx from "clsx";
 
@@ -39,11 +39,11 @@ export default function PollutionMapFilters({
   ) => {
     let cln = "";
     if (hierarchie == 1) {
-      cln = "pl-2";
-    } else if (hierarchie == 2) {
       cln = "pl-6";
-    } else {
+    } else if (hierarchie == 2) {
       cln = "pl-10";
+    } else {
+      cln = "pl-14";
     }
 
     return items.map((item) => {
@@ -78,7 +78,7 @@ export default function PollutionMapFilters({
             className="SelectTrigger bg-white rounded-2xl"
             aria-label="year-select"
           >
-            <CalendarIcon />
+            <CalendarDays size={16} className="text-gray-400" />
             <div className="block mx-1">
               <SelectValue placeholder="Année" />
             </div>
@@ -99,12 +99,14 @@ export default function PollutionMapFilters({
             className={clsx("bg-white rounded-2xl")}
             aria-label="category-select"
           >
-            <BlendingModeIcon />
+            <FlaskConical size={16} className="text-gray-400" />
             <div className="block mx-1">
               <SelectValue placeholder="Polluant" className="mx-1" />
             </div>
           </SelectTrigger>
-          <SelectContent>{renderTreeItems(availableCategories)}</SelectContent>
+          <SelectContent className="rounded-xl">
+            {renderTreeItems(availableCategories)}
+          </SelectContent>
         </Select>
       </div>
     </div>

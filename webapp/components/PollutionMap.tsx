@@ -11,6 +11,7 @@ import { MAPLIBRE_MAP } from "@/app/config";
 import { MapProvider } from "react-map-gl/maplibre";
 import MapZoneSelector from "./MapZoneSelector";
 import PollutionMapLegend from "./PollutionMapLegend";
+import { HamburgerMenu } from "./ui/hamburger-menu";
 
 export default function PollutionMap() {
   const [period, setPeriod] = useState("dernier_prel");
@@ -71,6 +72,8 @@ export default function PollutionMap() {
         <div className="absolute top-24 right-12 z-10 p-3">
           <MapZoneSelector />
         </div>
+
+        <HamburgerMenu isOpen={showLegend} toggleMenu={() => setShowLegend(!showLegend)} />
 
         {showLegend && (
           <div className="absolute left-4 bottom-4">

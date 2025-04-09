@@ -35,8 +35,8 @@ const CategoryItems = memo(
     }
     return items.map((item) => {
       const key = parentName
-        ? parentName + "_" + item.nom_affichage
-        : item.nom_affichage;
+        ? parentName + "_" + item.nomAffichage
+        : item.nomAffichage;
 
       return (
         <div key={key}>
@@ -46,7 +46,7 @@ const CategoryItems = memo(
             disabled={item.disable}
             className={cln}
           >
-            {item.nom_affichage}
+            {item.nomAffichage}
           </SelectItem>
           {item.enfants && (
             <CategoryItems

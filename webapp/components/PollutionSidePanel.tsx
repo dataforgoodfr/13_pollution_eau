@@ -91,7 +91,7 @@ export default function PollutionSidePanel({
           <div className="text-black p-4">
             <div className="text-xs font-thin">FICHE EXPLICATIVE</div>
             <div className="text-2xl">
-              {(categoryDetails.nom_affichage || "UNKOWN").toUpperCase()}
+              {(categoryDetails.nomAffichage || "UNKOWN").toUpperCase()}
             </div>
             {/* <div className="text-xs font-thin">
               {(categoryDetails.longName || "").toUpperCase()}
@@ -103,11 +103,11 @@ export default function PollutionSidePanel({
             </div>
             <div>
               <Tag content="Exposition" />
-              <p>{categoryDetails.exposureSources || "..."}</p>
+              <p>{categoryDetails.sourcesExposition || "..."}</p>
             </div>
             <div>
               <Tag content="Risques sanitaires" />
-              <p>{categoryDetails.healthRisks || "..."}</p>
+              <p>{categoryDetails.risquesSante || "..."}</p>
             </div>
             <div>
               <Tag content="Réglementation en France" />

@@ -94,7 +94,7 @@ export const availableCategories: ICategory[] = [
     sourcesExposition:
       "Ustensiles de cuisine, emballages alimentaires, eau potable.",
     resultats: {
-      non_quantifie: {
+      aucun_parametre_quantifie: {
         label: "Aucun paramètre quantifié",
         couleur: "#75D3B4",
         couleurFond: "#75D3B4",
@@ -127,7 +127,7 @@ export const availableCategories: ICategory[] = [
         couleurFond: "#FB726C",
         picto: "red cross",
       },
-      pfas_non_recherches: {
+      non_recherche: {
         label: "PFAS non recherchés",
         couleur: "hachuré",
         couleurFond: "hachuré",
@@ -256,13 +256,13 @@ export const availableCategories: ICategory[] = [
             sourcesExposition: "Contamination de l'eau souterraine.",
             sousCategories: false,
             resultats: {
-              parametre_non_recheche: {
+              non_recherche: {
                 label: "Paramètre non recherché",
                 couleur: "hachuré",
                 couleurFond: "hachuré",
                 picto: null,
               },
-              parametre_non_quantifie: {
+              non_quantifie: {
                 label: "Paramètre non quantifié",
                 couleur: "#75D3B4",
                 couleurFond: "#75D3B4",
@@ -302,13 +302,13 @@ export const availableCategories: ICategory[] = [
             sourcesExposition: "Présent dans les nappes phréatiques.",
             sousCategories: false,
             resultats: {
-              parametre_non_recheche: {
+              non_recherche: {
                 label: "Paramètre non recherché",
                 couleur: "hachuré",
                 couleurFond: "hachuré",
                 picto: null,
               },
-              parametre_non_quantifie: {
+              non_quantifie: {
                 label: "Paramètre non quantifié",
                 couleur: "#75D3B4",
                 couleurFond: "#75D3B4",
@@ -349,13 +349,13 @@ export const availableCategories: ICategory[] = [
             sourcesExposition: "Présent dans les eaux souterraines.",
             sousCategories: false,
             resultats: {
-              parametre_non_recheche: {
+              non_recherche: {
                 label: "Paramètre non recherché",
                 couleur: "hachuré",
                 couleurFond: "hachuré",
                 picto: null,
               },
-              parametre_non_quantifie: {
+              non_quantifie: {
                 label: "Paramètre non quantifié",
                 couleur: "#75D3B4",
                 couleurFond: "#75D3B4",
@@ -390,13 +390,13 @@ export const availableCategories: ICategory[] = [
             sourcesExposition: "Contamination résiduelle des sols et nappes.",
             sousCategories: false,
             resultats: {
-              parametre_non_recheche: {
+              non_recherche: {
                 label: "Paramètre non recherché",
                 couleur: "hachuré",
                 couleurFond: "hachuré",
                 picto: null,
               },
-              parametre_non_quantifie: {
+              non_quantifie: {
                 label: "Paramètre non quantifié",
                 couleur: "#75D3B4",
                 couleurFond: "#75D3B4",
@@ -430,13 +430,13 @@ export const availableCategories: ICategory[] = [
             sourcesExposition: "Contamination des ressources en eau.",
             sousCategories: false,
             resultats: {
-              parametre_non_recheche: {
+              non_recherche: {
                 label: "Paramètre non recherché",
                 couleur: "hachuré",
                 couleurFond: "hachuré",
                 picto: null,
               },
-              parametre_non_quantifie: {
+              non_quantifie: {
                 label: "Paramètre non quantifié",
                 couleur: "#75D3B4",
                 couleurFond: "#75D3B4",
@@ -520,7 +520,7 @@ export const availableCategories: ICategory[] = [
         couleurFond: "#FB726C",
         picto: "red cross",
       },
-      cvm_non_recherche: {
+      non_recherche: {
         label: "CVM non recherché",
         couleur: "hachuré",
         couleurFond: "hachuré",
@@ -540,7 +540,9 @@ export const availableCategories: ICategory[] = [
       "Encadrement par le Code de l'environnement et les normes REACH.",
     sourcesExposition:
       "Déchets industriels, effluents rejetés dans l'environnement.",
-    resultats: {},
+    resultats: {
+      // disable -> pas de résultats
+    },
     enfants: [
       {
         id: "1-4-dioxane",
@@ -555,13 +557,13 @@ export const availableCategories: ICategory[] = [
           "Industries pharmaceutiques et plastiques, eau contaminée.",
         sousCategories: true,
         resultats: {
-          parametre_non_recheche: {
+          non_recherche: {
             label: "Paramètre non recherché",
             couleur: "hachuré",
             couleurFond: "hachuré",
             picto: null,
           },
-          parametre_non_quantifie: {
+          non_quantifie: {
             label: "Paramètre non quantifié",
             couleur: "#75D3B4",
             couleurFond: "#75D3B4",
@@ -596,13 +598,13 @@ export const availableCategories: ICategory[] = [
         sourcesExposition: "Munitions, feux d'artifice, engrais contaminés.",
         sousCategories: true,
         resultats: {
-          parametre_non_recheche: {
+          non_recherche: {
             label: "Paramètre non recherché",
             couleur: "hachuré",
             couleurFond: "hachuré",
             picto: null,
           },
-          parametre_non_quantifie: {
+          non_quantifie: {
             label: "Paramètre non quantifié",
             couleur: "#75D3B4",
             couleurFond: "#75D3B4",
@@ -639,26 +641,7 @@ export const availableCategories: ICategory[] = [
     sourcesExposition:
       "Pollution industrielle, anciennes canalisations, alimentation.",
     resultats: {
-      aucun_depassement: {
-        label: "Aucun dépassement des valeurs seuils",
-        couleur: "#B4E681",
-        couleurFond: "#B4E681",
-        picto: null,
-      },
-      limite_qualite: {
-        label:
-          "Au moins un paramètre au-dessus de la limite de qualité (norme ou recommandation)",
-        couleur: "#FBBD6C",
-        couleurFond: "#FBBD6C",
-        picto: "warning",
-      },
-      limite_sanitaire: {
-        label:
-          "Au moins un paramètre au-dessus de la limite sanitaire (norme ou recommandation)",
-        couleur: "#FB726C",
-        couleurFond: "#FB726C",
-        picto: "red cross",
-      },
+      // disable -> pas de résultats
     },
     enfants: [
       {

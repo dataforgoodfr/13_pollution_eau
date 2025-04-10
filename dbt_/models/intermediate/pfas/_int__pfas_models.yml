@@ -78,6 +78,8 @@ models:
           description: "Période d’analyse, définie sous la forme 'bilan_annuel_<année>'."
           tests:
             - not_null
+            - dbt_utils.expression_is_true:
+                expression: "LIKE 'bilan_annuel%'"
 
         - name: nb_prelevements
           description: "Nombre total de prélèvements uniques réalisés pour l’UDI au cours de l’année."
@@ -95,10 +97,9 @@ models:
           description: "Ratio des prélèvements avec dépassement de valeur sanitaire (nb_depassements_vs / nb_prelevements)."
           tests:
             - not_null
-            - dbt_utils.accepted_range:
+            - dbt_expectations.expect_column_values_to_be_between:
                 min_value: 0
                 max_value: 1
-                inclusive: true
 
         - name: nb_depassements_20_pfas
           description: >

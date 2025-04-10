@@ -29,9 +29,11 @@ models:
           - dbt_utils.expression_is_true:
               expression: "LIKE 'bilan_annuel%'"
       - name: nb_depassements
+        type: INTEGER
       - name: nb_prelevements
+        type: INTEGER
       - name: ratio_depassements
-        description: "Pourcentage de prélèvements qui dépassent la limite"
+        description: "Pourcentage de prélèvements qui dépassent la limite sanitaire"
         type: FLOAT
         tests:
           - not_null
@@ -107,9 +109,11 @@ models:
           - dbt_utils.expression_is_true:
               expression: "LIKE 'bilan_annuel%'"
       - name: nb_depassements
+        type: INTEGER
       - name: nb_prelevements
+        type: INTEGER
       - name: ratio_depassements
-        description: "Pourcentage de prélèvements qui dépassent la limite"
+        description: "Pourcentage de prélèvements qui dépassent la limite sanitaire"
         type: FLOAT
         tests:
           - not_null

@@ -144,7 +144,10 @@ WHERE
         cdreseau = '076000543'
         AND categorie = 'sub_indus_14DAN'
         AND annee = '2024'
-        AND nb_prelevements != 9
+        AND (
+            nb_prelevements != 10
+            OR nb_depassements != 1
+        )
     )
     OR
     (

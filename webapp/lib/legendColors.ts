@@ -7,6 +7,7 @@ interface LegendColor {
 export const categoryNameMapping = {
   cvm: "CVM",
   pesticides: "Pesticides",
+  pfas: "PFAS",
 };
 
 // exported from https://docs.google.com/spreadsheets/d/1YOj05YwsN8u-VkncXaEbWKcC0zIcDXzR7W3BeEGJ7Kg/edit?gid=131077573#gid=131077573

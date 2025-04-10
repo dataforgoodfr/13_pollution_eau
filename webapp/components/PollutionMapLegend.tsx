@@ -58,8 +58,8 @@ export default function PollutionMapLegend({
       </div>
 
       <div className="space-y-3">
-        {filteredLegendItems.map((item, index) => (
-          <div key={index} className="flex items-start gap-3">
+        {filteredLegendItems.map((item) => (
+          <div key={item.color} className="flex items-start gap-3">
             <div
               className={`w-6 h-4 flex-shrink-0 mt-1 ${item.color === "hachuré" ? "slashed-background" : ""}`}
               style={{

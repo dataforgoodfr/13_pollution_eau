@@ -7,7 +7,6 @@ last_pvl AS (
         limite_qualite,
         datetimeprel,
         valtraduite,
-        limite_qualite,
         ROW_NUMBER()
             OVER (
                 PARTITION BY cdreseau, cdparametresiseeaux
@@ -47,7 +46,7 @@ valeur_ref AS (
             END
         ) AS limite_qualite_no2
     FROM
-        int__valeurs_de_reference
+        {{ ref('int__valeurs_de_reference') }}
     WHERE
         categorie_1 = 'nitrate'
 ),

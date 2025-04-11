@@ -5,7 +5,7 @@
 
 WITH autres_metabolites_results AS (
     SELECT *
-    FROM int__resultats_udi_communes
+    FROM {{ ref('int__resultats_udi_communes') }}
     WHERE
         categorie = 'pesticide'
         AND

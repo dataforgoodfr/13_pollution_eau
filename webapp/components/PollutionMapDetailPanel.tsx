@@ -1,7 +1,5 @@
 "use client";
 
-import { formatCategoryName } from "@/lib/polluants";
-
 type PollutionMapDetailPanelProps = {
   data: Record<string, string | number | null> | null;
   onClose: () => void;

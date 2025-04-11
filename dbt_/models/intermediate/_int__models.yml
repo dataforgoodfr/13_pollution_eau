@@ -233,24 +233,36 @@ models:
 
           {{ doc("val_traduite_docs") }}
 
-      - name: limitequal
-        description: "Limite(s) de qualité du paramètre concerné en vigueur au moment du prélèvement pour le type d'eau considéré."
-
       - name: de_partition
         description: 'Année de récupération des données. "de" signifie "data engineering". Ce champ est ajouté automatiquement lors de l''ingestion des données.'
         tests:
           - not_null
 
-      - name: limitequal_float
-        description: "Limite de qualité convertie en valeur numérique (flottant) pour faciliter les comparaisons."
-
-      - name: unite
-        description: "L'unité de mesure du paramètre est l'unité (mg, μg/L, NFU) définie pour ce paramètre par la réglementation des eaux d'alimentation en vigueur."
-
       - name: categorie
-        description: "Catégorie du paramètre (pesticides, pfas, vcm, nitrates, etc.) selon la classification établie."
+        description: "Catégorie du paramètre (pesticide, pfas, cvm, nitrate, etc.) selon le fichier de référence de Générations Futures."
+        type: VARCHAR
         tests:
           - not_null
+
+      - name: categorie_2
+        description: "Sous-catégorie du paramètre selon le fichier de référence de Générations Futures."
+        type: VARCHAR
+
+      - name: categorie_3
+        description: "Détail de la sous-catégorie selon le fichier de référence de Générations Futures."
+        type: VARCHAR
+
+      - name: limite_qualite
+        description: "Limite de qualité selon le fichier de référence de Générations Futures."
+        type: FLOAT
+
+      - name: valeur_sanitaire_1
+        description: "Valeur sanitaire de référence selon le fichier de référence de Générations Futures."
+        type: FLOAT
+
+      - name: valeur_sanitaire_2
+        description: "Deuxième valeur sanitaire de référence"
+        type: FLOAT
 
       - name: cdreseau
         description: "Code de l'installation (unité de distribution)"
@@ -269,6 +281,72 @@ models:
         type: DATETIME
         tests:
           - not_null
+
+  - name: int__valeurs_de_reference
+    description: "Table des valeurs de référence fournies par Génératins Futures, pour chaque paramètre SISE-Eaux."
+    columns:
+      - name: cdparametresiseeaux
+        description: >
+          Le code SISE-Eaux du paramètre est un identifiant alphanumérique sur 7 positions maximum, associé à chaque
+          paramètre. Lorsque c'est possible, le symbole chimique est retenu comme identifiant (NO3, AS...) pour le rendre
+          signifiant.
+        type: VARCHAR
+        tests:
+          - unique
+          - not_null
+
+      - name: categorie_1
+        description: "Catégorie principale du paramètre"
+        type: VARCHAR
+        tests:
+          - not_null
+          - accepted_values:
+              values:
+                - "pfas"
+                - "cvm"
+                - "nitrate"
+                - "metaux_lourds"
+                - "substances_indus"
+                - "pesticide"
+
+      - name: categorie_2
+        description: "Sous-catégorie du paramètre"
+        type: VARCHAR
+
+      - name: categorie_3
+        description: "Détail de la sous-catégorie"
+        type: VARCHAR
+
+      - name: limite_qualite
+        description: "Limite de qualité réglementaire du paramètre"
+        type: FLOAT
+
+      - name: limite_qualite_unite
+        description: "Unité de mesure pour la limite de qualité"
+        type: VARCHAR
+
+      - name: valeur_sanitaire_1
+        description: "Première valeur sanitaire de référence"
+        type: FLOAT
+
+      - name: valeur_sanitaire_1_unite
+        description: "Unité de mesure pour la première valeur sanitaire"
+        type: VARCHAR
+
+      - name: valeur_sanitaire_2
+        description: "Deuxième valeur sanitaire de référence"
+        type: FLOAT
+
+      - name: valeur_sanitaire_2_unite
+        description: "Unité de mesure pour la deuxième valeur sanitaire"
+        type: VARCHAR
+
+      - name: nb_rows
+        description: "Nombre de lignes pour un même cdparametresiseeaux - DOIT être égal à 1"
+        type: INTEGER
+        tests:
+          - accepted_values:
+              values: [1]
 
   - name: int__udi
     description: "Liste des UDI (unités de distribution) avec leurs communes desservies"

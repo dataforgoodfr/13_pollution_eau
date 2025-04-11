@@ -4,14 +4,18 @@ import { useState, JSX } from "react";
 import PollutionMapBaseLayer from "@/components/PollutionMapBase";
 import PollutionMapFilters from "@/components/PollutionMapFilters";
 import PollutionMapDetailPanel from "@/components/PollutionMapDetailPanel";
+import PollutionSidePanel from "@/components/PollutionSidePanel";
 import PollutionMapSearchBox, { FilterResult } from "./PollutionMapSearchBox";
 import { MAPLIBRE_MAP } from "@/app/config";
 import { MapProvider } from "react-map-gl/maplibre";
 import MapZoneSelector from "./MapZoneSelector";
+import PollutionMapLegend from "./PollutionMapLegend";
+import { HamburgerButton } from "./ui/hamburger-button";
+import { clsx } from "clsx";
 
 export default function PollutionMap() {
   const [period, setPeriod] = useState("dernier_prel");
-  const [category, setCategory] = useState("pfas");
+  const [category, setCategory] = useState("tous-polluants");
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [displayMode, setDisplayMode] = useState<"communes" | "udis">("udis");
   const [mapState, setMapState] = useState<{
@@ -29,6 +33,9 @@ export default function PollutionMap() {
     latitude: number;
     content: JSX.Element;
   } | null>(null);
+  const [sidePanelOpen, setSidePanelOpen] = useState(true);
+
+  const [showLegend, setShowLegend] = useState(true);
 
   const handleAddressSelect = (result: FilterResult | null) => {
     if (result) {
@@ -61,7 +68,7 @@ export default function PollutionMap() {
           setMarker={setMarker}
         />
 
-        <div className="absolute top-4 right-4 left-4 z-10 px-2 flex justify-between overflow-x-auto scrollbar-hide">
+        <div className="absolute top-4 left-4 z-10 flex overflow-x-auto scrollbar-hide">
           <PollutionMapFilters
             period={period}
             setPeriod={setPeriod}
@@ -70,14 +77,68 @@ export default function PollutionMap() {
             // displayMode={displayMode}
             // setDisplayMode={setDisplayMode}
           />
+        </div>
+
+        <div
+          className={clsx(
+            "absolute top-4 right-20 z-9 transition-all duration-300",
+            sidePanelOpen && "mr-80",
+          )}
+        >
           <PollutionMapSearchBox
             communeInseeCode={selectedZoneCode}
             onAddressFilter={handleAddressSelect}
           />
         </div>
 
-        <div className="absolute top-24 right-12 z-10 p-3">
+        <div
+          className={clsx(
+            "absolute top-4 right-4 z-8 transition-all duration-300",
+            sidePanelOpen && "mr-80",
+          )}
+        >
           <MapZoneSelector />
+        </div>
+
+        <div className="absolute left-4 bottom-4">
+          <HamburgerButton
+            visible={!showLegend}
+            onClick={() => setShowLegend(!showLegend)}
+          />
+        </div>
+
+        {showLegend && (
+          <div className="absolute left-4 bottom-4">
+            <PollutionMapLegend
+              category={category}
+              onClose={() => setShowLegend(false)}
+            />
+          </div>
+        )}
+
+        {/* Right side panel with handle */}
+        <div className="absolute top-0 right-0 h-full z-10">
+          {/* Panel handle - always visible */}
+          <div
+            className="absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-6 cursor-pointer z-20"
+            onClick={() => setSidePanelOpen(!sidePanelOpen)}
+          >
+            <div className="bg-white text-gray-600 shadow-md rounded-l-md flex items-center justify-center h-16 w-6">
+              <div className="text-lg">{sidePanelOpen ? "›" : "‹"}</div>
+            </div>
+          </div>
+
+          {/* Panel content */}
+          <div
+            className={`bg-[#E2E8F0] transition-all duration-300 h-full overflow-y-auto ${
+              sidePanelOpen ? "w-80 opacity-100" : "w-0 opacity-0"
+            }`}
+          >
+            <PollutionSidePanel
+              category={category}
+              onClose={() => setSidePanelOpen(false)}
+            />
+          </div>
         </div>
 
         {/* <div className="absolute bottom-6 right-4 z-10 bg-white p-3 rounded-lg shadow-lg">
@@ -88,7 +149,7 @@ export default function PollutionMap() {
           <PollutionMapDetailPanel
             data={dataPanel}
             onClose={() => setDataPanel(null)}
-            className="absolute bottom-6 left-4 z-10 bg-white p-3 rounded-lg shadow-lg max-w-xs"
+            className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 bg-white p-4 rounded-lg shadow-lg max-w-md"
           />
         )}
       </MapProvider>
@@ -96,8 +157,8 @@ export default function PollutionMap() {
   );
 }
 
-async function LookupUDI(center: [number, number]) {
-  /*try {
+/*async function LookupUDI(center: [number, number]) {
+  try {
     const fecthUrl =
       "/api/UDILookup?Lon=" + center[0] + "&Lat=" + center[1] + "";
     console.log("Lookup UDI", fecthUrl);
@@ -105,5 +166,5 @@ async function LookupUDI(center: [number, number]) {
     const UDIInfo = await response.json();
 
     alert("UDI "+UDIInfo.nomUDI)
-  } catch (ex) {}*/
-}
+  } catch (ex) {}
+}*/

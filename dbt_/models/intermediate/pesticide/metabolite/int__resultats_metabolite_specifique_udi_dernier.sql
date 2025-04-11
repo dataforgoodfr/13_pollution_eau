@@ -30,7 +30,7 @@ esa_metolachlore_results AS (
             WHEN valtraduite = 0 OR valtraduite IS null THEN 'non_quantifie'
             WHEN valtraduite >= valeur_sanitaire_1 THEN 'sup_valeur_sanitaire'
             WHEN valtraduite >= limite_qualite THEN 'sup_limite_qualite'
-            WHEN valtraduite >= 0.1 THEN 'sup_0_1'
+            WHEN valtraduite >= 0.1 THEN 'inf_limite_qualite_sup_0_1'
             WHEN valtraduite < limite_qualite THEN 'inf_limite_qualite'
             ELSE 'erreur'
         END AS resultat
@@ -70,7 +70,7 @@ chlorothalonil_results AS (
             WHEN valtraduite = 0 OR valtraduite IS null THEN 'non_quantifie'
             WHEN valtraduite >= valeur_sanitaire_1 THEN 'sup_valeur_sanitaire'
             WHEN valtraduite >= limite_qualite THEN 'sup_limite_qualite'
-            WHEN valtraduite >= 0.1 THEN 'sup_0_1'
+            WHEN valtraduite >= 0.1 THEN 'inf_limite_qualite_sup_0_1'
             WHEN valtraduite < limite_qualite THEN 'inf_limite_qualite'
             ELSE 'erreur'
         END AS resultat

@@ -29,11 +29,35 @@ prels AS (
                     THEN valtraduite
                 ELSE 0
             END
-        ) AS valtraduite_no3_no2
+        ) AS valtraduite_no3_no2,
+        MAX(
+            CASE
+                WHEN
+                    cdparametresiseeaux = 'NO3'
+                    THEN limite_qualite
+                ELSE 0
+            END
+        ) AS limite_qualite_no3,
+        MAX(
+            CASE
+                WHEN
+                    cdparametresiseeaux = 'NO3_NO2'
+                    THEN limite_qualite
+                ELSE 0
+            END
+        ) AS limite_qualite_no3_no2,
+        MAX(
+            CASE
+                WHEN
+                    cdparametresiseeaux = 'NO2'
+                    THEN limite_qualite
+                ELSE 0
+            END
+        ) AS limite_qualite_no2
     FROM
         {{ ref('int__resultats_udi_communes') }}
     WHERE
-        categorie = 'nitrite'
+        categorie = 'nitrate'
     GROUP BY
         annee,
         cdreseau,
@@ -45,15 +69,15 @@ prels AS (
 SELECT
     prels.cdreseau,
     prels.annee,
-    'nitrite' AS categorie,
+    'nitrate' AS categorie,
     'bilan_annuel_' || prels.annee AS periode,
     COUNT(
         DISTINCT
         CASE
             WHEN
-                prels.valtraduite_no3 >= 50
-                OR prels.valtraduite_no2 >= 0.5
-                OR prels.valtraduite_no3_no2 >= 1
+                prels.valtraduite_no3 >= prels.limite_qualite_no3
+                OR prels.valtraduite_no2 >= prels.limite_qualite_no2
+                OR prels.valtraduite_no3_no2 >= prels.limite_qualite_no3_no2
                 THEN prels.referenceprel
         END
     ) AS nb_depassements,
@@ -63,9 +87,9 @@ SELECT
             DISTINCT
             CASE
                 WHEN
-                    prels.valtraduite_no3 >= 50
-                    OR prels.valtraduite_no2 >= 0.5
-                    OR prels.valtraduite_no3_no2 >= 1
+                    prels.valtraduite_no3 >= prels.limite_qualite_no3
+                    OR prels.valtraduite_no2 >= prels.limite_qualite_no2
+                    OR prels.valtraduite_no3_no2 >= prels.limite_qualite_no3_no2
                     THEN prels.referenceprel
             END
         )::float

@@ -6,6 +6,7 @@ last_pvl AS (
         cdparametresiseeaux,
         datetimeprel,
         valtraduite,
+        limite_qualite,
         ROW_NUMBER()
             OVER (
                 PARTITION BY cdreseau, cdparametresiseeaux
@@ -15,7 +16,7 @@ last_pvl AS (
     FROM
         {{ ref('int__resultats_udi_communes') }}
     WHERE
-        categorie = 'nitrite'
+        categorie = 'nitrate'
         AND
         -- On garde les prélèvements de moins d'un an
         CURRENT_DATE - datetimeprel < INTERVAL 1 YEAR
@@ -50,7 +51,31 @@ split_nitrites AS (
                     THEN last_pvl.valtraduite
                 ELSE 0
             END
-        ) AS valtraduite_no3_no2
+        ) AS valtraduite_no3_no2,
+        MAX(
+            CASE
+                WHEN
+                    last_pvl.cdparametresiseeaux = 'NO3'
+                    THEN last_pvl.limite_qualite
+                ELSE 0
+            END
+        ) AS limite_qualite_no3,
+        MAX(
+            CASE
+                WHEN
+                    last_pvl.cdparametresiseeaux = 'NO3_NO2'
+                    THEN last_pvl.limite_qualite
+                ELSE 0
+            END
+        ) AS limite_qualite_no3_no2,
+        MAX(
+            CASE
+                WHEN
+                    last_pvl.cdparametresiseeaux = 'NO2'
+                    THEN last_pvl.limite_qualite
+                ELSE 0
+            END
+        ) AS limite_qualite_no2
     FROM
         last_pvl
     WHERE
@@ -74,21 +99,29 @@ SELECT
             THEN 'non_quantifie'
         WHEN
             split_nitrites.nb_parametres = 3
-            AND split_nitrites.valtraduite_no3 < 50
-            AND split_nitrites.valtraduite_no2 < 0.5
-            AND split_nitrites.valtraduite_no3_no2 < 1
+            AND split_nitrites.valtraduite_no3
+            < split_nitrites.limite_qualite_no3
+            AND split_nitrites.valtraduite_no2
+            < split_nitrites.limite_qualite_no2
+            AND split_nitrites.valtraduite_no3_no2
+            < split_nitrites.limite_qualite_no3_no2
             THEN 'conforme'
         WHEN
-            split_nitrites.valtraduite_no3 >= 50
-            OR split_nitrites.valtraduite_no2 >= 0.5
-            OR split_nitrites.valtraduite_no3_no2 >= 1
+            split_nitrites.valtraduite_no3 >= split_nitrites.limite_qualite_no3
+            OR split_nitrites.valtraduite_no2
+            >= split_nitrites.limite_qualite_no2
+            OR split_nitrites.valtraduite_no3_no2
+            >= split_nitrites.limite_qualite_no3_no2
             THEN 'non_conforme'
         WHEN
             split_nitrites.nb_parametres != 3
             AND (
-                split_nitrites.valtraduite_no3 < 50
-                OR split_nitrites.valtraduite_no2 < 0.5
-                OR split_nitrites.valtraduite_no3_no2 < 1
+                split_nitrites.valtraduite_no3
+                < split_nitrites.limite_qualite_no3
+                OR split_nitrites.valtraduite_no2
+                < split_nitrites.limite_qualite_no2
+                OR split_nitrites.valtraduite_no3_no2
+                < split_nitrites.limite_qualite_no3_no2
             )
             THEN 'non_quantifie'
         ELSE 'error'

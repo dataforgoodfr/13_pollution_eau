@@ -62,8 +62,8 @@ latest_autres_metabolites_results AS (
 SELECT
     cdreseau,
     'metabolite_divers' AS categorie,
-    datetimeprel AS dernier_prel_datetime,
     'dernier_prel' AS periode,
+    MAX(datetimeprel) AS dernier_prel_datetime,
     CASE
         WHEN
             BOOL_AND(valtraduite IS NULL OR valtraduite = 0)

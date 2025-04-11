@@ -68,7 +68,7 @@ valeur_ref AS (
         {{ ref('int__valeurs_de_reference') }}
     WHERE
         categorie_1 = 'nitrate'
-),
+)
 
 SELECT
     prels.cdreseau,

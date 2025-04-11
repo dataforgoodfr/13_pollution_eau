@@ -47,7 +47,7 @@ resultats_with_ref AS (
     FROM
         resultats
     INNER JOIN
-        {{ ref("references_generations_futures") }} AS r
+        {{ ref("int__valeurs_de_reference") }} AS r
         ON
             resultats.cdparametresiseeaux = r.cdparametresiseeaux
 )

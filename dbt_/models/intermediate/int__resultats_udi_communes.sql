@@ -2,7 +2,6 @@ WITH resultats AS (
     SELECT
         referenceprel,
         cdparametresiseeaux,
-        limitequal,
         de_partition,
 
         -- Correction de la colonne valtraduite qui contient les valeurs
@@ -21,54 +20,52 @@ WITH resultats AS (
         CASE
             WHEN valtraduite = 1 AND REGEXP_MATCHES(rqana, '[a-zA-Z]') THEN 0
             ELSE valtraduite
-        END AS valtraduite,
+        END AS valtraduite
 
-        CAST(
-            REGEXP_EXTRACT(
-                REPLACE(limitequal, ',', '.'), '-?\d+(\.\d+)?'
-            ) AS FLOAT
-        ) AS limitequal_float,
-        REGEXP_EXTRACT(limitequal, '[a-zA-Zµg]+/?[a-zA-Z/L]+$') AS unite
+        --  On n'utilise plus limitequal des données d'origine
+        -- car on se base sur des valeurs fournies par Générations Futures
+        --
+        -- CAST(
+        --     REGEXP_EXTRACT(
+        --         REPLACE(limitequal, ',', '.'), '-?\d+(\.\d+)?'
+        --     ) AS FLOAT
+        -- ) AS limitequal_float,
+        -- REGEXP_EXTRACT(limitequal, '[a-zA-Zµg]+/?[a-zA-Z/L]+$') AS unite
     FROM
         {{ ref("stg_edc__resultats") }}
 ),
 
-resultats_with_cat AS (
+resultats_with_ref AS (
     SELECT
         resultats.*,
-        mcs.categorie
+        r.categorie_1 AS categorie,
+        r.categorie_2,
+        r.categorie_3,
+        r.limite_qualite,
+        r.valeur_sanitaire_1,
+        r.valeur_sanitaire_2
     FROM
         resultats
-    LEFT JOIN
-        {{ ref("int__mapping_category_simple") }} AS mcs
+    INNER JOIN
+        {{ ref("references_generations_futures") }} AS r
         ON
-            resultats.cdparametresiseeaux = mcs.cdparametresiseeaux
-    WHERE
-        mcs.categorie IN (
-            'pesticides',
-            'nitrite',
-            'pfas',
-            'cvm',
-            'métaux lourds',
-            'perchlorate',
-            'hydrocarbures' -- contient le 1,4 dioxane
-        )
+            resultats.cdparametresiseeaux = r.cdparametresiseeaux
 )
 
 
 SELECT
-    resultats_with_cat.*,
+    resultats_with_ref.*,
     udi.cdreseau,
     udi.inseecommune,
     plv.datetimeprel
 FROM
-    resultats_with_cat
+    resultats_with_ref
 INNER JOIN
     {{ ref("int__lien_cdreseau_refreneceprel") }} AS plv
     ON
-        resultats_with_cat.referenceprel = plv.referenceprel
+        resultats_with_ref.referenceprel = plv.referenceprel
         AND
-        resultats_with_cat.de_partition = plv.de_partition
+        resultats_with_ref.de_partition = plv.de_partition
 
 LEFT JOIN
     {{ ref("int__lien_commune_cdreseau") }} AS udi

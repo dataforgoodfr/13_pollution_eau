@@ -233,24 +233,36 @@ models:
 
           {{ doc("val_traduite_docs") }}
 
-      - name: limitequal
-        description: "Limite(s) de qualité du paramètre concerné en vigueur au moment du prélèvement pour le type d'eau considéré."
-
       - name: de_partition
         description: 'Année de récupération des données. "de" signifie "data engineering". Ce champ est ajouté automatiquement lors de l''ingestion des données.'
         tests:
           - not_null
 
-      - name: limitequal_float
-        description: "Limite de qualité convertie en valeur numérique (flottant) pour faciliter les comparaisons."
-
-      - name: unite
-        description: "L'unité de mesure du paramètre est l'unité (mg, μg/L, NFU) définie pour ce paramètre par la réglementation des eaux d'alimentation en vigueur."
-
       - name: categorie
-        description: "Catégorie du paramètre (pesticides, pfas, vcm, nitrates, etc.) selon la classification établie."
+        description: "Catégorie du paramètre (pesticide, pfas, cvm, nitrate, etc.) selon le fichier de référence de Générations Futures."
+        type: VARCHAR
         tests:
           - not_null
+
+      - name: categorie_2
+        description: "Sous-catégorie du paramètre selon le fichier de référence de Générations Futures."
+        type: VARCHAR
+
+      - name: categorie_3
+        description: "Détail de la sous-catégorie selon le fichier de référence de Générations Futures."
+        type: VARCHAR
+
+      - name: limite_qualite
+        description: "Limite de qualité selon le fichier de référence de Générations Futures."
+        type: FLOAT
+
+      - name: valeur_sanitaire_1
+        description: "Valeur sanitaire de référence selon le fichier de référence de Générations Futures."
+        type: FLOAT
+
+      - name: valeur_sanitaire_2
+        description: "Deuxième valeur sanitaire de référence"
+        type: FLOAT
 
       - name: cdreseau
         description: "Code de l'installation (unité de distribution)"
@@ -335,6 +347,7 @@ models:
         tests:
           - accepted_values:
               values: [1]
+
   - name: int__udi
     description: "Liste des UDI (unités de distribution) avec leurs communes desservies"
     columns:

@@ -77,6 +77,7 @@ ENV PORT=8080
 ENV HOSTNAME="0.0.0.0"
 ENV NEXT_PUBLIC_PROTOMAPS_API_KEY=$NEXT_PUBLIC_PROTOMAPS_API_KEY
 ENV DUCKDB_PATH="/app/database/data_for_website.duckdb"
+ENV HOME="/app"
 
 # Switch to non-root user
 RUN chown -R appuser:appgroup /app

@@ -18,6 +18,10 @@ from pipelines.tasks.config.config_edc import get_edc_config
 
 
 class DataGouvClient(HTTPSClient):
+    """
+    Data come from the source at this url https://www.data.gouv.fr/fr/datasets/resultats-du-controle-sanitaire-de-leau-distribuee-commune-par-commune/
+    """
+
     def __init__(self, duckdb_client, base_url: str = "https://www.data.gouv.fr/"):
         super().__init__(base_url)
         self.base_url = base_url

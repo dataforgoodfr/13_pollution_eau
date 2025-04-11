@@ -5,7 +5,7 @@ export const MAPLIBRE_MAP = {
     // https://protomaps.com/api
     api_key: process.env.NEXT_PUBLIC_PROTOMAPS_API_KEY || "",
     maxzoom: 15,
-    theme: "white",
+    theme: "white", // unsure between "white" and "light"
     language: "fr",
   },
   initialViewState: {
@@ -30,9 +30,13 @@ export const DEFAULT_MAP_STYLE: maplibregl.StyleSpecification = {
       url: `https://api.protomaps.com/tiles/v4.json?key=${MAPLIBRE_MAP.protomaps.api_key}`,
       attribution: '<a href="https://osm.org/copyright">© OpenStreetMap</a>',
     },
-    polluants: {
+    communes: {
       type: "vector",
-      url: "pmtiles://s3/upload/datacommunes.pmtiles",
+      url: "pmtiles://s3/prod/pmtiles/georef-france-communes-prelevement.pmtiles",
+    },
+    udis: {
+      type: "vector",
+      url: "pmtiles://s3/prod/pmtiles/georef-france-udi-prelevement.pmtiles",
     },
   },
   layers: [], // layers will be added dynamically in the Map component

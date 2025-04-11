@@ -1,8 +1,8 @@
 version: 2
 
 seeds:
-  - name: mapping_categories_v2
-    description: "nouveau Table de mapping des catégories de paramètres de qualité de l'eau."
+  - name: references_generations_futures
+    description: "Table de référence fournie par Générations Futures"
     columns:
       - name: cdparametresiseeaux
         description: "Code SISE-Eaux (Système d'Information des services Santé-Environnement Eaux) du paramètre"
@@ -10,39 +10,59 @@ seeds:
         description: "Code SANDRE (Service National d'Administration des Données et Référentiels sur l'Eau) du paramètre"
       - name: libmajparametre
         description: "Nom du paramètre en majuscule"
-        tests:  
+        tests:
           - dbt_expectations.expect_column_values_to_be_of_type:
               column_type: VARCHAR
       - name: libminparametre
         description: "Nom du paramètre en minuscule"
-        tests:  
+        tests:
           - dbt_expectations.expect_column_values_to_be_of_type:
               column_type: VARCHAR
       - name: casparam
         description: "Code CAS (Chemical Abstracts Service) de la substance chimique"
-      - name: categorie
-        description: "Catégorie du paramètre (pesticides, nitrites, etc.)"
+      - name: categorie_1
+        description: "Catégorie du paramètre"
         tests:
-          - not_null 
-      - name: souscat
-        description: "Sous-categorie"
-      - name: detailsouscat
-        description: "Detail de sous-categorie"
-      - name: limitequal
-        description: "Limite(s) de qualité du paramètre concerné en vigueur au moment du prélèvement pour le type d'eau considéré."
-      - name: commentlimitquality
-        description: " Commentaire limite qualité"
-      - name: unite
-        description: "Unité de valeur"
-      - name: valsanitaire1	
-        description: "valuer de sanitaire 1"
-      - name: commentvalsanitaire1
+          - not_null
+          - accepted_values:
+              values:
+                - "pfas"
+                - "cvm"
+                - "nitrate"
+                - "metaux_lourds"
+                - "substances_indus"
+                - "pesticide"
+      - name: categorie_2
+        description: "Sous-catégorie"
+      - name: categorie_3
+        description: "Détail de la sous-catégorie"
+      - name: limite_qualite
+        description: "Limite de qualité du paramètre"
+        tests:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: double
+      - name: limite_qualite_unite
+        description: "Unité de la limite de qualité"
+      - name: limite_qualite_commentaire
+        description: "Commentaire sur la limite de qualité"
+      - name: valeur_sanitaire_1
+        description: "Valeur sanitaire"
+        tests:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: double
+      - name: valeur_sanitaire_1_unite
+        description: "Unité de la valeur sanitaire 1"
+      - name: valeur_sanitaire_1_commentaire
         description: "Commentaire sur la valeur sanitaire 1"
-      - name: valsanitaire2
-        description: "Valeur sanitaire 2"
-      - name: commentvalsanitaire2
+      - name: valeur_sanitaire_2
+        description: "Deuxième valeur sanitaire"
+        tests:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: integer
+      - name: valeur_sanitaire_2_unite
+        description: "Unité de la valeur sanitaire 2"
+      - name: valeur_sanitaire_2_commentaire
         description: "Commentaire sur la valeur sanitaire 2"
-
 
   - name: mapping_categories
     description: "Table de mapping des catégories de paramètres de qualité de l'eau."

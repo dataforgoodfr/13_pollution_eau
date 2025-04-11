@@ -1,0 +1,33 @@
+name: Lint Next.js
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "webapp/**"
+
+jobs:
+  lint:
+    name: Next.js Lint
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+          cache-dependency-path: ./webapp/package.json
+
+      - name: Install dependencies
+        run: |
+          cd webapp
+          npm ci
+
+      - name: Run Next.js lint
+        run: |
+          cd webapp
+          npm run lint

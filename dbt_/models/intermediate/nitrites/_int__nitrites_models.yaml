@@ -35,7 +35,7 @@ models:
           - not_null
           - accepted_values:
               values:
-                - non_quantifie
+                - donnee_manquante
                 - conforme
                 - non_conforme
 

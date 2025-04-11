@@ -7,6 +7,7 @@ prels AS (
         de_partition AS annee,
         inseecommune,
         cdparametresiseeaux,
+        valeur_sanitaire_1,
         referenceprel,
         datetimeprel,
         valtraduite
@@ -27,12 +28,12 @@ SELECT
             WHEN
                 (
                     valtraduite IS NOT NULL
-                    AND valtraduite >= 0.35
+                    AND valtraduite >= valeur_sanitaire_1
                     AND cdparametresiseeaux = '14DAN'
                 )
                 OR (
                     valtraduite IS NOT NULL
-                    AND valtraduite >= 4
+                    AND valtraduite >= valeur_sanitaire_1
                     AND cdparametresiseeaux = 'PCLAT'
                 )
                 THEN referenceprel
@@ -46,12 +47,12 @@ SELECT
                 WHEN
                     (
                         valtraduite IS NOT NULL
-                        AND valtraduite >= 0.35
+                        AND valtraduite >= valeur_sanitaire_1
                         AND cdparametresiseeaux = '14DAN'
                     )
                     OR (
                         valtraduite IS NOT NULL
-                        AND valtraduite >= 4
+                        AND valtraduite >= valeur_sanitaire_1
                         AND cdparametresiseeaux = 'PCLAT'
                     )
                     THEN referenceprel

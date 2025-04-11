@@ -6,6 +6,8 @@ last_pvl AS (
         cdparametresiseeaux,
         datetimeprel,
         valtraduite,
+        valeur_sanitaire_1,
+        valeur_sanitaire_2,
         ROW_NUMBER()
             OVER (
                 PARTITION BY inseecommune, cdparametresiseeaux
@@ -32,23 +34,24 @@ SELECT
             OR last_pvl.valtraduite IS NULL
             THEN 'non_quantifie'
         WHEN
-            last_pvl.valtraduite >= 0.35
+            last_pvl.valtraduite >= last_pvl.valeur_sanitaire_1
             AND last_pvl.cdparametresiseeaux = '14DAN'
             THEN 'sup_0_35'
         WHEN
-            last_pvl.valtraduite < 0.35
+            last_pvl.valtraduite < last_pvl.valeur_sanitaire_1
             AND last_pvl.cdparametresiseeaux = '14DAN'
             THEN 'inf_0_35'
         WHEN
-            last_pvl.valtraduite >= 15
+            last_pvl.valtraduite >= last_pvl.valeur_sanitaire_2
             AND last_pvl.cdparametresiseeaux = 'PCLAT'
             THEN 'sup_15'
         WHEN
-            last_pvl.valtraduite >= 4
+            last_pvl.valtraduite >= last_pvl.valeur_sanitaire_1
             AND last_pvl.cdparametresiseeaux = 'PCLAT'
             THEN 'sup_4'
         WHEN
-            last_pvl.valtraduite < 4 AND last_pvl.valtraduite < 15
+            last_pvl.valtraduite < last_pvl.valeur_sanitaire_1
+            AND last_pvl.valtraduite < last_pvl.valeur_sanitaire_2
             AND last_pvl.cdparametresiseeaux = 'PCLAT'
             THEN 'inf_4'
         ELSE 'error'

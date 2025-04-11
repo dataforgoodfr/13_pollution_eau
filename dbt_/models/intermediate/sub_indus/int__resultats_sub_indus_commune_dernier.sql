@@ -48,13 +48,9 @@ SELECT
             AND last_pvl.cdparametresiseeaux = 'PCLAT'
             THEN 'sup_4'
         WHEN
-            last_pvl.valtraduite < 4
+            last_pvl.valtraduite < 4 AND last_pvl.valtraduite < 15
             AND last_pvl.cdparametresiseeaux = 'PCLAT'
             THEN 'inf_4'
-        WHEN
-            last_pvl.valtraduite < 15
-            AND last_pvl.cdparametresiseeaux = 'PCLAT'
-            THEN 'inf_15'
         ELSE 'error'
     END AS resultat
 FROM

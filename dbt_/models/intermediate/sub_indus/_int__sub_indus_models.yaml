@@ -80,7 +80,6 @@ models:
                 - sup_4
                 - inf_4
                 - sup_15
-                - inf_15
 
   - name: int__resultats_sub_indus_udi_annuel
     description: Résultats CVM par UDI pour la temporalité 'bilan_annuel'
@@ -160,4 +159,3 @@ models:
                 - sup_4
                 - inf_4
                 - sup_15
-                - inf_15

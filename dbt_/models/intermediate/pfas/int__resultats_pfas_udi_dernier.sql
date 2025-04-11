@@ -1,6 +1,13 @@
 WITH latest_pfas_results AS (
     SELECT
-        *,
+        cdreseau,
+        referenceprel,
+        categorie,
+        cdparametresiseeaux,
+        datetimeprel,
+        limite_qualite,
+        valeur_sanitaire_1,
+        valtraduite,
         ROW_NUMBER() OVER (
             PARTITION BY cdreseau, cdparametresiseeaux
             ORDER BY datetimeprel DESC
@@ -13,37 +20,12 @@ WITH latest_pfas_results AS (
         CURRENT_DATE - datetimeprel < INTERVAL 1 YEAR
 ),
 
-valeurs_sanitaires (cdparametresiseeaux, valeur_sanitaire) AS (
-    SELECT * FROM (
-        VALUES
-        ('PFOA', 0.075),
-        ('PFHPA', 0.075),
-        ('PFHXA', 960),
-        ('PFPEA', 960),
-        ('PFBA', 72),
-        ('PFBS', 240),
-        ('PFOS', 0.18),
-        ('PFHXS', 12)
-        -- TODO : vérifier unicité de cdparametresiseeaux
-    )
-),
-
-latest_pfas_results_with_valeurs_sanitaires AS (
-    SELECT
-        r.*,
-        vs.valeur_sanitaire
-    FROM latest_pfas_results AS r
-    LEFT JOIN valeurs_sanitaires AS vs
-        ON r.cdparametresiseeaux = vs.cdparametresiseeaux
-    WHERE r.row_number = 1
-),
-
 aggregated_results AS (
     SELECT
         referenceprel,
         cdreseau,
-        MIN(datetimeprel) AS datetimeprel,
         COUNT(DISTINCT cdparametresiseeaux) AS nb_parametres,
+        MIN(datetimeprel) AS datetimeprel,
         -- La somme des 20 PFAS est disponible comme un paramètre (SPFAS)
         MAX(
             CASE WHEN cdparametresiseeaux = 'SPFAS' THEN valtraduite ELSE 0 END
@@ -74,9 +56,9 @@ aggregated_results AS (
         COUNT(
             DISTINCT CASE
                 WHEN
-                    valeur_sanitaire IS NOT NULL
+                    valeur_sanitaire_1 IS NOT NULL
                     AND valtraduite IS NOT NULL
-                    AND valtraduite >= valeur_sanitaire
+                    AND valtraduite >= valeur_sanitaire_1
                     THEN cdparametresiseeaux
             END
         ) AS nb_pfas_above_limit,
@@ -85,24 +67,23 @@ aggregated_results AS (
                 WHEN valtraduite != 0 THEN cdparametresiseeaux
             END
         ) AS nb_quantified_params
-    FROM latest_pfas_results_with_valeurs_sanitaires
+    FROM latest_pfas_results
+    WHERE row_number = 1 -- On garde seulement le dernier prélèvement 
+    -- pour chaquecouple cdreseau/referenceprel
     GROUP BY referenceprel, cdreseau
     HAVING
-        -- On vérifie que la somme des 20 PFAS est bien présente
+        -- On vérifie que la somme des 20 PFAS est bien présente (>95% des cas)
         is_20_pfas = 1
         AND
-        -- On vérifie que la somme des 4 PFAS est bien présente
+        -- On vérifie que la somme des 4 PFAS est bien présente (>95% des cas)
         nb_4_pfas = 4
-        -- TODO: On pourrait prendre essayer de prendre un autre prélèvement si
-        -- le dernier n'a pas les 20 PFAS et les 4 PFAS
 )
 
 SELECT
-    referenceprel,
     cdreseau,
     'pfas' AS categorie,
-    datetimeprel AS dernier_prel_datetime,
     'dernier_prel' AS periode,
+    datetimeprel AS dernier_prel_datetime,
     nb_parametres,
     CASE
         WHEN
@@ -113,6 +94,8 @@ SELECT
             THEN 'aucun_parametre_quantifie'
         WHEN
             sum_20_pfas < 0.1 AND sum_4_pfas < 0.02
+            -- On laisse les valeurs 0.1 et 0.02 en dur car 0.02 n'est pas
+            -- dans le fichier de GF. Plus compréhensible comme ça
             THEN 'somme_20pfas_inf_0_1_et_4pfas_inf_0_02'
         WHEN
             sum_20_pfas < 0.1 AND sum_4_pfas >= 0.02
@@ -122,10 +105,3 @@ SELECT
     END AS resultat
 FROM aggregated_results
 ORDER BY datetimeprel DESC
-
-/*
-Précisions importantes:
-
-J'ai choisi de mettre ≥ au lieu de > pour les valeurs seuils.
-À confirmer avec GF.
-*/

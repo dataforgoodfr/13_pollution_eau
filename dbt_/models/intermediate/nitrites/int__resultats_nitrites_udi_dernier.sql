@@ -4,6 +4,7 @@ last_pvl AS (
         cdreseau,
         categorie,
         cdparametresiseeaux,
+        limite_qualite,
         datetimeprel,
         valtraduite,
         ROW_NUMBER()
@@ -15,10 +16,39 @@ last_pvl AS (
     FROM
         {{ ref('int__resultats_udi_communes') }}
     WHERE
-        categorie = 'nitrite'
+        categorie = 'nitrate'
         AND
         -- On garde les prélèvements de moins d'un an
         CURRENT_DATE - datetimeprel < INTERVAL 1 YEAR
+),
+
+valeur_ref AS (
+    SELECT
+        MAX(
+            CASE
+                WHEN
+                    cdparametresiseeaux = 'NO3'
+                    THEN limite_qualite
+            END
+        ) AS limite_qualite_no3,
+        MAX(
+            CASE
+                WHEN
+                    cdparametresiseeaux = 'NO3_NO2'
+                    THEN limite_qualite
+            END
+        ) AS limite_qualite_no3_no2,
+        MAX(
+            CASE
+                WHEN
+                    cdparametresiseeaux = 'NO2'
+                    THEN limite_qualite
+            END
+        ) AS limite_qualite_no2
+    FROM
+        int__valeurs_de_reference
+    WHERE
+        categorie_1 = 'nitrate'
 ),
 
 split_nitrites AS (
@@ -27,27 +57,6 @@ split_nitrites AS (
         last_pvl.categorie,
         COUNT(DISTINCT last_pvl.cdparametresiseeaux) AS nb_parametres,
         MAX(last_pvl.datetimeprel) AS dernier_prel_datetime,
-        MAX(
-            CASE
-                WHEN
-                    last_pvl.cdparametresiseeaux = 'NO3'
-                    THEN last_pvl.datetimeprel
-            END
-        ) AS dernier_prel_datetime_n03,
-        MAX(
-            CASE
-                WHEN
-                    last_pvl.cdparametresiseeaux = 'NO2'
-                    THEN last_pvl.datetimeprel
-            END
-        ) AS dernier_prel_datetime_n02,
-        MAX(
-            CASE
-                WHEN
-                    last_pvl.cdparametresiseeaux = 'NO3_NO2'
-                    THEN last_pvl.datetimeprel
-            END
-        ) AS dernier_prel_datetime_no3_no2,
         MAX(
             CASE
                 WHEN
@@ -76,62 +85,59 @@ split_nitrites AS (
     GROUP BY
         last_pvl.cdreseau,
         last_pvl.categorie
+),
+
+split_nitrites_with_ref AS (
+    SELECT
+        split_nitrites.*,
+        valeur_ref.limite_qualite_no3,
+        valeur_ref.limite_qualite_no3_no2,
+        valeur_ref.limite_qualite_no2,
+        split_nitrites.valtraduite_no3 / 50
+        + split_nitrites.valtraduite_no2 / 3 AS valtraduite_no3_no2_calc
+    FROM split_nitrites
+    CROSS JOIN valeur_ref
+
 )
 
 SELECT
-    split_nitrites.cdreseau,
-    split_nitrites.categorie,
+    split_nitrites_with_ref.cdreseau,
+    split_nitrites_with_ref.categorie,
     'dernier_prel' AS periode,
-    split_nitrites.dernier_prel_datetime,
-    split_nitrites.nb_parametres,
+    split_nitrites_with_ref.dernier_prel_datetime,
+    split_nitrites_with_ref.nb_parametres,
     CASE
         WHEN
-            DATE_DIFF(
-                'day',
-                LEAST(
-                    split_nitrites.dernier_prel_datetime_n03,
-                    split_nitrites.dernier_prel_datetime_n02,
-                    split_nitrites.dernier_prel_datetime_no3_no2
-                ),
-                GREATEST(
-                    split_nitrites.dernier_prel_datetime_n03,
-                    split_nitrites.dernier_prel_datetime_n02,
-                    split_nitrites.dernier_prel_datetime_no3_no2
-                )
-            ) >= 30
-            OR split_nitrites.valtraduite_no2 IS NULL
-            OR split_nitrites.valtraduite_no3 IS NULL
-            THEN 'donnee_manquante'
-        WHEN
-            split_nitrites.valtraduite_no3_no2 IS NULL
-            AND split_nitrites.valtraduite_no2 IS NOT NULL
-            AND split_nitrites.valtraduite_no3 IS NOT NULL
-            AND split_nitrites.valtraduite_no3 < 50
-            AND split_nitrites.valtraduite_no2 < 0.5
-            AND split_nitrites.valtraduite_no3 / 50
-            + split_nitrites.valtraduite_no2 / 3
-            < 1
-            THEN 'conforme'
-        WHEN
-            split_nitrites.nb_parametres = 3
-            AND split_nitrites.valtraduite_no3 < 50
-            AND split_nitrites.valtraduite_no2 < 0.5
-            AND split_nitrites.valtraduite_no3_no2 < 1
-            THEN 'conforme'
-        WHEN
-            split_nitrites.valtraduite_no3 >= 50
-            OR split_nitrites.valtraduite_no2 >= 0.5
-            OR split_nitrites.valtraduite_no3_no2 >= 1
-            THEN 'non_conforme'
-        /*        WHEN
-            split_nitrites.nb_parametres != 3
-            AND (
-                split_nitrites.valtraduite_no3 < 50
-                OR split_nitrites.valtraduite_no2 < 0.5
-                OR split_nitrites.valtraduite_no3_no2 < 1
+            split_nitrites_with_ref.valtraduite_no3
+            < split_nitrites_with_ref.limite_qualite_no3
+            AND split_nitrites_with_ref.valtraduite_no2
+            < split_nitrites_with_ref.limite_qualite_no2
+            AND COALESCE(
+                split_nitrites_with_ref.valtraduite_no3_no2,
+                split_nitrites_with_ref.valtraduite_no3_no2_calc
             )
-            THEN 'non_quantifie'*/
+            < split_nitrites_with_ref.limite_qualite_no3_no2
+            THEN 'conforme'
+        WHEN
+            split_nitrites_with_ref.valtraduite_no3
+            >= split_nitrites_with_ref.limite_qualite_no3
+            OR split_nitrites_with_ref.valtraduite_no2
+            >= split_nitrites_with_ref.limite_qualite_no2
+            OR COALESCE(
+                split_nitrites_with_ref.valtraduite_no3_no2,
+                split_nitrites_with_ref.valtraduite_no3_no2_calc
+            )
+            >= split_nitrites_with_ref.limite_qualite_no3_no2
+            THEN 'non_conforme'
+        WHEN
+            split_nitrites_with_ref.valtraduite_no3 IS NULL
+            OR (
+                split_nitrites_with_ref.valtraduite_no2 IS NULL
+                AND split_nitrites_with_ref.valtraduite_no3
+                < split_nitrites_with_ref.limite_qualite_no3
+            )
+            THEN 'donnee_manquante'
         ELSE 'error'
     END AS resultat
 FROM
-    split_nitrites
+    split_nitrites_with_ref

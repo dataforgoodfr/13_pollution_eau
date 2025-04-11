@@ -100,10 +100,12 @@ export default function PollutionMap() {
           <MapZoneSelector />
         </div>
 
-        <HamburgerButton
-          visible={!showLegend}
-          onClick={() => setShowLegend(!showLegend)}
-        />
+        <div className="absolute left-4 bottom-4">
+          <HamburgerButton
+            visible={!showLegend}
+            onClick={() => setShowLegend(!showLegend)}
+          />
+        </div>
 
         {showLegend && (
           <div className="absolute left-4 bottom-4">

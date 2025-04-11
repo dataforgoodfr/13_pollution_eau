@@ -1,4 +1,4 @@
-import { categoryNameMapping, legendColors } from "../lib/legendColors";
+import { getCategoryById } from "@/lib/polluants";
 
 interface PollutionMapLegendProps {
   onClose: () => void;
@@ -9,10 +9,15 @@ export default function PollutionMapLegend({
   onClose,
   category,
 }: PollutionMapLegendProps) {
-  const currentCategory =
-    categoryNameMapping[category as keyof typeof categoryNameMapping];
-  const filteredLegendItems = legendColors.filter(
-    (item) => item.category === currentCategory,
+  const categoryDetails = getCategoryById(category);
+  if (!categoryDetails) {
+    return null; // Handle the case where category details are not found
+  }
+  const legendItems = Object.entries(categoryDetails.resultats).map(
+    ([, value]) => ({
+      label: value.label,
+      color: value.couleur || value.couleurFond,
+    }),
   );
 
   return (
@@ -33,7 +38,7 @@ export default function PollutionMapLegend({
 
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-xl font-semibold text-gray-900">
-          {currentCategory}
+          {categoryDetails.nomAffichage}
         </h2>
         <button
           onClick={onClose}
@@ -58,7 +63,7 @@ export default function PollutionMapLegend({
       </div>
 
       <div className="space-y-3">
-        {filteredLegendItems.map((item) => (
+        {legendItems.map((item) => (
           <div key={item.color} className="flex items-start gap-3">
             <div
               className={`w-6 h-4 flex-shrink-0 mt-1 ${item.color === "hachuré" ? "slashed-background" : ""}`}

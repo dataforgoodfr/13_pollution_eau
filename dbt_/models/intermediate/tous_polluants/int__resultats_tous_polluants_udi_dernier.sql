@@ -51,6 +51,6 @@ SELECT
 
         ELSE 'erreur'
     END AS resultat_all
-FROM ref{{ ('int__union_resultats_udi') }}
+FROM {{ ref('int__union_resultats_udi') }}
 WHERE periode = 'dernier_prel'
 GROUP BY cdreseau, periode

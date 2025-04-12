@@ -91,10 +91,14 @@ split_nitrites_with_ref AS (
     SELECT
         split_nitrites.*,
         valeur_ref.limite_qualite_no3,
-        valeur_ref.limite_qualite_no3_no2,
         valeur_ref.limite_qualite_no2,
-        split_nitrites.valtraduite_no3 / 50
-        + split_nitrites.valtraduite_no2 / 3 AS valtraduite_no3_no2_calc
+        COALESCE(
+            valeur_ref.valtraduite_no3_no2,
+            (
+                split_nitrites.valtraduite_no3 / 50
+                + split_nitrites.valtraduite_no2 / 3
+            )
+        ) AS valtraduite_no3_no2
     FROM split_nitrites
     CROSS JOIN valeur_ref
 
@@ -112,10 +116,7 @@ SELECT
             < split_nitrites_with_ref.limite_qualite_no3
             AND split_nitrites_with_ref.valtraduite_no2
             < split_nitrites_with_ref.limite_qualite_no2
-            AND COALESCE(
-                split_nitrites_with_ref.valtraduite_no3_no2,
-                split_nitrites_with_ref.valtraduite_no3_no2_calc
-            )
+            AND split_nitrites_with_ref.valtraduite_no3_no2
             < split_nitrites_with_ref.limite_qualite_no3_no2
             THEN 'conforme'
         WHEN
@@ -123,10 +124,7 @@ SELECT
             >= split_nitrites_with_ref.limite_qualite_no3
             OR split_nitrites_with_ref.valtraduite_no2
             >= split_nitrites_with_ref.limite_qualite_no2
-            OR COALESCE(
-                split_nitrites_with_ref.valtraduite_no3_no2,
-                split_nitrites_with_ref.valtraduite_no3_no2_calc
-            )
+            OR split_nitrites_with_ref.valtraduite_no3_no2
             >= split_nitrites_with_ref.limite_qualite_no3_no2
             THEN 'non_conforme'
         WHEN

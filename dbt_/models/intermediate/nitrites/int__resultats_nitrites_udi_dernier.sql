@@ -46,7 +46,7 @@ valeur_ref AS (
             END
         ) AS limite_qualite_no2
     FROM
-        int__valeurs_de_reference
+        {{ ref('int__valeurs_de_reference') }}
     WHERE
         categorie_1 = 'nitrate'
 ),
@@ -77,7 +77,21 @@ split_nitrites AS (
                     last_pvl.cdparametresiseeaux = 'NO3_NO2'
                     THEN last_pvl.valtraduite
             END
-        ) AS valtraduite_no3_no2
+        ) AS valtraduite_no3_no2,
+        MAX(
+            CASE
+                WHEN
+                    last_pvl.cdparametresiseeaux = 'NO3'
+                    THEN last_pvl.datetimeprel
+            END
+        ) AS dernier_prel_datetime_n03,
+        MAX(
+            CASE
+                WHEN
+                    last_pvl.cdparametresiseeaux = 'NO2'
+                    THEN last_pvl.datetimeprel
+            END
+        ) AS dernier_prel_datetime_n02
     FROM
         last_pvl
     WHERE
@@ -89,19 +103,38 @@ split_nitrites AS (
 
 split_nitrites_with_ref AS (
     SELECT
-        split_nitrites.*,
+        split_nitrites.cdreseau,
+        split_nitrites.categorie,
+        split_nitrites.nb_parametres,
+        split_nitrites.dernier_prel_datetime,
         valeur_ref.limite_qualite_no3,
         valeur_ref.limite_qualite_no2,
-        COALESCE(
-            valeur_ref.valtraduite_no3_no2,
-            (
-                split_nitrites.valtraduite_no3 / 50
-                + split_nitrites.valtraduite_no2 / 3
-            )
-        ) AS valtraduite_no3_no2
-    FROM split_nitrites
-    CROSS JOIN valeur_ref
-
+        valeur_ref.limite_qualite_no3_no2,
+        split_nitrites.valtraduite_no3_no2,
+        -- Si les mesures sont espacées de plus de 30 jours 
+        -- on garde que la plus récente uniquement 
+        IF(
+            DATE_DIFF(
+                'day',
+                split_nitrites.dernier_prel_datetime_n03,
+                split_nitrites.dernier_prel_datetime_n02
+            ) > 30,
+            NULL,
+            split_nitrites.valtraduite_no3
+        ) AS valtraduite_no3,
+        IF(
+            DATE_DIFF(
+                'day',
+                split_nitrites.dernier_prel_datetime_n02,
+                split_nitrites.dernier_prel_datetime_n03
+            ) > 30,
+            NULL,
+            split_nitrites.valtraduite_no2
+        ) AS valtraduite_no2
+    FROM
+        split_nitrites
+    CROSS JOIN
+        valeur_ref
 )
 
 SELECT
@@ -116,7 +149,15 @@ SELECT
             < split_nitrites_with_ref.limite_qualite_no3
             AND split_nitrites_with_ref.valtraduite_no2
             < split_nitrites_with_ref.limite_qualite_no2
-            AND split_nitrites_with_ref.valtraduite_no3_no2
+            -- Si on n'a pas valtraduite_no3_no2, on le calcule
+            -- si l'une des valeurs de la somme est NULL le total sera NULL 
+            AND COALESCE(
+                split_nitrites_with_ref.valtraduite_no3_no2,
+                (
+                    split_nitrites_with_ref.valtraduite_no3 / 50
+                    + split_nitrites_with_ref.valtraduite_no2 / 3
+                )
+            )
             < split_nitrites_with_ref.limite_qualite_no3_no2
             THEN 'conforme'
         WHEN
@@ -124,7 +165,15 @@ SELECT
             >= split_nitrites_with_ref.limite_qualite_no3
             OR split_nitrites_with_ref.valtraduite_no2
             >= split_nitrites_with_ref.limite_qualite_no2
-            OR split_nitrites_with_ref.valtraduite_no3_no2
+            -- Si on n'a pas valtraduite_no3_no2, on le calcule
+            -- si l'une des valeurs de la somme est NULL le total sera NULL 
+            OR COALESCE(
+                split_nitrites_with_ref.valtraduite_no3_no2,
+                (
+                    split_nitrites_with_ref.valtraduite_no3 / 50
+                    + split_nitrites_with_ref.valtraduite_no2 / 3
+                )
+            )
             >= split_nitrites_with_ref.limite_qualite_no3_no2
             THEN 'non_conforme'
         WHEN

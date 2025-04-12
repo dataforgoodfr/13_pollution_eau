@@ -68,3 +68,35 @@ WHERE
         AND resultat != 'conforme'
         AND nb_parametres = 2
     )
+    OR
+    (
+        cdreseau = '001000258'
+        AND categorie = 'nitrate'
+        AND dernier_prel_datetime = '2025-01-21 09:45:00'
+        AND resultat != 'donnee_manquante'
+        AND nb_parametres = 2
+    )
+    OR
+    (
+        cdreseau = '001000387'
+        AND categorie = 'nitrate'
+        AND dernier_prel_datetime = '2025-02-13 10:48:00'
+        AND resultat != 'conforme'
+        AND nb_parametres = 2
+    )
+    OR
+    (
+        cdreseau = '008000681'
+        AND categorie = 'nitrate'
+        AND dernier_prel_datetime = '2025-02-12 11:38:00'
+        AND resultat != 'non_conforme'
+        AND nb_parametres = 2
+    )
+    OR
+    (
+        cdreseau = '008000546'
+        AND categorie = 'nitrate'
+        AND dernier_prel_datetime = '2025-02-07 10:38:00'
+        AND resultat != 'non_conforme'
+        AND nb_parametres = 2
+    )

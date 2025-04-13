@@ -529,7 +529,7 @@ export const availableCategories: ICategory[] = [
     },
   },
   {
-    id: "substances-industrielles",
+    id: "sub_indus",
     nomAffichage: "Substances industrielles",
     disable: true,
     affichageBlocPageUDI: true,
@@ -545,7 +545,7 @@ export const availableCategories: ICategory[] = [
     },
     enfants: [
       {
-        id: "1-4-dioxane",
+        id: "sub_indus_14dioxane",
         nomAffichage: "1,4-Dioxane",
         disable: false,
         enfants: [],
@@ -569,14 +569,14 @@ export const availableCategories: ICategory[] = [
             couleurFond: "#75D3B4",
             picto: null,
           },
-          limite_qualite: {
+          inf_valeur_sanitaire: {
             label:
               "Paramètre quantifié mais en concentration inférieure à la limite sanitaire (norme ou recommandation)",
             couleur: "#B4E681",
             couleurFond: "#B4E681",
             picto: null,
           },
-          limite_sanitaire: {
+          sup_valeur_sanitaire: {
             label:
               "Paramètre quantifié en concentration supérieure à la limite sanitaire (norme ou recommandation)",
             couleur: "#FB726C",
@@ -586,7 +586,7 @@ export const availableCategories: ICategory[] = [
         },
       },
       {
-        id: "perchlorate",
+        id: "sub_indus_perchlorate",
         nomAffichage: "Perchlorate",
         disable: false,
         enfants: [],
@@ -610,16 +610,22 @@ export const availableCategories: ICategory[] = [
             couleurFond: "#75D3B4",
             picto: null,
           },
-          limite_qualite: {
+          inf_valeur_sanitaire: {
             label:
               "Paramètre quantifié mais en concentration inférieure à la limite sanitaire (norme ou recommandation)",
             couleur: "#B4E681",
             couleurFond: "#B4E681",
             picto: null,
           },
-          limite_sanitaire: {
+          sup_valeur_sanitaire: {
             label:
               "Paramètre quantifié en concentration supérieure à la limite sanitaire (norme ou recommandation)",
+            couleur: "#FB726C",
+            couleurFond: "#FB726C",
+            picto: "red cross",
+          },
+          sup_valeur_sanitaire_2: {
+            label: "Paramètre quantifié en concentration supérieure à 15 µg/L",
             couleur: "#FB726C",
             couleurFond: "#FB726C",
             picto: "red cross",

@@ -2,7 +2,7 @@ version: 2
 
 models:
   - name: int__resultats_sub_indus_commune_annuel
-    description: Résultats CVM par commune pour la temporalité 'bilan_annuel'
+    description: Résultats des substances industrielles par commune pour la temporalité 'bilan_annuel'
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -21,7 +21,7 @@ models:
         description: "Catégorie du paramètre (pesticides, pfas, vcm, nitrates, etc.) selon la classification établie."
         tests:
           - accepted_values:
-              values: ["sub_indus_14DAN","sub_indus_PCLAT"]
+              values: ["sub_indus_14dioxane", "sub_indus_perchlorate"]
       - name: periode
         description: "Période du résultat"
         type: VARCHAR
@@ -42,7 +42,7 @@ models:
               max_value: 1
 
   - name: int__resultats_sub_indus_commune_dernier
-    description: Résultats CVM par commune pour la temporalité 'derniers prélèvements'
+    description: Résultats des substances industrielles par commune pour la temporalité 'derniers prélèvements'
     columns:
       - name: inseecommune
         tests:
@@ -51,7 +51,7 @@ models:
       - name: categorie
         tests:
           - accepted_values:
-              values: ["sub_indus_14DAN","sub_indus_PCLAT"]
+              values: ["sub_indus_14dioxane", "sub_indus_perchlorate"]
       - name: periode
         type: VARCHAR
         tests:
@@ -75,14 +75,12 @@ models:
           - accepted_values:
               values:
                 - non_quantifie
-                - sup_0_35
-                - inf_0_35
-                - sup_4
-                - inf_4
-                - sup_15
+                - sup_valeur_sanitaire_2
+                - sup_valeur_sanitaire
+                - inf_valeur_sanitaire
 
   - name: int__resultats_sub_indus_udi_annuel
-    description: Résultats CVM par UDI pour la temporalité 'bilan_annuel'
+    description: Résultats des substances industrielles par UDI pour la temporalité 'bilan_annuel'
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -100,7 +98,7 @@ models:
         description: "Catégorie du paramètre (pesticides, pfas, vcm, nitrates, etc.) selon la classification établie."
         tests:
           - accepted_values:
-              values: ["sub_indus_14DAN","sub_indus_PCLAT"]
+              values: ["sub_indus_14dioxane", "sub_indus_perchlorate"]
       - name: periode
         description: "Période du résultat"
         type: VARCHAR
@@ -130,7 +128,7 @@ models:
       - name: categorie
         tests:
           - accepted_values:
-              values: ["sub_indus_14DAN","sub_indus_PCLAT"]
+              values: ["sub_indus_14dioxane", "sub_indus_perchlorate"]
       - name: periode
         type: VARCHAR
         tests:
@@ -154,8 +152,6 @@ models:
           - accepted_values:
               values:
                 - non_quantifie
-                - sup_0_35
-                - inf_0_35
-                - sup_4
-                - inf_4
-                - sup_15
+                - sup_valeur_sanitaire_2
+                - sup_valeur_sanitaire
+                - inf_valeur_sanitaire

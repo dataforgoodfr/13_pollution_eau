@@ -20,22 +20,16 @@ prels AS (
 SELECT
     cdreseau,
     annee,
-    'sub_indus_' || cdparametresiseeaux AS categorie,
+    CASE
+        WHEN cdparametresiseeaux = '14DAN' THEN 'sub_indus_14dioxane'
+        WHEN cdparametresiseeaux = 'PCLAT' THEN 'sub_indus_perchlorate'
+    END AS categorie,
     'bilan_annuel_' || annee AS periode,
     count(
         DISTINCT
         CASE
             WHEN
-                (
-                    valtraduite IS NOT NULL
-                    AND valtraduite >= valeur_sanitaire_1
-                    AND cdparametresiseeaux = '14DAN'
-                )
-                OR (
-                    valtraduite IS NOT NULL
-                    AND valtraduite >= valeur_sanitaire_1
-                    AND cdparametresiseeaux = 'PCLAT'
-                )
+                valtraduite IS NOT NULL AND valtraduite >= valeur_sanitaire_1
                 THEN referenceprel
         END
     ) AS nb_depassements,
@@ -45,16 +39,8 @@ SELECT
             DISTINCT
             CASE
                 WHEN
-                    (
-                        valtraduite IS NOT NULL
-                        AND valtraduite >= valeur_sanitaire_1
-                        AND cdparametresiseeaux = '14DAN'
-                    )
-                    OR (
-                        valtraduite IS NOT NULL
-                        AND valtraduite >= valeur_sanitaire_1
-                        AND cdparametresiseeaux = 'PCLAT'
-                    )
+                    valtraduite IS NOT NULL
+                    AND valtraduite >= valeur_sanitaire_1
                     THEN referenceprel
             END
         )::float

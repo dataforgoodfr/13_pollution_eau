@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, JSX } from "react";
+import { useState, JSX, useEffect } from "react";
 import PollutionMapBaseLayer from "@/components/PollutionMapBase";
 import PollutionMapFilters from "@/components/PollutionMapFilters";
 import PollutionMapDetailPanel from "@/components/PollutionMapDetailPanel";
@@ -33,9 +33,14 @@ export default function PollutionMap() {
     latitude: number;
     content: JSX.Element;
   } | null>(null);
-  const [sidePanelOpen, setSidePanelOpen] = useState(true);
+  const [sidePanelOpen, setSidePanelOpen] = useState(false);
+  const [showLegend, setShowLegend] = useState(false);
 
-  const [showLegend, setShowLegend] = useState(true);
+  useEffect(() => {
+    const isMobile = window.innerWidth < 768;
+    setSidePanelOpen(!isMobile);
+    setShowLegend(!isMobile);
+  }, []);
 
   const handleAddressSelect = (result: FilterResult | null) => {
     if (result) {

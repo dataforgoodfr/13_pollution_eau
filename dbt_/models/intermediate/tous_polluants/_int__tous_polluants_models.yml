@@ -25,7 +25,6 @@ models:
                 - "inf_limites"
                 - "min_1_parametre_sup_limite_reg"
                 - "min_1_parametre_sup_limite_sanitaire"
-                - "erreur"
 
       - name: periode
         description: "Période d'analyse des prélèvements (ici, toujours 'dernier_prel')."

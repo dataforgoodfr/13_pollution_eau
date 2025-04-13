@@ -3,7 +3,7 @@ SELECT
     periode,
     -- On garde la date du prélèvement la plus récente entre toutes les
     -- substances
-    MIN(dernier_prel_datetime) AS dernier_prel_datetime,
+    MAX(dernier_prel_datetime) AS dernier_prel_datetime,
     CASE
         WHEN
             -- 1 : check si une des substances dépasse la limite sanitaire
@@ -36,16 +36,16 @@ SELECT
             MAX(CASE
                 WHEN
                     categorie = 'cvm'
-                    AND resultat NOT IN ('non_quantifie', 'inf_0_5')
-                    THEN 1
+                    AND resultat IN ('non_quantifie', 'inf_0_5')
+                    THEN 0
                 WHEN
                     categorie = 'pfas'
-                    AND resultat NOT IN (
+                    AND resultat IN (
                         'aucun_parametre_quantifie',
                         'somme_20pfas_inf_0_1_et_4pfas_inf_0_02'
                     )
-                    THEN 1
-                ELSE 0
+                    THEN 0
+                ELSE 1
             END) = 0
             THEN 'inf_limites'
 

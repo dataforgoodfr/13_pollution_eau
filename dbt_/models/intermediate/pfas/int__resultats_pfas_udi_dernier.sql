@@ -88,7 +88,7 @@ SELECT
     CASE
         WHEN
             nb_pfas_above_limit > 0
-            THEN 'un_pfas_sup_valeur_sanitaire'
+            THEN 'sup_valeur_sanitaire'
         WHEN
             nb_quantified_params = 0
             THEN 'aucun_parametre_quantifie'

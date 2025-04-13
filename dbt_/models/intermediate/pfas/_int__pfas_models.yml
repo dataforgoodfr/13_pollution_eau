@@ -34,7 +34,7 @@ models:
                 - "somme_20pfas_inf_0_1_et_4pfas_inf_0_02"
                 - "somme_20pfas_inf_0_1_et_4pfas_sup_0_02"
                 - "somme_20pfas_sup_0_1"
-                - "un_pfas_sup_valeur_sanitaire"
+                - "sup_valeur_sanitaire"
 
       - name: periode
         description: "Période d'analyse des prélèvements (ici, toujours 'dernier_prel')."

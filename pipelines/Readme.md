@@ -4,7 +4,7 @@
 
 Basée sur le diagramme, voici une documentation complète de l'architecture de pipeline de données qui implique l'extraction de données depuis cinque sources différentes, leur chargement dans S3 et leur transformation dans DuckDB.
 
-⚠️ Attention: local cache et local cache geo, les deux sont le même fichier dans database/cache, c'est just pour simplifier la représentation de schema que je l'ai séparé.
+⚠️ Attention: local cache et local cache geo, les deux sont le même emplacement: database/cache, c'est just pour simplifier la représentation de schema que je l'ai séparé.
 
 ### Composants du Système
 
@@ -29,12 +29,12 @@ Basée sur le diagramme, voici une documentation complète de l'architecture de 
 
    - DuckDB fonctionne comme l'entrepôt de données principal
    - Gère la transformation et le traitement analytique
-   - une cache dans database folder sert comme un endroit déposer temporairement les données
+   - une cache dans database folder sert comme un endroit de stockage temporairement les données
 
 4. **Flux de Données**
    - Les processus d'extraction(download_file_from_https) récupèrent les données des sources
-   - Les données sont chargées dans S3 dans leur format brut
-   - DuckDB lit depuis S3 et effectue des transformations
+   - Les données sont chargées dans S3 dans leur format brut ou tranformées
+   - DuckDB lit depuis S3 et effectue des transformations ou les donnés brutes sont transformées et puis ingecter dans DuckDb. Nous avons un mélange de ETL et ELT.
    - Les données transformées sont mises à disposition pour l'analyse avec DBT
 
 ## Description Détaillée des Composants
@@ -45,31 +45,30 @@ DuckDB est utilisé comme solution d'entrepôt de données avec ces fonctionnali
 
 - **Base de Données Analytique In-process** : Optimisée pour les charges de travail OLAP
 - **Interface SQL** : Fournit une syntaxe SQL familière pour les transformations
-- **Intégration Directe avec S3** : Capable de lire directement depuis le stockage S3
 - **Plugin Geographique** : Permet de stocker les informations geometry ou géographie
 - **Faibles Exigences en Ressources** : Fonctionne avec une infrastructure minimale
 
 ## Détails des Composants du Code
 
 1. Pipeline/tasks/client
-   ▪ Chaque source correspond à un client dédié qui gère le cycle de vie complet des données
-   ▪ Les clients encapsulent la logique spécifique à chaque source
+   - Chaque source correspond à un client dédié qui gère le cycle de vie complet des données
+   - Les clients encapsulent la logique spécifique à chaque source
 2. Pipeline/tasks/\*.processor
-   ▪ Contient les processeurs de transformation pour chaque type de données
-   ▪ Implémente la logique métier pour convertir les données brutes en données exploitables
+   - Contient les processeurs de transformation pour chaque type de données
+   - Implémente la logique métier pour convertir les données brutes en données exploitables
 3. Pipeline/tasks/client/Core
-   ▪ Définit les classes de base pour les capacités d'extraction, d'ingestion et d'interaction avec la base de données
-   ▪ Fournit des abstractions réutilisables pour toutes les sources
+   - Définit les classes de base pour les capacités d'extraction, d'ingestion et d'interaction avec la base de données
+   - Fournit des abstractions réutilisables pour toutes les sources
 4. Pipeline/tasks/config
-   ▪ Contient les configurations pour l'ensemble du pipeline/tasks
-   ▪ Divisé en configuration commune et configurations spécifiques à chaque source
-5. Pipeline/tasks/build_database  
-   ▪ Script pour construire et initialiser la base de données DuckDB
+   - Contient les configurations pour l'ensemble du pipeline/tasks
+   - Divisé en configuration commune et configurations spécifiques à chaque source
+5. Pipeline/tasks/build_database
+   - Script pour construire et initialiser la base de données DuckDB
 6. Pipeline/Run.py
-   ▪ Point d'entrée principal définissant les commandes CLI
-   ▪ Permet l'exécution de différentes parties du pipeline
+   - Point d'entrée principal définissant les commandes CLI
+   - Permet l'exécution de différentes parties du pipeline
 7. .github/workflows
-   ▪ Contient les définitions CI/CD pour l'automatisation et des tests pour chaque PR
+   - Contient les définitions CI/CD pour l'automatisation et des tests pour chaque PR
 
 ## Extra
 

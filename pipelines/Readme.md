@@ -4,6 +4,8 @@
 
 Basée sur le diagramme, voici une documentation complète de votre architecture de pipeline de données qui implique l'extraction de données depuis cinque sources différentes, leur chargement dans S3 et leur transformation dans DuckDB.
 
+⚠️ Attention: local cache et local cache geo, les deux sont le même fichier dans database/cache, c'est just pour simplifier la représentation de schema que je l'ai séparé.
+
 ### Composants du Système
 
 1. **Sources de Données**
@@ -68,3 +70,7 @@ DuckDB est utilisé comme solution d'entrepôt de données avec ces fonctionnali
    ▪ Permet l'exécution de différentes parties du pipeline
 7. .github/workflows
    ▪ Contient les définitions CI/CD pour l'automatisation et des tests pour chaque PR
+
+## Extra
+
+vous trouvez également une partie de documentation dans Readme.md du project

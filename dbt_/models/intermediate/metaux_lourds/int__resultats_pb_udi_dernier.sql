@@ -64,4 +64,3 @@ FROM
     resultats_udi_pb_dernier_prel
 ORDER BY
     cdreseau
-;

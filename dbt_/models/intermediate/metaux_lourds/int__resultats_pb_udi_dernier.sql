@@ -1,4 +1,5 @@
--- Ici on ne garde que le dernier prélèvement pour chaque UDI dans la dernière année
+-- Ici on ne garde que le dernier prélèvement pour chaque UDI
+-- dans la dernière année
 WITH pb_dernier_prel AS (
     SELECT
         int__resultats_udi_communes.*,

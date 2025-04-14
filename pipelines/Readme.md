@@ -24,7 +24,7 @@ Basée sur le diagramme, voici une documentation complète de l'architecture de 
 
    - Amazon S3 sert de couche de stockage principale, il fonctionne comme un lac de données pour les données brutes et traitées
    - DuckDB fonctionne comme l'entrepôt de données principal et gère le cycle de vie de DB
-   - une cache dans database folder sert comme un endroit de stockage temporairement les données
+   - une cache dans database folder sert comme un endroit de stockage temporairement des données
 
 3. **Flux de Données**
    - Les processus d'extraction(download_file_from_https) récupèrent les données des sources

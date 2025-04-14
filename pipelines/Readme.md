@@ -2,9 +2,9 @@
 
 # Documentation de l'Architecture du Pipeline de Données
 
-Basée sur le diagramme, voici une documentation complète de l'architecture de pipeline de données qui implique l'extraction de données depuis cinque sources différentes, leur chargement dans S3 et leur transformation dans DuckDB.
+Basée sur le diagramme, voici une documentation complète de l'architecture de pipeline de données qui implique l'extraction de données depuis quelques sources différentes, leur chargement dans S3 et leur transformation dans DuckDB.
 
-⚠️ Attention: local cache et local cache geo, les deux sont le même emplacement: database/cache, c'est just pour simplifier la représentation de schema que je l'ai séparé.
+⚠️ Attention: local cache et local cache geo, les deux sont le même emplacement: database/cache, c'est juste pour simplifier la représentation du schéma que je les ai séparés.
 
 ### Composants du Système
 
@@ -34,7 +34,7 @@ Basée sur le diagramme, voici une documentation complète de l'architecture de 
 4. **Flux de Données**
    - Les processus d'extraction(download_file_from_https) récupèrent les données des sources
    - Les données sont chargées dans S3 dans leur format brut ou tranformées
-   - DuckDB lit depuis S3 et effectue des transformations ou les donnés brutes sont transformées et puis ingecter dans DuckDb. Nous avons un mélange de ETL et ELT.
+   - Les processors lisent depuis le cache et DuckDB et ensuite effectuent des transformations.
    - Les données transformées sont mises à disposition pour l'analyse avec DBT
 
 ## Description Détaillée des Composants

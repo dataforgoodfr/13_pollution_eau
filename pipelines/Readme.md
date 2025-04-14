@@ -2,7 +2,7 @@
 
 # Documentation de l'Architecture du Pipeline de Données
 
-Basée sur le diagramme, voici une documentation complète de votre architecture de pipeline de données qui implique l'extraction de données depuis cinque sources différentes, leur chargement dans S3 et leur transformation dans DuckDB.
+Basée sur le diagramme, voici une documentation complète de l'architecture de pipeline de données qui implique l'extraction de données depuis cinque sources différentes, leur chargement dans S3 et leur transformation dans DuckDB.
 
 ⚠️ Attention: local cache et local cache geo, les deux sont le même fichier dans database/cache, c'est just pour simplifier la représentation de schema que je l'ai séparé.
 

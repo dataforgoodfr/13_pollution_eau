@@ -514,8 +514,7 @@ export const availableCategories: ICategory[] = [
         picto: null,
       },
       sup_0_5: {
-        label:
-          "CVM > 0,5 µg/L (fait passer l'affichage total polluant en rouge)",
+        label: "CVM > 0,5 µg/L",
         couleur: "#FB726C",
         couleurFond: "#FB726C",
         picto: "red cross",

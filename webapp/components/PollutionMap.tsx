@@ -3,7 +3,6 @@
 import { useState, JSX, useEffect } from "react";
 import PollutionMapBaseLayer from "@/components/PollutionMapBase";
 import PollutionMapFilters from "@/components/PollutionMapFilters";
-import PollutionMapDetailPanel from "@/components/PollutionMapDetailPanel";
 import PollutionSidePanel from "@/components/PollutionSidePanel";
 import PollutionMapSearchBox, { FilterResult } from "./PollutionMapSearchBox";
 import { MAPLIBRE_MAP } from "@/app/config";
@@ -76,6 +75,7 @@ export default function PollutionMap() {
           setSelectedZoneData={setSelectedZoneData}
           marker={marker}
           setMarker={setMarker}
+          selectedZoneData={selectedZoneData}
         />
 
         <div className="absolute top-4 left-4 z-10 flex overflow-x-auto scrollbar-hide">
@@ -150,20 +150,6 @@ export default function PollutionMap() {
             />
           </div>
         </div>
-
-        {/* <div className="absolute bottom-6 right-4 z-10 bg-white p-3 rounded-lg shadow-lg">
-        <PollutionMapLegend category={category} />
-      </div> */}
-
-        {selectedZoneData && (
-          <PollutionMapDetailPanel
-            data={selectedZoneData}
-            onClose={() => setSelectedZoneData(null)}
-            period={period}
-            category={category}
-            displayMode={displayMode}
-          />
-        )}
       </MapProvider>
     </div>
   );

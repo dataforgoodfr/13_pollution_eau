@@ -1,33 +1,34 @@
 "use client";
 
-import { X } from "lucide-react";
 import { getPropertyName } from "@/lib/property";
 import { getCategoryById } from "@/lib/polluants";
 
 type PollutionMapDetailPanelProps = {
-  data: Record<string, string | number | null> | null;
-  period: string;
-  category: string;
-  displayMode: "communes" | "udis";
-  onClose: () => void;
+  selectedZoneData: Record<string, string | number | null> | null;
+  period?: string;
+  category?: string;
+  displayMode?: "communes" | "udis";
 };
 
 export default function PollutionMapDetailPanel({
-  data,
-  period,
-  category,
-  displayMode,
-  onClose,
+  selectedZoneData,
+  period = "dernier_prel",
+  category = "tous-polluants",
+  displayMode = "udis",
 }: PollutionMapDetailPanelProps) {
-  if (!data) {
+  if (!selectedZoneData) {
     return null;
   }
 
   const title =
-    displayMode === "communes" ? data["commune_nom"] : data["nomreseaux"];
+    displayMode === "communes"
+      ? selectedZoneData["commune_nom"]
+      : selectedZoneData["nomreseaux"];
 
   const code =
-    displayMode === "communes" ? data["commune_code_insee"] : data["cdreseau"];
+    displayMode === "communes"
+      ? selectedZoneData["commune_code_insee"]
+      : selectedZoneData["cdreseau"];
 
   const property = getPropertyName(
     period,
@@ -35,7 +36,7 @@ export default function PollutionMapDetailPanel({
     period === "dernier_prel" ? "resultat" : "ratio",
   );
 
-  const value = data[property] || null;
+  const value = selectedZoneData[property] || null;
 
   const categoryDetails = getCategoryById(category);
   const resultColor =
@@ -43,44 +44,20 @@ export default function PollutionMapDetailPanel({
   const resultLabel =
     categoryDetails?.resultats[value as string]?.label || "Aucune donnée";
 
-  console.log(
-    "PollutionMapDetailPanel",
-    "code:",
-    code,
-    "property:",
-    property,
-    "value:",
-    value,
-    "resultColor:",
-    resultColor,
-  );
-
   return (
-    <div className="absolute inset-0 flex justify-center items-center z-50 p-4 pointer-events-none">
-      <div className="w-full max-w-md overflow-hidden bg-white p-4 rounded-lg shadow-lg overflow-y-auto max-h-96 pointer-events-auto">
-        <div className="flex justify-between items-center mb-3">
-          <h3 className="text-lg font-semibold text-gray-900">{title}</h3>
-          <button
-            onClick={onClose}
-            className="text-gray-500 hover:text-gray-700 transition-colors duration-200"
-            aria-label="Close panel"
-          >
-            <X />
-          </button>
-        </div>
-
-        <p className="text-sm text-gray-600 mb-4">
-          <span className="font-medium">Code:</span> {code}
-        </p>
-
-        <div className="flex items-center gap-2 mb-3">
-          <div
-            className="w-3 h-3 rounded-full flex-shrink-0"
-            style={{ backgroundColor: resultColor }}
-          ></div>
-          <span className="text-sm">{resultLabel}</span>
-        </div>
+    <div className="mt-3 pt-3 border-t border-gray-200">
+      <div className="flex items-center gap-2 mb-2">
+        <div
+          className="w-3 h-3 rounded-full flex-shrink-0"
+          style={{ backgroundColor: resultColor }}
+        ></div>
+        <span className="text-sm font-medium">{resultLabel}</span>
       </div>
+
+      <p className="text-xs text-gray-600">
+        <span className="font-medium">Code:</span> {code}
+        {title && <span> - {title}</span>}
+      </p>
     </div>
   );
 }

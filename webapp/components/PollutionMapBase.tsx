@@ -4,7 +4,7 @@ import { useEffect, useMemo, JSX } from "react";
 import ReactMapGl, {
   MapLayerMouseEvent,
   Marker,
-  // Popup,
+  Popup,
   ViewStateChangeEvent,
 } from "react-map-gl/maplibre";
 import maplibregl from "maplibre-gl";
@@ -12,6 +12,7 @@ import "maplibre-gl/dist/maplibre-gl.css";
 import { Protocol } from "pmtiles";
 import { generateColorExpression } from "@/lib/colorMapping";
 import { MapPin } from "lucide-react";
+import PollutionMapDetailPanel from "@/components/PollutionMapDetailPanel";
 
 import { DEFAULT_MAP_STYLE, getDefaultLayers } from "@/app/config";
 
@@ -42,6 +43,7 @@ type PollutionMapBaseLayerProps = {
       content: JSX.Element;
     } | null,
   ) => void;
+  selectedZoneData: Record<string, string | number | null> | null;
 };
 
 export default function PollutionMapBaseLayer({
@@ -54,7 +56,8 @@ export default function PollutionMapBaseLayer({
   setSelectedZoneData,
   onMapStateChange,
   marker,
-  //setMarker,
+  setMarker,
+  selectedZoneData,
 }: PollutionMapBaseLayerProps) {
   useEffect(() => {
     // adds the support for PMTiles
@@ -75,6 +78,18 @@ export default function PollutionMapBaseLayer({
           ? event.features[0].properties["commune_code_insee"]
           : event.features[0].properties["cdreseau"],
       );
+
+      // Update marker position to clicked coordinates
+      const title =
+        displayMode === "communes"
+          ? event.features[0].properties["commune_nom"]
+          : event.features[0].properties["nomreseaux"];
+
+      setMarker({
+        longitude: event.lngLat.lng,
+        latitude: event.lngLat.lat,
+        content: <>{title || "Sélection"}</>,
+      });
     }
   }
 
@@ -162,7 +177,7 @@ export default function PollutionMapBaseLayer({
               color="white"
             />
           </Marker>
-          {/* <Popup
+          <Popup
             longitude={marker.longitude}
             latitude={marker.latitude}
             anchor="bottom"
@@ -175,7 +190,10 @@ export default function PollutionMapBaseLayer({
             <span className="opacity-35">
               Cette adresse est désservie par une unité de distribution.
             </span>
-          </Popup> */}
+            {selectedZoneData && (
+              <PollutionMapDetailPanel selectedZoneData={selectedZoneData} />
+            )}
+          </Popup>
         </>
       ) : null}
     </ReactMapGl>

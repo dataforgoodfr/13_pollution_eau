@@ -30,7 +30,7 @@ export default function PollutionMap() {
   const [marker, setMarker] = useState<{
     longitude: number;
     latitude: number;
-    content: JSX.Element;
+    content?: JSX.Element;
   } | null>(null);
   const [sidePanelOpen, setSidePanelOpen] = useState(false);
   const [showLegend, setShowLegend] = useState(false);
@@ -50,12 +50,12 @@ export default function PollutionMap() {
         latitude: center[1],
         content: <>{address}</>,
       });
-      if (displayMode === "communes") {
-        setSelectedZoneCode(communeInseeCode);
-      } else {
-        const udiCode = await getUDIfromGeocoordinates(center[0], center[1]);
-        setSelectedZoneCode(udiCode);
-      }
+      // if (displayMode === "communes") {
+      //   setSelectedZoneCode(communeInseeCode);
+      // } else {
+      //   const udiCode = await getUDIfromGeocoordinates(center[0], center[1]);
+      //   setSelectedZoneCode(udiCode);
+      // }
     } else {
       //setSelectedZoneCode(null);
       setMarker(null);

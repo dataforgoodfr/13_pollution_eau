@@ -116,7 +116,7 @@ export default function PollutionMapSearchBox({
   }
 
   return (
-    <div className="flex items-center ml-6 p-2">
+    <div className="flex items-center p-2">
       <div>
         <div className="">
           <Popover open={dropDownIsOpened} onOpenChange={setDropDownOpen}>

@@ -27,7 +27,7 @@ resultats_udi_pb_dernier_prel AS (
         pb_dernier_prel.limite_qualite,
         pb_dernier_prel.valeur_sanitaire_1,
         pb_dernier_prel.cdreseau,
-        pb_dernier_prel.datetimeprel AS periode
+        pb_dernier_prel.datetimeprel
     FROM
         pb_dernier_prel
     WHERE

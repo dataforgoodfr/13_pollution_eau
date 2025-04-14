@@ -14,7 +14,9 @@ periodes AS (
 categories AS (
     SELECT unnest(ARRAY[
         'cvm',
-        'pfas'
+        'pfas',
+        'sub_indus_perchlorate',
+        'sub_indus_14dioxane'
     ]) AS categorie
 ),
 

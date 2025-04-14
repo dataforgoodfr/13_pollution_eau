@@ -1,0 +1,42 @@
+version: 2
+
+models:
+  - name: int__resultats_pb_udi_dernier
+    description: Resultats Plomb par UDI pour la temporalité 'derniers prélèvements'
+    columns:
+      - name: categorie
+        tests:
+          - not_null
+
+      - name: cdreseau
+        description: "Code de l'installation (unité de distribution)"
+        tests:
+          - not_null
+          - unique
+
+      - name: dernier_prel_datetime
+        description: "Date et heure du dernier prélèvement pris en compte dans l'analyse."
+        type: TIMESTAMP
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: ">= CURRENT_DATE - INTERVAL 1 YEAR"
+
+      - name: periode
+        type: VARCHAR
+        tests:
+          - accepted_values:
+              values: ["dernier_prel"]
+
+      - name: dernier_prel_valeur
+        type: FLOAT
+
+      - name: resultat
+        tests:
+          - not_null
+          - accepted_values:
+              values:
+                - "aucun_parametre_quantifie"
+                - "sup_limite_qualite"
+                - "sup_5_inf_10_limite_2036"
+                - "inf_5"

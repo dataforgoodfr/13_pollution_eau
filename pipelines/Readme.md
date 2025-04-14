@@ -65,6 +65,18 @@ DuckDB est utilisé comme solution d'entrepôt de données avec ces fonctionnali
 7. .github/workflows
    - Contient les définitions CI/CD pour l'automatisation et des tests pour chaque PR
 
-## Extra
+### Intersection
+
+## Intersection avec DA
+
+Nous utilisons DBT pour la solution de data lineage, tests, et documentation.
+L'équipe de Data Engineering a principalement installé l'outil et mis en place des modèles source et staging(models/sources et models/staging). Les modèles intermédiaires (models/intermediate) sont créés par les Data Analysts à partir des tables de staging.
+Nous avons déployé la documentation avec GitHub Pages. Voici le lien public pour consulter la documentation de notre base de données : https://dataforgood.fr/13_pollution_eau/#!/overview
+
+## Intersection avec DEV
+
+L'équipe de développement a besoin de fichiers PMtiles pour contenir les informations géographiques de la carte ainsi que les résultats des analyses sur la qualité de l'eau. L'équipe de Data Engineering a la responsabilité de fournir un endpoint pour télécharger le fichier PMtiles. Ce fichier PMtiles est créé par generate*pmtiles.py avec les modèles créés par les Data Analysts (dans le dossier dbt*/models/website).
+
+### Extra
 
 vous trouvez également une partie de documentation dans Readme.md du project

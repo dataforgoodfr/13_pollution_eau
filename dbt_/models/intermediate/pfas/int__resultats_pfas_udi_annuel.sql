@@ -10,7 +10,7 @@ pfas_prels AS (
         valeur_sanitaire_1,
         valtraduite
     FROM
-        int__resultats_udi_communes
+        {{ ref('int__resultats_udi_communes') }}
     WHERE
         categorie = 'pfas'
 ),
@@ -67,6 +67,7 @@ SELECT
     annee,
     'pfas' AS categorie,
     'bilan_annuel_' || annee AS periode,
+    COUNT(DISTINCT referenceprel) AS nb_prelevements,
     ROUND((
         SUM(CASE WHEN sum_20_pfas_above_limit = 1 THEN 1 ELSE 0 END)
         /

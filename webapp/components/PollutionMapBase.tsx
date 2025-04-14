@@ -4,7 +4,7 @@ import { useEffect, useMemo, JSX } from "react";
 import ReactMapGl, {
   MapLayerMouseEvent,
   Marker,
-  Popup,
+  // Popup,
   ViewStateChangeEvent,
 } from "react-map-gl/maplibre";
 import maplibregl from "maplibre-gl";
@@ -20,8 +20,11 @@ type PollutionMapBaseLayerProps = {
   category: string;
   displayMode: "communes" | "udis";
   selectedZoneCode: string | null;
+  setSelectedZoneCode: (code: string | null) => void;
   mapState: { longitude: number; latitude: number; zoom: number };
-  setDataPanel: (data: Record<string, string | number | null> | null) => void;
+  setSelectedZoneData: (
+    data: Record<string, string | number | null> | null,
+  ) => void;
   onMapStateChange?: (coords: {
     longitude: number;
     latitude: number;
@@ -46,8 +49,9 @@ export default function PollutionMapBaseLayer({
   category,
   displayMode,
   selectedZoneCode,
+  setSelectedZoneCode,
   mapState,
-  setDataPanel,
+  setSelectedZoneData,
   onMapStateChange,
   marker,
   //setMarker,
@@ -65,7 +69,12 @@ export default function PollutionMapBaseLayer({
     if (event.features && event.features.length > 0) {
       console.log("zoom level:", mapState.zoom);
       console.log("Properties:", event.features[0].properties);
-      setDataPanel(event.features[0].properties);
+      setSelectedZoneData(event.features[0].properties);
+      setSelectedZoneCode(
+        displayMode === "communes"
+          ? event.features[0].properties["commune_code_insee"]
+          : event.features[0].properties["cdreseau"],
+      );
     }
   }
 
@@ -80,45 +89,33 @@ export default function PollutionMapBaseLayer({
   }
 
   const mapStyle = useMemo(() => {
+    const source = displayMode === "communes" ? "communes" : "udis";
+    const sourceLayer =
+      displayMode === "communes" ? "data_communes" : "data_udi";
+    const idProperty =
+      displayMode === "communes" ? "commune_code_insee" : "cdreseau";
+
     const dynamicLayers: maplibregl.LayerSpecification[] = [
       {
-        id: "communes-layer",
+        id: "color-layer",
         type: "fill",
-        source: "communes",
-        "source-layer": "data_communes",
+        source: source,
+        "source-layer": sourceLayer,
         paint: {
           "fill-color": generateColorExpression(category, period),
-          "fill-opacity": 0.8,
+          "fill-opacity": [
+            "case",
+            ["==", ["get", idProperty], selectedZoneCode || ""],
+            1,
+            0.8,
+          ],
         },
-        layout: {
-          visibility: displayMode === "communes" ? "visible" : "none",
-        },
-        ...(selectedZoneCode
-          ? {
-              filter: ["==", ["get", "commune_code_insee"], selectedZoneCode],
-            }
-          : {}),
       },
       {
-        id: "udis-layer",
-        type: "fill",
-        source: "udis",
-        "source-layer": "data_udi",
-        paint: {
-          "fill-color": generateColorExpression(category, period),
-          "fill-opacity": 0.8,
-        },
-        layout: {
-          visibility: displayMode === "udis" ? "visible" : "none",
-        },
-        // Filter for UDIs if applicable
-        // ...(someUdiCode ? { filter: ["==", ["get", "udi_code"], someUdiCode] } : {}),
-      },
-      {
-        id: "udis-border-layer",
+        id: "border-layer",
         type: "line",
-        source: "udis",
-        "source-layer": "data_udi",
+        source: source,
+        "source-layer": sourceLayer,
         paint: {
           "line-color": "#7F7F7F",
           "line-width": [
@@ -133,9 +130,6 @@ export default function PollutionMapBaseLayer({
             2.0, // At zoom level 20, line width is 2.0px
           ],
         },
-        layout: {
-          visibility: displayMode === "udis" ? "visible" : "none",
-        },
       },
     ];
 
@@ -144,9 +138,6 @@ export default function PollutionMapBaseLayer({
       layers: [...getDefaultLayers(), ...dynamicLayers],
     } as maplibregl.StyleSpecification;
   }, [selectedZoneCode, displayMode, category, period]);
-
-  const interactiveLayerIds =
-    displayMode === "communes" ? ["communes-layer"] : ["udis-layer"];
 
   return (
     <ReactMapGl
@@ -157,7 +148,7 @@ export default function PollutionMapBaseLayer({
       mapLib={maplibregl}
       onClick={onClick}
       onMove={handleMapStateChange}
-      interactiveLayerIds={interactiveLayerIds}
+      interactiveLayerIds={["color-layer"]}
     >
       {marker ? (
         <>
@@ -171,7 +162,7 @@ export default function PollutionMapBaseLayer({
               color="white"
             />
           </Marker>
-          <Popup
+          {/* <Popup
             longitude={marker.longitude}
             latitude={marker.latitude}
             anchor="bottom"
@@ -184,7 +175,7 @@ export default function PollutionMapBaseLayer({
             <span className="opacity-35">
               Cette adresse est désservie par une unité de distribution.
             </span>
-          </Popup>
+          </Popup> */}
         </>
       ) : null}
     </ReactMapGl>

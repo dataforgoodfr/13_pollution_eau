@@ -70,7 +70,6 @@ export default function PollutionSidePanel({
   onClose?: () => void;
 }) {
   const categoryDetails = getCategoryById(category);
-  console.log(categoryDetails);
 
   return (
     <div className="h-full flex flex-col relative">

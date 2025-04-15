@@ -23,10 +23,6 @@ export default function PollutionMap() {
     zoom: number;
   }>(MAPLIBRE_MAP.initialViewState);
   const [selectedZoneCode, setSelectedZoneCode] = useState<string | null>(null);
-  const [selectedZoneData, setSelectedZoneData] = useState<Record<
-    string,
-    string | number | null
-  > | null>(null);
   const [marker, setMarker] = useState<{
     longitude: number;
     latitude: number;
@@ -43,24 +39,19 @@ export default function PollutionMap() {
 
   const handleAddressSelect = async (result: FilterResult | null) => {
     if (result) {
-      const { center, zoom, communeInseeCode, address } = result;
+      const { center, zoom, address } = result;
       setMapState({ longitude: center[0], latitude: center[1], zoom });
       setMarker({
         longitude: center[0],
         latitude: center[1],
         content: <>{address}</>,
       });
-      // if (displayMode === "communes") {
-      //   setSelectedZoneCode(communeInseeCode);
-      // } else {
-      //   const udiCode = await getUDIfromGeocoordinates(center[0], center[1]);
-      //   setSelectedZoneCode(udiCode);
-      // }
     } else {
-      //setSelectedZoneCode(null);
       setMarker(null);
+      setSelectedZoneCode(null);
     }
   };
+
   return (
     <div className="relative w-full h-full flex flex-col">
       <MapProvider>
@@ -72,10 +63,8 @@ export default function PollutionMap() {
           setSelectedZoneCode={setSelectedZoneCode}
           mapState={mapState}
           onMapStateChange={setMapState}
-          setSelectedZoneData={setSelectedZoneData}
           marker={marker}
           setMarker={setMarker}
-          selectedZoneData={selectedZoneData}
         />
 
         <div className="absolute top-4 left-4 z-10 flex overflow-x-auto scrollbar-hide">
@@ -153,19 +142,4 @@ export default function PollutionMap() {
       </MapProvider>
     </div>
   );
-}
-
-async function getUDIfromGeocoordinates(
-  longitude: number,
-  latitude: number,
-): Promise<string | null> {
-  try {
-    const url = `/api/udi/find?lat=${latitude}&lon=${longitude}`;
-    const response = await fetch(url);
-    const data = await response.json();
-    return data.id;
-  } catch (error) {
-    console.error("Error fetching UDI:", error);
-    return null;
-  }
 }

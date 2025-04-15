@@ -7,23 +7,24 @@ import { useMap, Marker, Popup } from "react-map-gl/maplibre";
 import { MapPin } from "lucide-react";
 
 type PollutionMapMarkerProps = {
-  // selectedZoneData: Record<string, string | number | null> | null;
-  period?: string;
-  category?: string;
-  displayMode?: "communes" | "udis";
+  period: string;
+  category: string;
+  displayMode: "communes" | "udis";
   marker: {
     longitude: number;
     latitude: number;
     content?: JSX.Element;
   } | null;
+  selectedZoneCode: string | null;
+  setSelectedZoneCode: (code: string | null) => void;
 };
 
 export default function PollutionMapMarker({
-  // selectedZoneData,
-  period = "dernier_prel",
-  category = "tous-polluants",
-  displayMode = "udis",
+  period,
+  category,
+  displayMode,
   marker,
+  setSelectedZoneCode,
 }: PollutionMapMarkerProps) {
   const { map } = useMap();
   const [selectedZoneData, setSelectedZoneData] = useState<Record<
@@ -32,26 +33,57 @@ export default function PollutionMapMarker({
   > | null>(null);
 
   useEffect(() => {
-    function queryFeaturesAtPoint(lng: number, lat: number) {
-      if (map) {
-        const features = map.queryRenderedFeatures(map.project([lng, lat]), {
-          layers: ["color-layer"],
-        });
-        if (features && features.length > 0) {
-          console.log("Features at marker position:", features[0].properties);
-          return features[0].properties;
-        }
+    if (!map || !marker) return;
+
+    const sourceName = displayMode === "communes" ? "communes" : "udis";
+    const source = map.getSource(sourceName);
+
+    if (!source) {
+      console.log(`Source "${sourceName}" not found`);
+      return;
+    }
+
+    // Function to query features at marker position
+    const queryMarkerFeatures = () => {
+      const point = map.project([marker.longitude, marker.latitude]);
+      const features = map.queryRenderedFeatures(point, {
+        layers: ["color-layer"],
+      });
+
+      if (features && features.length > 0) {
+        console.log("Features at marker:", features[0].properties);
+        setSelectedZoneData(features[0].properties);
+        setSelectedZoneCode(
+          displayMode === "communes"
+            ? features[0].properties["commune_code_insee"]
+            : features[0].properties["cdreseau"],
+        );
+      } else {
+        console.log("No features found at marker");
       }
+    };
+
+    // Check if source is already loaded
+    if (map.isSourceLoaded(sourceName)) {
+      queryMarkerFeatures();
+    } else {
+      // If not loaded, wait for it to load
+      const sourceLoadHandler = () => {
+        if (map.isSourceLoaded(sourceName)) {
+          queryMarkerFeatures();
+          // Remove the listener after successful query
+          map.off("sourcedata", sourceLoadHandler);
+        }
+      };
+
+      map.on("sourcedata", sourceLoadHandler);
+
+      // Cleanup: remove listener if component unmounts before source loads
+      return () => {
+        map.off("sourcedata", sourceLoadHandler);
+      };
     }
-    if (map && marker) {
-      const properties = queryFeaturesAtPoint(
-        marker.longitude,
-        marker.latitude,
-      );
-      console.log("Queried properties:", properties);
-      if (properties) setSelectedZoneData(properties);
-    }
-  }, [map, marker]);
+  }, [displayMode, map, marker, setSelectedZoneCode]);
 
   if (!marker || !selectedZoneData) {
     return null;

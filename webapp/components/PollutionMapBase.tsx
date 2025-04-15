@@ -20,9 +20,6 @@ type PollutionMapBaseLayerProps = {
   selectedZoneCode: string | null;
   setSelectedZoneCode: (code: string | null) => void;
   mapState: { longitude: number; latitude: number; zoom: number };
-  setSelectedZoneData: (
-    data: Record<string, string | number | null> | null,
-  ) => void;
   onMapStateChange?: (coords: {
     longitude: number;
     latitude: number;
@@ -40,7 +37,6 @@ type PollutionMapBaseLayerProps = {
       content?: JSX.Element;
     } | null,
   ) => void;
-  selectedZoneData: Record<string, string | number | null> | null;
 };
 
 export default function PollutionMapBaseLayer({
@@ -50,11 +46,9 @@ export default function PollutionMapBaseLayer({
   selectedZoneCode,
   setSelectedZoneCode,
   mapState,
-  setSelectedZoneData,
   onMapStateChange,
   marker,
   setMarker,
-  selectedZoneData,
 }: PollutionMapBaseLayerProps) {
   useEffect(() => {
     // adds the support for PMTiles
@@ -162,11 +156,12 @@ export default function PollutionMapBaseLayer({
     >
       {marker ? (
         <PollutionMapMarker
-          selectedZoneData={selectedZoneData}
           period={period}
           category={category}
           displayMode={displayMode}
           marker={marker}
+          selectedZoneCode={selectedZoneCode}
+          setSelectedZoneCode={setSelectedZoneCode}
         />
       ) : null}
     </ReactMapGl>

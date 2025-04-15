@@ -30,7 +30,7 @@ models:
         tests:
           - accepted_values:
               values:
-                - "aucun_parametre_quantifie"
+                - "non_quantifie"
                 - "somme_20pfas_inf_0_1_et_4pfas_inf_0_02"
                 - "somme_20pfas_inf_0_1_et_4pfas_sup_0_02"
                 - "somme_20pfas_sup_0_1"

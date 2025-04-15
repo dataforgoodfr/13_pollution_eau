@@ -91,7 +91,7 @@ SELECT
             THEN 'sup_valeur_sanitaire'
         WHEN
             nb_quantified_params = 0
-            THEN 'aucun_parametre_quantifie'
+            THEN 'non_quantifie'
         WHEN
             sum_20_pfas < 0.1 AND sum_4_pfas < 0.02
             -- On laisse les valeurs 0.1 et 0.02 en dur car 0.02 n'est pas

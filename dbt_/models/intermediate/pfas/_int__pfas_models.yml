@@ -1,14 +1,9 @@
-version: 1
+version: 2
 
 models:
   - name: int__resultats_pfas_udi_dernier
     description: "Résultats des derniers prélèvements pour les PFAS par UDI. Ce modèle sélectionne le dernier prélèvement pour chaque paramètre PFAS et agrège les résultats pour identifier les dépassements des seuils sanitaires."
     columns:
-      - name: referenceprel
-        description: "Référence unique du prélèvement."
-        tests:
-          - not_null
-
       - name: cdreseau
         description: "Code de l'installation (UDI)."
         tests:
@@ -35,11 +30,11 @@ models:
         tests:
           - accepted_values:
               values:
-                - "aucun_parametre_quantifie"
+                - "non_quantifie"
                 - "somme_20pfas_inf_0_1_et_4pfas_inf_0_02"
                 - "somme_20pfas_inf_0_1_et_4pfas_sup_0_02"
                 - "somme_20pfas_sup_0_1"
-                - "un_pfas_sup_valeur_sanitaire"
+                - "sup_valeur_sanitaire"
 
       - name: periode
         description: "Période d'analyse des prélèvements (ici, toujours 'dernier_prel')."

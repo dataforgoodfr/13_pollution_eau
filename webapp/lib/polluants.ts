@@ -94,7 +94,7 @@ export const availableCategories: ICategory[] = [
     sourcesExposition:
       "Ustensiles de cuisine, emballages alimentaires, eau potable.",
     resultats: {
-      aucun_parametre_quantifie: {
+      non_quantifie: {
         label: "Aucun paramètre quantifié",
         couleur: "#75D3B4",
         couleurFond: "#75D3B4",
@@ -121,7 +121,7 @@ export const availableCategories: ICategory[] = [
         couleurFond: "#FBBD6C",
         picto: null,
       },
-      un_pfas_sup_valeur_sanitaire: {
+      sup_valeur_sanitaire: {
         label: "Au moins un paramètre au-dessus de la limite sanitaire",
         couleur: "#FB726C",
         couleurFond: "#FB726C",

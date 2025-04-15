@@ -10,8 +10,6 @@ import { MapProvider } from "react-map-gl/maplibre";
 import MapZoneSelector from "./MapZoneSelector";
 import PollutionMapLegend from "./PollutionMapLegend";
 import { HamburgerButton } from "./ui/hamburger-button";
-import { clsx } from "clsx";
-import { Button } from "./ui/button";
 
 export default function PollutionMap() {
   const [period, setPeriod] = useState("dernier_prel");

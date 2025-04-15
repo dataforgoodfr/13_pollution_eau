@@ -4,8 +4,8 @@ SELECT
     cdreseau,
     categorie,
     resultat,
-    0 AS ratio_depassements_limite_reg,
-    0 AS resultat_limite_sanitaire
+    0 AS ratio_limite_qualite,
+    0 AS nb_sup_valeur_sanitaire
 FROM
     {{ ref('int__resultats_pfas_udi_dernier') }}
 WHERE
@@ -64,39 +64,44 @@ SELECT
     cdreseau,
     categorie,
     '' AS resultat,
-    ratio_depassements_limite_reg,
-    resultat_limite_sanitaire
+    ratio_limite_qualite,
+    nb_sup_valeur_sanitaire
 FROM
-    int__resultats_pfas_udi_annuel
+    {{ ref('int__resultats_pfas_udi_annuel') }}
 WHERE
     (
         cdreseau = '001000356'
-        AND categorie = 'pfas'
         AND annee = '2025'
-        AND ratio_depassements_limite_reg = 0
-        AND resultat_limite_sanitaire != 'aucun_pfas_sup_valeur_sanitaire'
+        AND
+        (
+            ratio_limite_qualite != 0
+            OR nb_sup_valeur_sanitaire != 0
+        )
     )
     OR
     (
         cdreseau = '074000043'
-        AND categorie = 'pfas'
         AND annee = '2022'
-        AND ratio_depassements_limite_reg = 0.1
-        AND resultat_limite_sanitaire != 'min_1_pfas_sup_valeur_sanitaire'
+        AND (
+            ratio_limite_qualite != 0.1
+            OR nb_sup_valeur_sanitaire != 2
+        )
     )
     OR
     (
         cdreseau = '030000200'
-        AND categorie = 'pfas'
         AND annee = '2024'
-        AND resultat_limite_sanitaire = 'aucun_pfas_sup_valeur_sanitaire'
-        AND ratio_depassements_limite_reg != 0.25
+        AND (
+            nb_sup_valeur_sanitaire != 0
+            OR ratio_limite_qualite != 0.25
+        )
     )
     OR
     (
         cdreseau = '069000025'
-        AND categorie = 'pfas'
         AND annee IN ('2022', '2023', '2024')
-        AND resultat_limite_sanitaire = 'aucun_pfas_sup_valeur_sanitaire'
-        AND ratio_depassements_limite_reg != 0
+        AND (
+            nb_sup_valeur_sanitaire != 0
+            OR ratio_limite_qualite != 0
+        )
     )

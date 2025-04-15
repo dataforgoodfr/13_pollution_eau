@@ -49,57 +49,53 @@ models:
 
   - name: int__resultats_pfas_udi_annuel
     description: >
-        Bilan annuel des prélèvements d’eau potable pour les PFAS à l’échelle des UDI (Unités de distribution d’eau).
-        Ce modèle agrège les résultats des prélèvements d’une année donnée en identifiant la fréquence de dépassement
-        de la limite règlementaire, et indique si la limite sanitaire a été depassée au moins une fois ou non.
+      Bilan annuel des prélèvements d’eau potable pour les PFAS à l’échelle des UDI (Unités de distribution d’eau).
+      Ce modèle agrège les résultats des prélèvements d’une année donnée en identifiant la fréquence de dépassement
+      de la limite règlementaire, et indique si la limite sanitaire a été depassée au moins une fois ou non.
     columns:
-        - name: cdreseau
-          description: "Code de l’unité de distribution d’eau (UDI)."
-          tests:
-            - not_null
+      - name: cdreseau
+        description: "Code de l’unité de distribution d’eau (UDI)."
+        tests:
+          - not_null
 
-        - name: annee
-          description: "Année du prélèvement (extraite de la colonne 'de_partition')."
-          type: SMALLINT
-          tests:
-            - not_null
+      - name: annee
+        description: "Année du prélèvement (extraite de la colonne 'de_partition')."
+        type: SMALLINT
+        tests:
+          - not_null
 
-        - name: categorie
-          description: "Catégorie du paramètre analysé (ici, toujours 'pfas')."
-          type: VARCHAR
-          tests:
-            - accepted_values:
-                values: ["pfas"]
+      - name: categorie
+        description: "Catégorie du paramètre analysé (ici, toujours 'pfas')."
+        type: VARCHAR
+        tests:
+          - accepted_values:
+              values: ["pfas"]
 
-        - name: periode
-          description: "Période d’analyse, définie sous la forme 'bilan_annuel_<année>'."
-          type: VARCHAR
-          tests:
-            - not_null
-            - dbt_utils.expression_is_true:
-                expression: "LIKE 'bilan_annuel%'"
+      - name: periode
+        description: "Période d’analyse, définie sous la forme 'bilan_annuel_<année>'."
+        type: VARCHAR
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: "LIKE 'bilan_annuel%'"
 
-        - name: nb_prelevements
-          description: "Nombre total de prélèvements effectués dans l’année."
-          type: INTEGER
-          tests:
-            - not_null
+      - name: nb_prelevements
+        description: "Nombre total de prélèvements effectués dans l’année."
+        type: INTEGER
+        tests:
+          - not_null
 
-        - name: ratio_depassements_limite_reg
-          description: "Ratio des prélèvements avec dépassement de la limite règlementaire (SPFAS >= 0.1 µg/L)."
-          type: FLOAT
-          tests:
-            - not_null
-            - dbt_expectations.expect_column_values_to_be_between:
-                min_value: 0
-                max_value: 1
+      - name: ratio_limite_qualite
+        description: "Ratio des prélèvements avec dépassement de la limite règlementaire (SPFAS >= 0.1 µg/L)."
+        type: FLOAT
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              max_value: 1
 
-        - name: resultat_limite_sanitaire
-          description: "Indique si au moins un dépassement de limite sanitaire a été observé dans l'année."
-          type: VARCHAR
-          tests:
-            - accepted_values:
-                values:
-                  - aucun_pfas_sup_valeur_sanitaire
-                  - min_1_pfas_sup_valeur_sanitaire
-            
+      - name: nb_sup_valeur_sanitaire
+        description: "Indique le nombre de dépassement de limite sanitaire observé dans l'année."
+        type: INTEGER
+        tests:
+          - not_null

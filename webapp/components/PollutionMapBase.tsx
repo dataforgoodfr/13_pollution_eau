@@ -3,15 +3,13 @@
 import { useEffect, useMemo, JSX } from "react";
 import ReactMapGl, {
   MapLayerMouseEvent,
-  Marker,
-  // Popup,
   ViewStateChangeEvent,
 } from "react-map-gl/maplibre";
 import maplibregl from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 import { Protocol } from "pmtiles";
 import { generateColorExpression } from "@/lib/colorMapping";
-import { MapPin } from "lucide-react";
+import PollutionMapMarker from "@/components/PollutionMapMarker";
 
 import { DEFAULT_MAP_STYLE, getDefaultLayers } from "@/app/config";
 
@@ -22,9 +20,6 @@ type PollutionMapBaseLayerProps = {
   selectedZoneCode: string | null;
   setSelectedZoneCode: (code: string | null) => void;
   mapState: { longitude: number; latitude: number; zoom: number };
-  setSelectedZoneData: (
-    data: Record<string, string | number | null> | null,
-  ) => void;
   onMapStateChange?: (coords: {
     longitude: number;
     latitude: number;
@@ -33,13 +28,13 @@ type PollutionMapBaseLayerProps = {
   marker: {
     longitude: number;
     latitude: number;
-    content: JSX.Element;
+    content?: JSX.Element;
   } | null;
   setMarker: (
     marker: {
       longitude: number;
       latitude: number;
-      content: JSX.Element;
+      content?: JSX.Element;
     } | null,
   ) => void;
 };
@@ -51,10 +46,9 @@ export default function PollutionMapBaseLayer({
   selectedZoneCode,
   setSelectedZoneCode,
   mapState,
-  setSelectedZoneData,
   onMapStateChange,
   marker,
-  //setMarker,
+  setMarker,
 }: PollutionMapBaseLayerProps) {
   useEffect(() => {
     // adds the support for PMTiles
@@ -69,12 +63,17 @@ export default function PollutionMapBaseLayer({
     if (event.features && event.features.length > 0) {
       console.log("zoom level:", mapState.zoom);
       console.log("Properties:", event.features[0].properties);
-      setSelectedZoneData(event.features[0].properties);
-      setSelectedZoneCode(
-        displayMode === "communes"
-          ? event.features[0].properties["commune_code_insee"]
-          : event.features[0].properties["cdreseau"],
-      );
+      // setSelectedZoneData(event.features[0].properties);
+      // setSelectedZoneCode(
+      //   displayMode === "communes"
+      //     ? event.features[0].properties["commune_code_insee"]
+      //     : event.features[0].properties["cdreseau"],
+      // );
+
+      setMarker({
+        longitude: event.lngLat.lng,
+        latitude: event.lngLat.lat,
+      });
     }
   }
 
@@ -117,7 +116,12 @@ export default function PollutionMapBaseLayer({
         source: source,
         "source-layer": sourceLayer,
         paint: {
-          "line-color": "#7F7F7F",
+          "line-color": [
+            "case",
+            ["==", ["get", idProperty], selectedZoneCode || ""],
+            "#000000",
+            "#7F7F7F",
+          ],
           "line-width": [
             "interpolate",
             ["linear"],
@@ -151,32 +155,14 @@ export default function PollutionMapBaseLayer({
       interactiveLayerIds={["color-layer"]}
     >
       {marker ? (
-        <>
-          <Marker longitude={marker.longitude} latitude={marker.latitude}>
-            <MapPin
-              size={32}
-              className="text-primary-foreground"
-              strokeWidth={1}
-              stroke="black"
-              fill="white"
-              color="white"
-            />
-          </Marker>
-          {/* <Popup
-            longitude={marker.longitude}
-            latitude={marker.latitude}
-            anchor="bottom"
-            className="-mt-5"
-            closeButton={false}
-            closeOnClick={false}
-          >
-            <span className="font-bold ">{marker.content}</span>
-            <br />
-            <span className="opacity-35">
-              Cette adresse est désservie par une unité de distribution.
-            </span>
-          </Popup> */}
-        </>
+        <PollutionMapMarker
+          period={period}
+          category={category}
+          displayMode={displayMode}
+          marker={marker}
+          selectedZoneCode={selectedZoneCode}
+          setSelectedZoneCode={setSelectedZoneCode}
+        />
       ) : null}
     </ReactMapGl>
   );

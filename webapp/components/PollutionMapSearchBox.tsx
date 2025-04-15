@@ -138,6 +138,7 @@ export default function PollutionMapSearchBox({
                         setDropDownOpen(true);
                       }
                     }}
+                    autoComplete="off"
                   />
                 </div>
               </div>

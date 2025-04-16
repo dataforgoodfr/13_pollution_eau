@@ -2,7 +2,7 @@
 -- dans la dernière année
 WITH pb_dernier_prel AS (
     SELECT
-        int__resultats_udi_communes.*,
+        *,
         ROW_NUMBER()
             OVER (
                 PARTITION BY cdreseau
@@ -15,7 +15,8 @@ WITH pb_dernier_prel AS (
         cdparametresiseeaux = 'PB'
         AND
         -- On garde les prélèvements de moins d'un an
-        CURRENT_DATE - datetimeprel < INTERVAL 1 YEAR
+        CURRENT_DATE - datetimeprel
+        < INTERVAL 1 YEAR
 ),
 
 -- Ici on reprend les résultats pour chaque dernier prélèvement pour chaque UDI
@@ -58,10 +59,10 @@ SELECT
             THEN 'sup_5_inf_10_limite_2036'
         WHEN
             resultats_udi_pb_dernier_prel.valtraduite < 5
-            THEN 'inf_5'           
+            THEN 'inf_5'
         ELSE 'erreur'
     END AS resultat
 FROM
     resultats_udi_pb_dernier_prel
 ORDER BY
-    cdreseau
+    resultats_udi_pb_dernier_prel.cdreseau

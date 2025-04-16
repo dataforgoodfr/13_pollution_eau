@@ -67,6 +67,18 @@ aggregated_results AS (
                 WHEN valtraduite != 0 THEN cdparametresiseeaux
             END
         ) AS nb_quantified_params
+        -- STRING_AGG(
+        --     '{"parametre":"' || cdparametresiseeaux
+        --     || '","valeur":' || CAST(valtraduite AS VARCHAR)
+        --     || CASE
+        --         WHEN valeur_sanitaire_1 IS NOT NULL
+        --             THEN
+        --                 ',"limite_sanitaire":'
+        --                 || CAST(valeur_sanitaire_1 AS VARCHAR)
+        --         ELSE ''
+        --     END || '}',
+        --     ', '
+        -- ) AS details
     FROM latest_pfas_results
     WHERE row_number = 1 -- On garde seulement le dernier prélèvement 
     -- pour chaquecouple cdreseau/referenceprel
@@ -87,6 +99,8 @@ SELECT
     'dernier_prel' AS periode,
     datetimeprel AS dernier_prel_datetime,
     nb_parametres,
+    -- dernier_prel_valeur: we keep only the value from SPFAS
+    sum_20_pfas AS dernier_prel_valeur,
     CASE
         WHEN
             nb_pfas_above_limit > 0

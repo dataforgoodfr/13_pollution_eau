@@ -57,6 +57,12 @@ models:
       - name: nb_parametres
         description: "Nombre de paramètres analysés"
         type: INTEGER
+      - name: nb_prelevements
+        description: "Nombre de prélèvements"
+        type: INTEGER
+      - name: nb_sup_valeur_sanitaire
+        description: "Nombre de prélèvements supérieurs à la valeur sanitaire"
+        type: INTEGER
 
   - name: web__resultats_udi
     description: "Resultats des prélevements par unité de distribution (UDI) par période et catégorie de polluant"
@@ -113,4 +119,10 @@ models:
         type: FLOAT
       - name: nb_parametres
         description: "Nombre de paramètres analysés"
+        type: INTEGER
+      - name: nb_prelevements
+        description: "Nombre de prélèvements"
+        type: INTEGER
+      - name: nb_sup_valeur_sanitaire
+        description: "Nombre de prélèvements supérieurs à la valeur sanitaire"
         type: INTEGER

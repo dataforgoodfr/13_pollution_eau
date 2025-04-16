@@ -48,10 +48,8 @@ function ResultCard({
 function ResultCardGroup({ category, resultats }) {
   const resultKeys = Object.keys(resultats);
   if (!resultKeys.length) return;
-  console.log("aa", resultats, resultKeys);
   return resultKeys.map((key) => {
     const result = resultats[key];
-    console.log(";r", result);
     return (
       <ResultCard
         des={result?.label || ""}

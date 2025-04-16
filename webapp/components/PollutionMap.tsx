@@ -141,7 +141,7 @@ export default function PollutionMap() {
           {/* Panel content */}
           <div
             className={`bg-[#E2E8F0] transition-all duration-300 h-full overflow-y-auto ${
-              sidePanelOpen ? "w-80 opacity-100" : "w-0 opacity-0"
+              sidePanelOpen ? "w-96 opacity-100" : "w-0 opacity-0"
             }`}
           >
             <PollutionSidePanel

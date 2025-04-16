@@ -11,7 +11,7 @@ import { X } from "lucide-react";
 
 function Tag({ content }: { content: string }) {
   return (
-    <div className="bg-yellow-300 py-1 px-3 rounded-2xl w-fit mb-4">
+    <div className="bg-yellow-300 font-[600] text-m py-1 px-4 rounded-2xl w-fit mb-2.5 font-mono tracking-wide">
       {content}
     </div>
   );
@@ -21,15 +21,20 @@ function ResultCard({
   des,
   result,
   bgColor,
+  color,
 }: {
   des: string;
   result: string;
   bgColor: string;
+  color: string;
 }) {
   return (
-    <Card className="shadow-none rounded-lg">
-      <CardHeader className="p-2 pt-3">
-        <CardDescription className={`${bgColor} px-2 py-1 rounded-3xl text-xs`}>
+    <Card className="shadow-none rounded-lg my-1">
+      <CardHeader className="p-2">
+        <CardDescription
+          className={`px-2 py-1 rounded-xl text-xs`}
+          style={{ color, backgroundColor: bgColor + "33" }}
+        >
           {des}
         </CardDescription>
       </CardHeader>
@@ -38,6 +43,25 @@ function ResultCard({
       </CardContent>
     </Card>
   );
+}
+
+function ResultCardGroup({ category, resultats }) {
+  const resultKeys = Object.keys(resultats);
+  if (!resultKeys.length) return;
+  console.log("aa", resultats, resultKeys);
+  return resultKeys.map((key) => {
+    const result = resultats[key];
+    console.log(";r", result);
+    return (
+      <ResultCard
+        des={result?.label || ""}
+        result="2"
+        bgColor={result?.couleur}
+        color={result?.couleurFond}
+        key={key}
+      />
+    );
+  });
 }
 
 function ExplicationCard({
@@ -70,15 +94,15 @@ export default function PollutionSidePanel({
   onClose?: () => void;
 }) {
   const categoryDetails = getCategoryById(category);
-
+  console.log("catego", categoryDetails);
   return (
     <div className="h-full flex flex-col relative">
       <button
-        className="absolute top-5 right-5 text-black bg-white rounded-full p-2 shadow-md hover:text-gray-800 hover:bg-gray-100 transition duration-300"
+        className="absolute text-black  top-3 right-3 bg-white rounded-full p-2 shadow-md hover:text-gray-800 hover:bg-gray-100 transition duration-300"
         onClick={() => onClose?.()}
         aria-label="Close"
       >
-        <X className="w-6 h-6" />
+        <X size={12} />
       </button>
 
       {categoryDetails === undefined ? (
@@ -87,17 +111,21 @@ export default function PollutionSidePanel({
         </div>
       ) : (
         <>
-          <div className="text-black p-4">
-            <div className="text-xs font-thin">FICHE EXPLICATIVE</div>
-            <div className="text-2xl">
+          <div className="text-black p-6 pb-4">
+            <div className="text-xs font-thin font-spline_sans_mono">
+              FICHE EXPLICATIVE
+            </div>
+            <div className="text-3xl py-2 font-spline_sans">
               {(categoryDetails.nomAffichage || "UNKOWN").toUpperCase()}
             </div>
-            {/* <div className="text-xs font-thin">
-              {(categoryDetails.longName || "").toUpperCase()}
-            </div> */}
+            {categoryDetails.pathNomAffichage && (
+              <div className="text-xs font-thin font-spline_sans_mono pb-2">
+                {categoryDetails.pathNomAffichage.toUpperCase()}
+              </div>
+            )}
           </div>
-          <div className="bg-white p-4 flex flex-col gap-4 rounded-t-lg flex-1 overflow-y-auto">
-            <div className="text-black  pt-4">
+          <div className="font-inter bg-white p-4 flex flex-col gap-4 rounded-t-lg flex-1 overflow-y-auto">
+            <div className="text-black font-[600]">
               {categoryDetails.description || ""}
             </div>
             <div>
@@ -115,16 +143,21 @@ export default function PollutionSidePanel({
 
             <div className="flex flex-col gap-2">
               <Tag content="Derniers prélèvement" />
-              <ResultCard
+
+              {/* <ResultCard
                 des="UDI avait au moins 1 PFAS > valeur sanitaire"
                 result="2"
                 bgColor="bg-chart-1"
+              /> */}
+              <ResultCardGroup
+                category={category}
+                resultats={categoryDetails?.resultats || {}}
               />
-              <ExplicationCard
+              {/* <ExplicationCard
                 bgColor="bg-blue-100"
                 quesion={"C'est quoi UDI"}
                 answer={"blablabal"}
-              />
+              /> */}
             </div>
           </div>
         </>

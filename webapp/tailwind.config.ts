@@ -1,5 +1,6 @@
 import type { Config } from "tailwindcss";
 import TailwindAnimate from "tailwindcss-animate";
+import { fontFamily } from "tailwindcss/defaultTheme";
 
 export default {
   darkMode: ["class"],
@@ -57,6 +58,11 @@ export default {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
+      },
+      fontFamily: {
+        inter: ["var(--font-inter)", ...fontFamily.sans],
+        spline_sans: ["var(--font-spline-sans)", ...fontFamily.sans],
+        spline_sans_mono: ["var(--font-spline-sans-mono)", ...fontFamily.sans],
       },
     },
   },

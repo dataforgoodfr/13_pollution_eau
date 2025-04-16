@@ -270,7 +270,7 @@ export const availableCategories: ICategory[] = [
             sousCategories: false,
             resultats: {
               non_recherche: {
-                label: "Non recheché",
+                label: "Non recherché",
                 couleur: "#9B9B9B",
                 couleurFond: "#9B9B9B",
                 picto: null,
@@ -323,7 +323,7 @@ export const availableCategories: ICategory[] = [
             sousCategories: false,
             resultats: {
               non_recherche: {
-                label: "Non recheché",
+                label: "Non recherché",
                 couleur: "#9B9B9B",
                 couleurFond: "#9B9B9B",
                 picto: null,
@@ -377,7 +377,7 @@ export const availableCategories: ICategory[] = [
             sousCategories: false,
             resultats: {
               non_recherche: {
-                label: "Non recheché",
+                label: "Non recherché",
                 couleur: "#9B9B9B",
                 couleurFond: "#9B9B9B",
                 picto: null,
@@ -423,7 +423,7 @@ export const availableCategories: ICategory[] = [
             sousCategories: false,
             resultats: {
               non_recherche: {
-                label: "Non recheché",
+                label: "Non recherché",
                 couleur: "#9B9B9B",
                 couleurFond: "#9B9B9B",
                 picto: null,
@@ -470,7 +470,7 @@ export const availableCategories: ICategory[] = [
             sousCategories: false,
             resultats: {
               non_recherche: {
-                label: "Non recheché",
+                label: "Non recherché",
                 couleur: "#9B9B9B",
                 couleurFond: "#9B9B9B",
                 picto: null,

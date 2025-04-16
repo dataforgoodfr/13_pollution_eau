@@ -1,4 +1,4 @@
-import { resultatsDetails } from "./resultats";
+import { getCategoryById } from "./polluants";
 import { getPropertyName } from "./property";
 
 import type {
@@ -17,14 +17,24 @@ export function generateColorExpression(
 ): DataDrivenPropertyValueSpecification<ColorSpecification> {
   const cases = [];
 
-  const defaultColor = "#cccccc"; // Default color for unmatched cases
+  const defaultColor = "#9B9B9B"; // Default color for unmatched cases
+  const categoryDetails = getCategoryById(category);
+
+  if (!categoryDetails || !categoryDetails.resultats) {
+    return defaultColor;
+  }
 
   // dernier prélèvement specific logic
   if (period.startsWith("dernier_prel")) {
     const propertyId = getPropertyName(period, category, "resultat");
-    Object.entries(resultatsDetails).forEach(([value, detail]) => {
+    Object.entries(categoryDetails.resultats).forEach(([value, detail]) => {
       cases.push(["==", ["get", propertyId], value]);
-      cases.push(detail.color);
+
+      // Check if the color is valid
+      const color = detail.couleur || detail.couleurFond;
+      const isValidColor = color && color.startsWith("#");
+
+      cases.push(isValidColor ? color : defaultColor);
     });
   }
   // bilan annuel specific logic

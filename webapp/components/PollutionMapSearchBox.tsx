@@ -4,7 +4,8 @@ import { Popover, PopoverAnchor, PopoverContent } from "./ui/popover";
 import { Input } from "./ui/input";
 import { useState } from "react";
 import { Command, CommandGroup, CommandItem, CommandList } from "./ui/command";
-import { GlobeIcon } from "@radix-ui/react-icons";
+import { MapPin } from "lucide-react";
+
 import { CommandEmpty } from "cmdk";
 import { Building2, Home, X } from "lucide-react";
 
@@ -115,13 +116,16 @@ export default function PollutionMapSearchBox({
   }
 
   return (
-    <div className="flex items-center ml-6">
+    <div className="flex items-center ml-6 p-2">
       <div>
         <div className="">
           <Popover open={dropDownIsOpened} onOpenChange={setDropDownOpen}>
             <PopoverAnchor asChild>
               <div className="flex items-center relative">
-                <GlobeIcon className="absolute left-3 text-gray-400 pointer-events-none" />
+                <MapPin
+                  size={16}
+                  className="absolute left-3 text-gray-400 pointer-events-none"
+                />
                 <div className="mx-1 ">
                   <Input
                     className="max-w-fit min-w-[220px] outline-1 outline-blue-500 pl-7 bg-white rounded-2xl"
@@ -134,6 +138,7 @@ export default function PollutionMapSearchBox({
                         setDropDownOpen(true);
                       }
                     }}
+                    autoComplete="off"
                   />
                 </div>
               </div>

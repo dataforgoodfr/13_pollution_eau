@@ -6,8 +6,9 @@ import {
   SelectContent,
   SelectItem,
 } from "@/components/ui/select";
-import { CalendarIcon, BlendingModeIcon } from "@radix-ui/react-icons";
-import { availableCategories } from "@/lib/polluants";
+import { memo } from "react";
+import { FlaskConical, CalendarDays } from "lucide-react";
+import { availableCategories, ICategory } from "@/lib/polluants";
 
 type PollutionMapFiltersProps = {
   period: string;
@@ -15,6 +16,51 @@ type PollutionMapFiltersProps = {
   category: string;
   setCategory: (type: string) => void;
 };
+
+type CategoryItemsProps = {
+  items: ICategory[];
+  hierarchie?: number;
+  parentName?: string;
+};
+
+const CategoryItems = memo(
+  ({ items, hierarchie = 1, parentName = "" }: CategoryItemsProps) => {
+    let cln = "";
+    if (hierarchie == 1) {
+      cln = "pl-6";
+    } else if (hierarchie == 2) {
+      cln = "pl-10";
+    } else {
+      cln = "pl-14";
+    }
+    return items.map((item) => {
+      const key = parentName
+        ? parentName + "_" + item.nomAffichage
+        : item.nomAffichage;
+
+      return (
+        <div key={key}>
+          <SelectItem
+            key={key}
+            value={item.id}
+            disabled={item.disable}
+            className={cln}
+          >
+            {item.nomAffichage}
+          </SelectItem>
+          {item.enfants && (
+            <CategoryItems
+              items={item.enfants}
+              hierarchie={hierarchie + 1}
+              parentName={key}
+            />
+          )}
+        </div>
+      );
+    });
+  },
+);
+CategoryItems.displayName = "CategoryItems";
 
 export default function PollutionMapFilters({
   period,
@@ -32,14 +78,14 @@ export default function PollutionMapFilters({
   ];
 
   return (
-    <div className="flex space-x-6">
+    <div className="flex space-x-6 p-2">
       <div className="shadow-sm">
         <Select value={period} onValueChange={(y) => setPeriod(y)}>
           <SelectTrigger
             className="SelectTrigger bg-white rounded-2xl"
             aria-label="year-select"
           >
-            <CalendarIcon />
+            <CalendarDays size={16} className="text-gray-400" />
             <div className="block mx-1">
               <SelectValue placeholder="Année" />
             </div>
@@ -57,20 +103,16 @@ export default function PollutionMapFilters({
       <div className="shadow-sm">
         <Select value={category} onValueChange={setCategory}>
           <SelectTrigger
-            className="SelectTrigger bg-white rounded-2xl"
+            className="bg-white rounded-2xl"
             aria-label="category-select"
           >
-            <BlendingModeIcon />
+            <FlaskConical size={16} className="text-gray-400" />
             <div className="block mx-1">
               <SelectValue placeholder="Polluant" className="mx-1" />
             </div>
           </SelectTrigger>
-          <SelectContent>
-            {availableCategories.map((p) => (
-              <SelectItem key={p.id} value={p.id} disabled={p.disabled}>
-                {p.label}
-              </SelectItem>
-            ))}
+          <SelectContent className="rounded-xl">
+            <CategoryItems items={availableCategories} />
           </SelectContent>
         </Select>
       </div>

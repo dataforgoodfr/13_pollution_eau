@@ -203,15 +203,13 @@ export const availableCategories: ICategory[] = [
             picto: null,
           },
           limite_qualite: {
-            label:
-              "Au moins une substance active dépasse la limite de qualité",
+            label: "Au moins une substance active dépasse la limite de qualité",
             couleur: "#F3903F",
             couleurFond: "#F3903F",
             picto: "warning",
           },
           limite_sanitaire: {
-            label:
-              "Au moins une substance active dépasse la limite sanitaire",
+            label: "Au moins une substance active dépasse la limite sanitaire",
             couleur: "#E93E3A",
             couleurFond: "#E93E3A",
             picto: "red cross",
@@ -246,15 +244,13 @@ export const availableCategories: ICategory[] = [
             picto: null,
           },
           limite_qualite: {
-            label:
-              "Au moins un métabolite dépasse la limite de qualité",
+            label: "Au moins un métabolite dépasse la limite de qualité",
             couleur: "#F3903F",
             couleurFond: "#F3903F",
             picto: "warning",
           },
           limite_sanitaire: {
-            label:
-              "Au moins un métabolite dépasse la limite sanitaire",
+            label: "Au moins un métabolite dépasse la limite sanitaire",
             couleur: "#E93E3A",
             couleurFond: "#E93E3A",
             picto: "red cross",
@@ -292,19 +288,22 @@ export const availableCategories: ICategory[] = [
                 picto: null,
               },
               entre_0_1_et_0_9: {
-                label: "Concentration comprise entre 0,1 et 0,9 µg/L (si l'ESA métolachlore était considéré comme un métabolite pertinent, l'eau serait déclarée \"non conforme\")",
+                label:
+                  "Concentration comprise entre 0,1 et 0,9 µg/L (si l'ESA métolachlore était considéré comme un métabolite pertinent, l'eau serait déclarée \"non conforme\")",
                 couleur: "#FDC70C",
                 couleurFond: "#FDC70C",
                 picto: null,
               },
               sup_limite_qualite: {
-                label: "Concentration > 0,9 µg/L (eau non conforme à la limite de qualité)",
+                label:
+                  "Concentration > 0,9 µg/L (eau non conforme à la limite de qualité)",
                 couleur: "#F3903F",
                 couleurFond: "#F3903F",
                 picto: "warning",
               },
               sup_valeur_sanitaire: {
-                label: "Concentration > 3 µg/L (dépassement de la valeur sanitaire transitoire)",
+                label:
+                  "Concentration > 3 µg/L (dépassement de la valeur sanitaire transitoire)",
                 couleur: "#E93E3A",
                 couleurFond: "#E93E3A",
                 picto: "red cross",
@@ -342,19 +341,22 @@ export const availableCategories: ICategory[] = [
                 picto: null,
               },
               entre_0_1_et_0_9: {
-                label: "Concentration comprise entre 0,1 et 0,9 µg/L*\n\n (si le Chlorothalonil R471811 était considéré comme un métabolite pertinent, l'eau serait déclarée \"non conforme\")",
+                label:
+                  'Concentration comprise entre 0,1 et 0,9 µg/L*\n\n (si le Chlorothalonil R471811 était considéré comme un métabolite pertinent, l\'eau serait déclarée "non conforme")',
                 couleur: "#FDC70C",
                 couleurFond: "#FDC70C",
                 picto: null,
               },
               sup_limite_qualite: {
-                label: "Concentration > 0,9 µg/L (eau non conforme à la limite de qualité)",
+                label:
+                  "Concentration > 0,9 µg/L (eau non conforme à la limite de qualité)",
                 couleur: "#F3903F",
                 couleurFond: "#F3903F",
                 picto: "warning",
               },
               sup_valeur_sanitaire: {
-                label: "Concentration > 3 µg/L (dépassement de la valeur sanitaire transitoire)",
+                label:
+                  "Concentration > 3 µg/L (dépassement de la valeur sanitaire transitoire)",
                 couleur: "#E93E3A",
                 couleurFond: "#E93E3A",
                 picto: "red cross",
@@ -393,13 +395,15 @@ export const availableCategories: ICategory[] = [
                 picto: null,
               },
               sup_limite_qualite: {
-                label: "Concentration > 0,1 µg/L (eau non conforme à la limite de qualité)",
+                label:
+                  "Concentration > 0,1 µg/L (eau non conforme à la limite de qualité)",
                 couleur: "#F3903F",
                 couleurFond: "#F3903F",
                 picto: "warning",
               },
               sup_valeur_sanitaire: {
-                label: "Concentration > 11 µg/L (dépassement de la valeur sanitaire)",
+                label:
+                  "Concentration > 11 µg/L (dépassement de la valeur sanitaire)",
                 couleur: "#E93E3A",
                 couleurFond: "#E93E3A",
                 picto: "red cross",
@@ -437,13 +441,15 @@ export const availableCategories: ICategory[] = [
                 picto: null,
               },
               sup_limite_qualite: {
-                label: "Concentration > 0,1 µg/L (eau non conforme à la limite de qualité)",
+                label:
+                  "Concentration > 0,1 µg/L (eau non conforme à la limite de qualité)",
                 couleur: "#F3903F",
                 couleurFond: "#F3903F",
                 picto: "warning",
               },
               sup_valeur_sanitaire: {
-                label: "Concentration > 110 µg/L (dépassement de la valeur sanitaire)",
+                label:
+                  "Concentration > 110 µg/L (dépassement de la valeur sanitaire)",
                 couleur: "#E93E3A",
                 couleurFond: "#E93E3A",
                 picto: "red cross",
@@ -482,13 +488,15 @@ export const availableCategories: ICategory[] = [
                 picto: null,
               },
               sup_limite_qualite: {
-                label: "Concentration > 0,1 µg/L (eau non conforme à la limite de qualité)",
+                label:
+                  "Concentration > 0,1 µg/L (eau non conforme à la limite de qualité)",
                 couleur: "#F3903F",
                 couleurFond: "#F3903F",
                 picto: "warning",
               },
               sup_valeur_sanitaire: {
-                label: "Concentration > 60 µg/L (dépassement de la valeur sanitaire)",
+                label:
+                  "Concentration > 60 µg/L (dépassement de la valeur sanitaire)",
                 couleur: "#E93E3A",
                 couleurFond: "#E93E3A",
                 picto: "red cross",
@@ -520,7 +528,8 @@ export const availableCategories: ICategory[] = [
         picto: null,
       },
       conforme: {
-        label: "Concentrations inférieures aux limites de qualité (eau conforme)",
+        label:
+          "Concentrations inférieures aux limites de qualité (eau conforme)",
         couleur: "#B4E681",
         couleurFond: "#B4E681",
         picto: null,
@@ -719,7 +728,8 @@ export const availableCategories: ICategory[] = [
             picto: null,
           },
           limite_qualite: {
-            label: "Concentration < 10 µg/L (eau conforme à la limite de qualité)",
+            label:
+              "Concentration < 10 µg/L (eau conforme à la limite de qualité)",
             couleur: "#FFF33B",
             couleurFond: "#FFF33B",
             picto: null,

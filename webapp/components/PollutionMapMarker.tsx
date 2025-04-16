@@ -109,9 +109,62 @@ export default function PollutionMapMarker({
 
   const categoryDetails = getCategoryById(category);
   const resultColor =
-    categoryDetails?.resultats[value as string]?.couleur || "#dddddd";
+    categoryDetails?.resultats[value as string]?.couleur || "#9B9B9B";
   const resultLabel =
     categoryDetails?.resultats[value as string]?.label || "Aucune donnée";
+
+  const renderContent = () => {
+    if (period === "dernier_prel") {
+      const realValue =
+        selectedZoneData[
+          getPropertyName(period, category, "dernier_prel_valeur")
+        ];
+      const date =
+        selectedZoneData[
+          getPropertyName(period, category, "dernier_prel_datetime")
+        ] || null;
+
+      return (
+        <>
+          <p className="text-sm font-bold">{title}</p>
+          <div className="flex items-center gap-3">
+            <div
+              className="w-3 h-3 rounded-full flex-shrink-0"
+              style={{ backgroundColor: resultColor }}
+            ></div>
+            <span className="">{resultLabel}</span>
+          </div>
+          {realValue && date ? (
+            <p className="">
+              Valeur: {realValue}
+              <br />
+              Date: {date}
+            </p>
+          ) : null}
+        </>
+      );
+    } else {
+      // bilan_annuel
+
+      return (
+        <>
+          <p className="text-sm font-bold">{title}</p>
+          <div className="flex items-center gap-3">
+            <div
+              className="w-3 h-3 rounded-full flex-shrink-0"
+              style={{ backgroundColor: resultColor }}
+            ></div>
+            <span className="">{resultLabel}</span>
+          </div>
+          <p className="">
+            {value && Number(value) ? (
+              <>{Math.round(Number(value) * 100)}% des prélevements</>
+            ) : null}
+          </p>
+        </>
+      );
+    }
+  };
 
   return (
     <>
@@ -135,7 +188,7 @@ export default function PollutionMapMarker({
       >
         {marker.content && (
           <div className="mb-3 pb-3 border-b border-gray-200">
-            <span className="font-bold ">{marker.content}</span>
+            <span className="">{marker.content}</span>
             <br />
             <span className="opacity-35">
               Cette adresse est désservie par une unité de distribution.
@@ -143,18 +196,10 @@ export default function PollutionMapMarker({
           </div>
         )}
 
-        <div>
-          <div className="flex items-center gap-2 mb-2">
-            <div
-              className="w-3 h-3 rounded-full flex-shrink-0"
-              style={{ backgroundColor: resultColor }}
-            ></div>
-            <span className="text-sm font-medium">{resultLabel}</span>
-          </div>
-
-          <p className="text-xs text-gray-600">
-            <span className="font-medium">Code:</span> {code}
-            {title && <span> - {title}</span>}
+        <div className="space-y-2">
+          {renderContent()}
+          <p className="text-xs text-gray-600 pt-2">
+            Code {displayMode === "communes" ? "Insee" : "réseau"}: {code}
           </p>
         </div>
       </Popup>

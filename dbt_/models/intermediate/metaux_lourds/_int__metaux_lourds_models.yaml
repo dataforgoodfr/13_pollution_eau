@@ -10,6 +10,7 @@ models:
 
       - name: cdreseau
         description: "Code de l'installation (unité de distribution)"
+        type: VARCHAR
         tests:
           - not_null
           - unique
@@ -23,15 +24,19 @@ models:
               expression: ">= CURRENT_DATE - INTERVAL 1 YEAR"
 
       - name: periode
+        description: "Période de résultat"
         type: VARCHAR
         tests:
           - accepted_values:
               values: ["dernier_prel"]
 
       - name: dernier_prel_valeur
+        description: "Valeur du dernier prélèvement"
         type: FLOAT
 
       - name: resultat
+        description: "Résultat"
+        type: VARCHAR
         tests:
           - not_null
           - accepted_values:

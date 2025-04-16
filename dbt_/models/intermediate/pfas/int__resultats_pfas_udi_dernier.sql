@@ -72,10 +72,12 @@ aggregated_results AS (
     -- pour chaquecouple cdreseau/referenceprel
     GROUP BY referenceprel, cdreseau
     HAVING
-        -- On vérifie que la somme des 20 PFAS est bien présente (>95% des cas)
+        -- On vérifie que la somme des 20 PFAS est bien présente,
+        -- ce qui est quasiment toujours le cas (>98% des cas)
+        -- cf test de couverture dans test__coverage_20pfas_4pfas_98pct.sql
         is_20_pfas = 1
         AND
-        -- On vérifie que la somme des 4 PFAS est bien présente (>95% des cas)
+        -- Idem pour les 4 PFAS
         nb_4_pfas = 4
 )
 

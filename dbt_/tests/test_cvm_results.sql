@@ -6,7 +6,7 @@ SELECT
     resultat,
     0 AS nb_depassements,
     0 AS nb_prelevements,
-    0 AS ratio_depassements
+    0 AS ratio_limite_qualite
 FROM
     {{ ref('int__resultats_cvm_udi_dernier') }}
 WHERE
@@ -46,7 +46,7 @@ SELECT
     '' AS resultat,
     nb_depassements,
     nb_prelevements,
-    ratio_depassements
+    ratio_limite_qualite
 FROM
     {{ ref('int__resultats_cvm_udi_annuel') }}
 WHERE
@@ -61,7 +61,7 @@ WHERE
         cdreseau = '001001073'
         AND categorie = 'cvm'
         AND annee = '2024'
-        AND ratio_depassements != 0
+        AND ratio_limite_qualite != 0
     )
     OR
     (
@@ -104,7 +104,7 @@ WHERE
         AND categorie = 'cvm'
         AND annee = '2024'
         AND (
-            ratio_depassements != 0.25
+            ratio_limite_qualite != 0.25
             OR
             nb_prelevements != 4
         )

@@ -39,15 +39,42 @@ export function generateColorExpression(
   }
   // bilan annuel specific logic
   else if (period.startsWith("bilan_annuel")) {
-    const propertyId = getPropertyName(period, category, "ratio");
-    cases.push(["==", ["get", propertyId], ""]);
-    cases.push(defaultColor);
-    cases.push(["==", ["get", propertyId], 0]);
-    cases.push("#75D3B4");
-    cases.push(["<=", ["get", propertyId], 0.8]);
-    cases.push("#FBBD6C");
-    cases.push(["<=", ["get", propertyId], 1]);
-    cases.push("#FB726C");
+    const ratioProp = getPropertyName(period, category, "ratio");
+    const nbPrelevementsProp = getPropertyName(
+      period,
+      category,
+      "nb_prelevements",
+    );
+    const nbSupValeurSanitaireProp = getPropertyName(
+      period,
+      category,
+      "nb_sup_valeur_sanitaire",
+    );
+
+    // Check if nb_prelevements is 0 or null
+    cases.push([
+      "any",
+      ["==", ["get", nbPrelevementsProp], null],
+      ["==", ["get", nbPrelevementsProp], 0],
+    ]);
+    cases.push(defaultColor); // Grey for no data/prelevements
+
+    // Check if nb_sup_valeur_sanitaire is not null
+    cases.push(["!=", ["get", nbSupValeurSanitaireProp], null]);
+    cases.push("#FB726C"); // Red for cases with sup_valeur_sanitaire
+
+    // Color scale for ratio values between 0 and 1
+    cases.push(["==", ["get", ratioProp], 0]);
+    cases.push("#75D3B4"); // Green for ratio = 0
+
+    cases.push(["<=", ["get", ratioProp], 0.5]);
+    cases.push("#AECF00"); // Light green for ratio <= 0.5
+
+    cases.push(["<=", ["get", ratioProp], 0.8]);
+    cases.push("#FBBD6C"); // Orange for ratio <= 0.8
+
+    cases.push(["<=", ["get", ratioProp], 1]);
+    cases.push("#FB726C"); // Red for ratio <= 1
   }
 
   if (cases.length > 0) {

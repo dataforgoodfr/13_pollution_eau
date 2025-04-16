@@ -28,7 +28,7 @@ models:
               expression: "LIKE 'bilan_annuel%'"
       - name: nb_depassements
       - name: nb_prelevements
-      - name: ratio_depassements
+      - name: ratio_limite_qualite
         description: "Pourcentage de prélèvements qui dépassent la limite"
         type: FLOAT
         tests:
@@ -61,7 +61,7 @@ models:
       - name: dernier_prel_valeur
         type: FLOAT
       - name: nb_parametres
-        type: INT
+        type: INTEGER
         tests:
           - not_null
       - name: resultat
@@ -101,7 +101,7 @@ models:
               expression: "LIKE 'bilan_annuel%'"
       - name: nb_depassements
       - name: nb_prelevements
-      - name: ratio_depassements
+      - name: ratio_limite_qualite
         description: "Pourcentage de prélèvements qui dépassent la limite"
         type: FLOAT
         tests:
@@ -134,7 +134,7 @@ models:
       - name: dernier_prel_valeur
         type: FLOAT
       - name: nb_parametres
-        type: INT
+        type: INTEGER
         tests:
           - not_null
       - name: resultat

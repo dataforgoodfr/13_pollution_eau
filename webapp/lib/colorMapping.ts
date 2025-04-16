@@ -17,7 +17,7 @@ export function generateColorExpression(
 ): DataDrivenPropertyValueSpecification<ColorSpecification> {
   const cases = [];
 
-  const defaultColor = "#cccccc"; // Default color for unmatched cases
+  const defaultColor = "#9B9B9B"; // Default color for unmatched cases
   const categoryDetails = getCategoryById(category);
 
   if (!categoryDetails || !categoryDetails.resultats) {
@@ -30,10 +30,9 @@ export function generateColorExpression(
     Object.entries(categoryDetails.resultats).forEach(([value, detail]) => {
       cases.push(["==", ["get", propertyId], value]);
 
-      // Check if the color is valid (not "hachuré" or other invalid values)
+      // Check if the color is valid
       const color = detail.couleur || detail.couleurFond;
-      const isValidColor =
-        color && color !== "hachuré" && color.startsWith("#");
+      const isValidColor = color && color.startsWith("#");
 
       cases.push(isValidColor ? color : defaultColor);
     });

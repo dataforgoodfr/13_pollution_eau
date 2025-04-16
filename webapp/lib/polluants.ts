@@ -98,7 +98,7 @@ export const availableCategories: ICategory[] = [
         couleurFond: "#9B9B9B",
         picto: null,
       },
-      aucun_parametre_quantifie: {
+      non_quantifie: {
         label: "Aucun PFAS quantifié",
         couleur: "#B4E681",
         couleurFond: "#B4E681",
@@ -125,7 +125,7 @@ export const availableCategories: ICategory[] = [
         couleurFond: "#F3903F",
         picto: null,
       },
-      un_pfas_sup_valeur_sanitaire: {
+      sup_valeur_sanitaire: {
         label: "Au moins un PFAS dépasse la limite sanitaire",
         couleur: "#E93E3A",
         couleurFond: "#E93E3A",

@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-// import "@fontsource/inter";
 import { Inter, Spline_Sans, Spline_Sans_Mono } from "next/font/google";
 import "./globals.css";
 
@@ -39,7 +38,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${spline_sans.variable} ${spline_sans_mono}`}
+      className={`${inter.variable} ${spline_sans.variable} ${spline_sans_mono.variable}`}
     >
       <body>{children}</body>
     </html>

@@ -51,17 +51,22 @@ export function generateColorExpression(
       "nb_sup_valeur_sanitaire",
     );
 
-    // Check if nb_prelevements is 0 or null
+    // Check if nb_prelevements is 0 or empty
     cases.push([
       "any",
-      ["==", ["get", nbPrelevementsProp], null],
+      ["==", ["get", nbPrelevementsProp], ""],
       ["==", ["get", nbPrelevementsProp], 0],
     ]);
     cases.push(defaultColor); // Grey for no data/prelevements
 
-    // Check if nb_sup_valeur_sanitaire is not null
-    cases.push(["!=", ["get", nbSupValeurSanitaireProp], null]);
-    cases.push("#FB726C"); // Red for cases with sup_valeur_sanitaire
+    // Check if nb_sup_valeur_sanitaire is > 0 and not empty
+    cases.push([
+      "all",
+      ["!=", ["get", nbSupValeurSanitaireProp], ""],
+      ["==", ["typeof", ["get", nbSupValeurSanitaireProp]], "number"],
+      [">", ["get", nbSupValeurSanitaireProp], 0],
+    ]);
+    cases.push("#E93E3A"); // Red for cases with sup_valeur_sanitaire
 
     // Color scale for ratio values between 0 and 1
     cases.push(["==", ["get", ratioProp], 0]);

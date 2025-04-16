@@ -146,6 +146,20 @@ export default function PollutionMapMarker({
     } else {
       // bilan_annuel
 
+      const ratioProp = getPropertyName(period, category, "ratio");
+      const nbPrelevementsProp = getPropertyName(
+        period,
+        category,
+        "nb_prelevements",
+      );
+      const nbSupValeurSanitaireProp = getPropertyName(
+        period,
+        category,
+        "nb_sup_valeur_sanitaire",
+      );
+
+      console.log(selectedZoneData[ratioProp]);
+
       return (
         <>
           <p className="text-sm font-bold">{title}</p>
@@ -157,9 +171,17 @@ export default function PollutionMapMarker({
             <span className="">{resultLabel}</span>
           </div>
           <p className="">
-            {value && Number(value) ? (
-              <>{Math.round(Number(value) * 100)}% des prélevements</>
+            {selectedZoneData[ratioProp] !== undefined ? (
+              <>
+                {Math.round(Number(selectedZoneData[ratioProp]) * 100)}% des
+                prélevements
+              </>
             ) : null}
+            <br />
+            nb_prelevements: {selectedZoneData[nbPrelevementsProp]}
+            <br />
+            nb_sup_valeur_sanitaire:{" "}
+            {selectedZoneData[nbSupValeurSanitaireProp]}
           </p>
         </>
       );

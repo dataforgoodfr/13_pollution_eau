@@ -23,20 +23,6 @@ export default function PollutionMapLegend({
 
   return (
     <div className="bg-white rounded-lg shadow-lg p-6 max-w-md transform transition-all">
-      <style jsx>{`
-        .slashed-background {
-          background-image: linear-gradient(
-            135deg,
-            transparent 46%,
-            #9ca3af 46%,
-            #9ca3af 54%,
-            transparent 54%
-          );
-          background-size: 8px 8px;
-          border: 1px solid #9ca3af;
-        }
-      `}</style>
-
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-xl font-semibold text-gray-900">
           {categoryDetails.nomAffichage}
@@ -54,12 +40,9 @@ export default function PollutionMapLegend({
         {legendItems.map((item) => (
           <div key={item.color + item.label} className="flex items-start gap-3">
             <div
-              className={`w-6 h-4 flex-shrink-0 mt-1 ${item.color === "hachuré" ? "slashed-background" : ""}`}
+              className="w-6 h-4 flex-shrink-0 mt-1"
               style={{
-                backgroundColor:
-                  item.color === "hachuré"
-                    ? undefined
-                    : item.color || undefined,
+                backgroundColor: item.color || undefined,
               }}
             ></div>
             <span className="text-gray-900">{item.label}</span>

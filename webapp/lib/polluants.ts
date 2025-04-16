@@ -57,23 +57,21 @@ export const availableCategories: ICategory[] = [
     sourcesExposition: "Eau potable, air, alimentation, sols contaminés.",
     resultats: {
       aucun_depassement: {
-        label: "Aucun dépassement des valeurs seuils",
+        label: "Aucun dépassement des limites de qualité",
         couleur: "#B4E681",
         couleurFond: "#B4E681",
         picto: null,
       },
       limite_qualite: {
-        label:
-          "Au moins un paramètre au-dessus de la limite de qualité (norme ou recommandation)",
-        couleur: "#FBBD6C",
-        couleurFond: "#FBBD6C",
+        label: "Au moins un dépassement des limites de qualité",
+        couleur: "#F3903F",
+        couleurFond: "#F3903F",
         picto: "warning",
       },
       limite_sanitaire: {
-        label:
-          "Au moins un paramètre au-dessus de la limite sanitaire (norme ou recommandation)",
-        couleur: "#FB726C",
-        couleurFond: "#FB726C",
+        label: "Au moins un dépassement des limites sanitaires",
+        couleur: "#E93E3A",
+        couleurFond: "#E93E3A",
         picto: "red cross",
       },
     },
@@ -94,44 +92,44 @@ export const availableCategories: ICategory[] = [
     sourcesExposition:
       "Ustensiles de cuisine, emballages alimentaires, eau potable.",
     resultats: {
-      non_quantifie: {
-        label: "Aucun paramètre quantifié",
-        couleur: "#75D3B4",
-        couleurFond: "#75D3B4",
+      non_recherche: {
+        label: "Non recherché",
+        couleur: "#9B9B9B",
+        couleurFond: "#9B9B9B",
         picto: null,
       },
-      somme_20pfas_inf_0_1_et_4pfas_inf_0_02: {
-        label:
-          "Au moins un paramètre quantifié mais concentration inférieure aux valeurs seuils",
+      non_quantifie: {
+        label: "Aucun PFAS quantifié",
         couleur: "#B4E681",
         couleurFond: "#B4E681",
         picto: null,
       },
+      somme_20pfas_inf_0_1_et_4pfas_inf_0_02: {
+        label:
+          "Au moins un PFAS quantifié mais les concentrations sont inférieures aux limites réglementaire et recommandée",
+        couleur: "#FFF33B",
+        couleurFond: "#FFF33B",
+        picto: null,
+      },
       somme_20pfas_inf_0_1_et_4pfas_sup_0_02: {
         label:
-          "Concentration des PFOA, PFOS, PFNA, PFHxS supérieure à la recommandation (0.02 µg/L)",
-        couleur: "#EFE765",
-        couleurFond: "#EFE765",
+          "La somme des 4 PFAS (PFOA, PFOS, PFNA, PFHxS) > 0,02 µg/L (limite non réglementaire recommandée par le Haut Conseil de la Santé Publique) mais la somme des 20 PFAS < 0,1 µg/L (eau conforme à la limite réglementaire mais qui dépasse la limite recommandée par le HCSP)",
+        couleur: "#FDC70C",
+        couleurFond: "#FDC70C",
         picto: null,
       },
       somme_20pfas_sup_0_1: {
         label:
-          "Concentration totale en PFAS supérieure à la recommandation (>0,1 µg/L)",
-        couleur: "#FBBD6C",
-        couleurFond: "#FBBD6C",
+          "Somme des 20 PFAS > 0,1 µg/L (eau non conforme à la limite réglementaire)",
+        couleur: "#F3903F",
+        couleurFond: "#F3903F",
         picto: null,
       },
       sup_valeur_sanitaire: {
-        label: "Au moins un paramètre au-dessus de la limite sanitaire",
-        couleur: "#FB726C",
-        couleurFond: "#FB726C",
+        label: "Au moins un PFAS dépasse la limite sanitaire",
+        couleur: "#E93E3A",
+        couleurFond: "#E93E3A",
         picto: "red cross",
-      },
-      non_recherche: {
-        label: "PFAS non recherchés",
-        couleur: "hachuré",
-        couleurFond: "hachuré",
-        picto: null,
       },
     },
   },
@@ -149,24 +147,29 @@ export const availableCategories: ICategory[] = [
     sourcesExposition:
       "Agriculture, consommation de produits traités, eau potable.",
     resultats: {
-      aucun_depassement: {
-        label: "Aucun dépassement des valeurs seuils",
+      non_quantifie: {
+        label: "Aucun pesticide quantifié",
         couleur: "#B4E681",
         couleurFond: "#B4E681",
         picto: null,
       },
-      limite_qualite: {
+      quantifie: {
         label:
-          "Au moins un paramètre au-dessus de la limite de qualité (norme ou recommandation)",
-        couleur: "#FBBD6C",
-        couleurFond: "#FBBD6C",
+          "Au moins un pesticide quantifié mais sans dépassement de la limite de qualité",
+        couleur: "#FFF33B",
+        couleurFond: "#FFF33B",
+        picto: null,
+      },
+      limite_qualite: {
+        label: "Au moins un pesticide dépasse la limite de qualité",
+        couleur: "#F3903F",
+        couleurFond: "#F3903F",
         picto: "warning",
       },
       limite_sanitaire: {
-        label:
-          "Au moins un paramètre au-dessus de la limite sanitaire (norme ou recommandation)",
-        couleur: "#FB726C",
-        couleurFond: "#FB726C",
+        label: "Au moins un pesticide dépasse la limite sanitaire",
+        couleur: "#E93E3A",
+        couleurFond: "#E93E3A",
         picto: "red cross",
       },
     },
@@ -187,23 +190,28 @@ export const availableCategories: ICategory[] = [
         sousCategories: true,
         resultats: {
           non_quantifie: {
-            label: "Aucun paramètre quantifié",
-            couleur: "#75D3B4",
-            couleurFond: "#75D3B4",
-            picto: null,
-          },
-          limite_qualite: {
-            label:
-              "Au moins un paramètre quantifié mais aucun dépassement des valeurs seuils",
+            label: "Aucune substance active quantifiée",
             couleur: "#B4E681",
             couleurFond: "#B4E681",
             picto: null,
           },
-          limite_sanitaire: {
+          quantifie: {
             label:
-              "Au moins un paramètre au-dessus de la limite sanitaire (norme ou recommandation)",
-            couleur: "#FB726C",
-            couleurFond: "#FB726C",
+              "Au moins une substance active quantifiée mais sans dépassement de la limite de qualité",
+            couleur: "#FFF33B",
+            couleurFond: "#FFF33B",
+            picto: null,
+          },
+          limite_qualite: {
+            label: "Au moins une substance active dépasse la limite de qualité",
+            couleur: "#F3903F",
+            couleurFond: "#F3903F",
+            picto: "warning",
+          },
+          limite_sanitaire: {
+            label: "Au moins une substance active dépasse la limite sanitaire",
+            couleur: "#E93E3A",
+            couleurFond: "#E93E3A",
             picto: "red cross",
           },
         },
@@ -222,31 +230,36 @@ export const availableCategories: ICategory[] = [
           "Dégradation dans l'eau et les sols, consommation d'eau potable.",
         sousCategories: false,
         resultats: {
-          aucun_depassement: {
-            label: "Aucun dépassement des valeurs seuils",
+          non_quantifie: {
+            label: "Aucun métabolite quantifié",
             couleur: "#B4E681",
             couleurFond: "#B4E681",
             picto: null,
           },
-          limite_qualite: {
+          quantifie: {
             label:
-              "Au moins un paramètre au-dessus de la limite de qualité (norme ou recommandation)",
-            couleur: "#FBBD6C",
-            couleurFond: "#FBBD6C",
+              "Au moins un métabolite quantifié mais sans dépassement de la limite de qualité",
+            couleur: "#FFF33B",
+            couleurFond: "#FFF33B",
+            picto: null,
+          },
+          limite_qualite: {
+            label: "Au moins un métabolite dépasse la limite de qualité",
+            couleur: "#F3903F",
+            couleurFond: "#F3903F",
             picto: "warning",
           },
           limite_sanitaire: {
-            label:
-              "Au moins un paramètre au-dessus de la limite sanitaire (norme ou recommandation)",
-            couleur: "#FB726C",
-            couleurFond: "#FB726C",
+            label: "Au moins un métabolite dépasse la limite sanitaire",
+            couleur: "#E93E3A",
+            couleurFond: "#E93E3A",
             picto: "red cross",
           },
         },
         enfants: [
           {
             id: "metabolites-esa-metachlore",
-            nomAffichage: "Métabolites ESA-métachlore",
+            nomAffichage: "ESA-métolachlore",
             disable: false,
             enfants: [],
             affichageBlocPageUDI: false,
@@ -257,42 +270,49 @@ export const availableCategories: ICategory[] = [
             sousCategories: false,
             resultats: {
               non_recherche: {
-                label: "Paramètre non recherché",
-                couleur: "hachuré",
-                couleurFond: "hachuré",
+                label: "Non recherché",
+                couleur: "#9B9B9B",
+                couleurFond: "#9B9B9B",
                 picto: null,
               },
               non_quantifie: {
-                label: "Paramètre non quantifié",
-                couleur: "#75D3B4",
-                couleurFond: "#75D3B4",
-                picto: null,
-              },
-              limite_qualite: {
-                label:
-                  "Paramètre quantifié mais en dessous de la limite de qualité (norme ou recommandation)",
+                label: "Non quantifié",
                 couleur: "#B4E681",
                 couleurFond: "#B4E681",
                 picto: null,
               },
-              inconnu: {
-                label: "?",
-                couleur: "#EFE765",
-                couleurFond: "#EFE765",
+              inf_limite_qualite: {
+                label: "Concentration < 0,1 µg/L",
+                couleur: "#FFF33B",
+                couleurFond: "#FFF33B",
                 picto: null,
               },
-              limite_sanitaire: {
+              entre_0_1_et_0_9: {
                 label:
-                  "Paramètre quantifié au-dessus de la limite sanitaire (norme ou recommandation)",
-                couleur: "#FB726C",
-                couleurFond: "#FB726C",
+                  "Concentration comprise entre 0,1 et 0,9 µg/L (si l'ESA métolachlore était considéré comme un métabolite pertinent, l'eau serait déclarée \"non conforme\")",
+                couleur: "#FDC70C",
+                couleurFond: "#FDC70C",
+                picto: null,
+              },
+              sup_limite_qualite: {
+                label:
+                  "Concentration > 0,9 µg/L (eau non conforme à la limite de qualité)",
+                couleur: "#F3903F",
+                couleurFond: "#F3903F",
+                picto: "warning",
+              },
+              sup_valeur_sanitaire: {
+                label:
+                  "Concentration > 3 µg/L (dépassement de la valeur sanitaire transitoire)",
+                couleur: "#E93E3A",
+                couleurFond: "#E93E3A",
                 picto: "red cross",
               },
             },
           },
           {
             id: "metabolites-chlorothalonil-r471811",
-            nomAffichage: "Métabolites Chlorothalonil R471811",
+            nomAffichage: "Chlorothalonil R471811",
             disable: false,
             enfants: [],
             affichageBlocPageUDI: true,
@@ -303,42 +323,49 @@ export const availableCategories: ICategory[] = [
             sousCategories: false,
             resultats: {
               non_recherche: {
-                label: "Paramètre non recherché",
-                couleur: "hachuré",
-                couleurFond: "hachuré",
+                label: "Non recherché",
+                couleur: "#9B9B9B",
+                couleurFond: "#9B9B9B",
                 picto: null,
               },
               non_quantifie: {
-                label: "Paramètre non quantifié",
-                couleur: "#75D3B4",
-                couleurFond: "#75D3B4",
-                picto: null,
-              },
-              limite_qualite: {
-                label:
-                  "Paramètre quantifié mais en dessous de la limite de qualité (norme ou recommandation)",
+                label: "Non quantifié",
                 couleur: "#B4E681",
                 couleurFond: "#B4E681",
                 picto: null,
               },
-              inconnu: {
-                label: "?",
-                couleur: "#EFE765",
-                couleurFond: "#EFE765",
+              inf_limite_qualite: {
+                label: "Concentration < 0,1 µg/L",
+                couleur: "#FFF33B",
+                couleurFond: "#FFF33B",
                 picto: null,
               },
-              limite_sanitaire: {
+              entre_0_1_et_0_9: {
                 label:
-                  "Paramètre quantifié au-dessus de la limite sanitaire (norme ou recommandation)",
-                couleur: "#FB726C",
-                couleurFond: "#FB726C",
+                  'Concentration comprise entre 0,1 et 0,9 µg/L*\n\n (si le Chlorothalonil R471811 était considéré comme un métabolite pertinent, l\'eau serait déclarée "non conforme")',
+                couleur: "#FDC70C",
+                couleurFond: "#FDC70C",
+                picto: null,
+              },
+              sup_limite_qualite: {
+                label:
+                  "Concentration > 0,9 µg/L (eau non conforme à la limite de qualité)",
+                couleur: "#F3903F",
+                couleurFond: "#F3903F",
+                picto: "warning",
+              },
+              sup_valeur_sanitaire: {
+                label:
+                  "Concentration > 3 µg/L (dépassement de la valeur sanitaire transitoire)",
+                couleur: "#E93E3A",
+                couleurFond: "#E93E3A",
                 picto: "red cross",
               },
             },
           },
           {
             id: "metabolites-chloridazone-desphenyl",
-            nomAffichage: "Métabolites Chloridazone desphényl",
+            nomAffichage: "Chloridazone desphényl",
             disable: false,
             enfants: [],
             affichageBlocPageUDI: true,
@@ -350,70 +377,35 @@ export const availableCategories: ICategory[] = [
             sousCategories: false,
             resultats: {
               non_recherche: {
-                label: "Paramètre non recherché",
-                couleur: "hachuré",
-                couleurFond: "hachuré",
+                label: "Non recherché",
+                couleur: "#9B9B9B",
+                couleurFond: "#9B9B9B",
                 picto: null,
               },
               non_quantifie: {
-                label: "Paramètre non quantifié",
-                couleur: "#75D3B4",
-                couleurFond: "#75D3B4",
+                label: "Non quantifié",
+                couleur: "#B4E681",
+                couleurFond: "#B4E681",
                 picto: null,
               },
-              limite_qualite: {
+              inf_limite_qualite: {
+                label: "Concentration < 0,1 µg/L",
+                couleur: "#FFF33B",
+                couleurFond: "#FFF33B",
+                picto: null,
+              },
+              sup_limite_qualite: {
                 label:
-                  "Paramètre quantifié au-dessus de la limite de qualité (norme ou recommandation)",
-                couleur: "#FBBD6C",
-                couleurFond: "#FBBD6C",
-                picto: null,
+                  "Concentration > 0,1 µg/L (eau non conforme à la limite de qualité)",
+                couleur: "#F3903F",
+                couleurFond: "#F3903F",
+                picto: "warning",
               },
-              limite_sanitaire: {
+              sup_valeur_sanitaire: {
                 label:
-                  "Paramètre quantifié au-dessus de la limite sanitaire (norme ou recommandation)",
-                couleur: "#FB726C",
-                couleurFond: "#FB726C",
-                picto: "red cross",
-              },
-            },
-          },
-          {
-            id: "metabolites-atrazine-desethyl",
-            nomAffichage: "Métabolites Atrazine déséthyl",
-            disable: false,
-            enfants: [],
-            affichageBlocPageUDI: true,
-            description:
-              "Métabolite de l'atrazine, herbicide interdit depuis 2003.",
-            risquesSante: "Suspecté d'être perturbateur endocrinien.",
-            regulation: "Limite de 0,1 µg/L en eau potable.",
-            sourcesExposition: "Contamination résiduelle des sols et nappes.",
-            sousCategories: false,
-            resultats: {
-              non_recherche: {
-                label: "Paramètre non recherché",
-                couleur: "hachuré",
-                couleurFond: "hachuré",
-                picto: null,
-              },
-              non_quantifie: {
-                label: "Paramètre non quantifié",
-                couleur: "#75D3B4",
-                couleurFond: "#75D3B4",
-                picto: null,
-              },
-              limite_qualite: {
-                label:
-                  "Paramètre quantifié au-dessus de la limite de qualité (norme ou recommandation)",
-                couleur: "#FBBD6C",
-                couleurFond: "#FBBD6C",
-                picto: null,
-              },
-              limite_sanitaire: {
-                label:
-                  "Paramètre quantifié au-dessus de la limite sanitaire (norme ou recommandation)",
-                couleur: "#FB726C",
-                couleurFond: "#FB726C",
+                  "Concentration > 11 µg/L (dépassement de la valeur sanitaire)",
+                couleur: "#E93E3A",
+                couleurFond: "#E93E3A",
                 picto: "red cross",
               },
             },
@@ -431,29 +423,82 @@ export const availableCategories: ICategory[] = [
             sousCategories: false,
             resultats: {
               non_recherche: {
-                label: "Paramètre non recherché",
-                couleur: "hachuré",
-                couleurFond: "hachuré",
+                label: "Non recherché",
+                couleur: "#9B9B9B",
+                couleurFond: "#9B9B9B",
                 picto: null,
               },
               non_quantifie: {
-                label: "Paramètre non quantifié",
-                couleur: "#75D3B4",
-                couleurFond: "#75D3B4",
+                label: "Non quantifié",
+                couleur: "#B4E681",
+                couleurFond: "#B4E681",
                 picto: null,
               },
-              limite_qualite: {
-                label:
-                  "Paramètre quantifié au-dessus de la limite de qualité (norme ou recommandation)",
-                couleur: "#FBBD6C",
-                couleurFond: "#FBBD6C",
+              inf_limite_qualite: {
+                label: "Concentration < 0,1 µg/L",
+                couleur: "#FFF33B",
+                couleurFond: "#FFF33B",
                 picto: null,
               },
-              limite_sanitaire: {
+              sup_limite_qualite: {
                 label:
-                  "Paramètre quantifié au-dessus de la limite sanitaire (norme ou recommandation)",
-                couleur: "#FB726C",
-                couleurFond: "#FB726C",
+                  "Concentration > 0,1 µg/L (eau non conforme à la limite de qualité)",
+                couleur: "#F3903F",
+                couleurFond: "#F3903F",
+                picto: "warning",
+              },
+              sup_valeur_sanitaire: {
+                label:
+                  "Concentration > 110 µg/L (dépassement de la valeur sanitaire)",
+                couleur: "#E93E3A",
+                couleurFond: "#E93E3A",
+                picto: "red cross",
+              },
+            },
+          },
+          {
+            id: "metabolites-atrazine-desethyl",
+            nomAffichage: "Atrazine déséthyl",
+            disable: false,
+            enfants: [],
+            affichageBlocPageUDI: true,
+            description:
+              "Métabolite de l'atrazine, herbicide interdit depuis 2003.",
+            risquesSante: "Suspecté d'être perturbateur endocrinien.",
+            regulation: "Limite de 0,1 µg/L en eau potable.",
+            sourcesExposition: "Contamination résiduelle des sols et nappes.",
+            sousCategories: false,
+            resultats: {
+              non_recherche: {
+                label: "Non recherché",
+                couleur: "#9B9B9B",
+                couleurFond: "#9B9B9B",
+                picto: null,
+              },
+              non_quantifie: {
+                label: "Non quantifié",
+                couleur: "#B4E681",
+                couleurFond: "#B4E681",
+                picto: null,
+              },
+              inf_limite_qualite: {
+                label: "Concentration < 0,1 µg/L",
+                couleur: "#FFF33B",
+                couleurFond: "#FFF33B",
+                picto: null,
+              },
+              sup_limite_qualite: {
+                label:
+                  "Concentration > 0,1 µg/L (eau non conforme à la limite de qualité)",
+                couleur: "#F3903F",
+                couleurFond: "#F3903F",
+                picto: "warning",
+              },
+              sup_valeur_sanitaire: {
+                label:
+                  "Concentration > 60 µg/L (dépassement de la valeur sanitaire)",
+                couleur: "#E93E3A",
+                couleurFond: "#E93E3A",
                 picto: "red cross",
               },
             },
@@ -476,16 +521,24 @@ export const availableCategories: ICategory[] = [
     sourcesExposition:
       "Agriculture intensive, effluents industriels et domestiques.",
     resultats: {
+      non_recherche: {
+        label: "Non recherché",
+        couleur: "#9B9B9B",
+        couleurFond: "#9B9B9B",
+        picto: null,
+      },
       conforme: {
-        label: "Concentration inférieure aux valeurs seuils : eau conforme",
+        label:
+          "Concentrations inférieures aux limites de qualité (eau conforme)",
         couleur: "#B4E681",
         couleurFond: "#B4E681",
         picto: null,
       },
       non_conforme: {
-        label: "Concentration supérieure aux valeurs seuils : eau non conforme",
-        couleur: "#FB726C",
-        couleurFond: "#FB726C",
+        label:
+          "Concentrations supérieures aux limites de qualité (eau non conforme avec recommandation de non-consommation pour les femmes enceintes et les nourrissons)",
+        couleur: "#E93E3A",
+        couleurFond: "#E93E3A",
         picto: "red cross",
       },
     },
@@ -501,29 +554,31 @@ export const availableCategories: ICategory[] = [
     regulation: "Seuil de 0,5 µg/L en eau potable.",
     sourcesExposition: "Industrie plastique, eau contaminée.",
     resultats: {
+      non_recherche: {
+        label: "Non recherché",
+        couleur: "#9B9B9B",
+        couleurFond: "#9B9B9B",
+        picto: null,
+      },
       non_quantifie: {
-        label: "CVM non quantifié",
-        couleur: "#75D3B4",
-        couleurFond: "#75D3B4",
+        label: "Non quantifié",
+        couleur: "#B4E681",
+        couleurFond: "#B4E681",
         picto: null,
       },
       inf_0_5: {
-        label: "CVM quantifié mais < 0,5 µg/L",
-        couleur: "#EFE765",
-        couleurFond: "#EFE765",
+        label:
+          "Concentration < 0,5 µg/L (eau conforme à la limite réglementaire et sanitaire)",
+        couleur: "#FFF33B",
+        couleurFond: "#FFF33B",
         picto: null,
       },
       sup_0_5: {
-        label: "CVM > 0,5 µg/L",
-        couleur: "#FB726C",
-        couleurFond: "#FB726C",
+        label:
+          "Concentration > 0,5 µg/L (eau non conforme à la limite réglementaire et sanitaire)",
+        couleur: "#E93E3A",
+        couleurFond: "#E93E3A",
         picto: "red cross",
-      },
-      non_recherche: {
-        label: "CVM non recherché",
-        couleur: "hachuré",
-        couleurFond: "hachuré",
-        picto: null,
       },
     },
   },
@@ -557,29 +612,28 @@ export const availableCategories: ICategory[] = [
         sousCategories: true,
         resultats: {
           non_recherche: {
-            label: "Paramètre non recherché",
-            couleur: "hachuré",
-            couleurFond: "hachuré",
+            label: "Non recherché",
+            couleur: "#9B9B9B",
+            couleurFond: "#9B9B9B",
             picto: null,
           },
           non_quantifie: {
-            label: "Paramètre non quantifié",
-            couleur: "#75D3B4",
-            couleurFond: "#75D3B4",
-            picto: null,
-          },
-          inf_valeur_sanitaire: {
-            label:
-              "Paramètre quantifié mais en concentration inférieure à la limite sanitaire (norme ou recommandation)",
+            label: "Non quantifié",
             couleur: "#B4E681",
             couleurFond: "#B4E681",
             picto: null,
           },
+          inf_valeur_sanitaire: {
+            label: "Concentration < 0,35 µg/L",
+            couleur: "#FFF33B",
+            couleurFond: "#FFF33B",
+            picto: null,
+          },
           sup_valeur_sanitaire: {
             label:
-              "Paramètre quantifié en concentration supérieure à la limite sanitaire (norme ou recommandation)",
-            couleur: "#FB726C",
-            couleurFond: "#FB726C",
+              "Concentration > 0,35 µg/L (dépassement de la limite sanitaire préconisée par l'agence américaine de protection de l'environnement)",
+            couleur: "#E93E3A",
+            couleurFond: "#E93E3A",
             picto: "red cross",
           },
         },
@@ -598,35 +652,35 @@ export const availableCategories: ICategory[] = [
         sousCategories: true,
         resultats: {
           non_recherche: {
-            label: "Paramètre non recherché",
-            couleur: "hachuré",
-            couleurFond: "hachuré",
+            label: "Non recherché",
+            couleur: "#9B9B9B",
+            couleurFond: "#9B9B9B",
             picto: null,
           },
           non_quantifie: {
-            label: "Paramètre non quantifié",
-            couleur: "#75D3B4",
-            couleurFond: "#75D3B4",
-            picto: null,
-          },
-          inf_valeur_sanitaire: {
-            label:
-              "Paramètre quantifié mais en concentration inférieure à la limite sanitaire (norme ou recommandation)",
+            label: "Non quantifié",
             couleur: "#B4E681",
             couleurFond: "#B4E681",
             picto: null,
           },
+          inf_valeur_sanitaire: {
+            label: "Concentration < 4 µg/L",
+            couleur: "#FFF33B",
+            couleurFond: "#FFF33B",
+            picto: null,
+          },
           sup_valeur_sanitaire: {
             label:
-              "Paramètre quantifié en concentration supérieure à la limite sanitaire (norme ou recommandation)",
+              "Concentration comprise entre 4 µg/L et 15 µg/L (l'eau ne doit pas être utilisée pour la préparation des biberons des nourrissons de moins de 6 mois)",
             couleur: "#FB726C",
             couleurFond: "#FB726C",
             picto: "red cross",
           },
           sup_valeur_sanitaire_2: {
-            label: "Paramètre quantifié en concentration supérieure à 15 µg/L",
-            couleur: "#FB726C",
-            couleurFond: "#FB726C",
+            label:
+              "Concentration > 15 µg/L (l'eau ne doit pas être utilisée pour la préparation des biberons des nourrissons de moins de 6 mois ni consommée par les femmes enceintes et allaitantes)",
+            couleur: "#FC3127",
+            couleurFond: "#FC3127",
             picto: "red cross",
           },
         },
@@ -661,24 +715,37 @@ export const availableCategories: ICategory[] = [
         sourcesExposition: "Eau souterraine, pesticides, industries.",
         sousCategories: false,
         resultats: {
-          non_quantifie: {
-            label: "Aucun paramètre quantifié",
-            couleur: "#75D3B4",
-            couleurFond: "#75D3B4",
+          non_recherche: {
+            label: "Non recherché",
+            couleur: "#9B9B9B",
+            couleurFond: "#9B9B9B",
             picto: null,
           },
-          limite_qualite: {
-            label:
-              "Au moins un paramètre quantifié mais aucun dépassement des valeurs seuils",
+          non_quantifie: {
+            label: "Non quantifié",
             couleur: "#B4E681",
             couleurFond: "#B4E681",
             picto: null,
           },
+          limite_qualite: {
+            label:
+              "Concentration < 10 µg/L (eau conforme à la limite de qualité)",
+            couleur: "#FFF33B",
+            couleurFond: "#FFF33B",
+            picto: null,
+          },
+          entre_10_et_13: {
+            label:
+              "Concentration comprise entre 10 µg/L et 13 µg/L (eau non conforme à la limite de qualité mais peut être utilisée pour les usages alimentaires)",
+            couleur: "#F3903F",
+            couleurFond: "#F3903F",
+            picto: "warning",
+          },
           limite_sanitaire: {
             label:
-              "Au moins un paramètre au-dessus de la limite sanitaire (norme ou recommandation)",
-            couleur: "#FB726C",
-            couleurFond: "#FB726C",
+              "Concentration > 13 µg/L (eau ne pouvant être utilisée pour les usages alimentaires)",
+            couleur: "#E93E3A",
+            couleurFond: "#E93E3A",
             picto: "red cross",
           },
         },
@@ -699,24 +766,36 @@ export const availableCategories: ICategory[] = [
           "Vieilles canalisations, pollution industrielle, sol contaminé.",
         sousCategories: false,
         resultats: {
-          non_quantifie: {
-            label: "Aucun paramètre quantifié",
-            couleur: "#75D3B4",
-            couleurFond: "#75D3B4",
+          non_recherche: {
+            label: "Non recherché",
+            couleur: "#9B9B9B",
+            couleurFond: "#9B9B9B",
             picto: null,
           },
-          limite_qualite: {
-            label:
-              "Au moins un paramètre quantifié mais aucun dépassement des valeurs seuils",
+          non_quantifie: {
+            label: "Non quantifié",
             couleur: "#B4E681",
             couleurFond: "#B4E681",
             picto: null,
           },
+          inf_5: {
+            label:
+              "Concentration < 5 µg/L (une nouvelle limite réglementaire fixée à 5 µg/L s'appliquera en 2036. D'ici cette date, la limite actuelle de 10 µg/L continue de s'appliquer)",
+            couleur: "#FFF33B",
+            couleurFond: "#FFF33B",
+            picto: null,
+          },
+          entre_5_et_10: {
+            label: "Concentration comprise entre 5 µg/L et 10 µg/L",
+            couleur: "#FDC70C",
+            couleurFond: "#FDC70C",
+            picto: null,
+          },
           limite_sanitaire: {
             label:
-              "Au moins un paramètre au-dessus de la limite sanitaire (norme ou recommandation)",
-            couleur: "#FB726C",
-            couleurFond: "#FB726C",
+              "Concentration > 10 µg/L (eau non conforme à la limite réglementaire actuellement en vigueur)",
+            couleur: "#E93E3A",
+            couleurFond: "#E93E3A",
             picto: "red cross",
           },
         },

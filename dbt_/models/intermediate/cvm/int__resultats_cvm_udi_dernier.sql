@@ -5,6 +5,7 @@ last_pvl AS (
         categorie,
         cdparametresiseeaux,
         datetimeprel,
+        limite_qualite,
         valtraduite,
         ROW_NUMBER()
             OVER (
@@ -34,10 +35,10 @@ SELECT
             OR last_pvl.valtraduite IS NULL
             THEN 'non_quantifie'
         WHEN
-            last_pvl.valtraduite >= 0.5
+            last_pvl.valtraduite >= last_pvl.limite_qualite
             THEN 'sup_0_5'
         WHEN
-            last_pvl.valtraduite < 0.5
+            last_pvl.valtraduite < last_pvl.limite_qualite
             THEN 'inf_0_5'
         ELSE 'error'
     END AS resultat

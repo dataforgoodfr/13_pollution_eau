@@ -5,39 +5,47 @@ models:
     description: Resultats nitrites par UDI pour la temporalité 'derniers prélèvements'
     columns:
       - name: cdreseau
+        description: "Code de l'installation (unité de distribution)"
+        type: VARCHAR
         tests:
           - not_null
           - unique
       - name: categorie
+        description: "Catégorie du paramètre (pesticides, pfas, vcm, nitrates, etc.) selon la classification établie."
+        type: VARCHAR
         tests:
           - not_null
           - accepted_values:
               values: ["nitrate"]
       - name: periode
+        description: "Période du résultat"
         type: VARCHAR
         tests:
           - accepted_values:
               values: ["dernier_prel"]
       - name: dernier_prel_datetime
+        description: "Date du dernier prélèvement considéré"
         type: TIMESTAMP
         tests:
           - not_null
           - dbt_utils.expression_is_true:
               expression: ">= CURRENT_DATE - INTERVAL 1 YEAR"
       - name: dernier_prel_valeur
+        description: "valeur mesurée sur le dernier prélèvement considéré"
         type: FLOAT
       - name: nb_parametres
+        description: "nombre de paramètres mesurés sur le prélèvement pour la catégorie considérée"
         type: INT
         tests:
           - not_null
       - name: resultat
+        description: "classification de la substance pour le prélèvement"
         tests:
           - not_null
           - accepted_values:
               values:
-                - donnee_manquante
-                - conforme
-                - non_conforme
+                - inf_limite_qualite
+                - sup_limite_qualit
 
   - name: int__resultats_nitrites_udi_annuel
     description: Résultats nitrites par UDI pour la temporalité 'bilan_annuel'

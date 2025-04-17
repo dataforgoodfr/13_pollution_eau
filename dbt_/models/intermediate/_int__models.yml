@@ -404,7 +404,13 @@ models:
         type: FLOAT
       - name: nb_parametres
         description: "Nombre de paramètres analysés"
-        type: INT
+        type: INTEGER
+      - name: nb_prelevements
+        description: "Nombre de prélèvements"
+        type: INTEGER
+      - name: nb_sup_valeur_sanitaire
+        description: "Nombre de prélèvements supérieurs à la valeur sanitaire"
+        type: INTEGER
 
   - name: int__union_resultats_commune
     description: "Résultats communes (union de tous les résultats par catégorie)"
@@ -435,4 +441,10 @@ models:
         type: FLOAT
       - name: nb_parametres
         description: "Nombre de paramètres analysés"
-        type: INT
+        type: INTEGER
+      - name: nb_prelevements
+        description: "Nombre de prélèvements"
+        type: INTEGER
+      - name: nb_sup_valeur_sanitaire
+        description: "Nombre de prélèvements supérieurs à la valeur sanitaire"
+        type: INTEGER

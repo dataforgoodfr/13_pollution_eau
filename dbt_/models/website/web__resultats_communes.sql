@@ -14,7 +14,9 @@ periodes AS (
 categories AS (
     SELECT unnest(ARRAY[
         'cvm',
-        'pfas'
+        'pfas',
+        'sub_indus_perchlorate',
+        'sub_indus_14dioxane'
     ]) AS categorie
 ),
 
@@ -51,7 +53,9 @@ SELECT
     r.ratio,
     r.dernier_prel_datetime,
     r.dernier_prel_valeur,
-    r.nb_parametres
+    r.nb_parametres,
+    r.nb_prelevements,
+    r.nb_sup_valeur_sanitaire
 FROM
     communes_periodes_categories AS cpc
 LEFT JOIN

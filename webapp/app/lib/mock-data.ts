@@ -5,7 +5,7 @@ interface Polluant {
   polluant_valeur?: string | null;
 }
 
-interface StatutBloc {
+export interface StatutBloc {
   bloc_nom: string;
   bloc_couleur: string;
   bloc_couleur_background: string;
@@ -18,7 +18,7 @@ interface SousCategorie {
   sous_categorie_blocs: StatutBloc[];
 }
 
-interface Categorie {
+export interface Categorie {
   categorie_id: string;
   categorie: string;
   statut_titre: string;
@@ -41,13 +41,13 @@ interface Synthese {
   status_polluants: { polluant_nom: string; polluant_categorie: string }[];
 }
 
-interface Data {
+export interface Data {
   periode: string;
   synthese: Synthese[];
   categories: Categorie[];
 }
 
-interface UDI {
+export interface UDI {
   id: string;
   nom: string;
   communes_desservies: { nom: string; code_insee: string }[];

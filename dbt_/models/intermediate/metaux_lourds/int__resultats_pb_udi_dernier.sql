@@ -51,7 +51,7 @@ SELECT
             OR resultats_udi_pb_dernier_prel.valtraduite = 0
             THEN 'aucun_parametre_quantifie'
         WHEN
-            resultats_udi_pb_dernier_prel.valtraduite > 10
+            resultats_udi_pb_dernier_prel.valtraduite >= 10
             THEN 'sup_limite_qualite'
         WHEN
             resultats_udi_pb_dernier_prel.valtraduite >= 5

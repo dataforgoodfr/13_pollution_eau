@@ -30,9 +30,6 @@ models:
           - not_null
           - dbt_utils.expression_is_true:
               expression: ">= CURRENT_DATE - INTERVAL 1 YEAR"
-      - name: dernier_prel_valeur
-        description: "valeur mesurée sur le dernier prélèvement considéré"
-        type: FLOAT
       - name: nb_parametres
         description: "nombre de paramètres mesurés sur le prélèvement pour la catégorie considérée"
         type: INT
@@ -77,7 +74,7 @@ models:
         type: INT
       - name: nb_prelevements
         type: INT
-      - name: ratio_depassements
+      - name: ratio_limite_sanitaire
         description: "Pourcentage de prélèvements qui dépassent la limite"
         type: FLOAT
         tests:

@@ -30,9 +30,6 @@ models:
           - not_null
           - dbt_utils.expression_is_true:
               expression: ">= CURRENT_DATE - INTERVAL 1 YEAR"
-      - name: dernier_prel_valeur
-        description: "valeur mesurée sur le dernier prélèvement considéré"
-        type: FLOAT
       - name: nb_parametres
         description: "nombre de paramètres mesurés sur le prélèvement pour la catégorie considérée"
         type: INT

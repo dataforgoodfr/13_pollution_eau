@@ -29,6 +29,21 @@ SELECT
 FROM
     {{ ref('int__resultats_cvm_commune_dernier') }}
 UNION ALL
+-- pesticide/metabolite
+SELECT
+    inseecommune,
+    periode,
+    categorie,
+    resultat,
+    null AS ratio,
+    dernier_prel_datetime,
+    dernier_prel_valeur,
+    nb_parametres,
+    null AS nb_prelevements,
+    null AS nb_sup_valeur_sanitaire
+FROM
+    {{ ref('int__resultats_metabolite_specifique_commune_dernier') }}
+UNION ALL
 -- sub_indus
 SELECT
     inseecommune,

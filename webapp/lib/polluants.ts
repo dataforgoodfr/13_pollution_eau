@@ -258,7 +258,7 @@ export const availableCategories: ICategory[] = [
         },
         enfants: [
           {
-            id: "metabolites-esa-metachlore",
+            id: "metabolite_esa_metolachlore",
             nomAffichage: "ESA-métolachlore",
             disable: false,
             enfants: [],
@@ -311,7 +311,7 @@ export const availableCategories: ICategory[] = [
             },
           },
           {
-            id: "metabolites-chlorothalonil-r471811",
+            id: "metabolite_chlorothalonil_r471811",
             nomAffichage: "Chlorothalonil R471811",
             disable: false,
             enfants: [],
@@ -364,7 +364,7 @@ export const availableCategories: ICategory[] = [
             },
           },
           {
-            id: "metabolites-chloridazone-desphenyl",
+            id: "metabolite_chloridazone_desphenyl",
             nomAffichage: "Chloridazone desphényl",
             disable: false,
             enfants: [],
@@ -411,7 +411,7 @@ export const availableCategories: ICategory[] = [
             },
           },
           {
-            id: "chloridazone-methyl-desphenyl",
+            id: "metabolite_chloridazone_methyl_desphenyl",
             nomAffichage: "Chloridazone methyl desphényl",
             disable: false,
             enfants: [],
@@ -457,7 +457,7 @@ export const availableCategories: ICategory[] = [
             },
           },
           {
-            id: "metabolites-atrazine-desethyl",
+            id: "metabolite_atrazine_desethyl",
             nomAffichage: "Atrazine déséthyl",
             disable: false,
             enfants: [],

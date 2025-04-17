@@ -1,8 +1,8 @@
 version: 2
 
 models:
-  - name: int__resultats_cvm_commune_annuel
-    description: Résultats CVM par commune pour la temporalité 'bilan_annuel'
+  - name: int__resultats_sub_indus_commune_annuel
+    description: Résultats des substances industrielles par commune pour la temporalité 'bilan_annuel'
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -12,6 +12,8 @@ models:
       - name: inseecommune
         description: "Code INSEE de la commune"
         type: VARCHAR
+        tests:
+          - not_null
       - name: annee
         description: "Annee du prevelvement"
         type: SMALLINT
@@ -19,7 +21,7 @@ models:
         description: "Catégorie du paramètre (pesticides, pfas, vcm, nitrates, etc.) selon la classification établie."
         tests:
           - accepted_values:
-              values: ["cvm"]
+              values: ["sub_indus_14dioxane", "sub_indus_perchlorate"]
       - name: periode
         description: "Période du résultat"
         type: VARCHAR
@@ -27,11 +29,11 @@ models:
           - dbt_utils.expression_is_true:
               expression: "LIKE 'bilan_annuel%'"
       - name: nb_depassements
-        type: INT
+        type: INTEGER
       - name: nb_prelevements
-        type: INT
-      - name: ratio_limite_qualite
-        description: "Pourcentage de prélèvements qui dépassent la limite"
+        type: INTEGER
+      - name: ratio_limite_sanitaire
+        description: "Pourcentage de prélèvements qui dépassent la limite sanitaire"
         type: FLOAT
         tests:
           - not_null
@@ -39,8 +41,8 @@ models:
               min_value: 0
               max_value: 1
 
-  - name: int__resultats_cvm_commune_dernier
-    description: Résultats CVM par commune pour la temporalité 'derniers prélèvements'
+  - name: int__resultats_sub_indus_commune_dernier
+    description: Résultats des substances industrielles par commune pour la temporalité 'derniers prélèvements'
     columns:
       - name: inseecommune
         tests:
@@ -48,7 +50,8 @@ models:
           - unique
       - name: categorie
         tests:
-          - not_null
+          - accepted_values:
+              values: ["sub_indus_14dioxane", "sub_indus_perchlorate"]
       - name: periode
         type: VARCHAR
         tests:
@@ -72,11 +75,12 @@ models:
           - accepted_values:
               values:
                 - non_quantifie
-                - sup_0_5
-                - inf_0_5
+                - sup_valeur_sanitaire_2
+                - sup_valeur_sanitaire
+                - inf_valeur_sanitaire
 
-  - name: int__resultats_cvm_udi_annuel
-    description: Résultats CVM par UDI pour la temporalité 'bilan_annuel'
+  - name: int__resultats_sub_indus_udi_annuel
+    description: Résultats des substances industrielles par UDI pour la temporalité 'bilan_annuel'
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -94,7 +98,7 @@ models:
         description: "Catégorie du paramètre (pesticides, pfas, vcm, nitrates, etc.) selon la classification établie."
         tests:
           - accepted_values:
-              values: ["cvm"]
+              values: ["sub_indus_14dioxane", "sub_indus_perchlorate"]
       - name: periode
         description: "Période du résultat"
         type: VARCHAR
@@ -102,9 +106,11 @@ models:
           - dbt_utils.expression_is_true:
               expression: "LIKE 'bilan_annuel%'"
       - name: nb_depassements
+        type: INTEGER
       - name: nb_prelevements
-      - name: ratio_limite_qualite
-        description: "Pourcentage de prélèvements qui dépassent la limite"
+        type: INTEGER
+      - name: ratio_limite_sanitaire
+        description: "Pourcentage de prélèvements qui dépassent la limite sanitaire"
         type: FLOAT
         tests:
           - not_null
@@ -112,7 +118,7 @@ models:
               min_value: 0
               max_value: 1
 
-  - name: int__resultats_cvm_udi_dernier
+  - name: int__resultats_sub_indus_udi_dernier
     description: Resultats CVM par UDI pour la temporalité 'derniers prélèvements'
     columns:
       - name: cdreseau
@@ -121,7 +127,8 @@ models:
           - unique
       - name: categorie
         tests:
-          - not_null
+          - accepted_values:
+              values: ["sub_indus_14dioxane", "sub_indus_perchlorate"]
       - name: periode
         type: VARCHAR
         tests:
@@ -145,5 +152,6 @@ models:
           - accepted_values:
               values:
                 - non_quantifie
-                - sup_0_5
-                - inf_0_5
+                - sup_valeur_sanitaire_2
+                - sup_valeur_sanitaire
+                - inf_valeur_sanitaire

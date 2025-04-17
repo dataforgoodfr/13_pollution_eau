@@ -9,6 +9,7 @@ cvm_prels AS (
         inseecommune,
         referenceprel,
         datetimeprel,
+        limite_qualite,
         valtraduite
     FROM
         {{ ref('int__resultats_udi_communes') }}
@@ -25,7 +26,7 @@ SELECT
         DISTINCT
         CASE
             WHEN
-                valtraduite IS NOT NULL AND valtraduite >= 0.5
+                valtraduite IS NOT NULL AND valtraduite >= limite_qualite
                 THEN referenceprel
         END
     ) AS nb_depassements,
@@ -35,13 +36,13 @@ SELECT
             DISTINCT
             CASE
                 WHEN
-                    valtraduite IS NOT NULL AND valtraduite >= 0.5
+                    valtraduite IS NOT NULL AND valtraduite >= limite_qualite
                     THEN referenceprel
             END
         )::float
         /
         count(DISTINCT referenceprel)::float
-    ) AS ratio_depassements
+    ) AS ratio_limite_qualite
 
 FROM cvm_prels
 

@@ -2,7 +2,7 @@ version: 2
 
 models:
   - name: int__resultats_pb_udi_dernier
-    description: Resultats Plomb par UDI pour la temporalité 'derniers prélèvements'
+    description: "Resultats Plomb par UDI pour la temporalité 'derniers prélèvements'"
     columns:
       - name: categorie
         tests:

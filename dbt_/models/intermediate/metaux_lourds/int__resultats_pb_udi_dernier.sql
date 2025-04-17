@@ -10,7 +10,7 @@ WITH pb_dernier_prel AS (
             )
             AS row_number
     FROM
-        int__resultats_udi_communes
+        {{ ref(int__resultats_udi_communes) }}
     WHERE
         cdparametresiseeaux = 'PB'
         AND

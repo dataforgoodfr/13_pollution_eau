@@ -105,7 +105,7 @@ SELECT
         )::float
         /
         COUNT(DISTINCT prels.referenceprel)::float
-    ) AS ratio_depassements
+    ) AS ratio_limite_sanitaire
 
 FROM prels
 CROSS JOIN valeur_ref

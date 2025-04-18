@@ -40,7 +40,7 @@ SELECT
         WHEN
             -- Pas de distinction PB/AS car même résultat
             valtraduite IS NULL
-                OR valtraduite = 0
+            OR valtraduite = 0
             THEN 'non_quantifie'
         WHEN
             cdparametresiseeaux = 'PB'

@@ -9,7 +9,7 @@ WHERE
     (
         cdreseau = '001000404'
         AND dernier_prel_datetime = '2025-01-21 12:12:00'
-        AND resultat_all != 'min_1_parametre_sup_limite_reg'
+        AND resultat_all != 'min_1_parametre_sup_limite_qualite'
     )
     OR
     (

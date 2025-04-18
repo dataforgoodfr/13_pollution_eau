@@ -12,8 +12,9 @@ SELECT
 
         WHEN BOOL_OR(resultat IN (
             'inf_limite_qualite_sup_0_02',
-            'inf_limite_qualite_sup_0_1'
-        )) THEN 'min_1_parametre_sup_limite_reg'
+            'inf_limite_qualite_sup_0_1',
+            'sup_limite_qualite'
+        )) THEN 'min_1_parametre_sup_limite_qualite'
 
         WHEN BOOL_AND(resultat IN (
             'non_quantifie',

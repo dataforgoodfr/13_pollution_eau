@@ -1,4 +1,4 @@
-version: 1
+version: 2
 
 models:
   - name: int__resultats_tous_polluants_udi_dernier
@@ -6,6 +6,7 @@ models:
     columns:
       - name: cdreseau
         description: "Code de l'installation (UDI)."
+        type: VARCHAR
         tests:
           - not_null
           - unique
@@ -23,7 +24,7 @@ models:
           - accepted_values:
               values:
                 - "inf_limites"
-                - "min_1_parametre_sup_limite_reg"
+                - "min_1_parametre_sup_limite_qualite"
                 - "min_1_parametre_sup_limite_sanitaire"
 
       - name: periode

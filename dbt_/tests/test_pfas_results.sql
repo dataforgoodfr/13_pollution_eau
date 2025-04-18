@@ -20,7 +20,7 @@ WHERE
     OR (
         cdreseau = '004001032'
         AND dernier_prel_datetime = TIMESTAMP '2025-02-28 12:33:00'
-        AND resultat != 'somme_20pfas_inf_0_1_et_4pfas_inf_0_02'
+        AND resultat != 'inf_limite_qualite'
     )
     OR (
         cdreseau = '008000855'
@@ -37,19 +37,19 @@ WHERE
     (
         cdreseau = '011004114'
         AND dernier_prel_datetime = '2025-02-24 13:55:00'
-        AND resultat != 'somme_20pfas_sup_0_1'
+        AND resultat != 'inf_limite_qualite_sup_0_1'
     )
     OR
     (
         cdreseau = '001000404'
         AND dernier_prel_datetime = '2024-11-29 08:08:00'
-        AND resultat != 'somme_20pfas_inf_0_1_et_4pfas_sup_0_02'
+        AND resultat != 'inf_limite_qualite_sup_0_02'
     )
     OR
     (
         cdreseau = '001000511'
         AND dernier_prel_datetime = '2024-11-28 09:58:00'
-        AND resultat != 'somme_20pfas_inf_0_1_et_4pfas_inf_0_02'
+        AND resultat != 'inf_limite_qualite'
     )
     OR
     (

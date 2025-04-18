@@ -101,3 +101,18 @@ SELECT
     null AS nb_sup_valeur_sanitaire
 FROM
     {{ ref('int__resultats_sub_indus_udi_dernier') }}
+UNION ALL
+-- nitrites
+SELECT
+    cdreseau,
+    periode,
+    categorie,
+    resultat,
+    null AS ratio,
+    dernier_prel_datetime,
+    null AS dernier_prel_valeur,
+    nb_parametres,
+    null AS nb_prelevements,
+    null AS nb_sup_valeur_sanitaire
+FROM
+    {{ ref('int__resultats_nitrites_udi_dernier') }}

@@ -136,6 +136,7 @@ models:
 
       - name: cdreseau
         description: "Code de l'installation (unité de distribution)"
+        type: VARCHAR
         tests:
           - not_null
 
@@ -166,6 +167,7 @@ models:
     columns:
       - name: cdreseau
         description: "Code de l'installation (unité de distribution)"
+        type: VARCHAR
         tests:
           - not_null
 
@@ -266,6 +268,7 @@ models:
 
       - name: cdreseau
         description: "Code de l'installation (unité de distribution)"
+        type: VARCHAR
         tests:
           - not_null
 
@@ -375,6 +378,7 @@ models:
     columns:
       - name: cdreseau
         description: "Code de l'installation (unité de distribution)"
+        type: VARCHAR
         tests:
           - not_null
       - name: periode

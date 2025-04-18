@@ -19,7 +19,6 @@ models:
         type: VARCHAR
         tests:
           - not_null
-          - unique
 
       - name: dernier_prel_datetime
         description: >

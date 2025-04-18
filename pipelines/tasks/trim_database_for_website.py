@@ -29,6 +29,7 @@ DEFAULT_WEBSITE_TABLES = [
     "web__resultats_udi",
     "cog_communes",
     "atlasante_udi",
+    "int__lien_commune_cdreseau",
 ]
 
 DEFAULT_OUTPUT_FILE = "database/database_website.duckdb"

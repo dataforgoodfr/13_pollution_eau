@@ -42,7 +42,7 @@ SELECT
         )::float
         /
         count(DISTINCT referenceprel)::float
-    ) AS ratio_depassements
+    ) AS ratio_limite_qualite
 
 FROM cvm_prels
 

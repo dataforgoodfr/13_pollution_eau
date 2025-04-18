@@ -6,7 +6,7 @@ SELECT
     resultat,
     0 AS nb_depassements,
     0 AS nb_prelevements,
-    0 AS ratio_depassements
+    0 AS ratio_limite_sanitaire
 FROM
     {{ ref('int__resultats_sub_indus_udi_dernier') }}
 WHERE
@@ -88,7 +88,7 @@ SELECT
     '' AS resultat,
     nb_depassements,
     nb_prelevements,
-    ratio_depassements
+    ratio_limite_sanitaire
 FROM
     {{ ref('int__resultats_sub_indus_udi_annuel') }}
 WHERE
@@ -155,7 +155,7 @@ WHERE
         AND categorie = 'sub_indus_perchlorate'
         AND annee = '2022'
         AND (
-            ratio_depassements != 0.5
+            ratio_limite_sanitaire != 0.5
             OR
             nb_prelevements != 2
         )
@@ -169,7 +169,7 @@ SELECT
     '' AS resultat,
     nb_depassements,
     nb_prelevements,
-    ratio_depassements
+    ratio_limite_sanitaire
 FROM
     {{ ref('int__resultats_sub_indus_commune_annuel') }}
 WHERE

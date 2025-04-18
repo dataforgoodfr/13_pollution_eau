@@ -42,7 +42,7 @@ models:
           - accepted_values:
               values:
                 - inf_limite_qualite
-                - sup_limite_qualit
+                - sup_limite_qualite
 
   - name: int__resultats_nitrites_udi_annuel
     description: Résultats nitrites par UDI pour la temporalité 'bilan_annuel'

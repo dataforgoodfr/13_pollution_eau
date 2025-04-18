@@ -40,7 +40,7 @@ SELECT
         WHEN
             last_pvl.valtraduite < last_pvl.limite_qualite
             THEN 'inf_0_5'
-        ELSE 'error'
+        ELSE 'erreur'
     END AS resultat
 FROM
     last_pvl

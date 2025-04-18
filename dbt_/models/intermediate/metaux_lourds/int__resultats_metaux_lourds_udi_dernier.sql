@@ -2,20 +2,23 @@
 -- pour chaque UDI dans la dernière année
 WITH metaux_lourds_dernier_prel AS (
     SELECT
-        int__resultats_udi_communes.*,
+        *,
         ROW_NUMBER()
             OVER (
-                PARTITION BY cdreseau, cdparametresiseeaux
+                PARTITION BY
+                    cdreseau,
+                    cdparametresiseeaux
                 ORDER BY datetimeprel DESC
             )
             AS row_number
     FROM
-        int__resultats_udi_communes
+        {{ ref('int__resultats_udi_communes') }}
     WHERE
         cdparametresiseeaux IN ('PB', 'AS')
         AND
         -- On garde les prélèvements de moins d'un an
-        CURRENT_DATE - datetimeprel < INTERVAL 1 YEAR
+        CURRENT_DATE - datetimeprel
+        < INTERVAL 1 YEAR
 )
 
 -- Ici on ne prend que le prélèvement le plus récent (avec row_number = 1)

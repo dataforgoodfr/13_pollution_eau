@@ -10,7 +10,6 @@ import { MapProvider } from "react-map-gl/maplibre";
 import MapZoneSelector from "./MapZoneSelector";
 import PollutionMapLegend from "./PollutionMapLegend";
 import { HamburgerButton } from "./ui/hamburger-button";
-import { clsx } from "clsx";
 
 export default function PollutionMap() {
   const [period, setPeriod] = useState("dernier_prel");
@@ -53,8 +52,8 @@ export default function PollutionMap() {
   };
 
   return (
-    <div className="relative w-full h-full flex flex-col">
-      <MapProvider>
+	<MapProvider>
+      <div name="map" className="relative w-full h-full">
         <PollutionMapBaseLayer
           period={period}
           category={category}
@@ -67,79 +66,78 @@ export default function PollutionMap() {
           setMarker={setMarker}
         />
 
-        <div className="absolute top-4 left-4 z-10 flex overflow-x-auto scrollbar-hide">
-          <PollutionMapFilters
-            period={period}
-            setPeriod={setPeriod}
-            category={category}
-            setCategory={setCategory}
-            // displayMode={displayMode}
-            // setDisplayMode={setDisplayMode}
-          />
-        </div>
+        <div name="pnlMain" className="absolute top-0 w-full h-full flex flex-col md:flex-row pointer-events-none">
+          <div name="pnlCommandes" className="w-full h-full flex flex-col pointer-events-none">
+            <div name="pnlInputs" className="w-full flex flex-col md:flex-row pointer-events-none">
+              <div name="inputType" className="w-full flex flex-row pointer-events-auto">
+                <PollutionMapFilters
+                  period={period}
+                  setPeriod={setPeriod}
+                  category={category}
+                  setCategory={setCategory}
+                  // displayMode={displayMode}
+                  // setDisplayMode={setDisplayMode}
+                />
+              </div>
+              <div className="pointer-events-auto">
+                <PollutionMapSearchBox
+                  communeInseeCode={selectedZoneCode}
+                  onAddressFilter={handleAddressSelect}
+                />
+              </div>
+            </div>
 
-        <div
-          className={clsx(
-            "absolute top-4 right-20 z-9 transition-all duration-300",
-            sidePanelOpen && "mr-80",
-          )}
-        >
-          <PollutionMapSearchBox
-            communeInseeCode={selectedZoneCode}
-            onAddressFilter={handleAddressSelect}
-          />
-        </div>
+            <div className="flex flex-row h-full pointer-events-none">
+              <div name="pnlLegende" className="p-4 h-fit self-end pointer-events-auto">
+                <HamburgerButton
+                  visible={!showLegend}
+                  onClick={() => setShowLegend(!showLegend)}
+                />
 
-        <div
-          className={clsx(
-            "absolute top-4 right-4 z-8 transition-all duration-300",
-            sidePanelOpen && "mr-80",
-          )}
-        >
-          <MapZoneSelector />
-        </div>
+				{showLegend && (
+				    <PollutionMapLegend
+				      category={category}
+				      onClose={() => setShowLegend(false)}
+				    />
+				)}
 
-        <div className="absolute left-4 bottom-4">
-          <HamburgerButton
-            visible={!showLegend}
-            onClick={() => setShowLegend(!showLegend)}
-          />
-        </div>
+              </div>
 
-        {showLegend && (
-          <div className="absolute left-4 bottom-4">
-            <PollutionMapLegend
-              category={category}
-              onClose={() => setShowLegend(false)}
-            />
-          </div>
-        )}
-
-        {/* Right side panel with handle */}
-        <div className="absolute top-0 right-0 h-full z-10">
-          {/* Panel handle - always visible */}
-          <div
-            className="absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-6 cursor-pointer z-20"
-            onClick={() => setSidePanelOpen(!sidePanelOpen)}
-          >
-            <div className="bg-white text-gray-600 shadow-md rounded-l-md flex items-center justify-center h-16 w-6">
-              <div className="text-lg">{sidePanelOpen ? "›" : "‹"}</div>
+              <div name="pnlDomTom" className="p-4 justify-end w-full h-fit flex flex-row pointer-events-none">
+                <div className="pointer-events-auto">
+					<MapZoneSelector />
+				</div>
+              </div>
             </div>
           </div>
 
-          {/* Panel content */}
-          <div
-            className={`bg-[#E2E8F0] transition-all duration-300 h-full overflow-y-auto ${
-              sidePanelOpen ? "w-80 opacity-100" : "w-0 opacity-0"
-            }`}
-          >
-            <PollutionSidePanel
-              category={category}
-              onClose={() => setSidePanelOpen(false)}
-            />
+          <div name="pnlDetail" className="flex flex-col md:flex-row pointer-events-none">
+            <div className="flex w-full h-fit md:w-fit md:h-full justify-center md:justify-none pointer-events-none">
+              <div
+                className="hidden md:flex bg-white text-gray-600 shadow-md rounded-t-md rounded-l-none h-6 w-16 md:rounded-t-none md:rounded-l-md md:h-16 md:w-6 self-center flex items-center justify-center cursor-pointer pointer-events-auto"
+                onClick={() => setSidePanelOpen(!sidePanelOpen)}
+              >
+                <div className="text-lg">
+                  {sidePanelOpen ? "›" : "‹"}
+                </div>
+              </div>
+            </div>
+
+            <div className="h-16 md:h-full pointer-events-auto">
+              <div
+                className={`bg-[#E2E8F0] transition-all duration-300 h-full overflow-y-auto ${
+                  sidePanelOpen ? "w-full md:w-80 opacity-100" : "md:w-0 md:opacity-0"
+                }`}
+              >
+                <PollutionSidePanel
+                  category={category}
+                  onClose={() => setSidePanelOpen(false)}
+                />
+              </div>
+            </div>
           </div>
         </div>
-      </MapProvider>
-    </div>
+      </div>
+    </MapProvider>
   );
 }

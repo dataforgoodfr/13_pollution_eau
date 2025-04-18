@@ -112,11 +112,11 @@ SELECT
             sum_20_pfas < 0.1 AND sum_4_pfas < 0.02
             -- On laisse les valeurs 0.1 et 0.02 en dur car 0.02 n'est pas
             -- dans le fichier de GF. Plus compréhensible comme ça
-            THEN 'somme_20pfas_inf_0_1_et_4pfas_inf_0_02'
+            THEN 'inf_limite_qualite'
         WHEN
             sum_20_pfas < 0.1 AND sum_4_pfas >= 0.02
-            THEN 'somme_20pfas_inf_0_1_et_4pfas_sup_0_02'
-        WHEN sum_20_pfas >= 0.1 THEN 'somme_20pfas_sup_0_1'
+            THEN 'inf_limite_qualite_sup_0_02'
+        WHEN sum_20_pfas >= 0.1 THEN 'inf_limite_qualite_sup_0_1'
         ELSE 'erreur'
     END AS resultat
 FROM aggregated_results

@@ -2,7 +2,9 @@ version: 2
 
 models:
   - name: int__resultats_metaux_lourds_udi_dernier
-    description: "Resultats Plomb et Arsenic par UDI pour la temporalité 'derniers prélèvements'"
+    description: >
+      Resultats Plomb et Arsenic par UDI pour la
+      temporalité 'derniers prélèvements'
     columns:
       - name: categorie
         tests:
@@ -20,7 +22,9 @@ models:
           - unique
 
       - name: dernier_prel_datetime
-        description: "Date et heure du dernier prélèvement pris en compte dans l'analyse."
+        description: >
+          Date et heure du dernier prélèvement
+          pris en compte dans l'analyse
         type: TIMESTAMP
         tests:
           - not_null

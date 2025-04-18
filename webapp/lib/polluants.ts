@@ -287,7 +287,7 @@ export const availableCategories: ICategory[] = [
                 couleurFond: "#FFF33B",
                 picto: null,
               },
-              entre_0_1_et_0_9: {
+              inf_limite_qualite_sup_0_1: {
                 label:
                   "Concentration comprise entre 0,1 et 0,9 µg/L (si l'ESA métolachlore était considéré comme un métabolite pertinent, l'eau serait déclarée \"non conforme\")",
                 couleur: "#FDC70C",
@@ -340,7 +340,7 @@ export const availableCategories: ICategory[] = [
                 couleurFond: "#FFF33B",
                 picto: null,
               },
-              entre_0_1_et_0_9: {
+              inf_limite_qualite_sup_0_1: {
                 label:
                   'Concentration comprise entre 0,1 et 0,9 µg/L*\n\n (si le Chlorothalonil R471811 était considéré comme un métabolite pertinent, l\'eau serait déclarée "non conforme")',
                 couleur: "#FDC70C",

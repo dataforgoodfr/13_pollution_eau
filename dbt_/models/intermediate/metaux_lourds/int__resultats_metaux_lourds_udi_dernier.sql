@@ -10,7 +10,7 @@ WITH metaux_lourds_dernier_prel AS (
             )
             AS row_number
     FROM
-        {{ ref('int__resultats_udi_communes') }}
+        int__resultats_udi_communes
     WHERE
         cdparametresiseeaux IN ('PB', 'AS')
         AND

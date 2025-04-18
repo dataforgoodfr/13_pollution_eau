@@ -38,12 +38,10 @@ SELECT
     END AS categorie,
     CASE
         WHEN
-            cdparametresiseeaux = 'PB'
-            AND (
-                valtraduite IS NULL
+            -- Pas de distinction PB/AS car même résultat
+            valtraduite IS NULL
                 OR valtraduite = 0
-            )
-            THEN 'aucun_parametre_quantifie'
+            THEN 'non_quantifie'
         WHEN
             cdparametresiseeaux = 'PB'
             AND valtraduite >= 10
@@ -57,13 +55,6 @@ SELECT
             cdparametresiseeaux = 'PB'
             AND valtraduite < 5
             THEN 'inf_5'
-        WHEN
-            cdparametresiseeaux = 'AS'
-            AND (
-                valtraduite IS NULL
-                OR valtraduite = 0
-            )
-            THEN 'aucun_parametre_quantifie'
         WHEN
             cdparametresiseeaux = 'AS'
             AND valtraduite >= 13

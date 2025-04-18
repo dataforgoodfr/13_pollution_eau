@@ -54,3 +54,57 @@ models:
                 - inf_5
                 - as_sup_10_inf_13
                 - inf_10
+
+  - name: int__resultats_metaux_lourds_commune_dernier
+    description: >
+      Resultats Plomb et Arsenic par UDI pour la
+      temporalité 'derniers prélèvements'
+    columns:
+      - name: categorie
+        tests:
+          - not_null
+          - accepted_values:
+              values:
+                - metaux_lourds_pb
+                - metaux_lourds_as
+
+      - name: inseecommune
+        description: "Code INSEE de la commune"
+        type: VARCHAR
+        tests:
+          - not_null
+
+      - name: dernier_prel_datetime
+        description: >
+          Date et heure du dernier prélèvement
+          pris en compte dans l'analyse
+        type: TIMESTAMP
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: ">= CURRENT_DATE - INTERVAL 1 YEAR"
+
+      - name: periode
+        description: "Période de résultat"
+        type: VARCHAR
+        tests:
+          - accepted_values:
+              values: ["dernier_prel"]
+
+      - name: dernier_prel_valeur
+        description: "Valeur du dernier prélèvement"
+        type: FLOAT
+
+      - name: resultat
+        description: "Résultat"
+        type: VARCHAR
+        tests:
+          - not_null
+          - accepted_values:
+              values:
+                - non_quantifie
+                - sup_limite_qualite
+                - sup_limite_qualite_2036
+                - inf_5
+                - as_sup_10_inf_13
+                - inf_10

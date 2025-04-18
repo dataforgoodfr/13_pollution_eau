@@ -74,7 +74,7 @@ SELECT
     '' AS resultat,
     nb_depassements,
     nb_prelevements,
-    ratio_depassements
+    ratio_limite_sanitaire
 FROM
     {{ ref('int__resultats_nitrites_udi_annuel') }}
 WHERE

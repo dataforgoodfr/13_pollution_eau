@@ -51,6 +51,7 @@ models:
                 - non_quantifie
                 - sup_limite_qualite
                 - sup_limite_qualite_2036
+                - sup_limite_sanitaire
                 - inf_5
                 - as_sup_10_inf_13
                 - inf_10

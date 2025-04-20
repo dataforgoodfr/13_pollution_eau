@@ -58,7 +58,7 @@ SELECT
         WHEN
             cdparametresiseeaux = 'AS'
             AND valtraduite >= 13
-            THEN 'sup_limite_qualite'
+            THEN 'sup_limite_sanitaire'
         WHEN
             cdparametresiseeaux = 'AS'
             AND valtraduite >= 10

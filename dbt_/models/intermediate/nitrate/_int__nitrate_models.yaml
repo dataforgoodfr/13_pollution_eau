@@ -38,6 +38,7 @@ models:
         type: INTEGER
       - name: resultat
         description: "Interprétation du résultat en fonction des seuils et des valeurs mesurées."
+        type: VARCHAR
         tests:
           - not_null
           - accepted_values:

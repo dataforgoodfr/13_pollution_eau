@@ -128,8 +128,8 @@ export default function PollutionMapBaseLayer({
             ["zoom"],
             0,
             0.0, // At zoom level 0, line width is 0px
-            6,
-            0.0, // At zoom level 6, line width is 0px
+            7,
+            0.0, // At zoom level 7, line width is 0px
             20,
             2.0, // At zoom level 20, line width is 2.0px
           ],

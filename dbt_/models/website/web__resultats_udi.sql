@@ -21,7 +21,8 @@ categories AS (
         'metabolite_chlorothalonil_r471811',
         'metabolite_chloridazone_desphenyl',
         'metabolite_chloridazone_methyl_desphenyl',
-        'metabolite_atrazine_desethyl'
+        'metabolite_atrazine_desethyl',
+        'tous'
     ]) AS categorie
 ),
 
@@ -46,6 +47,35 @@ udi_periodes_categories AS (
         periodes AS p
     CROSS JOIN
         categories
+),
+
+-- Append results from 'tous' category (in another model to avoid circular dependency)
+results AS (
+    SELECT
+        cdreseau,
+        periode,
+        categorie,
+        resultat,
+        ratio,
+        dernier_prel_datetime,
+        dernier_prel_valeur,
+        nb_parametres,
+        nb_prelevements,
+        nb_sup_valeur_sanitaire
+    FROM {{ ref('int__union_resultats_udi') }}
+    UNION ALL
+    SELECT
+        cdreseau,
+        periode,
+        categorie,
+        resultat,
+        null AS ratio,
+        dernier_prel_datetime,
+        null AS dernier_prel_valeur,
+        nb_parametres,
+        null AS nb_prelevements,
+        null AS nb_sup_valeur_sanitaire
+    FROM {{ ref('int__resultats_tous_udi_dernier') }}
 )
 
 -- Final output with all UDI-periodes-categories combinations
@@ -64,7 +94,7 @@ SELECT
 FROM
     udi_periodes_categories AS upc
 LEFT JOIN
-    {{ ref('int__union_resultats_udi') }} AS r
+    results AS r
     ON
         upc.cdreseau = r.cdreseau
         AND upc.periode = r.periode

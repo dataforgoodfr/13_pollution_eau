@@ -45,7 +45,7 @@ export interface ICategory {
 
 export const availableCategories: ICategory[] = [
   {
-    id: "tous-polluants",
+    id: "tous",
     nomAffichage: "Tous polluants",
     disable: false,
     enfants: [],
@@ -57,19 +57,19 @@ export const availableCategories: ICategory[] = [
     regulation: "Directive cadre sur l'eau (DCE), Code de l'environnement.",
     sourcesExposition: "Eau potable, air, alimentation, sols contaminés.",
     resultats: {
-      aucun_depassement: {
+      inf_limites: {
         label: "Aucun dépassement des limites de qualité",
         couleur: "#B4E681",
         couleurFond: "#B4E681",
         picto: null,
       },
-      limite_qualite: {
+      sup_limite_qualite: {
         label: "Au moins un dépassement des limites de qualité",
         couleur: "#F3903F",
         couleurFond: "#F3903F",
         picto: "warning",
       },
-      limite_sanitaire: {
+      sup_limite_sanitaire: {
         label: "Au moins un dépassement des limites sanitaires",
         couleur: "#E93E3A",
         couleurFond: "#E93E3A",

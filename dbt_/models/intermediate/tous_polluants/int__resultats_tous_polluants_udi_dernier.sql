@@ -12,6 +12,7 @@ SELECT
         )) THEN 'min_1_parametre_sup_limite_sanitaire'
 
         WHEN BOOL_OR(resultat IN (
+            'inf_limite_qualite_sup_0_1',
             'somme_20pfas_sup_0_1',
             'somme_20pfas_inf_0_1_et_4pfas_sup_0_02',
             'sup_limite_qualite'
@@ -19,8 +20,8 @@ SELECT
 
         WHEN BOOL_AND(resultat IN (
             'non_quantifie',
-            'aucun_parametre_quantifie',
             'inf_valeur_sanitaire',
+            'inf_limite_qualite',
             'somme_20pfas_inf_0_1_et_4pfas_inf_0_02',
             'inf_0_5'
         )) THEN 'inf_limites'

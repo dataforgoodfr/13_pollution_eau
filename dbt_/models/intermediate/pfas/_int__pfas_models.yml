@@ -35,9 +35,9 @@ models:
           - accepted_values:
               values:
                 - "non_quantifie"
-                - "inf_limite_qualite"
-                - "inf_limite_qualite_sup_0_02"
-                - "inf_limite_qualite_sup_0_1"
+                - "somme_20pfas_inf_0_1_et_4pfas_inf_0_02"
+                - "somme_20pfas_inf_0_1_et_4pfas_sup_0_02"
+                - "somme_20pfas_sup_0_1"
                 - "sup_valeur_sanitaire"
 
       - name: periode

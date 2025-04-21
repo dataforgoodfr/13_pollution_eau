@@ -6,7 +6,7 @@ last_pvl AS (
         datetimeprel,
         ROW_NUMBER()
             OVER (
-                PARTITION BY cdreseau, cdparametresiseeaux
+                PARTITION BY cdreseau
                 ORDER BY datetimeprel DESC
             )
             AS row_number
@@ -114,55 +114,56 @@ split_nitrites_with_ref AS (
 )
 
 SELECT
-    split_nitrites_with_ref.cdreseau,
-    split_nitrites_with_ref.categorie,
+    cdreseau,
+    categorie,
     'dernier_prel' AS periode,
-    split_nitrites_with_ref.dernier_prel_datetime,
-    split_nitrites_with_ref.nb_parametres,
+    dernier_prel_datetime,
+    valtraduite_no3 AS dernier_prel_valeur,
+    nb_parametres,
     CASE
         WHEN -- Si nitrates (no3) et pas nitrites (no2)
-            split_nitrites_with_ref.valtraduite_no2 IS NULL
+            valtraduite_no2 IS NULL
             AND
-            split_nitrites_with_ref.valtraduite_no3
-            < split_nitrites_with_ref.limite_qualite_no3
+            valtraduite_no3
+            < limite_qualite_no3
             THEN 'inf_limite_qualite'
         WHEN
-            split_nitrites_with_ref.valtraduite_no2 IS NULL
+            valtraduite_no2 IS NULL
             AND
-            split_nitrites_with_ref.valtraduite_no3
-            >= split_nitrites_with_ref.limite_qualite_no3
+            valtraduite_no3
+            >= limite_qualite_no3
             THEN 'sup_limite_qualite'
         WHEN -- Si nitrates (no3) ET nitrites (no2)
-            split_nitrites_with_ref.valtraduite_no2 IS NOT NULL
+            valtraduite_no2 IS NOT NULL
             AND (
-                split_nitrites_with_ref.valtraduite_no3
-                >= split_nitrites_with_ref.limite_qualite_no3
-                OR split_nitrites_with_ref.valtraduite_no2
-                >= split_nitrites_with_ref.limite_qualite_no2
+                valtraduite_no3
+                >= limite_qualite_no3
+                OR valtraduite_no2
+                >= limite_qualite_no2
                 OR COALESCE(
-                    split_nitrites_with_ref.valtraduite_no3_no2,
+                    valtraduite_no3_no2,
                     (
-                        split_nitrites_with_ref.valtraduite_no3 / 50
-                        + split_nitrites_with_ref.valtraduite_no2 / 3
+                        valtraduite_no3 / 50
+                        + valtraduite_no2 / 3
                     )
                 )
-                >= split_nitrites_with_ref.limite_qualite_no3_no2
+                >= limite_qualite_no3_no2
             )
             THEN 'sup_limite_qualite'
         WHEN
-            split_nitrites_with_ref.valtraduite_no2 IS NOT NULL
-            AND split_nitrites_with_ref.valtraduite_no3
-            < split_nitrites_with_ref.limite_qualite_no3
-            AND split_nitrites_with_ref.valtraduite_no2
-            < split_nitrites_with_ref.limite_qualite_no2
+            valtraduite_no2 IS NOT NULL
+            AND valtraduite_no3
+            < limite_qualite_no3
+            AND valtraduite_no2
+            < limite_qualite_no2
             AND COALESCE(
-                split_nitrites_with_ref.valtraduite_no3_no2,
+                valtraduite_no3_no2,
                 (
-                    split_nitrites_with_ref.valtraduite_no3 / 50
-                    + split_nitrites_with_ref.valtraduite_no2 / 3
+                    valtraduite_no3 / 50
+                    + valtraduite_no2 / 3
                 )
             )
-            < split_nitrites_with_ref.limite_qualite_no3_no2
+            < limite_qualite_no3_no2
             THEN 'inf_limite_qualite'
         ELSE 'erreur'
     END AS resultat

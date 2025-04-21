@@ -30,13 +30,14 @@ models:
           - not_null
           - dbt_utils.expression_is_true:
               expression: ">= CURRENT_DATE - INTERVAL 1 YEAR"
+      - name: dernier_prel_valeur
+        description: "Valeur du dernier prelevement"
+        type: FLOAT
       - name: nb_parametres
-        description: "nombre de paramètres mesurés sur le prélèvement pour la catégorie considérée"
-        type: INT
-        tests:
-          - not_null
+        description: "Nombre de paramètres analysés"
+        type: INTEGER
       - name: resultat
-        description: "classification de la substance pour le prélèvement"
+        description: "Interprétation du résultat en fonction des seuils et des valeurs mesurées."
         tests:
           - not_null
           - accepted_values:

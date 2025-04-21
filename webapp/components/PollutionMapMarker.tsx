@@ -4,7 +4,7 @@ import { useEffect, useState, JSX } from "react";
 import { getPropertyName } from "@/lib/property";
 import { getCategoryById } from "@/lib/polluants";
 import { useMap, Marker, Popup } from "react-map-gl/maplibre";
-import { MapPin } from "lucide-react";
+import { MapPin, X } from "lucide-react";
 
 type PollutionMapMarkerProps = {
   period: string;
@@ -31,6 +31,14 @@ export default function PollutionMapMarker({
     string,
     string | number | null
   > | null>(null);
+  const [showPopup, setShowPopup] = useState<boolean>(true);
+
+  // Show popup when marker changes
+  useEffect(() => {
+    if (marker) {
+      setShowPopup(true);
+    }
+  }, [marker]);
 
   useEffect(() => {
     if (!map || !marker) return;
@@ -194,6 +202,7 @@ export default function PollutionMapMarker({
         longitude={marker.longitude}
         latitude={marker.latitude}
         anchor="bottom"
+        onClick={() => setShowPopup(true)}
       >
         <MapPin
           size={32}
@@ -204,31 +213,42 @@ export default function PollutionMapMarker({
           color="white"
         />
       </Marker>
-      <Popup
-        longitude={marker.longitude}
-        latitude={marker.latitude}
-        anchor="bottom"
-        className="-mt-5"
-        closeButton={false}
-        closeOnClick={false}
-      >
-        {marker.content && (
-          <div className="mb-3 pb-3 border-b border-gray-200">
-            <span className="">{marker.content}</span>
-            <br />
-            <span className="opacity-35">
-              Cette adresse est désservie par une unité de distribution.
-            </span>
-          </div>
-        )}
+      {showPopup && (
+        <Popup
+          longitude={marker.longitude}
+          latitude={marker.latitude}
+          anchor="bottom"
+          className="-mt-5"
+          closeButton={false}
+          closeOnClick={false}
+        >
+          <div className="relative">
+            <button
+              onClick={() => setShowPopup(false)}
+              className="absolute top-0 right-0 text-gray-500 hover:text-gray-700 transition-colors duration-200"
+              aria-label="Close popup"
+            >
+              <X size={18} />
+            </button>
+            {marker.content && (
+              <div className="mb-3 pb-3 border-b border-gray-200 pr-6">
+                <span className="">{marker.content}</span>
+                <br />
+                <span className="opacity-35">
+                  Cette adresse est désservie par une unité de distribution.
+                </span>
+              </div>
+            )}
 
-        <div className="space-y-2">
-          {renderContent()}
-          <p className="text-xs text-gray-600 pt-2">
-            Code {displayMode === "communes" ? "Insee" : "réseau"}: {code}
-          </p>
-        </div>
-      </Popup>
+            <div className="space-y-2 pr-6">
+              {renderContent()}
+              <p className="text-xs text-gray-600 pt-2">
+                Code {displayMode === "communes" ? "Insee" : "réseau"}: {code}
+              </p>
+            </div>
+          </div>
+        </Popup>
+      )}
     </>
   );
 }

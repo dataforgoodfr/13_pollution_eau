@@ -8,7 +8,7 @@ SELECT
     0 AS nb_prelevements,
     0 AS ratio_depassements
 FROM
-    {{ ref('int__resultats_nitrites_udi_dernier') }}
+    {{ ref('int__resultats_nitrate_udi_dernier') }}
 WHERE
     (
         cdreseau = '001000003'

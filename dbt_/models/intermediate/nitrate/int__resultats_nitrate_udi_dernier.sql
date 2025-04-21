@@ -50,7 +50,7 @@ valeur_ref AS (
         categorie_1 = 'nitrate'
 ),
 
-split_nitrites AS (
+split_nitrate AS (
     SELECT
         resultats.cdreseau,
         resultats.categorie,
@@ -95,20 +95,20 @@ split_nitrites AS (
         resultats.datetimeprel
 ),
 
-split_nitrites_with_ref AS (
+split_nitrate_with_ref AS (
     SELECT
-        split_nitrites.cdreseau,
-        split_nitrites.categorie,
-        split_nitrites.nb_parametres,
-        split_nitrites.dernier_prel_datetime,
+        split_nitrate.cdreseau,
+        split_nitrate.categorie,
+        split_nitrate.nb_parametres,
+        split_nitrate.dernier_prel_datetime,
         valeur_ref.limite_qualite_no3,
         valeur_ref.limite_qualite_no2,
         valeur_ref.limite_qualite_no3_no2,
-        split_nitrites.valtraduite_no3_no2,
-        split_nitrites.valtraduite_no3,
-        split_nitrites.valtraduite_no2
+        split_nitrate.valtraduite_no3_no2,
+        split_nitrate.valtraduite_no3,
+        split_nitrate.valtraduite_no2
     FROM
-        split_nitrites
+        split_nitrate
     CROSS JOIN
         valeur_ref
 )
@@ -168,4 +168,4 @@ SELECT
         ELSE 'erreur'
     END AS resultat
 FROM
-    split_nitrites_with_ref
+    split_nitrate_with_ref

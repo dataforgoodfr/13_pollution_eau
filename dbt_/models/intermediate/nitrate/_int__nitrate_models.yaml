@@ -1,8 +1,8 @@
 version: 2
 
 models:
-  - name: int__resultats_nitrites_udi_dernier
-    description: Resultats nitrites par UDI pour la temporalité 'derniers prélèvements'
+  - name: int__resultats_nitrate_udi_dernier
+    description: Resultats nitrate par UDI pour la temporalité 'derniers prélèvements'
     columns:
       - name: cdreseau
         description: "Code de l'installation (unité de distribution)"

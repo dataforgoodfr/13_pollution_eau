@@ -122,7 +122,7 @@ export default function PollutionMap() {
             className="absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-6 cursor-pointer z-20"
             onClick={() => setSidePanelOpen(!sidePanelOpen)}
           >
-            <div className="bg-white text-gray-600 shadow-md rounded-l-md flex items-center justify-center h-16 w-6">
+            <div className="bg-custom-drom text-white shadow-md rounded-l-md flex items-center justify-center h-16 w-6">
               <div className="text-lg">{sidePanelOpen ? "›" : "‹"}</div>
             </div>
           </div>

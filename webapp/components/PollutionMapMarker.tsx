@@ -134,7 +134,7 @@ export default function PollutionMapMarker({
             ></div>
             <span className="">{resultLabel}</span>
           </div>
-          {realValue && date ? (
+          {realValue !== null && date ? (
             <p className="">
               Valeur: {realValue}
               <br />
@@ -145,6 +145,20 @@ export default function PollutionMapMarker({
       );
     } else {
       // bilan_annuel
+
+      const ratioProp = getPropertyName(period, category, "ratio");
+      const nbPrelevementsProp = getPropertyName(
+        period,
+        category,
+        "nb_prelevements",
+      );
+      const nbSupValeurSanitaireProp = getPropertyName(
+        period,
+        category,
+        "nb_sup_valeur_sanitaire",
+      );
+
+      console.log(selectedZoneData[ratioProp]);
 
       return (
         <>
@@ -157,9 +171,17 @@ export default function PollutionMapMarker({
             <span className="">{resultLabel}</span>
           </div>
           <p className="">
-            {value && Number(value) ? (
-              <>{Math.round(Number(value) * 100)}% des prélevements</>
+            {selectedZoneData[ratioProp] !== undefined ? (
+              <>
+                {Math.round(Number(selectedZoneData[ratioProp]) * 100)}% des
+                prélevements
+              </>
             ) : null}
+            <br />
+            nb_prelevements: {selectedZoneData[nbPrelevementsProp]}
+            <br />
+            nb_sup_valeur_sanitaire:{" "}
+            {selectedZoneData[nbSupValeurSanitaireProp]}
           </p>
         </>
       );
@@ -168,7 +190,11 @@ export default function PollutionMapMarker({
 
   return (
     <>
-      <Marker longitude={marker.longitude} latitude={marker.latitude}>
+      <Marker
+        longitude={marker.longitude}
+        latitude={marker.latitude}
+        anchor="bottom"
+      >
         <MapPin
           size={32}
           className="text-primary-foreground"

@@ -134,7 +134,7 @@ export default function PollutionMapMarker({
             ></div>
             <span className="">{resultLabel}</span>
           </div>
-          {realValue && date ? (
+          {realValue !== null && date ? (
             <p className="">
               Valeur: {realValue}
               <br />
@@ -190,7 +190,11 @@ export default function PollutionMapMarker({
 
   return (
     <>
-      <Marker longitude={marker.longitude} latitude={marker.latitude}>
+      <Marker
+        longitude={marker.longitude}
+        latitude={marker.latitude}
+        anchor="bottom"
+      >
         <MapPin
           size={32}
           className="text-primary-foreground"

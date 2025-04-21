@@ -16,7 +16,12 @@ categories AS (
         'cvm',
         'pfas',
         'sub_indus_perchlorate',
-        'sub_indus_14dioxane'
+        'sub_indus_14dioxane',
+        'metabolite_esa_metolachlore',
+        'metabolite_chlorothalonil_r471811',
+        'metabolite_chloridazone_desphenyl',
+        'metabolite_chloridazone_methyl_desphenyl',
+        'metabolite_atrazine_desethyl'
     ]) AS categorie
 ),
 

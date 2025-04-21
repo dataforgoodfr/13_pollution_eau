@@ -37,7 +37,16 @@ models:
         tests:
           - not_null
           - accepted_values:
-              values: ["cvm", "pfas"]
+              values:
+                - cvm
+                - pfas
+                - sub_indus_perchlorate
+                - sub_indus_14dioxane
+                - metabolite_esa_metolachlore
+                - metabolite_chlorothalonil_r471811
+                - metabolite_chloridazone_desphenyl
+                - metabolite_chloridazone_methyl_desphenyl
+                - metabolite_atrazine_desethyl
       - name: resultat
         description: "Résultat qualitatif de l'analyse"
         type: VARCHAR
@@ -52,6 +61,12 @@ models:
         type: FLOAT
       - name: nb_parametres
         description: "Nombre de paramètres analysés"
+        type: INTEGER
+      - name: nb_prelevements
+        description: "Nombre de prélèvements"
+        type: INTEGER
+      - name: nb_sup_valeur_sanitaire
+        description: "Nombre de prélèvements supérieurs à la valeur sanitaire"
         type: INTEGER
 
   - name: web__resultats_udi
@@ -90,7 +105,16 @@ models:
         tests:
           - not_null
           - accepted_values:
-              values: ["cvm", "pfas"]
+              values:
+                - cvm
+                - pfas
+                - sub_indus_perchlorate
+                - sub_indus_14dioxane
+                - metabolite_esa_metolachlore
+                - metabolite_chlorothalonil_r471811
+                - metabolite_chloridazone_desphenyl
+                - metabolite_chloridazone_methyl_desphenyl
+                - metabolite_atrazine_desethyl
       - name: resultat
         description: "Résultat qualitatif de l'analyse"
         type: VARCHAR
@@ -105,4 +129,10 @@ models:
         type: FLOAT
       - name: nb_parametres
         description: "Nombre de paramètres analysés"
+        type: INTEGER
+      - name: nb_prelevements
+        description: "Nombre de prélèvements"
+        type: INTEGER
+      - name: nb_sup_valeur_sanitaire
+        description: "Nombre de prélèvements supérieurs à la valeur sanitaire"
         type: INTEGER

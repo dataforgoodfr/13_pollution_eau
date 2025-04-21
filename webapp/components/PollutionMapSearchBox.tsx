@@ -7,7 +7,7 @@ import { Command, CommandGroup, CommandItem, CommandList } from "./ui/command";
 import { MapPin } from "lucide-react";
 
 import { CommandEmpty } from "cmdk";
-import { Building2, Home, X } from "lucide-react";
+import { X } from "lucide-react";
 
 interface IGNQueryResult {
   type: string;
@@ -19,6 +19,8 @@ interface IGNQueryResult {
     id: string;
     name: string;
     postcode: string;
+    type: string;
+    label: string;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     [key: string]: any;
   };
@@ -40,7 +42,7 @@ interface PollutionMapsSearchBoxProps {
 }
 
 export default function PollutionMapSearchBox({
-  onAddressFilter: onCommuneFilter,
+  onAddressFilter,
   //communeInseeCode,
 }: PollutionMapsSearchBoxProps) {
   const [filterString, setFilterString] = useState("");
@@ -99,12 +101,18 @@ export default function PollutionMapSearchBox({
 
   function handleAddressSelect(feature: IGNQueryResult) {
     setDropDownOpen(false);
-    setFilterString(feature.properties.label);
-    onCommuneFilter({
+
+    const displayText =
+      feature.properties.type === "municipality"
+        ? `${feature.properties.label} (${feature.properties.postcode})`
+        : feature.properties.label;
+
+    setFilterString(displayText);
+    onAddressFilter({
       center: feature.geometry.coordinates,
       zoom: 10,
       communeInseeCode: feature.properties.citycode,
-      address: feature.properties.label,
+      address: displayText,
     });
   }
 
@@ -112,7 +120,7 @@ export default function PollutionMapSearchBox({
     setFilterString("");
     setCommunesList([]);
     setDropDownOpen(false);
-    onCommuneFilter(null);
+    onAddressFilter(null);
   }
 
   return (
@@ -138,8 +146,19 @@ export default function PollutionMapSearchBox({
                         setDropDownOpen(true);
                       }
                     }}
+                    autoComplete="off"
+                    data-1p-ignore
                   />
                 </div>
+                {filterString && (
+                  <button
+                    onClick={clearSearch}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 focus:outline-none"
+                    aria-label="Clear search"
+                  >
+                    <X size={16} />
+                  </button>
+                )}
               </div>
             </PopoverAnchor>
             <PopoverContent
@@ -147,38 +166,35 @@ export default function PollutionMapSearchBox({
               onOpenAutoFocus={(e) => e.preventDefault()}
               align="start"
               sideOffset={5}
+              className="p-0"
             >
-              <Command>
-                <CommandEmpty className="py-6 text-center text-sm text-muted-foreground">
+              <Command className="rounded-lg border shadow-md">
+                <CommandEmpty className="py-2 text-center text-sm text-muted-foreground">
                   Aucune adresse trouvée.
                 </CommandEmpty>
-                <CommandList>
+                <CommandList className="max-h-[300px] overflow-auto">
                   <CommandGroup key="CommuneList">
                     {communesList.map((feature) => {
-                      let featureType = <Home />;
-
-                      switch (feature.properties.type) {
-                        case "street":
-                        case "housenumber":
-                          featureType = <Home />;
-                          break;
-                        default:
-                          featureType = <Building2 />;
-                      }
                       return (
                         <CommandItem
-                          className="flex grow"
+                          className="flex items-center py-2"
                           key={feature.properties.id}
                           value={feature.properties.id}
                           onSelect={() => handleAddressSelect(feature)}
                         >
-                          <div className="flex grow">
-                            <div className="size-5">{featureType}</div>
-                            <div className="grow gap-2 fit">
-                              <HilightLabel
-                                originalText={feature.properties.label}
-                                textToHilight={filterString}
-                              />
+                          <div className="flex items-center w-full">
+                            <div className="flex-grow">
+                              {feature.properties.type === "municipality" ? (
+                                <HilightLabel
+                                  originalText={`${feature.properties.label} (${feature.properties.postcode})`}
+                                  textToHilight={filterString}
+                                />
+                              ) : (
+                                <HilightLabel
+                                  originalText={feature.properties.label}
+                                  textToHilight={filterString}
+                                />
+                              )}
                             </div>
                           </div>
                         </CommandItem>
@@ -189,15 +205,6 @@ export default function PollutionMapSearchBox({
               </Command>
             </PopoverContent>
           </Popover>
-          {filterString && (
-            <button
-              onClick={clearSearch}
-              className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 focus:outline-none"
-              aria-label="Clear search"
-            >
-              <X size={16} />
-            </button>
-          )}
         </div>
       </div>
     </div>
@@ -228,9 +235,11 @@ function HilightLabel(props: { textToHilight: string; originalText: string }) {
       : "";
 
   return (
-    <p>
+    <p className="text-sm">
       {subStringBefore}
-      <mark className="font-normal bg-yellow-400">{higlightedSubString}</mark>
+      <mark className="font-medium bg-yellow-200 px-0.5 rounded-sm">
+        {higlightedSubString}
+      </mark>
       {subStringAfter}
     </p>
   );

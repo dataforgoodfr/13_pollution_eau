@@ -14,7 +14,14 @@ periodes AS (
 categories AS (
     SELECT unnest(ARRAY[
         'cvm',
-        'pfas'
+        'pfas',
+        'sub_indus_perchlorate',
+        'sub_indus_14dioxane',
+        'metabolite_esa_metolachlore',
+        'metabolite_chlorothalonil_r471811',
+        'metabolite_chloridazone_desphenyl',
+        'metabolite_chloridazone_methyl_desphenyl',
+        'metabolite_atrazine_desethyl'
     ]) AS categorie
 ),
 
@@ -51,7 +58,9 @@ SELECT
     r.ratio,
     r.dernier_prel_datetime,
     r.dernier_prel_valeur,
-    r.nb_parametres
+    r.nb_parametres,
+    r.nb_prelevements,
+    r.nb_sup_valeur_sanitaire
 FROM
     udi_periodes_categories AS upc
 LEFT JOIN

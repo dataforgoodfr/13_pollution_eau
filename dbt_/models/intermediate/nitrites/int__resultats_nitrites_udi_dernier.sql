@@ -121,22 +121,19 @@ SELECT
     split_nitrites_with_ref.nb_parametres,
     CASE
         WHEN -- Si nitrates (no3) et pas nitrites (no2)
-            split_nitrites_with_ref.valtraduite_no3 IS NOT NULL
-            AND split_nitrites_with_ref.valtraduite_no2 IS NULL
+            split_nitrites_with_ref.valtraduite_no2 IS NULL
             AND
             split_nitrites_with_ref.valtraduite_no3
             < split_nitrites_with_ref.limite_qualite_no3
             THEN 'inf_limite_qualite'
         WHEN
-            split_nitrites_with_ref.valtraduite_no3 IS NOT NULL
-            AND split_nitrites_with_ref.valtraduite_no2 IS NULL
+            split_nitrites_with_ref.valtraduite_no2 IS NULL
             AND
             split_nitrites_with_ref.valtraduite_no3
             >= split_nitrites_with_ref.limite_qualite_no3
             THEN 'sup_limite_qualite'
         WHEN -- Si nitrates (no3) ET nitrites (no2)
-            split_nitrites_with_ref.valtraduite_no3 IS NOT NULL
-            AND split_nitrites_with_ref.valtraduite_no2 IS NOT NULL
+            split_nitrites_with_ref.valtraduite_no2 IS NOT NULL
             AND (
                 split_nitrites_with_ref.valtraduite_no3
                 >= split_nitrites_with_ref.limite_qualite_no3
@@ -153,8 +150,7 @@ SELECT
             )
             THEN 'sup_limite_qualite'
         WHEN
-            split_nitrites_with_ref.valtraduite_no3 IS NOT NULL
-            AND split_nitrites_with_ref.valtraduite_no2 IS NOT NULL
+            split_nitrites_with_ref.valtraduite_no2 IS NOT NULL
             AND split_nitrites_with_ref.valtraduite_no3
             < split_nitrites_with_ref.limite_qualite_no3
             AND split_nitrites_with_ref.valtraduite_no2

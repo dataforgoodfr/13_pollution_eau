@@ -11,27 +11,32 @@ models:
           - not_null
           - unique
 
+      - name: categorie
+        description: "Catégorie du paramètre analysé (ici, toujours 'tous')."
+        type: VARCHAR
+
+      - name: periode
+        description: "Période d'analyse des prélèvements (ici, toujours 'dernier_prel')."
+        type: VARCHAR
+
       - name: dernier_prel_datetime
         description: "Date et heure du dernier prélèvement pris en compte dans l'analyse."
         type: TIMESTAMP
         tests:
           - not_null
-          - dbt_utils.expression_is_true:  
+          - dbt_utils.expression_is_true:
               expression: ">= CURRENT_DATE - INTERVAL 1 YEAR"
 
-      - name: resultat_all
+      - name: nb_parametres
+        description: "Nombre de paramètres analysés"
+        type: INTEGER
+
+      - name: resultat
         description: "Interprétation du résultat en fonction des seuils sanitaires et règlementaires."
         type: VARCHAR
         tests:
           - accepted_values:
               values:
                 - "inf_limites"
-                - "min_1_parametre_sup_limite_qualite"
-                - "min_1_parametre_sup_limite_sanitaire"
-
-      - name: periode
-        description: "Période d'analyse des prélèvements (ici, toujours 'dernier_prel')."
-        type: VARCHAR
-        tests:
-          - accepted_values:
-              values: ["dernier_prel"]
+                - "sup_limite_qualite"
+                - "sup_limite_sanitaire"

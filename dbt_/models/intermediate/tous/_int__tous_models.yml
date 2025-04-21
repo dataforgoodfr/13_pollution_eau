@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: int__resultats_tous_polluants_udi_dernier
+  - name: int__resultats_tous_udi_dernier
     description: "Résultats des derniers prélèvements pour tous les polluants par UDI. Ce modèle sélectionne le dernier prélèvement pour chaque paramètre et agrège les résultats pour identifier les dépassements des seuils sanitaires et/ou règlementaires."
     columns:
       - name: cdreseau

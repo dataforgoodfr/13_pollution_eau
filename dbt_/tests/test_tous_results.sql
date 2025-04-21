@@ -4,7 +4,7 @@ SELECT
     cdreseau,
     resultat
 FROM
-    {{ ref('int__resultats_tous_polluants_udi_dernier') }}
+    {{ ref('int__resultats_tous_udi_dernier') }}
 WHERE
     (
         cdreseau = '001000404'

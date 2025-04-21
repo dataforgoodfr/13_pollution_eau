@@ -120,6 +120,7 @@ models:
           combination_of_columns:
             - inseecommune
             - annee
+            - categorie
     columns:
       - name: inseecommune
         description: "Code INSEE de la commune"
@@ -175,6 +176,7 @@ models:
           combination_of_columns:
             - cdreseau
             - annee
+            - categorie
     columns:
       - name: cdreseau
         description: Code de l'installation (unité de distribution)

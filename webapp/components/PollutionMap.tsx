@@ -14,7 +14,7 @@ import { clsx } from "clsx";
 
 export default function PollutionMap() {
   const [period, setPeriod] = useState("dernier_prel");
-  const [category, setCategory] = useState("tous-polluants");
+  const [category, setCategory] = useState("tous");
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [displayMode, setDisplayMode] = useState<"communes" | "udis">("udis");
   const [mapState, setMapState] = useState<{

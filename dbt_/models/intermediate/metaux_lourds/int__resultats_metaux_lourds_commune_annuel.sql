@@ -35,7 +35,8 @@ SELECT
                 THEN referenceprel
             WHEN
                 cdparametresiseeaux = 'AS'
-                AND valtraduite IS NOT NULL AND valtraduite >= valeur_sanitaire_1
+                AND valtraduite IS NOT NULL
+                AND valtraduite >= valeur_sanitaire_1
                 THEN referenceprel
         END
     ) AS nb_depassements,

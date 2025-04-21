@@ -29,10 +29,10 @@ models:
               expression: "LIKE 'bilan_annuel%'"
       - name: nb_depassements
         description: "Nombre de prélèvements qui dépassent la valeur de référence"
-        type: INT
+        type: INTEGER
       - name: nb_prelevements
         description: "Nombre de prélèvements total"
-        type: INT
+        type: INTEGER
       - name: ratio_limite_qualite
         description: "Pourcentage de prélèvements qui dépassent la limite"
         type: FLOAT

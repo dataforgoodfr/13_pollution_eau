@@ -134,7 +134,7 @@ export default function PollutionMapMarker({
             ></div>
             <span className="">{resultLabel}</span>
           </div>
-          {realValue && date ? (
+          {realValue !== null && date ? (
             <p className="">
               Valeur: {realValue}
               <br />

@@ -1,0 +1,47 @@
+version: 2
+
+models:
+  - name: int__resultats_nitrate_udi_dernier
+    description: Resultats nitrate par UDI pour la temporalité 'derniers prélèvements'
+    columns:
+      - name: cdreseau
+        description: "Code de l'installation (unité de distribution)"
+        type: VARCHAR
+        tests:
+          - not_null
+          - unique
+      - name: categorie
+        description: "Catégorie du paramètre (pesticides, pfas, vcm, nitrates, etc.) selon la classification établie."
+        type: VARCHAR
+        tests:
+          - not_null
+          - accepted_values:
+              values: ["nitrate"]
+      - name: periode
+        description: "Période du résultat"
+        type: VARCHAR
+        tests:
+          - accepted_values:
+              values: ["dernier_prel"]
+      - name: dernier_prel_datetime
+        description: "Date du dernier prélèvement considéré"
+        type: TIMESTAMP
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: ">= CURRENT_DATE - INTERVAL 1 YEAR"
+      - name: dernier_prel_valeur
+        description: "Valeur du dernier prelevement"
+        type: FLOAT
+      - name: nb_parametres
+        description: "Nombre de paramètres analysés"
+        type: INTEGER
+      - name: resultat
+        description: "Interprétation du résultat en fonction des seuils et des valeurs mesurées."
+        type: VARCHAR
+        tests:
+          - not_null
+          - accepted_values:
+              values:
+                - inf_limite_qualite
+                - sup_limite_qualite

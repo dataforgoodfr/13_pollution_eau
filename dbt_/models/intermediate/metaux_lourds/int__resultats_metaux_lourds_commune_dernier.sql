@@ -44,30 +44,32 @@ SELECT
             THEN 'non_quantifie'
         WHEN
             cdparametresiseeaux = 'PB'
-            AND valtraduite >= 10
+            AND valtraduite >= limite_qualite
             THEN 'sup_limite_qualite'
         WHEN
+            -- 5 est la future limite de qualité appliquée
+            -- à partir de 2036
             cdparametresiseeaux = 'PB'
             AND valtraduite >= 5
-            AND valtraduite < 10
+            AND valtraduite < limite_qualite
             THEN 'sup_limite_qualite_2036'
         WHEN
             cdparametresiseeaux = 'PB'
             AND valtraduite < 5
-            THEN 'inf_5'
+            THEN 'inf_limite_qualite'
         WHEN
             cdparametresiseeaux = 'AS'
-            AND valtraduite >= 13
+            AND valtraduite >= valeur_sanitaire_1
             THEN 'sup_limite_sanitaire'
         WHEN
             cdparametresiseeaux = 'AS'
-            AND valtraduite >= 10
-            AND valtraduite < 13
-            THEN 'as_sup_10_inf_13'
+            AND valtraduite >= limite_qualite
+            AND valtraduite < valeur_sanitaire_1
+            THEN 'sup_limite_qualite'
         WHEN
             cdparametresiseeaux = 'AS'
-            AND valtraduite < 10
-            THEN 'inf_10'
+            AND valtraduite < limite_qualite
+            THEN 'inf_limite_qualite'
         ELSE 'erreur'
     END AS resultat
 FROM

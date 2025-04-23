@@ -22,6 +22,7 @@ categories AS (
         'metabolite_chloridazone_desphenyl',
         'metabolite_chloridazone_methyl_desphenyl',
         'metabolite_atrazine_desethyl',
+        'nitrate',
         'tous'
     ]) AS categorie
 ),

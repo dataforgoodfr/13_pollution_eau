@@ -513,7 +513,7 @@ export const availableCategories: ICategory[] = [
     ],
   },
   {
-    id: "nitrates-et-nitrites",
+    id: "nitrate",
     nomAffichage: "Nitrates et Nitrites",
     disable: false,
     enfants: [],

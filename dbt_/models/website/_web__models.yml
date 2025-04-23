@@ -47,6 +47,7 @@ models:
                 - metabolite_chloridazone_desphenyl
                 - metabolite_chloridazone_methyl_desphenyl
                 - metabolite_atrazine_desethyl
+                - nitrate
                 - tous
       - name: resultat
         description: "Résultat qualitatif de l'analyse"
@@ -116,6 +117,7 @@ models:
                 - metabolite_chloridazone_desphenyl
                 - metabolite_chloridazone_methyl_desphenyl
                 - metabolite_atrazine_desethyl
+                - nitrate
                 - tous
       - name: resultat
         description: "Résultat qualitatif de l'analyse"

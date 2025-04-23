@@ -532,14 +532,14 @@ export const availableCategories: ICategory[] = [
         couleurFond: "#9B9B9B",
         picto: null,
       },
-      conforme: {
+      inf_limite_qualite: {
         label:
           "Concentrations inférieures aux limites de qualité (eau conforme)",
         couleur: "#B4E681",
         couleurFond: "#B4E681",
         picto: null,
       },
-      non_conforme: {
+      sup_limite_qualite: {
         label:
           "Concentrations supérieures aux limites de qualité (eau non conforme avec recommandation de non-consommation pour les femmes enceintes et les nourrissons)",
         couleur: "#E93E3A",

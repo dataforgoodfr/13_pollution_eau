@@ -61,7 +61,7 @@ WHERE
         cdreseau = '011000196'
         AND dernier_prel_datetime = '2024-11-27 10:57:00'
         AND resultat != 'inf_limite_qualite'
-     )
+    )
 UNION ALL
 -- annuel
 SELECT

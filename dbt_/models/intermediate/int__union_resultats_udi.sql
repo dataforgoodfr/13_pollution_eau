@@ -116,3 +116,17 @@ SELECT
     null AS nb_sup_valeur_sanitaire
 FROM
     {{ ref('int__resultats_nitrate_udi_dernier') }}
+UNION ALL
+SELECT
+    cdreseau,
+    periode,
+    categorie,
+    null AS resultat,
+    ratio_limite_sanitaire AS ratio,
+    null AS dernier_prel_datetime,
+    null AS dernier_prel_valeur,
+    null AS nb_parametres,
+    nb_prelevements,
+    null AS nb_sup_valeur_sanitaire
+FROM
+    {{ ref('int__resultats_nitrate_udi_annuel') }}

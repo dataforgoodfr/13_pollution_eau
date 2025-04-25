@@ -67,17 +67,15 @@ UNION ALL
 SELECT
     'annuel' AS periode,
     cdreseau,
-    categorie,
     '' AS resultat,
     nb_depassements,
     nb_prelevements,
     ratio_limite_sanitaire
 FROM
-    {{ ref('int__resultats_nitrites_udi_annuel') }}
+    {{ ref('int__resultats_nitrate_udi_annuel') }}
 WHERE
     (
         cdreseau = '092003070'
-        AND categorie = 'nitrate'
         AND annee = '2024'
         AND (
             nb_prelevements != 806
@@ -87,7 +85,6 @@ WHERE
     OR
     (
         cdreseau = '071001155'
-        AND categorie = 'nitrate'
         AND annee = '2023'
         AND (
             nb_prelevements != 1
@@ -97,7 +94,6 @@ WHERE
     OR
     (
         cdreseau = '036000670'
-        AND categorie = 'nitrate'
         AND annee = '2024'
         AND (
             nb_prelevements != 27
@@ -107,14 +103,12 @@ WHERE
     OR
     (
         cdreseau = '092003070'
-        AND categorie = 'nitrate'
         AND annee IN (2020, 2021, 2022, 2023, 2024, 2025)
         AND nb_depassements != 0
     )
     OR
     (
         cdreseau = '089003503'
-        AND categorie = 'nitrate'
         AND annee = '2020'
         AND (
             nb_prelevements != 12

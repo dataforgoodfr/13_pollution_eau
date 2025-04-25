@@ -110,7 +110,7 @@ SELECT
     resultat,
     null AS ratio,
     dernier_prel_datetime,
-    null AS dernier_prel_valeur,
+    dernier_prel_valeur,
     nb_parametres,
     null AS nb_prelevements,
     null AS nb_sup_valeur_sanitaire

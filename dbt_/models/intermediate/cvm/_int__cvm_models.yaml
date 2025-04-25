@@ -29,10 +29,10 @@ models:
               expression: "LIKE 'bilan_annuel%'"
       - name: nb_depassements
         description: "Nombre de prélèvements qui dépassent la valeur de référence"
-        type: INT
+        type: INTEGER
       - name: nb_prelevements
         description: "Nombre de prélèvements total"
-        type: INT
+        type: INTEGER
       - name: ratio_limite_qualite
         description: "Pourcentage de prélèvements qui dépassent la limite"
         type: FLOAT
@@ -72,7 +72,7 @@ models:
         type: FLOAT
       - name: nb_parametres
         description: "nombre de paramètres mesurés sur le prélèvement pour la catégorie considérée"
-        type: INT
+        type: INTEGER
         tests:
           - not_null
       - name: resultat
@@ -116,10 +116,10 @@ models:
               expression: "LIKE 'bilan_annuel%'"
       - name: nb_depassements
         description: "Nombre de prélèvements qui dépassent la valeur de référence"
-        type: INT
+        type: INTEGER
       - name: nb_prelevements
         description: "Nombre de prélèvements total"
-        type: INT
+        type: INTEGER
       - name: ratio_limite_qualite
         description: "Pourcentage de prélèvements qui dépassent la limite"
         type: FLOAT
@@ -157,15 +157,15 @@ models:
           - dbt_utils.expression_is_true:
               expression: ">= CURRENT_DATE - INTERVAL 1 YEAR"
       - name: dernier_prel_valeur
-        description: "valeur mesurée sur le dernier prélèvement considéré"
+        description: "Valeur du dernier prelevement"
         type: FLOAT
       - name: nb_parametres
-        description: "nombre de paramètres mesurés sur le prélèvement pour la catégorie considérée"
-        type: INT
+        description: "Nombre de paramètres analysés"
+        type: INTEGER
         tests:
           - not_null
       - name: resultat
-        description: "classification de la substance pour le prélèvement"
+        description: "Interprétation du résultat en fonction des seuils et des valeurs mesurées."
         type: VARCHAR
         tests:
           - not_null

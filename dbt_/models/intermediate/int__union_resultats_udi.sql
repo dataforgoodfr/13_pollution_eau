@@ -29,6 +29,21 @@ SELECT
 FROM
     {{ ref('int__resultats_cvm_udi_dernier') }}
 UNION ALL
+-- pesticide/metabolite
+SELECT
+    cdreseau,
+    periode,
+    categorie,
+    resultat,
+    null AS ratio,
+    dernier_prel_datetime,
+    dernier_prel_valeur,
+    nb_parametres,
+    null AS nb_prelevements,
+    null AS nb_sup_valeur_sanitaire
+FROM
+    {{ ref('int__resultats_metabolite_specifique_udi_dernier') }}
+UNION ALL
 -- pfas
 SELECT
     cdreseau,
@@ -87,7 +102,7 @@ SELECT
 FROM
     {{ ref('int__resultats_sub_indus_udi_dernier') }}
 UNION ALL
--- nitrites
+-- nitrate
 SELECT
     cdreseau,
     periode,

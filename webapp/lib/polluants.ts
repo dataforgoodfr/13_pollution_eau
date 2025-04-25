@@ -30,6 +30,7 @@ export interface ICategory {
   risquesSante: string;
   regulation: string;
   sourcesExposition: string;
+  detailsLegende?: string;
   sousCategories?: boolean;
   titreStatut?: string;
   descriptionStatut?: string;
@@ -44,7 +45,7 @@ export interface ICategory {
 
 export const availableCategories: ICategory[] = [
   {
-    id: "tous-polluants",
+    id: "tous",
     nomAffichage: "Tous polluants",
     disable: false,
     enfants: [],
@@ -56,19 +57,19 @@ export const availableCategories: ICategory[] = [
     regulation: "Directive cadre sur l'eau (DCE), Code de l'environnement.",
     sourcesExposition: "Eau potable, air, alimentation, sols contaminés.",
     resultats: {
-      aucun_depassement: {
+      inf_limites: {
         label: "Aucun dépassement des limites de qualité",
         couleur: "#B4E681",
         couleurFond: "#B4E681",
         picto: null,
       },
-      limite_qualite: {
+      sup_limite_qualite: {
         label: "Au moins un dépassement des limites de qualité",
         couleur: "#F3903F",
         couleurFond: "#F3903F",
         picto: "warning",
       },
-      limite_sanitaire: {
+      sup_limite_sanitaire: {
         label: "Au moins un dépassement des limites sanitaires",
         couleur: "#E93E3A",
         couleurFond: "#E93E3A",
@@ -91,6 +92,8 @@ export const availableCategories: ICategory[] = [
       "Réglementation en cours d'évolution, restriction progressive en Europe.",
     sourcesExposition:
       "Ustensiles de cuisine, emballages alimentaires, eau potable.",
+    detailsLegende:
+      "* Limite non réglementaire, recommandée par le Haut Conseil de la Santé Publique \n** Eau conforme à la limite réglementaire mais qui dépasse la limite recommandée par le HCSP",
     resultats: {
       non_recherche: {
         label: "Non recherché",
@@ -113,7 +116,7 @@ export const availableCategories: ICategory[] = [
       },
       somme_20pfas_inf_0_1_et_4pfas_sup_0_02: {
         label:
-          "La somme des 4 PFAS (PFOA, PFOS, PFNA, PFHxS) > 0,02 µg/L (limite non réglementaire recommandée par le Haut Conseil de la Santé Publique) mais la somme des 20 PFAS < 0,1 µg/L (eau conforme à la limite réglementaire mais qui dépasse la limite recommandée par le HCSP)",
+          "La somme des 4 PFAS (PFOA, PFOS, PFNA, PFHxS) > 0,02 µg/L* mais la somme des 20 PFAS < 0,1 µg/L**",
         couleur: "#FDC70C",
         couleurFond: "#FDC70C",
         picto: null,
@@ -258,7 +261,7 @@ export const availableCategories: ICategory[] = [
         },
         enfants: [
           {
-            id: "metabolites-esa-metachlore",
+            id: "metabolite_esa_metolachlore",
             nomAffichage: "ESA-métolachlore",
             disable: false,
             enfants: [],
@@ -267,6 +270,8 @@ export const availableCategories: ICategory[] = [
             risquesSante: "Peu de données, potentiellement toxique.",
             regulation: "Limite de 0,1 µg/L en eau potable.",
             sourcesExposition: "Contamination de l'eau souterraine.",
+            detailsLegende:
+              "* Si l'ESA métolachlore était considéré comme un métabolite pertinent, l'eau serait déclarée \"non conforme\".",
             sousCategories: false,
             resultats: {
               non_recherche: {
@@ -287,9 +292,8 @@ export const availableCategories: ICategory[] = [
                 couleurFond: "#FFF33B",
                 picto: null,
               },
-              entre_0_1_et_0_9: {
-                label:
-                  "Concentration comprise entre 0,1 et 0,9 µg/L (si l'ESA métolachlore était considéré comme un métabolite pertinent, l'eau serait déclarée \"non conforme\")",
+              inf_limite_qualite_sup_0_1: {
+                label: "Concentration comprise entre 0,1 et 0,9 µg/L*",
                 couleur: "#FDC70C",
                 couleurFond: "#FDC70C",
                 picto: null,
@@ -311,7 +315,7 @@ export const availableCategories: ICategory[] = [
             },
           },
           {
-            id: "metabolites-chlorothalonil-r471811",
+            id: "metabolite_chlorothalonil_r471811",
             nomAffichage: "Chlorothalonil R471811",
             disable: false,
             enfants: [],
@@ -320,6 +324,8 @@ export const availableCategories: ICategory[] = [
             risquesSante: "Classé comme probablement cancérigène.",
             regulation: "Interdit en 2019 par l'UE.",
             sourcesExposition: "Présent dans les nappes phréatiques.",
+            detailsLegende:
+              '* Si le Chlorothalonil R471811 était considéré comme un métabolite pertinent, l\'eau serait déclarée "non conforme".',
             sousCategories: false,
             resultats: {
               non_recherche: {
@@ -340,9 +346,8 @@ export const availableCategories: ICategory[] = [
                 couleurFond: "#FFF33B",
                 picto: null,
               },
-              entre_0_1_et_0_9: {
-                label:
-                  'Concentration comprise entre 0,1 et 0,9 µg/L*\n\n (si le Chlorothalonil R471811 était considéré comme un métabolite pertinent, l\'eau serait déclarée "non conforme")',
+              inf_limite_qualite_sup_0_1: {
+                label: "Concentration comprise entre 0,1 et 0,9 µg/L*",
                 couleur: "#FDC70C",
                 couleurFond: "#FDC70C",
                 picto: null,
@@ -364,7 +369,7 @@ export const availableCategories: ICategory[] = [
             },
           },
           {
-            id: "metabolites-chloridazone-desphenyl",
+            id: "metabolite_chloridazone_desphenyl",
             nomAffichage: "Chloridazone desphényl",
             disable: false,
             enfants: [],
@@ -411,7 +416,7 @@ export const availableCategories: ICategory[] = [
             },
           },
           {
-            id: "chloridazone-methyl-desphenyl",
+            id: "metabolite_chloridazone_methyl_desphenyl",
             nomAffichage: "Chloridazone methyl desphényl",
             disable: false,
             enfants: [],
@@ -457,7 +462,7 @@ export const availableCategories: ICategory[] = [
             },
           },
           {
-            id: "metabolites-atrazine-desethyl",
+            id: "metabolite_atrazine_desethyl",
             nomAffichage: "Atrazine déséthyl",
             disable: false,
             enfants: [],
@@ -508,7 +513,7 @@ export const availableCategories: ICategory[] = [
     ],
   },
   {
-    id: "nitrates-et-nitrites",
+    id: "nitrate",
     nomAffichage: "Nitrates et Nitrites",
     disable: false,
     enfants: [],
@@ -527,14 +532,14 @@ export const availableCategories: ICategory[] = [
         couleurFond: "#9B9B9B",
         picto: null,
       },
-      conforme: {
+      inf_limite_qualite: {
         label:
           "Concentrations inférieures aux limites de qualité (eau conforme)",
         couleur: "#B4E681",
         couleurFond: "#B4E681",
         picto: null,
       },
-      non_conforme: {
+      sup_limite_qualite: {
         label:
           "Concentrations supérieures aux limites de qualité (eau non conforme avec recommandation de non-consommation pour les femmes enceintes et les nourrissons)",
         couleur: "#E93E3A",
@@ -764,6 +769,8 @@ export const availableCategories: ICategory[] = [
           "Interdit dans l'essence et les peintures, limite de 10 µg/L en eau potable.",
         sourcesExposition:
           "Vieilles canalisations, pollution industrielle, sol contaminé.",
+        detailsLegende:
+          "* Une nouvelle limite réglementaire fixée à 5 µg/L s'appliquera en 2036. D'ici cette date, la limite actuelle de 10 µg/L continue de s'appliquer.",
         sousCategories: false,
         resultats: {
           non_recherche: {
@@ -779,14 +786,13 @@ export const availableCategories: ICategory[] = [
             picto: null,
           },
           inf_5: {
-            label:
-              "Concentration < 5 µg/L (une nouvelle limite réglementaire fixée à 5 µg/L s'appliquera en 2036. D'ici cette date, la limite actuelle de 10 µg/L continue de s'appliquer)",
+            label: "Concentration < 5 µg/L*",
             couleur: "#FFF33B",
             couleurFond: "#FFF33B",
             picto: null,
           },
           entre_5_et_10: {
-            label: "Concentration comprise entre 5 µg/L et 10 µg/L",
+            label: "Concentration comprise entre 5 µg/L et 10 µg/L*",
             couleur: "#FDC70C",
             couleurFond: "#FDC70C",
             picto: null,

@@ -7,9 +7,14 @@ import type {
 } from "maplibre-gl";
 
 /**
- * Generate the map color expression for MapLibre GL
- * This creates a "case" expression for use in map style
- * @returns A MapLibre GL expression for the fill-color property
+ * Generates a color expression for MapLibre GL based on data from pmtiles.
+ *
+ * Creates a case-based expression that maps different pollution values to specific colors
+ * for rendering on the map. Handles both "dernier_prelevement" and "bilan_annuel" data periods.
+ *
+ * Returns a MapLibre GL expression for the fill-color property
+ *
+ * MapLibre expressions documentation : https://maplibre.org/maplibre-style-spec/expressions/
  */
 export function generateColorExpression(
   category: string,
@@ -24,11 +29,29 @@ export function generateColorExpression(
     return defaultColor;
   }
 
+  // Check if we have no data for this zone (when either cdreseau or commune_code_insee exists but is empty)
+  // If yes, set the color to transparent to hide these zones on the map
+  cases.push([
+    "any",
+    ["all", ["has", "cdreseau"], ["==", ["get", "cdreseau"], ""]],
+    [
+      "all",
+      ["has", "commune_code_insee"],
+      ["==", ["get", "commune_code_insee"], ""],
+    ],
+  ]);
+  cases.push("transparent"); // Transparent for no data
+
   // dernier prélèvement specific logic
   if (period.startsWith("dernier_prel")) {
-    const propertyId = getPropertyName(period, category, "resultat");
+    const resultatProp = getPropertyName(period, category, "resultat");
     Object.entries(categoryDetails.resultats).forEach(([value, detail]) => {
-      cases.push(["==", ["get", propertyId], value]);
+      // the value "non_recherche" is actually an empty string so we set a special case for it
+      if (value === "non_recherche") {
+        cases.push(["==", ["get", resultatProp], ""]);
+      } else {
+        cases.push(["==", ["get", resultatProp], value]);
+      }
 
       // Check if the color is valid
       const color = detail.couleur || detail.couleurFond;
@@ -83,7 +106,7 @@ export function generateColorExpression(
   }
 
   if (cases.length > 0) {
-    const expression = ["case", ...cases, defaultColor];
+    const expression = ["case", ...cases, "#333333"]; // black for unmatched cases
     console.log("Expression:", expression);
     return expression as DataDrivenPropertyValueSpecification<ColorSpecification>;
   } else {

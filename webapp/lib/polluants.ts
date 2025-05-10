@@ -23,6 +23,7 @@ interface DetailResultat {
 export interface ICategory {
   id: string;
   nomAffichage: string;
+  pathNomAffichage?: string;
   disable: boolean;
   enfants: ICategory[];
   affichageBlocPageUDI: boolean;
@@ -180,6 +181,7 @@ export const availableCategories: ICategory[] = [
       {
         id: "substances-actives",
         nomAffichage: "Substances actives",
+        pathNomAffichage: "pesticides",
         disable: false,
         affichageBlocPageUDI: false,
         enfants: [],
@@ -222,6 +224,7 @@ export const availableCategories: ICategory[] = [
       {
         id: "metabolites",
         nomAffichage: "Métabolites",
+        pathNomAffichage: "pesticides",
         disable: false,
         affichageBlocPageUDI: false,
         description: "Produits de dégradation des substances actives.",
@@ -263,6 +266,8 @@ export const availableCategories: ICategory[] = [
           {
             id: "metabolite_esa_metolachlore",
             nomAffichage: "ESA-métolachlore",
+            pathNomAffichage: "pesticides > metabolites",
+
             disable: false,
             enfants: [],
             affichageBlocPageUDI: false,
@@ -317,6 +322,7 @@ export const availableCategories: ICategory[] = [
           {
             id: "metabolite_chlorothalonil_r471811",
             nomAffichage: "Chlorothalonil R471811",
+            pathNomAffichage: "pesticides > metabolites",
             disable: false,
             enfants: [],
             affichageBlocPageUDI: true,
@@ -371,6 +377,7 @@ export const availableCategories: ICategory[] = [
           {
             id: "metabolite_chloridazone_desphenyl",
             nomAffichage: "Chloridazone desphényl",
+            pathNomAffichage: "pesticides > metabolites",
             disable: false,
             enfants: [],
             affichageBlocPageUDI: true,
@@ -418,6 +425,7 @@ export const availableCategories: ICategory[] = [
           {
             id: "metabolite_chloridazone_methyl_desphenyl",
             nomAffichage: "Chloridazone methyl desphényl",
+            pathNomAffichage: "pesticides > metabolites",
             disable: false,
             enfants: [],
             affichageBlocPageUDI: true,
@@ -606,6 +614,7 @@ export const availableCategories: ICategory[] = [
       {
         id: "sub_indus_14dioxane",
         nomAffichage: "1,4-Dioxane",
+        pathNomAffichage: "Substances industrielles",
         disable: false,
         enfants: [],
         affichageBlocPageUDI: true,
@@ -646,6 +655,7 @@ export const availableCategories: ICategory[] = [
       {
         id: "sub_indus_perchlorate",
         nomAffichage: "Perchlorate",
+        pathNomAffichage: "Substances industrielles",
         disable: false,
         enfants: [],
         affichageBlocPageUDI: true,
@@ -711,6 +721,7 @@ export const availableCategories: ICategory[] = [
       {
         id: "arsenic",
         nomAffichage: "Arsenic",
+        pathNomAffichage: "Métaux lourds",
         disable: false,
         enfants: [],
         affichageBlocPageUDI: true,
@@ -758,6 +769,7 @@ export const availableCategories: ICategory[] = [
       {
         id: "plomb",
         nomAffichage: "Plomb",
+        pathNomAffichage: "Métaux lourds",
         disable: false,
         enfants: [],
         affichageBlocPageUDI: true,

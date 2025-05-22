@@ -1,6 +1,47 @@
 version: 2
 
 models:
+  - name: int__resultats_nitrate_udi_annuel
+    description: Résultats nitrates par UDI pour la temporalité 'bilan_annuel'
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - cdreseau
+            - annee
+    columns:
+      - name: cdreseau
+        description: "Code de l'installation (unité de distribution)"
+        tests:
+          - not_null
+      - name: annee
+        description: "Annee du prevelvement"
+        type: SMALLINT
+      - name: categorie
+        description: "Catégorie du paramètre (pesticides, pfas, cvm, nitrates, etc.) selon la classification établie."
+        tests:
+          - accepted_values:
+              values: ["nitrate"]
+      - name: periode
+        description: "Période du résultat"
+        type: VARCHAR
+        tests:
+          - dbt_utils.expression_is_true:
+              expression: "LIKE 'bilan_annuel%'"
+      - name: nb_depassements
+        description: "Nombre de prélèvements qui dépassent la valeur de référence"
+        type: INTEGER
+      - name: nb_prelevements
+        description: "Nombre de prélèvements total"
+        type: INTEGER
+      - name: ratio
+        description: "Pourcentage de prélèvements qui dépassent la limite"
+        type: FLOAT
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              max_value: 1
+
   - name: int__resultats_nitrate_udi_dernier
     description: Resultats nitrate par UDI pour la temporalité 'derniers prélèvements'
     columns:
@@ -11,7 +52,7 @@ models:
           - not_null
           - unique
       - name: categorie
-        description: "Catégorie du paramètre (pesticides, pfas, vcm, nitrates, etc.) selon la classification établie."
+        description: "Catégorie du paramètre (pesticides, pfas, cvm, nitrates, etc.) selon la classification établie."
         type: VARCHAR
         tests:
           - not_null
@@ -45,44 +86,3 @@ models:
               values:
                 - inf_limite_qualite
                 - sup_limite_qualite
-
-  - name: int__resultats_nitrate_udi_annuel
-    description: Résultats nitrates par UDI pour la temporalité 'bilan_annuel'
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - cdreseau
-            - annee
-    columns:
-      - name: cdreseau
-        description: "Code de l'installation (unité de distribution)"
-        tests:
-          - not_null
-      - name: annee
-        description: "Annee du prevelvement"
-        type: SMALLINT
-      - name: categorie
-        description: "Catégorie du paramètre (pesticides, pfas, vcm, nitrates, etc.) selon la classification établie."
-        tests:
-          - accepted_values:
-              values: ["nitrate"]
-      - name: periode
-        description: "Période du résultat"
-        type: VARCHAR
-        tests:
-          - dbt_utils.expression_is_true:
-              expression: "LIKE 'bilan_annuel%'"
-      - name: nb_depassements
-        description: "Nombre de prélèvements qui dépassent la valeur de référence"
-        type: INTEGER
-      - name: nb_prelevements
-        description: "Nombre de prélèvements total"
-        type: INTEGER
-      - name: ratio_limite_sanitaire
-        description: "Pourcentage de prélèvements qui dépassent la limite"
-        type: FLOAT
-        tests:
-          - not_null
-          - dbt_expectations.expect_column_values_to_be_between:
-              min_value: 0
-              max_value: 1

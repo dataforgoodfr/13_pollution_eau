@@ -70,7 +70,7 @@ SELECT
     '' AS resultat,
     nb_depassements,
     nb_prelevements,
-    ratio_limite_sanitaire
+    ratio
 FROM
     {{ ref('int__resultats_nitrate_udi_annuel') }}
 WHERE

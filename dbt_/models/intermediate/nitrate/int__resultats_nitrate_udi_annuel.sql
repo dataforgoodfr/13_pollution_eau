@@ -4,7 +4,7 @@ prels AS (
         de_partition AS annee,
         cdreseau,
         referenceprel,
-        datetimeprel,
+        MAX(datetimeprel) AS datetimeprel,
         COUNT(DISTINCT cdparametresiseeaux) AS nb_parametres,
         MAX(
             CASE
@@ -37,8 +37,7 @@ prels AS (
     GROUP BY
         annee,
         cdreseau,
-        referenceprel,
-        datetimeprel,
+        referenceprel
 ),
 
 valeur_ref AS (
@@ -81,8 +80,7 @@ SELECT
             WHEN
                 prels.valtraduite_no3 >= valeur_ref.limite_qualite_no3
                 OR prels.valtraduite_no2 >= valeur_ref.limite_qualite_no2
-                OR prels.valtraduite_no3_no2
-                >= valeur_ref.limite_qualite_no3_no2
+                OR prels.valtraduite_no3_no2 >= valeur_ref.limite_qualite_no3_no2
                 OR prels.valtraduite_no3 / 50 + prels.valtraduite_no2 / 3
                 >= valeur_ref.limite_qualite_no3_no2
                 THEN prels.referenceprel
@@ -96,8 +94,7 @@ SELECT
                 WHEN
                     prels.valtraduite_no3 >= valeur_ref.limite_qualite_no3
                     OR prels.valtraduite_no2 >= valeur_ref.limite_qualite_no2
-                    OR prels.valtraduite_no3_no2
-                    >= valeur_ref.limite_qualite_no3_no2
+                    OR prels.valtraduite_no3_no2 >= valeur_ref.limite_qualite_no3_no2
                     OR prels.valtraduite_no3 / 50 + prels.valtraduite_no2 / 3
                     >= valeur_ref.limite_qualite_no3_no2
                     THEN prels.referenceprel
@@ -105,7 +102,7 @@ SELECT
         )::float
         /
         COUNT(DISTINCT prels.referenceprel)::float
-    ) AS ratio_limite_sanitaire
+    ) AS ratio
 
 FROM prels
 CROSS JOIN valeur_ref

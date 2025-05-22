@@ -29,6 +29,35 @@ SELECT
 FROM
     {{ ref('int__resultats_cvm_udi_dernier') }}
 UNION ALL
+-- nitrate
+SELECT
+    cdreseau,
+    periode,
+    categorie,
+    null AS resultat,
+    ratio,
+    null AS dernier_prel_datetime,
+    null AS dernier_prel_valeur,
+    null AS nb_parametres,
+    nb_prelevements,
+    null AS nb_sup_valeur_sanitaire
+FROM
+    {{ ref('int__resultats_nitrate_udi_annuel') }}
+UNION ALL
+SELECT
+    cdreseau,
+    periode,
+    categorie,
+    resultat,
+    null AS ratio,
+    dernier_prel_datetime,
+    dernier_prel_valeur,
+    nb_parametres,
+    null AS nb_prelevements,
+    null AS nb_sup_valeur_sanitaire
+FROM
+    {{ ref('int__resultats_nitrate_udi_dernier') }}
+UNION ALL
 -- pesticide/metabolite
 SELECT
     cdreseau,
@@ -101,18 +130,3 @@ SELECT
     null AS nb_sup_valeur_sanitaire
 FROM
     {{ ref('int__resultats_sub_indus_udi_dernier') }}
-UNION ALL
--- nitrate
-SELECT
-    cdreseau,
-    periode,
-    categorie,
-    resultat,
-    null AS ratio,
-    dernier_prel_datetime,
-    dernier_prel_valeur,
-    nb_parametres,
-    null AS nb_prelevements,
-    null AS nb_sup_valeur_sanitaire
-FROM
-    {{ ref('int__resultats_nitrate_udi_dernier') }}

@@ -62,3 +62,71 @@ WHERE
         AND dernier_prel_datetime = '2024-11-27 10:57:00'
         AND resultat != 'inf_limite_qualite'
     )
+UNION ALL
+-- annuel
+SELECT
+    'annuel' AS periode,
+    cdreseau,
+    '' AS resultat,
+    nb_depassements,
+    nb_prelevements,
+    ratio
+FROM
+    {{ ref('int__resultats_nitrate_udi_annuel') }}
+WHERE
+    (
+        cdreseau = '092003070'
+        AND annee = '2024'
+        AND (
+            nb_prelevements != 806
+            OR nb_depassements != 0
+            OR ratio != 0
+        )
+    )
+    OR
+    (
+        cdreseau = '071001155'
+        AND annee = '2023'
+        AND (
+            nb_prelevements != 1
+            OR nb_depassements != 0
+        )
+    )
+    OR
+    (
+        cdreseau = '036000670'
+        AND annee = '2024'
+        AND (
+            nb_prelevements != 27
+            OR nb_depassements != 27 -- depassements de N03
+        )
+    )
+    OR
+    (
+        cdreseau = '089003503'
+        AND annee = '2020'
+        AND (
+            nb_prelevements != 12 -- depassements de N03 et N03_N02
+            OR nb_depassements != 3
+            OR ratio != 0.25
+        )
+    )
+    OR
+    (
+        cdreseau = '055000713'
+        AND annee = '2023'
+        AND (
+            nb_prelevements != 14
+            OR nb_depassements != 6 -- depassements de N02
+            OR ratio < 0.42
+        )
+    )
+    OR
+    (
+        cdreseau = '027000943'
+        AND annee = '2021'
+        AND (
+            nb_prelevements != 63
+            OR nb_depassements != 4 -- depassements de N03 et N03_N02
+        )
+    )

@@ -791,6 +791,19 @@ export const availableCategories: ICategory[] = [
         picto: "red cross",
       },
     },
+    resultatsAnnuels: {
+      nonRechercheLabel: "Aucune recherche dans l'année",
+      nonRechercheCouleur: "#b7b7b7",
+      ratioLimites: [
+        { limite: 0, label: "0%", couleur: "#B4E681" },
+        { limite: 0.25, label: "< 25%", couleur: "#FFF33B" },
+        { limite: 0.5, label: "25 - 50%", couleur: "#FDC70C" },
+        { limite: 0.75, label: "50 - 75%", couleur: "#F3903F" },
+        { limite: 1, label: "75 - 100%", couleur: "#ED683C" },
+      ],
+      ratioLabel: "Part des prélèvements dépassant la limite",
+      valeurSanitaire: false,
+    },
   },
   {
     id: "sub_indus",

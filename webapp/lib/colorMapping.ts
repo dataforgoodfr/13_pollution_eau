@@ -25,7 +25,7 @@ export function generateColorExpression(
   const defaultColor = "#9B9B9B"; // Default color for unmatched cases
   const categoryDetails = getCategoryById(category);
 
-  if (!categoryDetails || !categoryDetails.resultats) {
+  if (!categoryDetails) {
     return defaultColor;
   }
 
@@ -62,6 +62,10 @@ export function generateColorExpression(
   }
   // bilan annuel specific logic
   else if (period.startsWith("bilan_annuel")) {
+    if (!categoryDetails.resultatsAnnuels) {
+      return defaultColor;
+    }
+
     const ratioProp = getPropertyName(period, category, "ratio");
     const nbPrelevementsProp = getPropertyName(
       period,
@@ -74,35 +78,34 @@ export function generateColorExpression(
       "nb_sup_valeur_sanitaire",
     );
 
-    // Check if nb_prelevements is 0 or empty
+    // Check if nb_prelevements is 0 or empty (no research), or ratio is empty
     cases.push([
       "any",
       ["==", ["get", nbPrelevementsProp], ""],
       ["==", ["get", nbPrelevementsProp], 0],
+      ["==", ["get", ratioProp], ""],
     ]);
-    cases.push(defaultColor); // Grey for no data/prelevements
+    cases.push(categoryDetails.resultatsAnnuels.nonRechercheCouleur);
 
     // Check if nb_sup_valeur_sanitaire is > 0 and not empty
-    cases.push([
-      "all",
-      ["!=", ["get", nbSupValeurSanitaireProp], ""],
-      ["==", ["typeof", ["get", nbSupValeurSanitaireProp]], "number"],
-      [">", ["get", nbSupValeurSanitaireProp], 0],
-    ]);
-    cases.push("#E93E3A"); // Red for cases with sup_valeur_sanitaire
+    if (
+      categoryDetails.resultatsAnnuels.valeurSanitaire &&
+      categoryDetails.resultatsAnnuels.valeurSanitaireCouleur
+    ) {
+      cases.push([
+        "all",
+        ["!=", ["get", nbSupValeurSanitaireProp], ""],
+        ["==", ["typeof", ["get", nbSupValeurSanitaireProp]], "number"],
+        [">", ["get", nbSupValeurSanitaireProp], 0],
+      ]);
+      cases.push(categoryDetails.resultatsAnnuels.valeurSanitaireCouleur);
+    }
 
-    // Color scale for ratio values between 0 and 1
-    cases.push(["==", ["get", ratioProp], 0]);
-    cases.push("#75D3B4"); // Green for ratio = 0
-
-    cases.push(["<=", ["get", ratioProp], 0.5]);
-    cases.push("#AECF00"); // Light green for ratio <= 0.5
-
-    cases.push(["<=", ["get", ratioProp], 0.8]);
-    cases.push("#FBBD6C"); // Orange for ratio <= 0.8
-
-    cases.push(["<=", ["get", ratioProp], 1]);
-    cases.push("#FB726C"); // Red for ratio <= 1
+    // Color scale for ratio values using ratioLimites
+    categoryDetails.resultatsAnnuels.ratioLimites.forEach((l) => {
+      cases.push(["<=", ["get", ratioProp], l.limite]);
+      cases.push(l.couleur);
+    });
   }
 
   if (cases.length > 0) {

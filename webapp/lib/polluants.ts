@@ -20,6 +20,26 @@ interface DetailResultat {
   sousCategorie?: boolean;
 }
 
+interface RatioLimite {
+  limite: number;
+  label: string;
+  couleur: string;
+}
+
+interface ResultatsAnnuels {
+  nonRechercheLabel: string;
+  nonRechercheCouleur: string;
+  ratioLimites: RatioLimite[];
+  ratioLabel: string;
+  valeurSanitaire: boolean;
+  valeurSanitaireLabel?: string;
+  valeurSanitaireCouleur?: string;
+  simpleLabels?: Array<{
+    label: string;
+    couleur: string;
+  }>;
+}
+
 export interface ICategory {
   id: string;
   nomAffichage: string;
@@ -41,6 +61,7 @@ export interface ICategory {
   nombrePolluantsDernierPrelèvement?: number;
   blocsStatut?: BlocStatut[];
   resultats: { [key: string]: DetailResultat };
+  resultatsAnnuels?: ResultatsAnnuels;
 }
 
 export const availableCategories: ICategory[] = [
@@ -75,6 +96,23 @@ export const availableCategories: ICategory[] = [
         couleurFond: "#E93E3A",
         picto: "red cross",
       },
+    },
+    resultatsAnnuels: {
+      nonRechercheLabel: "Aucune recherche dans l'année",
+      nonRechercheCouleur: "#b7b7b7",
+      ratioLimites: [
+        { limite: 0, label: "0%", couleur: "#B4E681" },
+        { limite: 0.25, label: "< 25%", couleur: "#FFF33B" },
+        { limite: 0.5, label: "25 - 50%", couleur: "#FDC70C" },
+        { limite: 0.75, label: "50 - 75%", couleur: "#F3903F" },
+        { limite: 1, label: "75 - 100%", couleur: "#ED683C" },
+      ],
+      ratioLabel:
+        "Part des prélèvements où les paramètres analysés ont dépassé la limite de qualité",
+      valeurSanitaire: true,
+      valeurSanitaireLabel:
+        "Au moins 1 dépassement de valeur sanitaire au cours de l'année",
+      valeurSanitaireCouleur: "#FF0000",
     },
   },
   {
@@ -135,6 +173,23 @@ export const availableCategories: ICategory[] = [
         picto: "red cross",
       },
     },
+    resultatsAnnuels: {
+      nonRechercheLabel: "Aucune recherche dans l'année",
+      nonRechercheCouleur: "#b7b7b7",
+      ratioLimites: [
+        { limite: 0, label: "0%", couleur: "#B4E681" },
+        { limite: 0.25, label: "< 25%", couleur: "#FFF33B" },
+        { limite: 0.5, label: "25 - 50%", couleur: "#FDC70C" },
+        { limite: 0.75, label: "50 - 75%", couleur: "#F3903F" },
+        { limite: 1, label: "75 - 100%", couleur: "#ED683C" },
+      ],
+      ratioLabel:
+        "Part des prélèvements où les PFAS ont dépassé la limite de qualité",
+      valeurSanitaire: true,
+      valeurSanitaireLabel:
+        "Au moins 1 dépassement de valeur sanitaire au cours de l'année",
+      valeurSanitaireCouleur: "#FF0000",
+    },
   },
   {
     id: "pesticides",
@@ -175,6 +230,23 @@ export const availableCategories: ICategory[] = [
         couleurFond: "#E93E3A",
         picto: "red cross",
       },
+    },
+    resultatsAnnuels: {
+      nonRechercheLabel: "Aucune recherche dans l'année",
+      nonRechercheCouleur: "#b7b7b7",
+      ratioLimites: [
+        { limite: 0, label: "0%", couleur: "#B4E681" },
+        { limite: 0.25, label: "< 25%", couleur: "#FFF33B" },
+        { limite: 0.5, label: "25 - 50%", couleur: "#FDC70C" },
+        { limite: 0.75, label: "50 - 75%", couleur: "#F3903F" },
+        { limite: 1, label: "75 - 100%", couleur: "#ED683C" },
+      ],
+      ratioLabel:
+        "Part des prélèvements où les pesticides ont dépassé la limite de qualité",
+      valeurSanitaire: true,
+      valeurSanitaireLabel:
+        "Au moins 1 dépassement de valeur sanitaire au cours de l'année",
+      valeurSanitaireCouleur: "#FF0000",
     },
     enfants: [
       {
@@ -218,6 +290,23 @@ export const availableCategories: ICategory[] = [
             picto: "red cross",
           },
         },
+        resultatsAnnuels: {
+          nonRechercheLabel: "Aucune recherche dans l'année",
+          nonRechercheCouleur: "#b7b7b7",
+          ratioLimites: [
+            { limite: 0, label: "0%", couleur: "#B4E681" },
+            { limite: 0.25, label: "< 25%", couleur: "#FFF33B" },
+            { limite: 0.5, label: "25 - 50%", couleur: "#FDC70C" },
+            { limite: 0.75, label: "50 - 75%", couleur: "#F3903F" },
+            { limite: 1, label: "75 - 100%", couleur: "#ED683C" },
+          ],
+          ratioLabel:
+            "Part des prélèvements où les substances actives pesticides ont dépassé la limite de qualité",
+          valeurSanitaire: true,
+          valeurSanitaireLabel:
+            "Au moins 1 dépassement de valeur sanitaire au cours de l'année",
+          valeurSanitaireCouleur: "#FF0000",
+        },
       },
       {
         id: "metabolites",
@@ -258,6 +347,23 @@ export const availableCategories: ICategory[] = [
             couleurFond: "#E93E3A",
             picto: "red cross",
           },
+        },
+        resultatsAnnuels: {
+          nonRechercheLabel: "Aucune recherche dans l'année",
+          nonRechercheCouleur: "#b7b7b7",
+          ratioLimites: [
+            { limite: 0, label: "0%", couleur: "#B4E681" },
+            { limite: 0.25, label: "< 25%", couleur: "#FFF33B" },
+            { limite: 0.5, label: "25 - 50%", couleur: "#FDC70C" },
+            { limite: 0.75, label: "50 - 75%", couleur: "#F3903F" },
+            { limite: 1, label: "75 - 100%", couleur: "#ED683C" },
+          ],
+          ratioLabel:
+            "Part des prélèvements où les métabolites ont dépassé la limite de qualité",
+          valeurSanitaire: true,
+          valeurSanitaireLabel:
+            "Au moins 1 dépassement de valeur sanitaire au cours de l'année",
+          valeurSanitaireCouleur: "#FF0000",
         },
         enfants: [
           {
@@ -313,6 +419,23 @@ export const availableCategories: ICategory[] = [
                 picto: "red cross",
               },
             },
+            resultatsAnnuels: {
+              nonRechercheLabel: "Aucune recherche dans l'année",
+              nonRechercheCouleur: "#b7b7b7",
+              ratioLimites: [
+                { limite: 0, label: "0%", couleur: "#B4E681" },
+                { limite: 0.25, label: "< 25%", couleur: "#FFF33B" },
+                { limite: 0.5, label: "25 - 50%", couleur: "#FDC70C" },
+                { limite: 0.75, label: "50 - 75%", couleur: "#F3903F" },
+                { limite: 1, label: "75 - 100%", couleur: "#ED683C" },
+              ],
+              ratioLabel:
+                "Part des prélèvements où l'ESA métolachlore a dépassé la limite de qualité",
+              valeurSanitaire: true,
+              valeurSanitaireLabel:
+                "Au moins 1 dépassement de valeur sanitaire au cours de l'année",
+              valeurSanitaireCouleur: "#FF0000",
+            },
           },
           {
             id: "metabolite_chlorothalonil_r471811",
@@ -367,6 +490,23 @@ export const availableCategories: ICategory[] = [
                 picto: "red cross",
               },
             },
+            resultatsAnnuels: {
+              nonRechercheLabel: "Aucune recherche dans l'année",
+              nonRechercheCouleur: "#b7b7b7",
+              ratioLimites: [
+                { limite: 0, label: "0%", couleur: "#B4E681" },
+                { limite: 0.25, label: "< 25%", couleur: "#FFF33B" },
+                { limite: 0.5, label: "25 - 50%", couleur: "#FDC70C" },
+                { limite: 0.75, label: "50 - 75%", couleur: "#F3903F" },
+                { limite: 1, label: "75 - 100%", couleur: "#ED683C" },
+              ],
+              ratioLabel:
+                "Part des prélèvements où le Chlorothalonil R471811 a dépassé la limite de qualité",
+              valeurSanitaire: true,
+              valeurSanitaireLabel:
+                "Au moins 1 dépassement de valeur sanitaire au cours de l'année",
+              valeurSanitaireCouleur: "#FF0000",
+            },
           },
           {
             id: "metabolite_chloridazone_desphenyl",
@@ -414,6 +554,23 @@ export const availableCategories: ICategory[] = [
                 picto: "red cross",
               },
             },
+            resultatsAnnuels: {
+              nonRechercheLabel: "Aucune recherche dans l'année",
+              nonRechercheCouleur: "#b7b7b7",
+              ratioLimites: [
+                { limite: 0, label: "0%", couleur: "#B4E681" },
+                { limite: 0.25, label: "< 25%", couleur: "#FFF33B" },
+                { limite: 0.5, label: "25 - 50%", couleur: "#FDC70C" },
+                { limite: 0.75, label: "50 - 75%", couleur: "#F3903F" },
+                { limite: 1, label: "75 - 100%", couleur: "#ED683C" },
+              ],
+              ratioLabel:
+                "Part des prélèvements où la Chloridazone desphényl a dépassé la limite de qualité",
+              valeurSanitaire: true,
+              valeurSanitaireLabel:
+                "Au moins 1 dépassement de valeur sanitaire au cours de l'année",
+              valeurSanitaireCouleur: "#FF0000",
+            },
           },
           {
             id: "metabolite_chloridazone_methyl_desphenyl",
@@ -459,6 +616,23 @@ export const availableCategories: ICategory[] = [
                 couleurFond: "#E93E3A",
                 picto: "red cross",
               },
+            },
+            resultatsAnnuels: {
+              nonRechercheLabel: "Aucune recherche dans l'année",
+              nonRechercheCouleur: "#b7b7b7",
+              ratioLimites: [
+                { limite: 0, label: "0%", couleur: "#B4E681" },
+                { limite: 0.25, label: "< 25%", couleur: "#FFF33B" },
+                { limite: 0.5, label: "25 - 50%", couleur: "#FDC70C" },
+                { limite: 0.75, label: "50 - 75%", couleur: "#F3903F" },
+                { limite: 1, label: "75 - 100%", couleur: "#ED683C" },
+              ],
+              ratioLabel:
+                "Part des prélèvements où la Chloridazone methyl desphényl a dépassé la limite de qualité",
+              valeurSanitaire: true,
+              valeurSanitaireLabel:
+                "Au moins 1 dépassement de valeur sanitaire au cours de l'année",
+              valeurSanitaireCouleur: "#FF0000",
             },
           },
           {
@@ -507,6 +681,23 @@ export const availableCategories: ICategory[] = [
                 picto: "red cross",
               },
             },
+            resultatsAnnuels: {
+              nonRechercheLabel: "Aucune recherche dans l'année",
+              nonRechercheCouleur: "#b7b7b7",
+              ratioLimites: [
+                { limite: 0, label: "0%", couleur: "#B4E681" },
+                { limite: 0.25, label: "< 25%", couleur: "#FFF33B" },
+                { limite: 0.5, label: "25 - 50%", couleur: "#FDC70C" },
+                { limite: 0.75, label: "50 - 75%", couleur: "#F3903F" },
+                { limite: 1, label: "75 - 100%", couleur: "#ED683C" },
+              ],
+              ratioLabel:
+                "Part des prélèvements où l'Atrazine déséthyl a dépassé la limite de qualité",
+              valeurSanitaire: true,
+              valeurSanitaireLabel:
+                "Au moins 1 dépassement de valeur sanitaire au cours de l'année",
+              valeurSanitaireCouleur: "#FF0000",
+            },
           },
         ],
       },
@@ -547,6 +738,20 @@ export const availableCategories: ICategory[] = [
         picto: "red cross",
       },
     },
+    resultatsAnnuels: {
+      nonRechercheLabel: "Aucune recherche dans l'année",
+      nonRechercheCouleur: "#b7b7b7",
+      ratioLimites: [
+        { limite: 0, label: "0%", couleur: "#B4E681" },
+        { limite: 0.25, label: "< 25%", couleur: "#FFBABA" },
+        { limite: 0.5, label: "25 - 50%", couleur: "#FFA9A9" },
+        { limite: 0.75, label: "50 - 75%", couleur: "#FF5353" },
+        { limite: 1, label: "75 - 100%", couleur: "#FF0000" },
+      ],
+      ratioLabel:
+        "Part des prélèvements où les nitrates ont dépassé la limite de qualité",
+      valeurSanitaire: false,
+    },
   },
   {
     id: "cvm",
@@ -585,6 +790,19 @@ export const availableCategories: ICategory[] = [
         couleurFond: "#E93E3A",
         picto: "red cross",
       },
+    },
+    resultatsAnnuels: {
+      nonRechercheLabel: "Aucune recherche dans l'année",
+      nonRechercheCouleur: "#b7b7b7",
+      ratioLimites: [
+        { limite: 0, label: "0%", couleur: "#B4E681" },
+        { limite: 0.25, label: "< 25%", couleur: "#FFF33B" },
+        { limite: 0.5, label: "25 - 50%", couleur: "#FDC70C" },
+        { limite: 0.75, label: "50 - 75%", couleur: "#F3903F" },
+        { limite: 1, label: "75 - 100%", couleur: "#ED683C" },
+      ],
+      ratioLabel: "Part des prélèvements dépassant la limite",
+      valeurSanitaire: false,
     },
   },
   {

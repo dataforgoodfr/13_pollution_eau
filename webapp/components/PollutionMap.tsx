@@ -109,6 +109,7 @@ export default function PollutionMap() {
         {showLegend && (
           <div className="absolute left-4 bottom-4">
             <PollutionMapLegend
+              period={period}
               category={category}
               onClose={() => setShowLegend(false)}
             />

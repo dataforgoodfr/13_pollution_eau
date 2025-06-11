@@ -192,7 +192,7 @@ export const availableCategories: ICategory[] = [
     },
   },
   {
-    id: "pesticides",
+    id: "pesticide",
     nomAffichage: "Pesticides",
     disable: false,
     affichageBlocPageUDI: true,
@@ -205,26 +205,32 @@ export const availableCategories: ICategory[] = [
     sourcesExposition:
       "Agriculture, consommation de produits traités, eau potable.",
     resultats: {
+      non_recherche: {
+        label: "Non recherché",
+        couleur: "#9B9B9B",
+        couleurFond: "#9B9B9B",
+        picto: null,
+      },
       non_quantifie: {
         label: "Aucun pesticide quantifié",
         couleur: "#B4E681",
         couleurFond: "#B4E681",
         picto: null,
       },
-      quantifie: {
+      inf_limite_qualite: {
         label:
           "Au moins un pesticide quantifié mais sans dépassement de la limite de qualité",
         couleur: "#FFF33B",
         couleurFond: "#FFF33B",
         picto: null,
       },
-      limite_qualite: {
+      sup_limite_qualite: {
         label: "Au moins un pesticide dépasse la limite de qualité",
         couleur: "#F3903F",
         couleurFond: "#F3903F",
         picto: "warning",
       },
-      limite_sanitaire: {
+      sup_valeur_sanitaire: {
         label: "Au moins un pesticide dépasse la limite sanitaire",
         couleur: "#E93E3A",
         couleurFond: "#E93E3A",
@@ -250,7 +256,7 @@ export const availableCategories: ICategory[] = [
     },
     enfants: [
       {
-        id: "substances-actives",
+        id: "sub_active",
         nomAffichage: "Substances actives",
         disable: false,
         affichageBlocPageUDI: false,
@@ -264,26 +270,32 @@ export const availableCategories: ICategory[] = [
           "Pulvérisation agricole, résidus dans l'eau et les aliments.",
         sousCategories: true,
         resultats: {
+          non_recherche: {
+            label: "Non recherché",
+            couleur: "#9B9B9B",
+            couleurFond: "#9B9B9B",
+            picto: null,
+          },
           non_quantifie: {
             label: "Aucune substance active quantifiée",
             couleur: "#B4E681",
             couleurFond: "#B4E681",
             picto: null,
           },
-          quantifie: {
+          inf_limite_qualite: {
             label:
               "Au moins une substance active quantifiée mais sans dépassement de la limite de qualité",
             couleur: "#FFF33B",
             couleurFond: "#FFF33B",
             picto: null,
           },
-          limite_qualite: {
+          sup_limite_qualite: {
             label: "Au moins une substance active dépasse la limite de qualité",
             couleur: "#F3903F",
             couleurFond: "#F3903F",
             picto: "warning",
           },
-          limite_sanitaire: {
+          sup_valeur_sanitaire: {
             label: "Au moins une substance active dépasse la limite sanitaire",
             couleur: "#E93E3A",
             couleurFond: "#E93E3A",
@@ -309,7 +321,7 @@ export const availableCategories: ICategory[] = [
         },
       },
       {
-        id: "metabolites",
+        id: "metabolite",
         nomAffichage: "Métabolites",
         disable: false,
         affichageBlocPageUDI: false,
@@ -322,26 +334,32 @@ export const availableCategories: ICategory[] = [
           "Dégradation dans l'eau et les sols, consommation d'eau potable.",
         sousCategories: false,
         resultats: {
+          non_recherche: {
+            label: "Non recherché",
+            couleur: "#9B9B9B",
+            couleurFond: "#9B9B9B",
+            picto: null,
+          },
           non_quantifie: {
             label: "Aucun métabolite quantifié",
             couleur: "#B4E681",
             couleurFond: "#B4E681",
             picto: null,
           },
-          quantifie: {
+          inf_limite_qualite: {
             label:
               "Au moins un métabolite quantifié mais sans dépassement de la limite de qualité",
             couleur: "#FFF33B",
             couleurFond: "#FFF33B",
             picto: null,
           },
-          limite_qualite: {
+          sup_limite_qualite: {
             label: "Au moins un métabolite dépasse la limite de qualité",
             couleur: "#F3903F",
             couleurFond: "#F3903F",
             picto: "warning",
           },
-          limite_sanitaire: {
+          sup_valeur_sanitaire: {
             label: "Au moins un métabolite dépasse la limite sanitaire",
             couleur: "#E93E3A",
             couleurFond: "#E93E3A",

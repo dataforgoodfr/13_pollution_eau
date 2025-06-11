@@ -42,6 +42,9 @@ models:
                 - pfas
                 - sub_indus_perchlorate
                 - sub_indus_14dioxane
+                - pesticide
+                - sub_active
+                - metabolite
                 - metabolite_esa_metolachlore
                 - metabolite_chlorothalonil_r471811
                 - metabolite_chloridazone_desphenyl

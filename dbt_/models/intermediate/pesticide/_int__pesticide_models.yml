@@ -1,0 +1,49 @@
+models:
+  - name: int__resultats_pesticide_udi_dernier
+    description: Résultats des pesticides par UDI pour la temporalité 'derniers prélèvements'
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - cdreseau
+            - categorie
+    columns:
+      - name: cdreseau
+        description: "Code de l'installation (UDI)."
+        type: VARCHAR
+        tests:
+          - not_null
+      - name: categorie
+        description: "Catégorie du paramètre analysé (ici, toujours 'pesticide')."
+        type: VARCHAR
+        tests:
+          - accepted_values:
+              values:
+                - "pesticide"
+      - name: periode
+        description: "Période d'analyse des prélèvements (ici, toujours 'dernier_prel')."
+        type: VARCHAR
+        tests:
+          - accepted_values:
+              values: ["dernier_prel"]
+      - name: dernier_prel_datetime
+        description: "Date et heure du dernier prélèvement pris en compte dans l'analyse."
+        type: TIMESTAMP
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: ">= CURRENT_DATE - INTERVAL 1 YEAR"
+      - name: dernier_prel_valeur
+        description: "Valeur maximale du dernier prélèvement"
+        type: FLOAT
+      - name: nb_parametres
+        type: INTEGER
+      - name: resultat
+        description: "Interprétation du résultat en fonction des seuils sanitaires et des valeurs mesurées."
+        type: VARCHAR
+        tests:
+          - accepted_values:
+              values:
+                - "non_quantifie"
+                - "inf_limite_qualite"
+                - "sup_limite_qualite"
+                - "sup_valeur_sanitaire"

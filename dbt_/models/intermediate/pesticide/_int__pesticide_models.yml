@@ -1,6 +1,6 @@
 models:
-  - name: int__resultats_metabolite_udi_dernier
-    description: Résultats des métabolites de pesticides par UDI pour la temporalité 'derniers prélèvements'
+  - name: int__resultats_pesticide_udi_dernier
+    description: Résultats des pesticides par UDI pour la temporalité 'derniers prélèvements'
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -13,12 +13,12 @@ models:
         tests:
           - not_null
       - name: categorie
-        description: "Catégorie du paramètre analysé (ici, toujours 'metabolite')."
+        description: "Catégorie du paramètre analysé (ici, toujours 'pesticide')."
         type: VARCHAR
         tests:
           - accepted_values:
               values:
-                - "metabolite"
+                - "pesticide"
       - name: periode
         description: "Période d'analyse des prélèvements (ici, toujours 'dernier_prel')."
         type: VARCHAR

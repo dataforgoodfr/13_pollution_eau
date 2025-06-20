@@ -61,11 +61,11 @@ results AS (
         categorie,
         resultat,
         ratio,
-        dernier_prel_datetime,
-        dernier_prel_valeur,
+        date_dernier_prel,
         nb_parametres,
         nb_prelevements,
-        nb_sup_valeur_sanitaire
+        nb_sup_valeur_sanitaire,
+        parametres_detectes
     FROM {{ ref('int__union_resultats_udi') }}
     UNION ALL
     SELECT
@@ -74,11 +74,11 @@ results AS (
         categorie,
         resultat,
         null AS ratio,
-        dernier_prel_datetime,
-        null AS dernier_prel_valeur,
+        date_dernier_prel,
         nb_parametres,
         null AS nb_prelevements,
-        null AS nb_sup_valeur_sanitaire
+        null AS nb_sup_valeur_sanitaire,
+        null AS parametres_detectes
     FROM {{ ref('int__resultats_tous_udi_dernier') }}
 )
 
@@ -90,11 +90,11 @@ SELECT
     upc.categorie,
     r.resultat,
     r.ratio,
-    r.dernier_prel_datetime,
-    r.dernier_prel_valeur,
+    r.date_dernier_prel,
     r.nb_parametres,
     r.nb_prelevements,
-    r.nb_sup_valeur_sanitaire
+    r.nb_sup_valeur_sanitaire,
+    r.parametres_detectes
 FROM
     udi_periodes_categories AS upc
 LEFT JOIN

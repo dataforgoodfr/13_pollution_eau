@@ -7,11 +7,11 @@ SELECT
     categorie,
     null AS resultat,
     ratio_limite_qualite AS ratio,
-    null AS dernier_prel_datetime,
-    null AS dernier_prel_valeur,
+    null AS date_dernier_prel,
     null AS nb_parametres,
     nb_prelevements,
-    null AS nb_sup_valeur_sanitaire
+    null AS nb_sup_valeur_sanitaire,
+    null AS parametres_detectes
 FROM
     {{ ref('int__resultats_cvm_udi_annuel') }}
 UNION ALL
@@ -21,11 +21,11 @@ SELECT
     categorie,
     resultat,
     null AS ratio,
-    dernier_prel_datetime,
-    dernier_prel_valeur,
+    date_dernier_prel,
     nb_parametres,
     null AS nb_prelevements,
-    null AS nb_sup_valeur_sanitaire
+    null AS nb_sup_valeur_sanitaire,
+    parametres_detectes
 FROM
     {{ ref('int__resultats_cvm_udi_dernier') }}
 UNION ALL
@@ -36,11 +36,11 @@ SELECT
     categorie,
     null AS resultat,
     ratio,
-    null AS dernier_prel_datetime,
-    null AS dernier_prel_valeur,
+    null AS date_dernier_prel,
     null AS nb_parametres,
     nb_prelevements,
-    null AS nb_sup_valeur_sanitaire
+    null AS nb_sup_valeur_sanitaire,
+    null AS parametres_detectes
 FROM
     {{ ref('int__resultats_nitrate_udi_annuel') }}
 UNION ALL
@@ -50,11 +50,11 @@ SELECT
     categorie,
     resultat,
     null AS ratio,
-    dernier_prel_datetime,
-    dernier_prel_valeur,
+    date_dernier_prel,
     nb_parametres,
     null AS nb_prelevements,
-    null AS nb_sup_valeur_sanitaire
+    null AS nb_sup_valeur_sanitaire,
+    parametres_detectes
 FROM
     {{ ref('int__resultats_nitrate_udi_dernier') }}
 UNION ALL
@@ -65,11 +65,11 @@ SELECT
     categorie,
     resultat,
     null AS ratio,
-    dernier_prel_datetime,
-    dernier_prel_valeur,
+    date_dernier_prel,
     nb_parametres,
     null AS nb_prelevements,
-    null AS nb_sup_valeur_sanitaire
+    null AS nb_sup_valeur_sanitaire,
+    parametres_detectes
 FROM
     {{ ref('int__resultats_metabolite_udi_dernier') }}
 UNION ALL
@@ -80,11 +80,11 @@ SELECT
     categorie,
     resultat,
     null AS ratio,
-    dernier_prel_datetime,
-    dernier_prel_valeur,
+    date_dernier_prel,
     nb_parametres,
     null AS nb_prelevements,
-    null AS nb_sup_valeur_sanitaire
+    null AS nb_sup_valeur_sanitaire,
+    parametres_detectes
 FROM
     {{ ref('int__resultats_metabolite_specifique_udi_dernier') }}
 UNION ALL
@@ -95,11 +95,11 @@ SELECT
     categorie,
     resultat,
     null AS ratio,
-    dernier_prel_datetime,
-    dernier_prel_valeur,
+    date_dernier_prel,
     nb_parametres,
     null AS nb_prelevements,
-    null AS nb_sup_valeur_sanitaire
+    null AS nb_sup_valeur_sanitaire,
+    parametres_detectes
 FROM
     {{ ref('int__resultats_sub_active_udi_dernier') }}
 UNION ALL
@@ -110,11 +110,11 @@ SELECT
     categorie,
     resultat,
     null AS ratio,
-    dernier_prel_datetime,
-    dernier_prel_valeur,
+    date_dernier_prel,
     nb_parametres,
     null AS nb_prelevements,
-    null AS nb_sup_valeur_sanitaire
+    null AS nb_sup_valeur_sanitaire,
+    parametres_detectes
 FROM
     {{ ref('int__resultats_pesticide_udi_dernier') }}
 UNION ALL
@@ -125,11 +125,11 @@ SELECT
     categorie,
     null AS resultat,
     ratio_limite_qualite AS ratio,
-    null AS dernier_prel_datetime,
-    null AS dernier_prel_valeur,
+    null AS date_dernier_prel,
     null AS nb_parametres,
     nb_prelevements,
-    nb_sup_valeur_sanitaire
+    nb_sup_valeur_sanitaire,
+    null AS parametres_detectes
 FROM
     {{ ref('int__resultats_pfas_udi_annuel') }}
 UNION ALL
@@ -139,11 +139,11 @@ SELECT
     categorie,
     resultat,
     null AS ratio,
-    dernier_prel_datetime,
-    dernier_prel_valeur,
+    date_dernier_prel,
     nb_parametres,
     null AS nb_prelevements,
-    null AS nb_sup_valeur_sanitaire
+    null AS nb_sup_valeur_sanitaire,
+    parametres_detectes
 FROM
     {{ ref('int__resultats_pfas_udi_dernier') }}
 UNION ALL
@@ -154,11 +154,11 @@ SELECT
     categorie,
     null AS resultat,
     ratio_limite_sanitaire AS ratio,
-    null AS dernier_prel_datetime,
-    null AS dernier_prel_valeur,
+    null AS date_dernier_prel,
     null AS nb_parametres,
     nb_prelevements,
-    null AS nb_sup_valeur_sanitaire
+    null AS nb_sup_valeur_sanitaire,
+    null AS parametres_detectes
 FROM
     {{ ref('int__resultats_sub_indus_udi_annuel') }}
 UNION ALL
@@ -168,10 +168,10 @@ SELECT
     categorie,
     resultat,
     null AS ratio,
-    dernier_prel_datetime,
-    dernier_prel_valeur,
+    date_dernier_prel,
     nb_parametres,
     null AS nb_prelevements,
-    null AS nb_sup_valeur_sanitaire
+    null AS nb_sup_valeur_sanitaire,
+    parametres_detectes
 FROM
     {{ ref('int__resultats_sub_indus_udi_dernier') }}

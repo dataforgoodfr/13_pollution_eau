@@ -13,70 +13,70 @@ WHERE
     (
         cdreseau = '002000045'
         AND categorie = 'sub_indus_perchlorate'
-        AND dernier_prel_datetime = '2024-10-22 09:58:00'
+        AND date_dernier_prel = '2024-10-22 09:58:00'
         AND resultat != 'non_quantifie'
     )
     OR
     (
         cdreseau = '002000048'
         AND categorie = 'sub_indus_perchlorate'
-        AND dernier_prel_datetime = '2024-04-22 10:10:00'
+        AND date_dernier_prel = '2024-04-22 10:10:00'
         AND resultat != 'inf_valeur_sanitaire'
     )
     OR
     (
         cdreseau = '002000060'
         AND categorie = 'sub_indus_perchlorate'
-        AND dernier_prel_datetime = '2024-10-18 08:31:00'
+        AND date_dernier_prel = '2024-10-18 08:31:00'
         AND resultat != 'sup_valeur_sanitaire'
     )
     OR
     (
         cdreseau = '002000114'
         AND categorie = 'sub_indus_perchlorate'
-        AND dernier_prel_datetime = '2024-10-10 11:03:00'
+        AND date_dernier_prel = '2024-10-10 11:03:00'
         AND resultat != 'sup_valeur_sanitaire_2'
     )
     OR
     (
         cdreseau = '052000760'
         AND categorie = 'sub_indus_14dioxane'
-        AND dernier_prel_datetime = '2024-12-13 14:52:00'
+        AND date_dernier_prel = '2024-12-13 14:52:00'
         AND resultat != 'sup_valeur_sanitaire'
     )
     OR
     (
         cdreseau = '076000543'
         AND categorie = 'sub_indus_14dioxane'
-        AND dernier_prel_datetime = '2025-01-07 10:00:00'
+        AND date_dernier_prel = '2025-01-07 10:00:00'
         AND resultat != 'inf_valeur_sanitaire'
     )
     OR
     (
         cdreseau = '080001512'
         AND categorie = 'sub_indus_perchlorate'
-        AND dernier_prel_datetime = '2025-02-14 11:26:00'
+        AND date_dernier_prel = '2025-02-14 11:26:00'
         AND resultat != 'inf_valeur_sanitaire'
     )
     OR
     (
         cdreseau = '080003913'
         AND categorie = 'sub_indus_perchlorate'
-        AND dernier_prel_datetime = '2024-05-31 11:23:00'
+        AND date_dernier_prel = '2024-05-31 11:23:00'
         AND resultat != 'inf_valeur_sanitaire'
     )
     OR
     (
         cdreseau = '080003918'
         AND categorie = 'sub_indus_perchlorate'
-        AND dernier_prel_datetime = '2024-10-23 13:09:00'
+        AND date_dernier_prel = '2024-10-23 13:09:00'
         AND resultat != 'sup_valeur_sanitaire_2'
     )
     OR
     (
         cdreseau = '088002246'
         AND categorie = 'sub_indus_perchlorate'
-        AND dernier_prel_datetime = '2024-10-22 10:33:00'
+        AND date_dernier_prel = '2024-10-22 10:33:00'
         AND resultat != 'sup_valeur_sanitaire'
     )
 UNION ALL

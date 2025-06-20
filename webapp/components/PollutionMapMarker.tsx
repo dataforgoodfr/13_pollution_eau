@@ -123,14 +123,24 @@ export default function PollutionMapMarker({
 
   const renderContent = () => {
     if (period === "dernier_prel") {
-      const realValue =
+      const values =
         selectedZoneData[
-          getPropertyName(period, category, "dernier_prel_valeur")
+          getPropertyName(period, category, "parametres_detectes")
         ];
       const date =
         selectedZoneData[
-          getPropertyName(period, category, "dernier_prel_datetime")
+          getPropertyName(period, category, "date_dernier_prel")
         ] || null;
+
+      // Parse JSON values if they exist
+      let parsedValues: Record<string, number> | null = null;
+      if (values && typeof values === "string") {
+        try {
+          parsedValues = JSON.parse(values);
+        } catch (error) {
+          console.error("Error parsing parametres_detectes:", error);
+        }
+      }
 
       return (
         <>
@@ -142,13 +152,20 @@ export default function PollutionMapMarker({
             ></div>
             <span className="">{resultLabel}</span>
           </div>
-          {realValue !== null && date ? (
-            <p className="">
-              Valeur: {realValue}
-              <br />
-              Date: {date}
-            </p>
-          ) : null}
+          {date && <p className="mb-2">Date: {date}</p>}
+          {parsedValues && Object.keys(parsedValues).length > 0 && (
+            <div className="space-y-1">
+              <p className="font-medium">Paramètres détectés:</p>
+              <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-xs">
+                {Object.entries(parsedValues).map(([param, value]) => (
+                  <div key={param} className="flex justify-between">
+                    <span className="font-medium">{param}:</span>
+                    <span>{value}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </>
       );
     } else {

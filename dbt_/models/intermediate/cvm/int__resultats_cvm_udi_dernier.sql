@@ -26,8 +26,7 @@ SELECT
     last_pvl.cdreseau,
     last_pvl.categorie,
     'dernier_prel' AS periode,
-    last_pvl.datetimeprel AS dernier_prel_datetime,
-    last_pvl.valtraduite AS dernier_prel_valeur,
+    last_pvl.datetimeprel AS date_dernier_prel,
     1 AS nb_parametres,
     CASE
         WHEN
@@ -41,7 +40,13 @@ SELECT
             last_pvl.valtraduite < last_pvl.limite_qualite
             THEN 'inf_0_5'
         ELSE 'erreur'
-    END AS resultat
+    END AS resultat,
+    CASE
+        WHEN
+            last_pvl.valtraduite > 0
+            THEN TO_JSON(MAP([last_pvl.cdparametresiseeaux], [last_pvl.valtraduite]))
+        ELSE TO_JSON(MAP([], []))
+    END AS parametres_detectes
 FROM
     last_pvl
 WHERE

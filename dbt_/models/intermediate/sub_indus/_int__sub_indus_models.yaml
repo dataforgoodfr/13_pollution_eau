@@ -63,8 +63,6 @@ models:
           - not_null
           - dbt_utils.expression_is_true:
               expression: ">= CURRENT_DATE - INTERVAL 1 YEAR"
-      - name: dernier_prel_valeur
-        type: FLOAT
       - name: nb_parametres
         type: INTEGER
         tests:
@@ -78,6 +76,9 @@ models:
                 - sup_valeur_sanitaire_2
                 - sup_valeur_sanitaire
                 - inf_valeur_sanitaire
+      - name: parametres_detectes
+        description: "JSON contenant les paramètres détectés (valtraduite > 0) avec leurs valeurs correspondantes."
+        type: JSON
 
   - name: int__resultats_sub_indus_udi_annuel
     description: Résultats des substances industrielles par UDI pour la temporalité 'bilan_annuel'
@@ -140,8 +141,6 @@ models:
           - not_null
           - dbt_utils.expression_is_true:
               expression: ">= CURRENT_DATE - INTERVAL 1 YEAR"
-      - name: dernier_prel_valeur
-        type: FLOAT
       - name: nb_parametres
         type: INTEGER
         tests:
@@ -155,3 +154,6 @@ models:
                 - sup_valeur_sanitaire_2
                 - sup_valeur_sanitaire
                 - inf_valeur_sanitaire
+      - name: parametres_detectes
+        description: "JSON contenant les paramètres détectés (valtraduite > 0) avec leurs valeurs correspondantes."
+        type: JSON

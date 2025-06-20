@@ -57,10 +57,10 @@ SELECT
     r.resultat,
     r.ratio,
     r.dernier_prel_datetime,
-    r.dernier_prel_valeur,
     r.nb_parametres,
     r.nb_prelevements,
-    r.nb_sup_valeur_sanitaire
+    r.nb_sup_valeur_sanitaire,
+    r.parametres_detectes
 FROM
     communes_periodes_categories AS cpc
 LEFT JOIN

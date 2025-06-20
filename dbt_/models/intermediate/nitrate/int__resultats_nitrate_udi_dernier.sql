@@ -118,7 +118,6 @@ SELECT
     categorie,
     'dernier_prel' AS periode,
     dernier_prel_datetime,
-    valtraduite_no3 AS dernier_prel_valeur,
     nb_parametres,
     CASE
         WHEN -- Si nitrates (no3) et pas nitrites (no2)
@@ -166,6 +165,12 @@ SELECT
             < limite_qualite_no3_no2
             THEN 'inf_limite_qualite'
         ELSE 'erreur'
-    END AS resultat
+    END AS resultat,
+    JSON_OBJECT(
+        CASE WHEN valtraduite_no2 > 0 THEN 'NO2' END, valtraduite_no2,
+        CASE WHEN valtraduite_no3 > 0 THEN 'NO3' END, valtraduite_no3,
+        CASE WHEN valtraduite_no3_no2 > 0 THEN 'NO3_NO2' END, valtraduite_no3_no2
+    ) AS parametres_detectes
+
 FROM
     split_nitrate_with_ref

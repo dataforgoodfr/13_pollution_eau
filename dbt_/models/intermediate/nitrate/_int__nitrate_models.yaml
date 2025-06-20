@@ -71,9 +71,6 @@ models:
           - not_null
           - dbt_utils.expression_is_true:
               expression: ">= CURRENT_DATE - INTERVAL 1 YEAR"
-      - name: dernier_prel_valeur
-        description: "Valeur du dernier prelevement"
-        type: FLOAT
       - name: nb_parametres
         description: "Nombre de paramètres analysés"
         type: INTEGER
@@ -86,3 +83,6 @@ models:
               values:
                 - inf_limite_qualite
                 - sup_limite_qualite
+      - name: parametres_detectes
+        description: "JSON contenant les paramètres détectés (valtraduite > 0) avec leurs valeurs correspondantes."
+        type: JSON

@@ -43,8 +43,8 @@ list_column_result = [
     "resultat",
     "ratio",
     "dernier_prel_datetime",
-    "dernier_prel_valeur",
     "nb_parametres",
     "nb_prelevements",
     "nb_sup_valeur_sanitaire",
+    "parametres_detectes",
 ]

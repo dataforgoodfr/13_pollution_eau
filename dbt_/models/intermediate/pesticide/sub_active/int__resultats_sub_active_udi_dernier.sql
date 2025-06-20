@@ -24,6 +24,19 @@ last_pvl AS (
         AND
         -- On garde les prélèvements de moins d'un an
         CURRENT_DATE - datetimeprel < INTERVAL 1 YEAR
+),
+
+aggregated AS (
+    SELECT
+        cdreseau,
+        cdparametresiseeaux,
+        MAX(valtraduite) AS valtraduite,
+        MAX(limite_qualite) AS limite_qualite,
+        MAX(valeur_sanitaire_1) AS valeur_sanitaire_1,
+        MAX(datetimeprel) AS datetimeprel
+    FROM last_pvl
+    WHERE row_number = 1
+    GROUP BY cdreseau, cdparametresiseeaux
 )
 
 SELECT
@@ -31,7 +44,6 @@ SELECT
     'sub_active' AS categorie,
     'dernier_prel' AS periode,
     MAX(datetimeprel) AS dernier_prel_datetime,
-    MAX(valtraduite) AS dernier_prel_valeur,
     COUNT(DISTINCT cdparametresiseeaux) AS nb_parametres,
     CASE
         WHEN BOOL_AND(valtraduite IS NULL OR valtraduite = 0) THEN 'non_quantifie'
@@ -45,8 +57,21 @@ SELECT
             BOOL_OR(valtraduite IS NOT NULL AND valtraduite < limite_qualite)
             THEN 'inf_limite_qualite'
         ELSE 'erreur'
-    END AS resultat
+    END AS resultat,
+    TO_JSON(
+        MAP(
+            LIST(
+                cdparametresiseeaux
+                ORDER BY cdparametresiseeaux
+            ) FILTER (WHERE valtraduite > 0
+            ),
+            LIST(
+                valtraduite
+                ORDER BY cdparametresiseeaux
+            ) FILTER (WHERE valtraduite > 0
+            )
+        )
+    ) AS parametres_detectes
 
-FROM last_pvl
-WHERE row_number = 1
+FROM aggregated
 GROUP BY cdreseau

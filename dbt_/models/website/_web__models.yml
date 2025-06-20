@@ -61,9 +61,6 @@ models:
       - name: dernier_prel_datetime
         description: "Date et heure du dernier prélèvement"
         type: TIMESTAMP
-      - name: dernier_prel_valeur
-        description: "Valeur du dernier prélèvement"
-        type: FLOAT
       - name: nb_parametres
         description: "Nombre de paramètres analysés"
         type: INTEGER
@@ -73,6 +70,9 @@ models:
       - name: nb_sup_valeur_sanitaire
         description: "Nombre de prélèvements supérieurs à la valeur sanitaire"
         type: INTEGER
+      - name: parametres_detectes
+        description: "JSON contenant les paramètres détectés (valtraduite > 0) avec leurs valeurs correspondantes."
+        type: JSON
 
   - name: web__resultats_udi
     description: "Resultats des prélevements par unité de distribution (UDI) par période et catégorie de polluant"
@@ -134,9 +134,6 @@ models:
       - name: dernier_prel_datetime
         description: "Date et heure du dernier prélèvement"
         type: TIMESTAMP
-      - name: dernier_prel_valeur
-        description: "Valeur du dernier prélèvement"
-        type: FLOAT
       - name: nb_parametres
         description: "Nombre de paramètres analysés"
         type: INTEGER
@@ -146,3 +143,6 @@ models:
       - name: nb_sup_valeur_sanitaire
         description: "Nombre de prélèvements supérieurs à la valeur sanitaire"
         type: INTEGER
+      - name: parametres_detectes
+        description: "JSON contenant les paramètres détectés (valtraduite > 0) avec leurs valeurs correspondantes."
+        type: JSON

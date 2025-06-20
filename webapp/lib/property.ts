@@ -36,7 +36,7 @@ export function parsePropertyName(propertyName: string): {
  * Get the full property name from components
  * @param period The period (e.g., "bilan_annuel_2022", "dernier_prel")
  * @param category The category (e.g., "pfas", "cvm")
- * @param variable The variable (e.g., "resultat", "dernier_prel_valeur")
+ * @param variable The variable (e.g., "resultat", "parametres_detectes")
  * @returns The full property name
  */
 export function getPropertyName(

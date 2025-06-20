@@ -3,8 +3,7 @@ dbt_:
     dev:
       type: duckdb
       path: ../database/data.duckdb
-      threads: 4
-      read_only: true
+      threads: 1
       extensions:
         - spatial
   target: dev

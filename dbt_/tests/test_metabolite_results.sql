@@ -45,11 +45,30 @@ WHERE
         AND resultat != 'non_quantifie'
     )
 -- annuel udi
--- UNION ALL
--- SELECT
---     'bilan_annuel' AS periode,
---     cdreseau,
---     '' AS resultat,
---     ratio_limite_qualite,
---     nb_sup_valeur_sanitaire
--- FROM
+UNION ALL
+SELECT
+    'bilan_annuel' AS periode,
+    cdreseau,
+    '' AS resultat,
+    ratio_limite_qualite,
+    nb_sup_valeur_sanitaire
+FROM
+    {{ ref('int__resultats_metabolite_udi_annuel') }}
+WHERE
+    (
+        cdreseau = '079000210'
+        AND annee = 2024
+        AND (ratio_limite_qualite != 0 OR nb_depassements != 0)
+    )
+    OR
+    (
+        cdreseau = '051000766'
+        AND annee = 2024
+        AND ratio_limite_qualite <= 0
+    )
+    OR
+    (
+        cdreseau = '076000522'
+        AND annee = 2024
+        AND nb_sup_valeur_sanitaire <= 0
+    )

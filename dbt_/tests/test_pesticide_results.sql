@@ -32,11 +32,30 @@ WHERE
         AND resultat != 'sup_limite_qualite'
     )
 -- annuel udi
--- UNION ALL
--- SELECT
---     'bilan_annuel' AS periode,
---     cdreseau,
---     '' AS resultat,
---     ratio_limite_qualite,
---     nb_sup_valeur_sanitaire
--- FROM
+UNION ALL
+SELECT
+    'bilan_annuel' AS periode,
+    cdreseau,
+    '' AS resultat,
+    ratio_limite_qualite,
+    nb_sup_valeur_sanitaire
+FROM
+    {{ ref('int__resultats_pesticide_udi_annuel') }}
+WHERE
+    (
+        cdreseau = '001000277'
+        AND annee = 2024
+        AND (ratio_limite_qualite != 0 OR nb_depassements != 0)
+    )
+    OR
+    (
+        cdreseau = '061000423'
+        AND annee = 2024
+        AND ratio_limite_qualite <= 0
+    )
+    OR
+    (
+        cdreseau = '063001557'
+        AND annee = 2024
+        AND nb_sup_valeur_sanitaire <= 0
+    )

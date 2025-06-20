@@ -57,7 +57,7 @@ models:
         tests:
           - accepted_values:
               values: ["dernier_prel"]
-      - name: dernier_prel_datetime
+      - name: date_dernier_prel
         type: TIMESTAMP
         tests:
           - not_null
@@ -135,7 +135,7 @@ models:
         tests:
           - accepted_values:
               values: ["dernier_prel"]
-      - name: dernier_prel_datetime
+      - name: date_dernier_prel
         type: TIMESTAMP
         tests:
           - not_null

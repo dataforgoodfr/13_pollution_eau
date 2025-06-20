@@ -396,7 +396,7 @@ models:
       - name: ratio
         description: "Ratio de dépassements"
         type: FLOAT
-      - name: dernier_prel_datetime
+      - name: date_dernier_prel
         description: "Date du dernier prelevement"
         type: DATE
       - name: nb_parametres
@@ -433,7 +433,7 @@ models:
       - name: ratio
         description: "Ratio de dépassements"
         type: FLOAT
-      - name: dernier_prel_datetime
+      - name: date_dernier_prel
         description: "Date du dernier prelevement"
         type: DATE
       - name: nb_parametres

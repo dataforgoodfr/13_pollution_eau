@@ -19,7 +19,7 @@ models:
         description: "Période d'analyse des prélèvements (ici, toujours 'dernier_prel')."
         type: VARCHAR
 
-      - name: dernier_prel_datetime
+      - name: date_dernier_prel
         description: "Date et heure du dernier prélèvement pris en compte dans l'analyse."
         type: TIMESTAMP
         tests:

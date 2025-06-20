@@ -42,7 +42,7 @@ col_input = ["periode", "categorie"]
 list_column_result = [
     "resultat",
     "ratio",
-    "dernier_prel_datetime",
+    "date_dernier_prel",
     "nb_parametres",
     "nb_prelevements",
     "nb_sup_valeur_sanitaire",

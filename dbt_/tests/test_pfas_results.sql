@@ -14,47 +14,47 @@ WHERE
     -- l'UDI 013001457 a un prélevement le 2025-02-19 09:58:00
     -- avec un dépassement de valeur sanitaire pour PFOS
         cdreseau = '013001457'
-        AND dernier_prel_datetime = TIMESTAMP '2025-02-19 09:58:00'
+        AND date_dernier_prel = TIMESTAMP '2025-02-19 09:58:00'
         AND resultat != 'sup_valeur_sanitaire'
     )
     OR (
         cdreseau = '004001032'
-        AND dernier_prel_datetime = TIMESTAMP '2025-02-28 12:33:00'
+        AND date_dernier_prel = TIMESTAMP '2025-02-28 12:33:00'
         AND resultat != 'somme_20pfas_inf_0_1_et_4pfas_inf_0_02'
     )
     OR (
         cdreseau = '008000855'
-        AND dernier_prel_datetime = TIMESTAMP '2025-02-27 09:24:00'
+        AND date_dernier_prel = TIMESTAMP '2025-02-27 09:24:00'
         AND resultat != 'sup_valeur_sanitaire'
     )
     OR
     (
         cdreseau = '00800107747'
-        AND dernier_prel_datetime = '2025-02-27 09:24:00'
+        AND date_dernier_prel = '2025-02-27 09:24:00'
         AND resultat != 'sup_valeur_sanitaire'
     )
     OR
     (
         cdreseau = '011004114'
-        AND dernier_prel_datetime = '2025-02-24 13:55:00'
+        AND date_dernier_prel = '2025-02-24 13:55:00'
         AND resultat != 'somme_20pfas_sup_0_1'
     )
     OR
     (
         cdreseau = '001000404'
-        AND dernier_prel_datetime = '2024-11-29 08:08:00'
+        AND date_dernier_prel = '2024-11-29 08:08:00'
         AND resultat != 'somme_20pfas_inf_0_1_et_4pfas_sup_0_02'
     )
     OR
     (
         cdreseau = '001000511'
-        AND dernier_prel_datetime = '2024-11-28 09:58:00'
+        AND date_dernier_prel = '2024-11-28 09:58:00'
         AND resultat != 'somme_20pfas_inf_0_1_et_4pfas_inf_0_02'
     )
     OR
     (
         cdreseau = '003000370'
-        AND dernier_prel_datetime = TIMESTAMP '2025-02-18 08:45:00'
+        AND date_dernier_prel = TIMESTAMP '2025-02-18 08:45:00'
         AND resultat != 'non_quantifie'
     )
 UNION ALL

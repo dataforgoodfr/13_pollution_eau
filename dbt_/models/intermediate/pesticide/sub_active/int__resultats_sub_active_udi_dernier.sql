@@ -43,7 +43,7 @@ SELECT
     cdreseau,
     'sub_active' AS categorie,
     'dernier_prel' AS periode,
-    MAX(datetimeprel) AS dernier_prel_datetime,
+    MAX(datetimeprel) AS date_dernier_prel,
     COUNT(DISTINCT cdparametresiseeaux) AS nb_parametres,
     CASE
         WHEN BOOL_AND(valtraduite IS NULL OR valtraduite = 0) THEN 'non_quantifie'

@@ -129,7 +129,7 @@ export default function PollutionMapMarker({
         ];
       const date =
         selectedZoneData[
-          getPropertyName(period, category, "dernier_prel_datetime")
+          getPropertyName(period, category, "date_dernier_prel")
         ] || null;
 
       // Parse JSON values if they exist

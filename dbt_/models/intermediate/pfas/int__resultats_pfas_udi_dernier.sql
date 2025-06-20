@@ -99,7 +99,7 @@ SELECT
     cdreseau,
     'pfas' AS categorie,
     'dernier_prel' AS periode,
-    datetimeprel AS dernier_prel_datetime,
+    datetimeprel AS date_dernier_prel,
     nb_parametres,
     parametres_detectes,
     CASE

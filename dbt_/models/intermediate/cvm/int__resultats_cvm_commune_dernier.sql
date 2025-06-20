@@ -26,7 +26,7 @@ SELECT
     last_pvl.inseecommune,
     last_pvl.categorie,
     'dernier_prel' AS periode,
-    last_pvl.datetimeprel AS dernier_prel_datetime,
+    last_pvl.datetimeprel AS date_dernier_prel,
     1 AS nb_parametres,
     CASE
         WHEN

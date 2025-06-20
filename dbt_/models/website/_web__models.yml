@@ -58,7 +58,7 @@ models:
       - name: ratio
         description: "Ratio des valeurs par rapport à la limite réglementaire"
         type: FLOAT
-      - name: dernier_prel_datetime
+      - name: date_dernier_prel
         description: "Date et heure du dernier prélèvement"
         type: TIMESTAMP
       - name: nb_parametres
@@ -131,7 +131,7 @@ models:
       - name: ratio
         description: "Ratio des valeurs par rapport à la limite réglementaire"
         type: FLOAT
-      - name: dernier_prel_datetime
+      - name: date_dernier_prel
         description: "Date et heure du dernier prélèvement"
         type: TIMESTAMP
       - name: nb_parametres

@@ -56,7 +56,7 @@ SELECT
     cpc.categorie,
     r.resultat,
     r.ratio,
-    r.dernier_prel_datetime,
+    r.date_dernier_prel,
     r.nb_parametres,
     r.nb_prelevements,
     r.nb_sup_valeur_sanitaire,

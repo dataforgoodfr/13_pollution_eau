@@ -16,7 +16,7 @@ models:
           - accepted_values:
               values: ["pfas"]
 
-      - name: dernier_prel_datetime
+      - name: date_dernier_prel
         description: "Date et heure du dernier prélèvement pris en compte dans l'analyse."
         type: TIMESTAMP
         tests:

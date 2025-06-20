@@ -13,28 +13,28 @@ WHERE
     (
         cdreseau = '976003489'
         AND categorie = 'cvm'
-        AND dernier_prel_datetime = '2024-07-16 08:30:00'
+        AND date_dernier_prel = '2024-07-16 08:30:00'
         AND resultat != 'non_quantifie'
     )
     OR
     (
         cdreseau = '001000241'
         AND categorie = 'cvm'
-        AND dernier_prel_datetime = '2024-12-31 14:00:00'
+        AND date_dernier_prel = '2024-12-31 14:00:00'
         AND resultat != 'non_quantifie'
     )
     OR
     (
         cdreseau = '087003637'
         AND categorie = 'cvm'
-        AND dernier_prel_datetime = '2024-07-04 10:50:00'
+        AND date_dernier_prel = '2024-07-04 10:50:00'
         AND resultat != 'sup_0_5'
     )
     OR
     (
         cdreseau = '095004048'
         AND categorie = 'cvm'
-        AND dernier_prel_datetime = '2024-07-23 08:26:00'
+        AND date_dernier_prel = '2024-07-23 08:26:00'
         AND resultat != 'inf_0_5'
     )
 UNION ALL

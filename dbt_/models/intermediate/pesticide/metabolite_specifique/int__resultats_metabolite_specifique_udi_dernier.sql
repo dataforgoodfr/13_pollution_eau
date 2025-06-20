@@ -50,7 +50,7 @@ SELECT
     cdreseau,
     type_metabolite AS categorie,
     'dernier_prel' AS periode,
-    datetimeprel AS dernier_prel_datetime,
+    datetimeprel AS date_dernier_prel,
     1 AS nb_parametres,
     CASE
         WHEN valtraduite = 0 OR valtraduite IS null THEN 'non_quantifie'

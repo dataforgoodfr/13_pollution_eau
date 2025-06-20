@@ -26,7 +26,7 @@ last_pvl AS (
 SELECT
     cdreseau,
     'dernier_prel' AS periode,
-    datetimeprel AS dernier_prel_datetime,
+    datetimeprel AS date_dernier_prel,
     1 AS nb_parametres,
     CASE
         WHEN cdparametresiseeaux = '14DAN' THEN 'sub_indus_14dioxane'

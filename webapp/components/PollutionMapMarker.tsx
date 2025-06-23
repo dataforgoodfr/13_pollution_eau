@@ -3,6 +3,7 @@
 import { useEffect, useState, JSX } from "react";
 import { getPropertyName } from "@/lib/property";
 import { getCategoryById } from "@/lib/polluants";
+import { getParameterName } from "@/lib/parameters";
 import { useMap, Marker, Popup } from "react-map-gl/maplibre";
 import { MapPin, X } from "lucide-react";
 
@@ -173,16 +174,18 @@ export default function PollutionMapMarker({
             </p>
           )}
           {parsedValues && Object.keys(parsedValues).length > 0 && (
-            <div className="space-y-1">
-              <p className="font-medium">Paramètres détectés:</p>
-              <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-xs">
+            <div className="mt-3">
+              <p className="font-medium mb-2">Paramètres détectés:</p>
+              <ul className="space-y-1">
                 {Object.entries(parsedValues).map(([param, value]) => (
-                  <div key={param} className="flex justify-between">
-                    <span className="font-medium">{param}:</span>
-                    <span>{value}</span>
-                  </div>
+                  <li key={param} className="flex justify-between items-center">
+                    <span className="font-light">
+                      {getParameterName(param)}:
+                    </span>
+                    <span className="ml-2 font-light">{value}</span>
+                  </li>
                 ))}
-              </div>
+              </ul>
             </div>
           )}
         </>

@@ -37,6 +37,7 @@ export const DEFAULT_MAP_STYLE: maplibregl.StyleSpecification = {
     udis: {
       type: "vector",
       url: "pmtiles://s3/prod/pmtiles/georef-france-udi-prelevement.pmtiles",
+      // url: "pmtiles:///georef-france-udi-prelevement.pmtiles",
     },
   },
   layers: [], // layers will be added dynamically in the Map component

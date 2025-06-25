@@ -29,16 +29,13 @@ models:
         tests:
           - accepted_values:
               values: ["dernier_prel"]
-      - name: dernier_prel_datetime
+      - name: date_dernier_prel
         description: "Date et heure du dernier prélèvement pris en compte dans l'analyse."
         type: TIMESTAMP
         tests:
           - not_null
           - dbt_utils.expression_is_true:
               expression: ">= CURRENT_DATE - INTERVAL 1 YEAR"
-      - name: dernier_prel_valeur
-        description: "Valeur du dernier prélèvement"
-        type: FLOAT
       - name: nb_parametres
         type: INTEGER
       - name: resultat
@@ -52,6 +49,9 @@ models:
                 - "sup_limite_qualite"
                 - "inf_limite_qualite_sup_0_1"
                 - "sup_valeur_sanitaire"
+      - name: parametres_detectes
+        description: "JSON contenant les paramètres détectés (valtraduite > 0) avec leurs valeurs correspondantes."
+        type: JSON
 
   - name: int__resultats_metabolite_specifique_udi_annuel
     description: Résultats des métabolites de pesticides spécifiques par UDI pour la temporalité 'bilan annuel'
@@ -135,16 +135,13 @@ models:
         tests:
           - accepted_values:
               values: ["dernier_prel"]
-      - name: dernier_prel_datetime
+      - name: date_dernier_prel
         description: "Date et heure du dernier prélèvement pris en compte dans l'analyse."
         type: TIMESTAMP
         tests:
           - not_null
           - dbt_utils.expression_is_true:
               expression: ">= CURRENT_DATE - INTERVAL 1 YEAR"
-      - name: dernier_prel_valeur
-        description: "Valeur du dernier prélèvement"
-        type: FLOAT
       - name: nb_parametres
         type: INTEGER
       - name: resultat
@@ -158,3 +155,6 @@ models:
                 - "sup_limite_qualite"
                 - "inf_limite_qualite_sup_0_1"
                 - "sup_valeur_sanitaire"
+      - name: parametres_detectes
+        description: "JSON contenant les paramètres détectés (valtraduite > 0) avec leurs valeurs correspondantes."
+        type: JSON

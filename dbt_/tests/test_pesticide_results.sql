@@ -10,25 +10,25 @@ FROM
 WHERE
     (
         cdreseau = '001000277'
-        AND dernier_prel_datetime = TIMESTAMP '2025-01-22 11:24:00'
+        AND date_dernier_prel = TIMESTAMP '2025-01-22 11:24:00'
         AND resultat != 'inf_limite_qualite'
     )
     OR
     (
         cdreseau = '061000423'
-        AND dernier_prel_datetime = TIMESTAMP '2025-03-13 08:44:00'
+        AND date_dernier_prel = TIMESTAMP '2025-03-13 08:44:00'
         AND resultat != 'sup_valeur_sanitaire'
     )
     OR
     (
         cdreseau = '063001557'
-        AND dernier_prel_datetime = TIMESTAMP '2025-03-28 09:32:00'
+        AND date_dernier_prel = TIMESTAMP '2025-03-28 09:32:00'
         AND resultat != 'non_quantifie'
     )
     OR
     (
         cdreseau = '089000445'
-        AND dernier_prel_datetime = TIMESTAMP '2025-03-28 09:19:00'
+        AND date_dernier_prel = TIMESTAMP '2025-03-28 09:19:00'
         AND resultat != 'sup_limite_qualite'
     )
 -- annuel udi

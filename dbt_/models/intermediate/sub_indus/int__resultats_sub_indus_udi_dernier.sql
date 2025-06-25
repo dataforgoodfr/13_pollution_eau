@@ -26,8 +26,7 @@ last_pvl AS (
 SELECT
     cdreseau,
     'dernier_prel' AS periode,
-    datetimeprel AS dernier_prel_datetime,
-    valtraduite AS dernier_prel_valeur,
+    datetimeprel AS date_dernier_prel,
     1 AS nb_parametres,
     CASE
         WHEN cdparametresiseeaux = '14DAN' THEN 'sub_indus_14dioxane'
@@ -50,7 +49,9 @@ SELECT
             valtraduite < valeur_sanitaire_1
             THEN 'inf_valeur_sanitaire'
         ELSE 'error'
-    END AS resultat
+    END AS resultat,
+    JSON_OBJECT(CASE WHEN valtraduite > 0 THEN cdparametresiseeaux END, valtraduite)
+        AS parametres_detectes
 FROM
     last_pvl
 WHERE

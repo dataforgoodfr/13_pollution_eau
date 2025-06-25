@@ -54,7 +54,7 @@ split_nitrate AS (
     SELECT
         resultats.cdreseau,
         resultats.categorie,
-        resultats.datetimeprel AS dernier_prel_datetime,
+        resultats.datetimeprel AS date_dernier_prel,
         COUNT(DISTINCT resultats.cdparametresiseeaux) AS nb_parametres,
         MAX(
             CASE
@@ -100,7 +100,7 @@ split_nitrate_with_ref AS (
         split_nitrate.cdreseau,
         split_nitrate.categorie,
         split_nitrate.nb_parametres,
-        split_nitrate.dernier_prel_datetime,
+        split_nitrate.date_dernier_prel,
         valeur_ref.limite_qualite_no3,
         valeur_ref.limite_qualite_no2,
         valeur_ref.limite_qualite_no3_no2,
@@ -117,8 +117,7 @@ SELECT
     cdreseau,
     categorie,
     'dernier_prel' AS periode,
-    dernier_prel_datetime,
-    valtraduite_no3 AS dernier_prel_valeur,
+    date_dernier_prel,
     nb_parametres,
     CASE
         WHEN -- Si nitrates (no3) et pas nitrites (no2)
@@ -166,6 +165,12 @@ SELECT
             < limite_qualite_no3_no2
             THEN 'inf_limite_qualite'
         ELSE 'erreur'
-    END AS resultat
+    END AS resultat,
+    JSON_OBJECT(
+        CASE WHEN valtraduite_no2 > 0 THEN 'NO2' END, valtraduite_no2,
+        CASE WHEN valtraduite_no3 > 0 THEN 'NO3' END, valtraduite_no3,
+        CASE WHEN valtraduite_no3_no2 > 0 THEN 'NO3_NO2' END, valtraduite_no3_no2
+    ) AS parametres_detectes
+
 FROM
     split_nitrate_with_ref

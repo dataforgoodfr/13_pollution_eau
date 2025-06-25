@@ -2,7 +2,7 @@ SELECT
     cdreseau,
     'tous' AS categorie,
     'dernier_prel' AS periode,
-    MAX(dernier_prel_datetime) AS dernier_prel_datetime,
+    MAX(date_dernier_prel) AS date_dernier_prel,
     SUM(nb_parametres) AS nb_parametres,
     CASE
         WHEN BOOL_OR(resultat IN (

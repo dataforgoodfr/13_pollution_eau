@@ -60,16 +60,13 @@ models:
         tests:
           - accepted_values:
               values: ["dernier_prel"]
-      - name: dernier_prel_datetime
+      - name: date_dernier_prel
         description: "Date du dernier prélèvement considéré"
         type: TIMESTAMP
         tests:
           - not_null
           - dbt_utils.expression_is_true:
               expression: ">= CURRENT_DATE - INTERVAL 1 YEAR"
-      - name: dernier_prel_valeur
-        description: "valeur mesurée sur le dernier prélèvement considéré"
-        type: FLOAT
       - name: nb_parametres
         description: "nombre de paramètres mesurés sur le prélèvement pour la catégorie considérée"
         type: INTEGER
@@ -85,6 +82,9 @@ models:
                 - non_quantifie
                 - sup_0_5
                 - inf_0_5
+      - name: parametres_detectes
+        description: "JSON contenant les paramètres détectés (valtraduite > 0) avec leurs valeurs correspondantes."
+        type: JSON
 
   - name: int__resultats_cvm_udi_annuel
     description: Résultats CVM par UDI pour la temporalité 'bilan_annuel'
@@ -149,16 +149,13 @@ models:
         tests:
           - accepted_values:
               values: ["dernier_prel"]
-      - name: dernier_prel_datetime
+      - name: date_dernier_prel
         description: "Date du dernier prélèvement considéré"
         type: TIMESTAMP
         tests:
           - not_null
           - dbt_utils.expression_is_true:
               expression: ">= CURRENT_DATE - INTERVAL 1 YEAR"
-      - name: dernier_prel_valeur
-        description: "Valeur du dernier prelevement"
-        type: FLOAT
       - name: nb_parametres
         description: "Nombre de paramètres analysés"
         type: INTEGER
@@ -174,3 +171,6 @@ models:
                 - non_quantifie
                 - sup_0_5
                 - inf_0_5
+      - name: parametres_detectes
+        description: "JSON contenant les paramètres détectés (valtraduite > 0) avec leurs valeurs correspondantes."
+        type: JSON

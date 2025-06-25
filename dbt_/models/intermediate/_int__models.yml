@@ -396,12 +396,9 @@ models:
       - name: ratio
         description: "Ratio de dépassements"
         type: FLOAT
-      - name: dernier_prel_datetime
+      - name: date_dernier_prel
         description: "Date du dernier prelevement"
         type: DATE
-      - name: dernier_prel_valeur
-        description: "Valeur du dernier prelevement"
-        type: FLOAT
       - name: nb_parametres
         description: "Nombre de paramètres analysés"
         type: INTEGER
@@ -411,6 +408,9 @@ models:
       - name: nb_sup_valeur_sanitaire
         description: "Nombre de prélèvements supérieurs à la valeur sanitaire"
         type: INTEGER
+      - name: parametres_detectes
+        description: "JSON contenant les paramètres détectés (valtraduite > 0) avec leurs valeurs correspondantes."
+        type: JSON
 
   - name: int__union_resultats_commune
     description: "Résultats communes (union de tous les résultats par catégorie)"
@@ -433,12 +433,9 @@ models:
       - name: ratio
         description: "Ratio de dépassements"
         type: FLOAT
-      - name: dernier_prel_datetime
+      - name: date_dernier_prel
         description: "Date du dernier prelevement"
         type: DATE
-      - name: dernier_prel_valeur
-        description: "Valeur du dernier prelevement"
-        type: FLOAT
       - name: nb_parametres
         description: "Nombre de paramètres analysés"
         type: INTEGER
@@ -448,3 +445,6 @@ models:
       - name: nb_sup_valeur_sanitaire
         description: "Nombre de prélèvements supérieurs à la valeur sanitaire"
         type: INTEGER
+      - name: parametres_detectes
+        description: "JSON contenant les paramètres détectés (valtraduite > 0) avec leurs valeurs correspondantes."
+        type: JSON

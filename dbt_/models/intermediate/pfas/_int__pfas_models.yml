@@ -16,17 +16,13 @@ models:
           - accepted_values:
               values: ["pfas"]
 
-      - name: dernier_prel_datetime
+      - name: date_dernier_prel
         description: "Date et heure du dernier prélèvement pris en compte dans l'analyse."
         type: TIMESTAMP
         tests:
           - not_null
           - dbt_utils.expression_is_true:
               expression: ">= CURRENT_DATE - INTERVAL 1 YEAR"
-
-      - name: dernier_prel_valeur
-        description: "Valeur du dernier prelevement"
-        type: FLOAT
 
       - name: resultat
         description: "Interprétation du résultat en fonction des seuils sanitaires et des valeurs mesurées."
@@ -50,6 +46,10 @@ models:
       - name: nb_parametres
         description: "Nombre de paramètres analysés"
         type: INTEGER
+
+      - name: parametres_detectes
+        description: "JSON contenant les paramètres détectés (valtraduite > 0) avec leurs valeurs correspondantes."
+        type: JSON
 
   - name: int__resultats_pfas_udi_annuel
     description: >

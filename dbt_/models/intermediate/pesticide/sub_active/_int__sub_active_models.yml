@@ -72,16 +72,13 @@ models:
         tests:
           - accepted_values:
               values: ["dernier_prel"]
-      - name: dernier_prel_datetime
+      - name: date_dernier_prel
         description: "Date et heure du dernier prélèvement pris en compte dans l'analyse."
         type: TIMESTAMP
         tests:
           - not_null
           - dbt_utils.expression_is_true:
               expression: ">= CURRENT_DATE - INTERVAL 1 YEAR"
-      - name: dernier_prel_valeur
-        description: "Valeur maximale du dernier prélèvement"
-        type: FLOAT
       - name: nb_parametres
         type: INTEGER
       - name: resultat
@@ -94,3 +91,6 @@ models:
                 - "inf_limite_qualite"
                 - "sup_limite_qualite"
                 - "sup_valeur_sanitaire"
+      - name: parametres_detectes
+        description: "JSON contenant les paramètres détectés (valtraduite > 0) avec leurs valeurs correspondantes."
+        type: JSON

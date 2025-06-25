@@ -3,6 +3,7 @@
 import { useEffect, useState, JSX } from "react";
 import { getPropertyName } from "@/lib/property";
 import { getCategoryById } from "@/lib/polluants";
+import { getParameterName } from "@/lib/parameters";
 import { useMap, Marker, Popup } from "react-map-gl/maplibre";
 import { MapPin, X } from "lucide-react";
 
@@ -107,30 +108,54 @@ export default function PollutionMapMarker({
       ? selectedZoneData["commune_code_insee"]
       : selectedZoneData["cdreseau"];
 
-  const property = getPropertyName(
-    period,
-    category,
-    period === "dernier_prel" ? "resultat" : "ratio",
-  );
-
-  const value = selectedZoneData[property] || null;
-
-  const categoryDetails = getCategoryById(category);
-  const resultColor =
-    categoryDetails?.resultats[value as string]?.couleur || "#9B9B9B";
-  const resultLabel =
-    categoryDetails?.resultats[value as string]?.label || "Aucune donnée";
+  console.log("Selected zone id:", code);
 
   const renderContent = () => {
     if (period === "dernier_prel") {
-      const realValue =
+      // Rendering for "dernier_prel"
+
+      const resultProperty = getPropertyName(period, category, "resultat");
+      const resultValue =
+        resultProperty in selectedZoneData
+          ? selectedZoneData[resultProperty]
+          : undefined;
+
+      if (resultValue === undefined || !code) {
+        return (
+          <p className="text-sm text-gray-500">
+            Aucune donnée disponible pour cette zone.
+          </p>
+        );
+      }
+
+      const categoryDetails = getCategoryById(category);
+      const resultColor =
+        categoryDetails?.resultats[resultValue as string]?.couleur ||
+        categoryDetails?.resultats["non_recherche"]?.couleur ||
+        "#333333";
+      const resultLabel =
+        categoryDetails?.resultats[resultValue as string]?.label ||
+        categoryDetails?.resultats["non_recherche"]?.label ||
+        "Résultat manquant";
+
+      const values =
         selectedZoneData[
-          getPropertyName(period, category, "dernier_prel_valeur")
+          getPropertyName(period, category, "parametres_detectes")
         ];
       const date =
         selectedZoneData[
-          getPropertyName(period, category, "dernier_prel_datetime")
+          getPropertyName(period, category, "date_dernier_prel")
         ] || null;
+
+      // Parse JSON values if they exist
+      let parsedValues: Record<string, number> | null = null;
+      if (values && typeof values === "string") {
+        try {
+          parsedValues = JSON.parse(values);
+        } catch (error) {
+          console.error("Error parsing parametres_detectes:", error);
+        }
+      }
 
       return (
         <>
@@ -142,17 +167,31 @@ export default function PollutionMapMarker({
             ></div>
             <span className="">{resultLabel}</span>
           </div>
-          {realValue !== null && date ? (
-            <p className="">
-              Valeur: {realValue}
-              <br />
-              Date: {date}
+          {date && (
+            <p className="mb-2">
+              Dernier prélèvement le{" "}
+              {new Date(date.toString()).toLocaleDateString("fr-FR")}
             </p>
-          ) : null}
+          )}
+          {parsedValues && Object.keys(parsedValues).length > 0 && (
+            <div className="mt-3">
+              <p className="font-medium mb-2">Paramètres détectés:</p>
+              <ul className="space-y-1">
+                {Object.entries(parsedValues).map(([param, value]) => (
+                  <li key={param} className="flex justify-between items-center">
+                    <span className="font-light">
+                      {getParameterName(param)}:
+                    </span>
+                    <span className="ml-2 font-light">{value}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
         </>
       );
     } else {
-      // bilan_annuel
+      // Rendering for "bilan_annuel"
 
       const ratioProp = getPropertyName(period, category, "ratio");
       const nbPrelevementsProp = getPropertyName(
@@ -166,7 +205,47 @@ export default function PollutionMapMarker({
         "nb_sup_valeur_sanitaire",
       );
 
-      console.log(selectedZoneData[ratioProp]);
+      const categoryDetails = getCategoryById(category);
+
+      let resultColor = "#333333";
+      let resultLabel = "Résultat manquant";
+      if (
+        selectedZoneData[nbPrelevementsProp] === 0 ||
+        selectedZoneData[nbPrelevementsProp] === ""
+      ) {
+        resultColor =
+          categoryDetails?.resultatsAnnuels?.nonRechercheCouleur || "#333333";
+        resultLabel =
+          categoryDetails?.resultatsAnnuels?.nonRechercheLabel ||
+          "Résultat manquant";
+      } else if (
+        selectedZoneData[nbSupValeurSanitaireProp] !== null &&
+        selectedZoneData[nbSupValeurSanitaireProp] !== undefined &&
+        Number(selectedZoneData[nbSupValeurSanitaireProp]) > 0
+      ) {
+        resultColor =
+          categoryDetails?.resultatsAnnuels?.valeurSanitaireCouleur ||
+          "#333333";
+        resultLabel =
+          categoryDetails?.resultatsAnnuels?.valeurSanitaireLabel ||
+          "Résultat manquant";
+      } else if (
+        selectedZoneData[ratioProp] !== null &&
+        selectedZoneData[ratioProp] !== undefined
+      ) {
+        const ratioValue = selectedZoneData[ratioProp];
+        if (ratioValue !== undefined && ratioValue !== null) {
+          const ratioLimits =
+            categoryDetails?.resultatsAnnuels?.ratioLimites || [];
+          for (const limit of ratioLimits) {
+            if (Number(ratioValue) <= limit.limite) {
+              resultColor = limit.couleur;
+              resultLabel = `${categoryDetails?.resultatsAnnuels?.ratioLabel}: ${(Number(ratioValue) * 100).toFixed(0)}%`;
+              break;
+            }
+          }
+        }
+      }
 
       return (
         <>
@@ -178,19 +257,28 @@ export default function PollutionMapMarker({
             ></div>
             <span className="">{resultLabel}</span>
           </div>
-          <p className="">
-            {selectedZoneData[ratioProp] !== undefined ? (
+
+          {selectedZoneData[nbPrelevementsProp] &&
+            Number(selectedZoneData[nbPrelevementsProp]) > 0 && (
               <>
-                {Math.round(Number(selectedZoneData[ratioProp]) * 100)}% des
-                prélevements
+                <p className="">
+                  {Number(selectedZoneData[nbPrelevementsProp]) === 1
+                    ? "1 prélèvement dans l'année"
+                    : `${selectedZoneData[nbPrelevementsProp]} prélèvements dans l'année`}
+                </p>
+
+                {categoryDetails?.resultatsAnnuels &&
+                  "valeurSanitaireLabel" in categoryDetails.resultatsAnnuels &&
+                  selectedZoneData[nbSupValeurSanitaireProp] !== null &&
+                  selectedZoneData[nbSupValeurSanitaireProp] !== undefined && (
+                    <p className="">
+                      {Number(selectedZoneData[nbSupValeurSanitaireProp]) > 0
+                        ? `${selectedZoneData[nbSupValeurSanitaireProp]} prélèvements avec des valeurs supérieures à la valeur sanitaire`
+                        : "Aucun prélèvement avec des valeurs supérieures à la valeur sanitaire"}
+                    </p>
+                  )}
               </>
-            ) : null}
-            <br />
-            nb_prelevements: {selectedZoneData[nbPrelevementsProp]}
-            <br />
-            nb_sup_valeur_sanitaire:{" "}
-            {selectedZoneData[nbSupValeurSanitaireProp]}
-          </p>
+            )}
         </>
       );
     }
@@ -240,12 +328,7 @@ export default function PollutionMapMarker({
               </div>
             )}
 
-            <div className="space-y-2 pr-6">
-              {renderContent()}
-              <p className="text-xs text-gray-600 pt-2">
-                Code {displayMode === "communes" ? "Insee" : "réseau"}: {code}
-              </p>
-            </div>
+            <div className="space-y-2 pr-6">{renderContent()}</div>
           </div>
         </Popup>
       )}

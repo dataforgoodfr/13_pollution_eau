@@ -1,3 +1,9 @@
+{{
+  config(
+    materialized='table'
+  )
+}}
+
 -- Merci de conserver l'ordre (alphabétique) des modèles
 
 -- cvm

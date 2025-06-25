@@ -32,11 +32,67 @@ WHERE
         AND resultat != 'sup_limite_qualite'
     )
 -- annuel udi
--- UNION ALL
--- SELECT
---     'bilan_annuel' AS periode,
---     cdreseau,
---     '' AS resultat,
---     ratio_limite_qualite,
---     nb_sup_valeur_sanitaire
--- FROM
+UNION ALL
+SELECT
+    'bilan_annuel' AS periode,
+    cdreseau,
+    '' AS resultat,
+    ratio_limite_qualite,
+    nb_sup_valeur_sanitaire
+FROM
+    {{ ref('int__resultats_pesticide_udi_annuel') }}
+WHERE
+    (
+        cdreseau = '001000277'
+        AND annee = 2024
+        AND (
+            nb_prelevements != 2
+            OR nb_depassements != 0
+            OR nb_sup_valeur_sanitaire != 0
+            OR ratio_limite_qualite != 0.0
+        )
+    )
+    OR
+    (
+        cdreseau = '061000423'
+        AND annee = 2024
+        AND (
+            nb_prelevements != 12
+            OR nb_depassements != 12
+            OR nb_sup_valeur_sanitaire != 11
+            OR ratio_limite_qualite != 1.0
+        )
+    )
+    OR
+    (
+        cdreseau = '061000423'
+        AND annee = 2023
+        AND (
+            nb_prelevements != 13
+            OR nb_depassements != 13
+            OR nb_sup_valeur_sanitaire != 0
+            OR ratio_limite_qualite != 1.0
+        )
+    )
+    OR
+    (
+        cdreseau = '089000445'
+        AND annee = 2023
+        AND (
+            nb_prelevements != 1
+            OR nb_depassements != 0
+            OR nb_sup_valeur_sanitaire != 0
+            OR ratio_limite_qualite != 0.0
+        )
+    )
+    OR
+    (
+        cdreseau = '051000773'
+        AND annee = 2023
+        AND (
+            nb_prelevements != 4
+            OR nb_depassements != 2
+            OR nb_sup_valeur_sanitaire != 0
+            OR ratio_limite_qualite != 0.5
+        )
+    )

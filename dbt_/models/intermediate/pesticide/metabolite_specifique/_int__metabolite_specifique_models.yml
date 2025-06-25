@@ -53,6 +53,58 @@ models:
         description: "JSON contenant les paramètres détectés (valtraduite > 0) avec leurs valeurs correspondantes."
         type: JSON
 
+  - name: int__resultats_metabolite_specifique_udi_annuel
+    description: Résultats des métabolites de pesticides spécifiques par UDI pour la temporalité 'bilan annuel'
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - cdreseau
+            - annee
+            - categorie
+    columns:
+      - name: cdreseau
+        description: "Code de l'installation (UDI)."
+        type: VARCHAR
+        tests:
+          - not_null
+      - name: annee
+        description: "Annee du prevelvement"
+        type: SMALLINT
+      - name: categorie
+        description: "Catégorie du métabolite analysé."
+        type: VARCHAR
+        tests:
+          - accepted_values:
+              values:
+                - "metabolite_esa_metolachlore"
+                - "metabolite_chlorothalonil_r471811"
+                - "metabolite_chloridazone_desphenyl"
+                - "metabolite_chloridazone_methyl_desphenyl"
+                - "metabolite_atrazine_desethyl"
+      - name: periode
+        description: "Période du résultat"
+        type: VARCHAR
+        tests:
+          - dbt_utils.expression_is_true:
+              expression: "LIKE 'bilan_annuel%'"
+      - name: nb_depassements
+        description: "Nombre de prélèvements avec dépassement de la limite de qualité."
+        type: INTEGER
+      - name: nb_sup_valeur_sanitaire
+        description: "Nombre de prélèvements avec dépassement de la valeur sanitaire."
+        type: INTEGER
+      - name: nb_prelevements
+        description: "Nombre de prélèvements total"
+        type: INTEGER
+      - name: ratio_limite_qualite
+        description: "Pourcentage de prélèvements qui dépassent la limite"
+        type: FLOAT
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              max_value: 1
+
   - name: int__resultats_metabolite_specifique_udi_dernier
     description: Résultats des métabolites de pesticides spécifiques par UDI pour la temporalité 'derniers prélèvements'
     tests:

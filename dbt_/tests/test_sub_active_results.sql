@@ -32,11 +32,45 @@ WHERE
         AND resultat != 'sup_valeur_sanitaire'
     )
 -- annuel udi
--- UNION ALL
--- SELECT
---     'bilan_annuel' AS periode,
---     cdreseau,
---     '' AS resultat,
---     ratio_limite_qualite,
---     nb_sup_valeur_sanitaire
--- FROM
+UNION ALL
+SELECT
+    'bilan_annuel' AS periode,
+    cdreseau,
+    '' AS resultat,
+    ratio_limite_qualite,
+    nb_sup_valeur_sanitaire
+FROM
+    {{ ref('int__resultats_sub_active_udi_annuel') }}
+WHERE
+    (
+        cdreseau = '051000769'
+        AND annee = 2024
+        AND (
+            nb_prelevements != 6
+            OR nb_depassements != 3
+            OR nb_sup_valeur_sanitaire != 0
+            OR ratio_limite_qualite != 0.5
+        )
+    )
+    OR
+    (
+        cdreseau = '030000509'
+        AND annee = 2024
+        AND (
+            nb_prelevements != 7
+            OR nb_depassements != 0
+            OR nb_sup_valeur_sanitaire != 0
+            OR ratio_limite_qualite != 0
+        )
+    )
+    OR
+    (
+        cdreseau = '060001302'
+        AND annee = 2024
+        AND (
+            nb_prelevements != 4
+            OR nb_depassements != 2
+            OR nb_sup_valeur_sanitaire != 1
+            OR ratio_limite_qualite != 0.5
+        )
+    )

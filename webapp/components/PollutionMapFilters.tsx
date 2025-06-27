@@ -70,6 +70,7 @@ export default function PollutionMapFilters({
 }: PollutionMapFiltersProps) {
   const availablePeriods = [
     { value: "dernier_prel", label: "Dernier relevé" },
+    { value: "bilan_annuel_2025", label: "Bilan 2025" },
     { value: "bilan_annuel_2024", label: "Bilan 2024" },
     { value: "bilan_annuel_2023", label: "Bilan 2023" },
     { value: "bilan_annuel_2022", label: "Bilan 2022" },

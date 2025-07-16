@@ -32,3 +32,40 @@ export async function fetchExample() {
     throw new Error("Failed to fetch example rows.");
   }
 }
+
+interface PollutionStat {
+  stat_nom: string;
+  stat_chiffre: number | null;
+  stat_texte: string | null;
+}
+
+export type PollutionStats = PollutionStat[];
+
+export async function fetchPollutionStats(): Promise<PollutionStat[]> {
+  try {
+    const connection = await db.connect();
+
+    const result = await connection.runAndReadUntil(
+      "SELECT stat_nom, stat_chiffre, stat_texte FROM web__stats_udi ORDER BY stat_nom",
+      ROW_TARGET_COUNT,
+    );
+
+    const stats: PollutionStat[] = [];
+    const rows = result.getRowObjects();
+
+    rows.forEach((row) => {
+      stats.push({
+        stat_nom: String(row.stat_nom),
+        stat_chiffre: row.stat_chiffre ? Number(row.stat_chiffre) : null,
+        stat_texte: row.stat_texte ? String(row.stat_texte) : null,
+      });
+    });
+
+    console.log("Fetched pollution stats:", stats);
+
+    return stats;
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw new Error("Failed to fetch pollution statistics.");
+  }
+}

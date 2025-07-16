@@ -11,8 +11,13 @@ import MapZoneSelector from "./MapZoneSelector";
 import PollutionMapLegend from "./PollutionMapLegend";
 import { HamburgerButton } from "./ui/hamburger-button";
 import { clsx } from "clsx";
+import type { PollutionStats } from "@/app/lib/data";
 
-export default function PollutionMap() {
+export default function PollutionMap({
+  pollutionStats,
+}: {
+  pollutionStats: PollutionStats;
+}) {
   const [period, setPeriod] = useState("dernier_prel");
   const [category, setCategory] = useState("tous");
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -136,6 +141,7 @@ export default function PollutionMap() {
           >
             <PollutionSidePanel
               category={category}
+              pollutionStats={pollutionStats}
               onClose={() => setSidePanelOpen(false)}
             />
           </div>

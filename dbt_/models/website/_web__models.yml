@@ -146,3 +146,18 @@ models:
       - name: parametres_detectes
         description: "JSON contenant les paramètres détectés (valtraduite > 0) avec leurs valeurs correspondantes."
         type: JSON
+
+  - name: web__stats_udi
+    description: "Statistiques précalculées pour les UDIs - format simple pour l'API"
+    columns:
+      - name: stat_nom
+        description: "Nom de la statistique"
+        type: VARCHAR
+        tests:
+          - unique
+      - name: stat_chiffre
+        description: "Valeur numérique de la statistique (null si non applicable)"
+        type: FLOAT
+      - name: stat_texte
+        description: "Valeur textuelle de la statistique (null si non applicable)"
+        type: VARCHAR

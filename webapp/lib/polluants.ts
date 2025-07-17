@@ -79,13 +79,13 @@ export const availableCategories: ICategory[] = [
     sourcesExposition: "Eau potable, air, alimentation, sols contaminés.",
     resultats: {
       inf_limites: {
-        label: "Aucun dépassement des limites de qualité",
+        label: "Aucun dépassement des limites réglementaire",
         couleur: "#B4E681",
         couleurFond: "#B4E681",
         picto: null,
       },
       sup_limite_qualite: {
-        label: "Au moins un dépassement des limites de qualité",
+        label: "Au moins un dépassement des limites réglementaire",
         couleur: "#F3903F",
         couleurFond: "#F3903F",
         picto: "warning",
@@ -108,7 +108,7 @@ export const availableCategories: ICategory[] = [
         { limite: 1, label: "75 - 100%", couleur: "#ED683C" },
       ],
       ratioLabel:
-        "Part des prélèvements où les paramètres analysés ont dépassé la limite de qualité",
+        "Part des prélèvements où les paramètres analysés ont dépassé la limite réglementaire",
       valeurSanitaire: true,
       valeurSanitaireLabel:
         "Au moins 1 dépassement de valeur sanitaire au cours de l'année",
@@ -184,7 +184,7 @@ export const availableCategories: ICategory[] = [
         { limite: 1, label: "75 - 100%", couleur: "#ED683C" },
       ],
       ratioLabel:
-        "Part des prélèvements où les PFAS ont dépassé la limite de qualité",
+        "Part des prélèvements où les PFAS ont dépassé la limite réglementaire",
       valeurSanitaire: true,
       valeurSanitaireLabel:
         "Au moins 1 dépassement de valeur sanitaire au cours de l'année",
@@ -219,13 +219,13 @@ export const availableCategories: ICategory[] = [
       },
       inf_limite_qualite: {
         label:
-          "Au moins un pesticide quantifié mais sans dépassement de la limite de qualité",
+          "Au moins un pesticide quantifié mais sans dépassement de la limite réglementaire",
         couleur: "#FFF33B",
         couleurFond: "#FFF33B",
         picto: null,
       },
       sup_limite_qualite: {
-        label: "Au moins un pesticide dépasse la limite de qualité",
+        label: "Au moins un pesticide dépasse la limite réglementaire",
         couleur: "#F3903F",
         couleurFond: "#F3903F",
         picto: "warning",
@@ -248,7 +248,7 @@ export const availableCategories: ICategory[] = [
         { limite: 1, label: "75 - 100%", couleur: "#ED683C" },
       ],
       ratioLabel:
-        "Part des prélèvements où les pesticides ont dépassé la limite de qualité",
+        "Part des prélèvements où les pesticides ont dépassé la limite réglementaire",
       valeurSanitaire: true,
       valeurSanitaireLabel:
         "Au moins 1 dépassement de valeur sanitaire au cours de l'année",
@@ -284,13 +284,14 @@ export const availableCategories: ICategory[] = [
           },
           inf_limite_qualite: {
             label:
-              "Au moins une substance active quantifiée mais sans dépassement de la limite de qualité",
+              "Au moins une substance active quantifiée mais sans dépassement de la limite réglementaire",
             couleur: "#FFF33B",
             couleurFond: "#FFF33B",
             picto: null,
           },
           sup_limite_qualite: {
-            label: "Au moins une substance active dépasse la limite de qualité",
+            label:
+              "Au moins une substance active dépasse la limite réglementaire",
             couleur: "#F3903F",
             couleurFond: "#F3903F",
             picto: "warning",
@@ -313,7 +314,7 @@ export const availableCategories: ICategory[] = [
             { limite: 1, label: "75 - 100%", couleur: "#ED683C" },
           ],
           ratioLabel:
-            "Part des prélèvements où les substances actives pesticides ont dépassé la limite de qualité",
+            "Part des prélèvements où les substances actives pesticides ont dépassé la limite réglementaire",
           valeurSanitaire: true,
           valeurSanitaireLabel:
             "Au moins 1 dépassement de valeur sanitaire au cours de l'année",
@@ -348,13 +349,13 @@ export const availableCategories: ICategory[] = [
           },
           inf_limite_qualite: {
             label:
-              "Au moins un métabolite quantifié mais sans dépassement de la limite de qualité",
+              "Au moins un métabolite quantifié mais sans dépassement de la limite réglementaire",
             couleur: "#FFF33B",
             couleurFond: "#FFF33B",
             picto: null,
           },
           sup_limite_qualite: {
-            label: "Au moins un métabolite dépasse la limite de qualité",
+            label: "Au moins un métabolite dépasse la limite réglementaire",
             couleur: "#F3903F",
             couleurFond: "#F3903F",
             picto: "warning",
@@ -377,7 +378,7 @@ export const availableCategories: ICategory[] = [
             { limite: 1, label: "75 - 100%", couleur: "#ED683C" },
           ],
           ratioLabel:
-            "Part des prélèvements où les métabolites ont dépassé la limite de qualité",
+            "Part des prélèvements où les métabolites ont dépassé la limite réglementaire",
           valeurSanitaire: true,
           valeurSanitaireLabel:
             "Au moins 1 dépassement de valeur sanitaire au cours de l'année",
@@ -424,7 +425,7 @@ export const availableCategories: ICategory[] = [
               },
               sup_limite_qualite: {
                 label:
-                  "Concentration > 0,9 µg/L (eau non conforme à la limite de qualité)",
+                  "Concentration > 0,9 µg/L (eau non conforme à la limite réglementaire)",
                 couleur: "#F3903F",
                 couleurFond: "#F3903F",
                 picto: "warning",
@@ -448,7 +449,7 @@ export const availableCategories: ICategory[] = [
                 { limite: 1, label: "75 - 100%", couleur: "#ED683C" },
               ],
               ratioLabel:
-                "Part des prélèvements où l'ESA métolachlore a dépassé la limite de qualité",
+                "Part des prélèvements où l'ESA métolachlore a dépassé la limite réglementaire",
               valeurSanitaire: true,
               valeurSanitaireLabel:
                 "Au moins 1 dépassement de valeur sanitaire au cours de l'année",
@@ -495,7 +496,7 @@ export const availableCategories: ICategory[] = [
               },
               sup_limite_qualite: {
                 label:
-                  "Concentration > 0,9 µg/L (eau non conforme à la limite de qualité)",
+                  "Concentration > 0,9 µg/L (eau non conforme à la limite réglementaire)",
                 couleur: "#F3903F",
                 couleurFond: "#F3903F",
                 picto: "warning",
@@ -519,7 +520,7 @@ export const availableCategories: ICategory[] = [
                 { limite: 1, label: "75 - 100%", couleur: "#ED683C" },
               ],
               ratioLabel:
-                "Part des prélèvements où le Chlorothalonil R471811 a dépassé la limite de qualité",
+                "Part des prélèvements où le Chlorothalonil R471811 a dépassé la limite réglementaire",
               valeurSanitaire: true,
               valeurSanitaireLabel:
                 "Au moins 1 dépassement de valeur sanitaire au cours de l'année",
@@ -559,7 +560,7 @@ export const availableCategories: ICategory[] = [
               },
               sup_limite_qualite: {
                 label:
-                  "Concentration > 0,1 µg/L (eau non conforme à la limite de qualité)",
+                  "Concentration > 0,1 µg/L (eau non conforme à la limite réglementaire)",
                 couleur: "#F3903F",
                 couleurFond: "#F3903F",
                 picto: "warning",
@@ -583,7 +584,7 @@ export const availableCategories: ICategory[] = [
                 { limite: 1, label: "75 - 100%", couleur: "#ED683C" },
               ],
               ratioLabel:
-                "Part des prélèvements où la Chloridazone desphényl a dépassé la limite de qualité",
+                "Part des prélèvements où la Chloridazone desphényl a dépassé la limite réglementaire",
               valeurSanitaire: true,
               valeurSanitaireLabel:
                 "Au moins 1 dépassement de valeur sanitaire au cours de l'année",
@@ -622,7 +623,7 @@ export const availableCategories: ICategory[] = [
               },
               sup_limite_qualite: {
                 label:
-                  "Concentration > 0,1 µg/L (eau non conforme à la limite de qualité)",
+                  "Concentration > 0,1 µg/L (eau non conforme à la limite réglementaire)",
                 couleur: "#F3903F",
                 couleurFond: "#F3903F",
                 picto: "warning",
@@ -646,7 +647,7 @@ export const availableCategories: ICategory[] = [
                 { limite: 1, label: "75 - 100%", couleur: "#ED683C" },
               ],
               ratioLabel:
-                "Part des prélèvements où la Chloridazone methyl desphényl a dépassé la limite de qualité",
+                "Part des prélèvements où la Chloridazone methyl desphényl a dépassé la limite réglementaire",
               valeurSanitaire: true,
               valeurSanitaireLabel:
                 "Au moins 1 dépassement de valeur sanitaire au cours de l'année",
@@ -686,7 +687,7 @@ export const availableCategories: ICategory[] = [
               },
               sup_limite_qualite: {
                 label:
-                  "Concentration > 0,1 µg/L (eau non conforme à la limite de qualité)",
+                  "Concentration > 0,1 µg/L (eau non conforme à la limite réglementaire)",
                 couleur: "#F3903F",
                 couleurFond: "#F3903F",
                 picto: "warning",
@@ -710,7 +711,7 @@ export const availableCategories: ICategory[] = [
                 { limite: 1, label: "75 - 100%", couleur: "#ED683C" },
               ],
               ratioLabel:
-                "Part des prélèvements où l'Atrazine déséthyl a dépassé la limite de qualité",
+                "Part des prélèvements où l'Atrazine déséthyl a dépassé la limite réglementaire",
               valeurSanitaire: true,
               valeurSanitaireLabel:
                 "Au moins 1 dépassement de valeur sanitaire au cours de l'année",
@@ -743,14 +744,14 @@ export const availableCategories: ICategory[] = [
       },
       inf_limite_qualite: {
         label:
-          "Concentrations inférieures aux limites de qualité (eau conforme)",
+          "Concentrations inférieures aux limites réglementaire (eau conforme)",
         couleur: "#B4E681",
         couleurFond: "#B4E681",
         picto: null,
       },
       sup_limite_qualite: {
         label:
-          "Concentrations supérieures aux limites de qualité (eau non conforme avec recommandation de non-consommation pour les femmes enceintes et les nourrissons)",
+          "Concentrations supérieures aux limites réglementaire (eau non conforme avec recommandation de non-consommation pour les femmes enceintes et les nourrissons)",
         couleur: "#E93E3A",
         couleurFond: "#E93E3A",
         picto: "red cross",
@@ -767,7 +768,7 @@ export const availableCategories: ICategory[] = [
         { limite: 1, label: "75 - 100%", couleur: "#FF0000" },
       ],
       ratioLabel:
-        "Part des prélèvements où les nitrates ont dépassé la limite de qualité",
+        "Part des prélèvements où les nitrates ont dépassé la limite réglementaire",
       valeurSanitaire: false,
     },
   },
@@ -970,14 +971,14 @@ export const availableCategories: ICategory[] = [
           },
           limite_qualite: {
             label:
-              "Concentration < 10 µg/L (eau conforme à la limite de qualité)",
+              "Concentration < 10 µg/L (eau conforme à la limite réglementaire)",
             couleur: "#FFF33B",
             couleurFond: "#FFF33B",
             picto: null,
           },
           entre_10_et_13: {
             label:
-              "Concentration comprise entre 10 µg/L et 13 µg/L (eau non conforme à la limite de qualité mais peut être utilisée pour les usages alimentaires)",
+              "Concentration comprise entre 10 µg/L et 13 µg/L (eau non conforme à la limite réglementaire mais peut être utilisée pour les usages alimentaires)",
             couleur: "#F3903F",
             couleurFond: "#F3903F",
             picto: "warning",

@@ -32,7 +32,10 @@ stats_categories_non_conforme AS (
                         categorie IN ('tous')
                         AND resultat IN ('sup_limite_qualite', 'sup_limite_sanitaire')
                     )
-                    OR (categorie = 'pfas' AND resultat = 'sup_valeur_sanitaire')
+                    OR (
+                        categorie = 'pfas'
+                        AND resultat IN ('sup_valeur_sanitaire', 'somme_20pfas_sup_0_1')
+                    )
                     OR (
                         categorie IN ('pesticide', 'sub_active')
                         AND resultat IN ('sup_limite_qualite', 'sup_valeur_sanitaire')
@@ -74,6 +77,19 @@ stats_categories_recherche AS (
         periode = 'dernier_prel'
         AND resultat IS NOT NULL
     GROUP BY categorie
+),
+
+-- Statistique spécifique pour PFAS - nombre d'UDI sup limite sanitaire
+stats_pfas_sup_limite_sanitaire AS (
+    SELECT
+        NULL AS stat_texte,
+        'dernier_prel_pfas_nombre_sup_limite_sanitaire' AS stat_nom,
+        count(DISTINCT cdreseau) AS stat_chiffre
+    FROM {{ ref('web__resultats_udi') }}
+    WHERE
+        periode = 'dernier_prel'
+        AND categorie = 'pfas'
+        AND resultat = 'sup_valeur_sanitaire'
 )
 
 -- Union de toutes les statistiques
@@ -100,3 +116,9 @@ SELECT
     stat_chiffre,
     stat_texte
 FROM stats_categories_recherche
+UNION ALL
+SELECT
+    stat_nom,
+    stat_chiffre,
+    stat_texte
+FROM stats_pfas_sup_limite_sanitaire

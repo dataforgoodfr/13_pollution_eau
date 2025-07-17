@@ -128,7 +128,7 @@ export default function PollutionSidePanel({
 
               {/* Affichage de la date de dernière mise à jour */}
               <div className="text-sm text-gray-600 mb-2">
-                Dernière mise à jour :{" "}
+                Date de dernière analyse:{" "}
                 {(() => {
                   const dateValue = getStatistic("derniere_mise_a_jour");
                   return dateValue
@@ -161,6 +161,29 @@ export default function PollutionSidePanel({
                 })()}
                 bgColor="bg-red-200"
               />
+
+              {/* Affichage spécifique pour PFAS - UDI avec dépassement de limite sanitaire */}
+              {category === "pfas" && (
+                <ResultCard
+                  des="UDI avec dépassement de limite sanitaire"
+                  result={(() => {
+                    const nombreSupLimiteSanitaire = getStatistic(
+                      "dernier_prel_pfas_nombre_sup_limite_sanitaire",
+                    );
+                    const totalUdis = getStatistic("total_udis");
+
+                    if (nombreSupLimiteSanitaire !== null && totalUdis) {
+                      const pourcentage = (
+                        (Number(nombreSupLimiteSanitaire) / Number(totalUdis)) *
+                        100
+                      ).toFixed(1);
+                      return `${nombreSupLimiteSanitaire} (${pourcentage}%)`;
+                    }
+                    return "--";
+                  })()}
+                  bgColor="bg-red-200"
+                />
+              )}
 
               {/* Affichage du nombre et % des UDIs avec au moins une recherche */}
               <ResultCard

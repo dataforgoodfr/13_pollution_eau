@@ -21,7 +21,9 @@ categories AS (
         'metabolite_chlorothalonil_r471811',
         'metabolite_chloridazone_desphenyl',
         'metabolite_chloridazone_methyl_desphenyl',
-        'metabolite_atrazine_desethyl'
+        'metabolite_atrazine_desethyl',
+        'metaux_lourds_as',
+        'metaux_lourds_pb'
     ]) AS categorie
 ),
 

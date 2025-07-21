@@ -1,0 +1,196 @@
+models:
+  - name: int__resultats_metaux_lourds_udi_dernier
+    description: Résultats des métaux lourds (Plomb et Arsenic) par UDI pour la temporalité 'dernier prélèvement'
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - cdreseau
+            - categorie
+    columns:
+      - name: cdreseau
+        description: "Code de l'installation (unité de distribution)"
+        type: VARCHAR
+        tests:
+          - not_null
+      - name: date_dernier_prel
+        description: "Date et heure du dernier prélèvement pris en compte dans l'analyse."
+        type: TIMESTAMP
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: ">= CURRENT_DATE - INTERVAL 1 YEAR"
+      - name: periode
+        description: "Période de résultat"
+        type: VARCHAR
+        tests:
+          - accepted_values:
+              values: ["dernier_prel"]
+      - name: nb_parametres
+        type: INTEGER
+      - name: categorie
+        type: VARCHAR
+        tests:
+          - accepted_values:
+              values:
+                - metaux_lourds_pb
+                - metaux_lourds_as
+      - name: resultat
+        description: "Interprétation du résultat en fonction des seuils sanitaires et des valeurs mesurées."
+        type: VARCHAR
+        tests:
+          - not_null
+          - accepted_values:
+              values:
+                - non_quantifie
+                - sup_limite_qualite
+                - sup_limite_qualite_2036
+                - sup_valeur_sanitaire
+                - inf_limite_qualite
+      - name: parametres_detectes
+        description: "JSON contenant les paramètres détectés (valtraduite > 0) avec leurs valeurs correspondantes."
+        type: JSON
+
+  - name: int__resultats_metaux_lourds_commune_dernier
+    description: Résultats des métaux lourds (Plomb et Arsenic) par commube pour la temporalité 'dernier prélèvement'
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - inseecommune
+            - categorie
+    columns:
+      - name: inseecommune
+        description: "Code INSEE de la commune"
+        type: VARCHAR
+        tests:
+          - not_null
+      - name: date_dernier_prel
+        description: "Date et heure du dernier prélèvement pris en compte dans l'analyse."
+        type: TIMESTAMP
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: ">= CURRENT_DATE - INTERVAL 1 YEAR"
+      - name: periode
+        description: "Période de résultat"
+        type: VARCHAR
+        tests:
+          - accepted_values:
+              values: ["dernier_prel"]
+      - name: nb_parametres
+        type: INTEGER
+      - name: categorie
+        type: VARCHAR
+        tests:
+          - accepted_values:
+              values:
+                - metaux_lourds_pb
+                - metaux_lourds_as
+      - name: resultat
+        description: "Interprétation du résultat en fonction des seuils sanitaires et des valeurs mesurées."
+        type: VARCHAR
+        tests:
+          - not_null
+          - accepted_values:
+              values:
+                - non_quantifie
+                - sup_limite_qualite
+                - sup_limite_qualite_2036
+                - sup_valeur_sanitaire
+                - inf_limite_qualite
+      - name: parametres_detectes
+        description: "JSON contenant les paramètres détectés (valtraduite > 0) avec leurs valeurs correspondantes."
+        type: JSON
+
+  - name: int__resultats_metaux_lourds_commune_annuel
+    description: Résultats des métaux lourds (Plomb et Arsenic) par commune pour la temporalité 'bilan_annuel'
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - inseecommune
+            - annee
+            - categorie
+    columns:
+      - name: inseecommune
+        description: "Code INSEE de la commune"
+        type: VARCHAR
+        tests:
+          - not_null
+      - name: annee
+        description: "Année de prélèvement"
+        type: smallint
+        tests:
+          - not_null
+      - name: categorie
+        description: "Catégorie du paramètre (pesticides, pfas, vcm, nitrates, etc.) selon la classification établie."
+        type: VARCHAR
+        tests:
+          - not_null
+          - accepted_values:
+              values:
+                - metaux_lourds_pb
+                - metaux_lourds_as
+      - name: periode
+        description: "Période du résultat"
+        type: VARCHAR
+        tests:
+          - dbt_utils.expression_is_true:
+              expression: "LIKE 'bilan_annuel%'"
+      - name: nb_depassements
+        type: INTEGER
+      - name: nb_prelevements
+        type: INTEGER
+      - name: ratio
+        description: Pourcentage de prélèvements qui dépassent la valeur sanitaire ou la limite de qualité
+        type: FLOAT
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              max_value: 1
+
+  - name: int__resultats_metaux_lourds_udi_annuel
+    description: Résultats des métaux lourds (Plomb et Arsenic) par UDI pour la temporalité 'bilan_annuel'
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - cdreseau
+            - annee
+            - categorie
+    columns:
+      - name: cdreseau
+        description: Code de l'installation (unité de distribution)
+        type: VARCHAR
+        tests:
+          - not_null
+      - name: annee
+        description: "Année de prélèvement"
+        type: smallint
+        tests:
+          - not_null
+      - name: categorie
+        description: "Catégorie du paramètre (pesticides, pfas, vcm, nitrates, etc.) selon la classification établie."
+        type: VARCHAR
+        tests:
+          - not_null
+          - accepted_values:
+              values:
+                - metaux_lourds_pb
+                - metaux_lourds_as
+      - name: periode
+        description: "Période du résultat"
+        type: VARCHAR
+        tests:
+          - dbt_utils.expression_is_true:
+              expression: "LIKE 'bilan_annuel%'"
+      - name: nb_depassements
+        type: INTEGER
+      - name: nb_prelevements
+        type: INTEGER
+      - name: ratio
+        description: Pourcentage de prélèvements qui dépassent la valeur sanitaire ou la limite de qualité
+        type: FLOAT
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              max_value: 1

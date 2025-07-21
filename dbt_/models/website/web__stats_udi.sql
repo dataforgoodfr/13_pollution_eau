@@ -52,10 +52,10 @@ stats_categories_non_conforme AS (
                         AND resultat IN ('sup_valeur_sanitaire', 'sup_valeur_sanitaire_2')
                     )
                     OR (
-                        categorie = 'arsenic'
-                        AND resultat IN ('entre_10_et_13', 'limite_sanitaire')
+                        categorie = 'metaux_lourds_as'
+                        AND resultat IN ('sup_limite_qualite', 'sup_valeur_sanitaire')
                     )
-                    OR (categorie = 'plomb' AND resultat = 'limite_sanitaire')
+                    OR (categorie = 'metaux_lourds_pb' AND resultat = 'sup_limite_qualite')
                     THEN 1
             END
         ) AS stat_chiffre

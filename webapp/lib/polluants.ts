@@ -946,7 +946,7 @@ export const availableCategories: ICategory[] = [
     },
     enfants: [
       {
-        id: "arsenic",
+        id: "metaux_lourds_as",
         nomAffichage: "Arsenic",
         disable: false,
         enfants: [],
@@ -969,21 +969,21 @@ export const availableCategories: ICategory[] = [
             couleurFond: "#B4E681",
             picto: null,
           },
-          limite_qualite: {
+          inf_limite_qualite: {
             label:
               "Concentration < 10 µg/L (eau conforme à la limite réglementaire)",
             couleur: "#FFF33B",
             couleurFond: "#FFF33B",
             picto: null,
           },
-          entre_10_et_13: {
+          sup_limite_qualite: {
             label:
               "Concentration comprise entre 10 µg/L et 13 µg/L (eau non conforme à la limite réglementaire mais peut être utilisée pour les usages alimentaires)",
             couleur: "#F3903F",
             couleurFond: "#F3903F",
             picto: "warning",
           },
-          limite_sanitaire: {
+          sup_valeur_sanitaire: {
             label:
               "Concentration > 13 µg/L (eau ne pouvant être utilisée pour les usages alimentaires)",
             couleur: "#E93E3A",
@@ -991,9 +991,23 @@ export const availableCategories: ICategory[] = [
             picto: "red cross",
           },
         },
+        resultatsAnnuels: {
+          nonRechercheLabel: "Aucune recherche dans l'année",
+          nonRechercheCouleur: "#b7b7b7",
+          ratioLimites: [
+            { limite: 0, label: "0%", couleur: "#B4E681" },
+            { limite: 0.25, label: "< 25%", couleur: "#FFF33B" },
+            { limite: 0.5, label: "25 - 50%", couleur: "#FDC70C" },
+            { limite: 0.75, label: "50 - 75%", couleur: "#F3903F" },
+            { limite: 1, label: "75 - 100%", couleur: "#ED683C" },
+          ],
+          ratioLabel:
+            "Part des prélèvements où l'Arsenic a dépassé la limite sanitaire",
+          valeurSanitaire: false,
+        },
       },
       {
-        id: "plomb",
+        id: "metaux_lourds_pb",
         nomAffichage: "Plomb",
         disable: false,
         enfants: [],
@@ -1022,25 +1036,39 @@ export const availableCategories: ICategory[] = [
             couleurFond: "#B4E681",
             picto: null,
           },
-          inf_5: {
+          inf_limite_qualite: {
             label: "Concentration < 5 µg/L*",
             couleur: "#FFF33B",
             couleurFond: "#FFF33B",
             picto: null,
           },
-          entre_5_et_10: {
+          sup_limite_qualite_2036: {
             label: "Concentration comprise entre 5 µg/L et 10 µg/L*",
             couleur: "#FDC70C",
             couleurFond: "#FDC70C",
             picto: null,
           },
-          limite_sanitaire: {
+          sup_limite_qualite: {
             label:
               "Concentration > 10 µg/L (eau non conforme à la limite réglementaire actuellement en vigueur)",
             couleur: "#E93E3A",
             couleurFond: "#E93E3A",
             picto: "red cross",
           },
+        },
+        resultatsAnnuels: {
+          nonRechercheLabel: "Aucune recherche dans l'année",
+          nonRechercheCouleur: "#b7b7b7",
+          ratioLimites: [
+            { limite: 0, label: "0%", couleur: "#B4E681" },
+            { limite: 0.25, label: "< 25%", couleur: "#FFF33B" },
+            { limite: 0.5, label: "25 - 50%", couleur: "#FDC70C" },
+            { limite: 0.75, label: "50 - 75%", couleur: "#F3903F" },
+            { limite: 1, label: "75 - 100%", couleur: "#ED683C" },
+          ],
+          ratioLabel:
+            "Part des prélèvements où le Plomb a dépassé la limite réglementaire",
+          valeurSanitaire: false,
         },
       },
     ],

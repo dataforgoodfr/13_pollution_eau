@@ -1,46 +1,39 @@
-version: 2
-
 models:
   - name: int__resultats_metaux_lourds_udi_dernier
-    description: >
-      Résultats des métaux lourds (Pb et As) par UDI
-      pour la temporalité 'dernier prélèvement'
+    description: Résultats des métaux lourds (Plomb et Arsenic) par UDI pour la temporalité 'dernier prélèvement'
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - cdreseau
+            - categorie
     columns:
-      - name: categorie
-        tests:
-          - not_null
-          - accepted_values:
-              values:
-                - metaux_lourds_pb
-                - metaux_lourds_as
-
       - name: cdreseau
         description: "Code de l'installation (unité de distribution)"
         type: VARCHAR
         tests:
           - not_null
-
       - name: dernier_prel_datetime
-        description: >
-          Date et heure du dernier prélèvement
-          pris en compte dans l'analyse
+        description: "Date et heure du dernier prélèvement pris en compte dans l'analyse."
         type: TIMESTAMP
         tests:
           - not_null
           - dbt_utils.expression_is_true:
               expression: ">= CURRENT_DATE - INTERVAL 1 YEAR"
-
       - name: periode
         description: "Période de résultat"
         type: VARCHAR
         tests:
           - accepted_values:
               values: ["dernier_prel"]
-
-      - name: dernier_prel_valeur
-        description: "Valeur du dernier prélèvement"
-        type: FLOAT
-
+      - name: nb_parametres
+        type: INTEGER
+      - name: categorie
+        type: VARCHAR
+        tests:
+          - accepted_values:
+              values:
+                - metaux_lourds_pb
+                - metaux_lourds_as
       - name: resultat
         description: "Interprétation du résultat en fonction des seuils sanitaires et des valeurs mesurées."
         type: VARCHAR
@@ -51,51 +44,47 @@ models:
                 - non_quantifie
                 - sup_limite_qualite
                 - sup_limite_qualite_2036
-                - sup_limite_sanitaire
+                - sup_valeur_sanitaire
                 - inf_limite_qualite
+      - name: parametres_detectes
+        description: "JSON contenant les paramètres détectés (valtraduite > 0) avec leurs valeurs correspondantes."
+        type: JSON
 
   - name: int__resultats_metaux_lourds_commune_dernier
-    description: >
-      Résultats des métaux lourds (Pb et As) par UDI
-      pour la temporalité 'dernier prélèvement'
+    description: Résultats des métaux lourds (Plomb et Arsenic) par commube pour la temporalité 'dernier prélèvement'
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - inseecommune
+            - categorie
     columns:
-      - name: categorie
-        description: "Catégorie du paramètre (pesticides, pfas, vcm, nitrates, etc.) selon la classification établie."
-        type: VARCHAR
-        tests:
-          - not_null
-          - accepted_values:
-              values:
-                - metaux_lourds_pb
-                - metaux_lourds_as
-
       - name: inseecommune
         description: "Code INSEE de la commune"
         type: VARCHAR
         tests:
           - not_null
-
       - name: dernier_prel_datetime
-        description: >
-          Date et heure du dernier prélèvement
-          pris en compte dans l'analyse
+        description: "Date et heure du dernier prélèvement pris en compte dans l'analyse."
         type: TIMESTAMP
         tests:
           - not_null
           - dbt_utils.expression_is_true:
               expression: ">= CURRENT_DATE - INTERVAL 1 YEAR"
-
       - name: periode
         description: "Période de résultat"
         type: VARCHAR
         tests:
           - accepted_values:
               values: ["dernier_prel"]
-
-      - name: dernier_prel_valeur
-        description: "Valeur du dernier prélèvement"
-        type: FLOAT
-
+      - name: nb_parametres
+        type: INTEGER
+      - name: categorie
+        type: VARCHAR
+        tests:
+          - accepted_values:
+              values:
+                - metaux_lourds_pb
+                - metaux_lourds_as
       - name: resultat
         description: "Interprétation du résultat en fonction des seuils sanitaires et des valeurs mesurées."
         type: VARCHAR
@@ -106,8 +95,11 @@ models:
                 - non_quantifie
                 - sup_limite_qualite
                 - sup_limite_qualite_2036
-                - sup_limite_sanitaire
+                - sup_valeur_sanitaire
                 - inf_limite_qualite
+      - name: parametres_detectes
+        description: "JSON contenant les paramètres détectés (valtraduite > 0) avec leurs valeurs correspondantes."
+        type: JSON
 
   - name: int__resultats_metaux_lourds_commune_annuel
     description: >
@@ -190,7 +182,7 @@ models:
           - not_null
 
       - name: categorie
-        description: "Catégorie du paramètre (pesticides, pfas, vcm, nitrates, etc.) selon la classification établie."  
+        description: "Catégorie du paramètre (pesticides, pfas, vcm, nitrates, etc.) selon la classification établie."
         type: VARCHAR
         tests:
           - not_null

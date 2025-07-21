@@ -20,6 +20,26 @@ interface DetailResultat {
   sousCategorie?: boolean;
 }
 
+interface RatioLimite {
+  limite: number;
+  label: string;
+  couleur: string;
+}
+
+interface ResultatsAnnuels {
+  nonRechercheLabel: string;
+  nonRechercheCouleur: string;
+  ratioLimites: RatioLimite[];
+  ratioLabel: string;
+  valeurSanitaire: boolean;
+  valeurSanitaireLabel?: string;
+  valeurSanitaireCouleur?: string;
+  simpleLabels?: Array<{
+    label: string;
+    couleur: string;
+  }>;
+}
+
 export interface ICategory {
   id: string;
   nomAffichage: string;
@@ -41,11 +61,12 @@ export interface ICategory {
   nombrePolluantsDernierPrelèvement?: number;
   blocsStatut?: BlocStatut[];
   resultats: { [key: string]: DetailResultat };
+  resultatsAnnuels?: ResultatsAnnuels;
 }
 
 export const availableCategories: ICategory[] = [
   {
-    id: "tous-polluants",
+    id: "tous",
     nomAffichage: "Tous polluants",
     disable: false,
     enfants: [],
@@ -57,24 +78,41 @@ export const availableCategories: ICategory[] = [
     regulation: "Directive cadre sur l'eau (DCE), Code de l'environnement.",
     sourcesExposition: "Eau potable, air, alimentation, sols contaminés.",
     resultats: {
-      aucun_depassement: {
-        label: "Aucun dépassement des limites de qualité",
+      inf_limites: {
+        label: "Aucun dépassement des limites réglementaire",
         couleur: "#B4E681",
         couleurFond: "#B4E681",
         picto: null,
       },
-      limite_qualite: {
-        label: "Au moins un dépassement des limites de qualité",
+      sup_limite_qualite: {
+        label: "Au moins un dépassement des limites réglementaire",
         couleur: "#F3903F",
         couleurFond: "#F3903F",
         picto: "warning",
       },
-      limite_sanitaire: {
+      sup_limite_sanitaire: {
         label: "Au moins un dépassement des limites sanitaires",
         couleur: "#E93E3A",
         couleurFond: "#E93E3A",
         picto: "red cross",
       },
+    },
+    resultatsAnnuels: {
+      nonRechercheLabel: "Aucune recherche dans l'année",
+      nonRechercheCouleur: "#b7b7b7",
+      ratioLimites: [
+        { limite: 0, label: "0%", couleur: "#B4E681" },
+        { limite: 0.25, label: "< 25%", couleur: "#FFF33B" },
+        { limite: 0.5, label: "25 - 50%", couleur: "#FDC70C" },
+        { limite: 0.75, label: "50 - 75%", couleur: "#F3903F" },
+        { limite: 1, label: "75 - 100%", couleur: "#ED683C" },
+      ],
+      ratioLabel:
+        "Part des prélèvements où les paramètres analysés ont dépassé la limite réglementaire",
+      valeurSanitaire: true,
+      valeurSanitaireLabel:
+        "Au moins 1 dépassement de valeur sanitaire au cours de l'année",
+      valeurSanitaireCouleur: "#FF0000",
     },
   },
   {
@@ -135,9 +173,26 @@ export const availableCategories: ICategory[] = [
         picto: "red cross",
       },
     },
+    resultatsAnnuels: {
+      nonRechercheLabel: "Aucune recherche dans l'année",
+      nonRechercheCouleur: "#b7b7b7",
+      ratioLimites: [
+        { limite: 0, label: "0%", couleur: "#B4E681" },
+        { limite: 0.25, label: "< 25%", couleur: "#FFF33B" },
+        { limite: 0.5, label: "25 - 50%", couleur: "#FDC70C" },
+        { limite: 0.75, label: "50 - 75%", couleur: "#F3903F" },
+        { limite: 1, label: "75 - 100%", couleur: "#ED683C" },
+      ],
+      ratioLabel:
+        "Part des prélèvements où les PFAS ont dépassé la limite réglementaire",
+      valeurSanitaire: true,
+      valeurSanitaireLabel:
+        "Au moins 1 dépassement de valeur sanitaire au cours de l'année",
+      valeurSanitaireCouleur: "#FF0000",
+    },
   },
   {
-    id: "pesticides",
+    id: "pesticide",
     nomAffichage: "Pesticides",
     disable: false,
     affichageBlocPageUDI: true,
@@ -150,35 +205,58 @@ export const availableCategories: ICategory[] = [
     sourcesExposition:
       "Agriculture, consommation de produits traités, eau potable.",
     resultats: {
+      non_recherche: {
+        label: "Non recherché",
+        couleur: "#9B9B9B",
+        couleurFond: "#9B9B9B",
+        picto: null,
+      },
       non_quantifie: {
         label: "Aucun pesticide quantifié",
         couleur: "#B4E681",
         couleurFond: "#B4E681",
         picto: null,
       },
-      quantifie: {
+      inf_limite_qualite: {
         label:
-          "Au moins un pesticide quantifié mais sans dépassement de la limite de qualité",
+          "Au moins un pesticide quantifié mais sans dépassement de la limite réglementaire",
         couleur: "#FFF33B",
         couleurFond: "#FFF33B",
         picto: null,
       },
-      limite_qualite: {
-        label: "Au moins un pesticide dépasse la limite de qualité",
+      sup_limite_qualite: {
+        label: "Au moins un pesticide dépasse la limite réglementaire",
         couleur: "#F3903F",
         couleurFond: "#F3903F",
         picto: "warning",
       },
-      limite_sanitaire: {
+      sup_valeur_sanitaire: {
         label: "Au moins un pesticide dépasse la limite sanitaire",
         couleur: "#E93E3A",
         couleurFond: "#E93E3A",
         picto: "red cross",
       },
     },
+    resultatsAnnuels: {
+      nonRechercheLabel: "Aucune recherche dans l'année",
+      nonRechercheCouleur: "#b7b7b7",
+      ratioLimites: [
+        { limite: 0, label: "0%", couleur: "#B4E681" },
+        { limite: 0.25, label: "< 25%", couleur: "#FFF33B" },
+        { limite: 0.5, label: "25 - 50%", couleur: "#FDC70C" },
+        { limite: 0.75, label: "50 - 75%", couleur: "#F3903F" },
+        { limite: 1, label: "75 - 100%", couleur: "#ED683C" },
+      ],
+      ratioLabel:
+        "Part des prélèvements où les pesticides ont dépassé la limite réglementaire",
+      valeurSanitaire: true,
+      valeurSanitaireLabel:
+        "Au moins 1 dépassement de valeur sanitaire au cours de l'année",
+      valeurSanitaireCouleur: "#FF0000",
+    },
     enfants: [
       {
-        id: "substances-actives",
+        id: "sub_active",
         nomAffichage: "Substances actives",
         disable: false,
         affichageBlocPageUDI: false,
@@ -192,35 +270,59 @@ export const availableCategories: ICategory[] = [
           "Pulvérisation agricole, résidus dans l'eau et les aliments.",
         sousCategories: true,
         resultats: {
+          non_recherche: {
+            label: "Non recherché",
+            couleur: "#9B9B9B",
+            couleurFond: "#9B9B9B",
+            picto: null,
+          },
           non_quantifie: {
             label: "Aucune substance active quantifiée",
             couleur: "#B4E681",
             couleurFond: "#B4E681",
             picto: null,
           },
-          quantifie: {
+          inf_limite_qualite: {
             label:
-              "Au moins une substance active quantifiée mais sans dépassement de la limite de qualité",
+              "Au moins une substance active quantifiée mais sans dépassement de la limite réglementaire",
             couleur: "#FFF33B",
             couleurFond: "#FFF33B",
             picto: null,
           },
-          limite_qualite: {
-            label: "Au moins une substance active dépasse la limite de qualité",
+          sup_limite_qualite: {
+            label:
+              "Au moins une substance active dépasse la limite réglementaire",
             couleur: "#F3903F",
             couleurFond: "#F3903F",
             picto: "warning",
           },
-          limite_sanitaire: {
+          sup_valeur_sanitaire: {
             label: "Au moins une substance active dépasse la limite sanitaire",
             couleur: "#E93E3A",
             couleurFond: "#E93E3A",
             picto: "red cross",
           },
         },
+        resultatsAnnuels: {
+          nonRechercheLabel: "Aucune recherche dans l'année",
+          nonRechercheCouleur: "#b7b7b7",
+          ratioLimites: [
+            { limite: 0, label: "0%", couleur: "#B4E681" },
+            { limite: 0.25, label: "< 25%", couleur: "#FFF33B" },
+            { limite: 0.5, label: "25 - 50%", couleur: "#FDC70C" },
+            { limite: 0.75, label: "50 - 75%", couleur: "#F3903F" },
+            { limite: 1, label: "75 - 100%", couleur: "#ED683C" },
+          ],
+          ratioLabel:
+            "Part des prélèvements où les substances actives pesticides ont dépassé la limite réglementaire",
+          valeurSanitaire: true,
+          valeurSanitaireLabel:
+            "Au moins 1 dépassement de valeur sanitaire au cours de l'année",
+          valeurSanitaireCouleur: "#FF0000",
+        },
       },
       {
-        id: "metabolites",
+        id: "metabolite",
         nomAffichage: "Métabolites",
         disable: false,
         affichageBlocPageUDI: false,
@@ -233,31 +335,54 @@ export const availableCategories: ICategory[] = [
           "Dégradation dans l'eau et les sols, consommation d'eau potable.",
         sousCategories: false,
         resultats: {
+          non_recherche: {
+            label: "Non recherché",
+            couleur: "#9B9B9B",
+            couleurFond: "#9B9B9B",
+            picto: null,
+          },
           non_quantifie: {
             label: "Aucun métabolite quantifié",
             couleur: "#B4E681",
             couleurFond: "#B4E681",
             picto: null,
           },
-          quantifie: {
+          inf_limite_qualite: {
             label:
-              "Au moins un métabolite quantifié mais sans dépassement de la limite de qualité",
+              "Au moins un métabolite quantifié mais sans dépassement de la limite réglementaire",
             couleur: "#FFF33B",
             couleurFond: "#FFF33B",
             picto: null,
           },
-          limite_qualite: {
-            label: "Au moins un métabolite dépasse la limite de qualité",
+          sup_limite_qualite: {
+            label: "Au moins un métabolite dépasse la limite réglementaire",
             couleur: "#F3903F",
             couleurFond: "#F3903F",
             picto: "warning",
           },
-          limite_sanitaire: {
+          sup_valeur_sanitaire: {
             label: "Au moins un métabolite dépasse la limite sanitaire",
             couleur: "#E93E3A",
             couleurFond: "#E93E3A",
             picto: "red cross",
           },
+        },
+        resultatsAnnuels: {
+          nonRechercheLabel: "Aucune recherche dans l'année",
+          nonRechercheCouleur: "#b7b7b7",
+          ratioLimites: [
+            { limite: 0, label: "0%", couleur: "#B4E681" },
+            { limite: 0.25, label: "< 25%", couleur: "#FFF33B" },
+            { limite: 0.5, label: "25 - 50%", couleur: "#FDC70C" },
+            { limite: 0.75, label: "50 - 75%", couleur: "#F3903F" },
+            { limite: 1, label: "75 - 100%", couleur: "#ED683C" },
+          ],
+          ratioLabel:
+            "Part des prélèvements où les métabolites ont dépassé la limite réglementaire",
+          valeurSanitaire: true,
+          valeurSanitaireLabel:
+            "Au moins 1 dépassement de valeur sanitaire au cours de l'année",
+          valeurSanitaireCouleur: "#FF0000",
         },
         enfants: [
           {
@@ -300,7 +425,7 @@ export const availableCategories: ICategory[] = [
               },
               sup_limite_qualite: {
                 label:
-                  "Concentration > 0,9 µg/L (eau non conforme à la limite de qualité)",
+                  "Concentration > 0,9 µg/L (eau non conforme à la limite réglementaire)",
                 couleur: "#F3903F",
                 couleurFond: "#F3903F",
                 picto: "warning",
@@ -312,6 +437,23 @@ export const availableCategories: ICategory[] = [
                 couleurFond: "#E93E3A",
                 picto: "red cross",
               },
+            },
+            resultatsAnnuels: {
+              nonRechercheLabel: "Aucune recherche dans l'année",
+              nonRechercheCouleur: "#b7b7b7",
+              ratioLimites: [
+                { limite: 0, label: "0%", couleur: "#B4E681" },
+                { limite: 0.25, label: "< 25%", couleur: "#FFF33B" },
+                { limite: 0.5, label: "25 - 50%", couleur: "#FDC70C" },
+                { limite: 0.75, label: "50 - 75%", couleur: "#F3903F" },
+                { limite: 1, label: "75 - 100%", couleur: "#ED683C" },
+              ],
+              ratioLabel:
+                "Part des prélèvements où l'ESA métolachlore a dépassé la limite réglementaire",
+              valeurSanitaire: true,
+              valeurSanitaireLabel:
+                "Au moins 1 dépassement de valeur sanitaire au cours de l'année",
+              valeurSanitaireCouleur: "#FF0000",
             },
           },
           {
@@ -354,7 +496,7 @@ export const availableCategories: ICategory[] = [
               },
               sup_limite_qualite: {
                 label:
-                  "Concentration > 0,9 µg/L (eau non conforme à la limite de qualité)",
+                  "Concentration > 0,9 µg/L (eau non conforme à la limite réglementaire)",
                 couleur: "#F3903F",
                 couleurFond: "#F3903F",
                 picto: "warning",
@@ -366,6 +508,23 @@ export const availableCategories: ICategory[] = [
                 couleurFond: "#E93E3A",
                 picto: "red cross",
               },
+            },
+            resultatsAnnuels: {
+              nonRechercheLabel: "Aucune recherche dans l'année",
+              nonRechercheCouleur: "#b7b7b7",
+              ratioLimites: [
+                { limite: 0, label: "0%", couleur: "#B4E681" },
+                { limite: 0.25, label: "< 25%", couleur: "#FFF33B" },
+                { limite: 0.5, label: "25 - 50%", couleur: "#FDC70C" },
+                { limite: 0.75, label: "50 - 75%", couleur: "#F3903F" },
+                { limite: 1, label: "75 - 100%", couleur: "#ED683C" },
+              ],
+              ratioLabel:
+                "Part des prélèvements où le Chlorothalonil R471811 a dépassé la limite réglementaire",
+              valeurSanitaire: true,
+              valeurSanitaireLabel:
+                "Au moins 1 dépassement de valeur sanitaire au cours de l'année",
+              valeurSanitaireCouleur: "#FF0000",
             },
           },
           {
@@ -401,7 +560,7 @@ export const availableCategories: ICategory[] = [
               },
               sup_limite_qualite: {
                 label:
-                  "Concentration > 0,1 µg/L (eau non conforme à la limite de qualité)",
+                  "Concentration > 0,1 µg/L (eau non conforme à la limite réglementaire)",
                 couleur: "#F3903F",
                 couleurFond: "#F3903F",
                 picto: "warning",
@@ -413,6 +572,23 @@ export const availableCategories: ICategory[] = [
                 couleurFond: "#E93E3A",
                 picto: "red cross",
               },
+            },
+            resultatsAnnuels: {
+              nonRechercheLabel: "Aucune recherche dans l'année",
+              nonRechercheCouleur: "#b7b7b7",
+              ratioLimites: [
+                { limite: 0, label: "0%", couleur: "#B4E681" },
+                { limite: 0.25, label: "< 25%", couleur: "#FFF33B" },
+                { limite: 0.5, label: "25 - 50%", couleur: "#FDC70C" },
+                { limite: 0.75, label: "50 - 75%", couleur: "#F3903F" },
+                { limite: 1, label: "75 - 100%", couleur: "#ED683C" },
+              ],
+              ratioLabel:
+                "Part des prélèvements où la Chloridazone desphényl a dépassé la limite réglementaire",
+              valeurSanitaire: true,
+              valeurSanitaireLabel:
+                "Au moins 1 dépassement de valeur sanitaire au cours de l'année",
+              valeurSanitaireCouleur: "#FF0000",
             },
           },
           {
@@ -447,7 +623,7 @@ export const availableCategories: ICategory[] = [
               },
               sup_limite_qualite: {
                 label:
-                  "Concentration > 0,1 µg/L (eau non conforme à la limite de qualité)",
+                  "Concentration > 0,1 µg/L (eau non conforme à la limite réglementaire)",
                 couleur: "#F3903F",
                 couleurFond: "#F3903F",
                 picto: "warning",
@@ -459,6 +635,23 @@ export const availableCategories: ICategory[] = [
                 couleurFond: "#E93E3A",
                 picto: "red cross",
               },
+            },
+            resultatsAnnuels: {
+              nonRechercheLabel: "Aucune recherche dans l'année",
+              nonRechercheCouleur: "#b7b7b7",
+              ratioLimites: [
+                { limite: 0, label: "0%", couleur: "#B4E681" },
+                { limite: 0.25, label: "< 25%", couleur: "#FFF33B" },
+                { limite: 0.5, label: "25 - 50%", couleur: "#FDC70C" },
+                { limite: 0.75, label: "50 - 75%", couleur: "#F3903F" },
+                { limite: 1, label: "75 - 100%", couleur: "#ED683C" },
+              ],
+              ratioLabel:
+                "Part des prélèvements où la Chloridazone methyl desphényl a dépassé la limite réglementaire",
+              valeurSanitaire: true,
+              valeurSanitaireLabel:
+                "Au moins 1 dépassement de valeur sanitaire au cours de l'année",
+              valeurSanitaireCouleur: "#FF0000",
             },
           },
           {
@@ -494,7 +687,7 @@ export const availableCategories: ICategory[] = [
               },
               sup_limite_qualite: {
                 label:
-                  "Concentration > 0,1 µg/L (eau non conforme à la limite de qualité)",
+                  "Concentration > 0,1 µg/L (eau non conforme à la limite réglementaire)",
                 couleur: "#F3903F",
                 couleurFond: "#F3903F",
                 picto: "warning",
@@ -507,13 +700,30 @@ export const availableCategories: ICategory[] = [
                 picto: "red cross",
               },
             },
+            resultatsAnnuels: {
+              nonRechercheLabel: "Aucune recherche dans l'année",
+              nonRechercheCouleur: "#b7b7b7",
+              ratioLimites: [
+                { limite: 0, label: "0%", couleur: "#B4E681" },
+                { limite: 0.25, label: "< 25%", couleur: "#FFF33B" },
+                { limite: 0.5, label: "25 - 50%", couleur: "#FDC70C" },
+                { limite: 0.75, label: "50 - 75%", couleur: "#F3903F" },
+                { limite: 1, label: "75 - 100%", couleur: "#ED683C" },
+              ],
+              ratioLabel:
+                "Part des prélèvements où l'Atrazine déséthyl a dépassé la limite réglementaire",
+              valeurSanitaire: true,
+              valeurSanitaireLabel:
+                "Au moins 1 dépassement de valeur sanitaire au cours de l'année",
+              valeurSanitaireCouleur: "#FF0000",
+            },
           },
         ],
       },
     ],
   },
   {
-    id: "nitrates-et-nitrites",
+    id: "nitrate",
     nomAffichage: "Nitrates et Nitrites",
     disable: false,
     enfants: [],
@@ -532,20 +742,34 @@ export const availableCategories: ICategory[] = [
         couleurFond: "#9B9B9B",
         picto: null,
       },
-      conforme: {
+      inf_limite_qualite: {
         label:
-          "Concentrations inférieures aux limites de qualité (eau conforme)",
+          "Concentrations inférieures aux limites réglementaire (eau conforme)",
         couleur: "#B4E681",
         couleurFond: "#B4E681",
         picto: null,
       },
-      non_conforme: {
+      sup_limite_qualite: {
         label:
-          "Concentrations supérieures aux limites de qualité (eau non conforme avec recommandation de non-consommation pour les femmes enceintes et les nourrissons)",
+          "Concentrations supérieures aux limites réglementaire (eau non conforme avec recommandation de non-consommation pour les femmes enceintes et les nourrissons)",
         couleur: "#E93E3A",
         couleurFond: "#E93E3A",
         picto: "red cross",
       },
+    },
+    resultatsAnnuels: {
+      nonRechercheLabel: "Aucune recherche dans l'année",
+      nonRechercheCouleur: "#b7b7b7",
+      ratioLimites: [
+        { limite: 0, label: "0%", couleur: "#B4E681" },
+        { limite: 0.25, label: "< 25%", couleur: "#FFBABA" },
+        { limite: 0.5, label: "25 - 50%", couleur: "#FFA9A9" },
+        { limite: 0.75, label: "50 - 75%", couleur: "#FF5353" },
+        { limite: 1, label: "75 - 100%", couleur: "#FF0000" },
+      ],
+      ratioLabel:
+        "Part des prélèvements où les nitrates ont dépassé la limite réglementaire",
+      valeurSanitaire: false,
     },
   },
   {
@@ -585,6 +809,19 @@ export const availableCategories: ICategory[] = [
         couleurFond: "#E93E3A",
         picto: "red cross",
       },
+    },
+    resultatsAnnuels: {
+      nonRechercheLabel: "Aucune recherche dans l'année",
+      nonRechercheCouleur: "#b7b7b7",
+      ratioLimites: [
+        { limite: 0, label: "0%", couleur: "#B4E681" },
+        { limite: 0.25, label: "< 25%", couleur: "#FFF33B" },
+        { limite: 0.5, label: "25 - 50%", couleur: "#FDC70C" },
+        { limite: 0.75, label: "50 - 75%", couleur: "#F3903F" },
+        { limite: 1, label: "75 - 100%", couleur: "#ED683C" },
+      ],
+      ratioLabel: "Part des prélèvements dépassant la limite",
+      valeurSanitaire: false,
     },
   },
   {
@@ -734,14 +971,14 @@ export const availableCategories: ICategory[] = [
           },
           limite_qualite: {
             label:
-              "Concentration < 10 µg/L (eau conforme à la limite de qualité)",
+              "Concentration < 10 µg/L (eau conforme à la limite réglementaire)",
             couleur: "#FFF33B",
             couleurFond: "#FFF33B",
             picto: null,
           },
           entre_10_et_13: {
             label:
-              "Concentration comprise entre 10 µg/L et 13 µg/L (eau non conforme à la limite de qualité mais peut être utilisée pour les usages alimentaires)",
+              "Concentration comprise entre 10 µg/L et 13 µg/L (eau non conforme à la limite réglementaire mais peut être utilisée pour les usages alimentaires)",
             couleur: "#F3903F",
             couleurFond: "#F3903F",
             picto: "warning",

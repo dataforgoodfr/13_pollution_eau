@@ -12,7 +12,7 @@ WITH latest_metabolite_results AS (
         END AS type_metabolite,
         ROW_NUMBER() OVER (
             PARTITION BY
-                inseecommune,
+                cdreseau,
                 CASE
                     WHEN
                         cdparametresiseeaux IN ('ESAMTC', 'MTCESA')
@@ -47,11 +47,10 @@ WITH latest_metabolite_results AS (
 
 
 SELECT
-    inseecommune,
+    cdreseau,
     type_metabolite AS categorie,
     'dernier_prel' AS periode,
-    datetimeprel AS dernier_prel_datetime,
-    valtraduite AS dernier_prel_valeur,
+    datetimeprel AS date_dernier_prel,
     1 AS nb_parametres,
     CASE
         WHEN valtraduite = 0 OR valtraduite IS null THEN 'non_quantifie'
@@ -66,6 +65,8 @@ SELECT
             THEN 'inf_limite_qualite_sup_0_1'
         WHEN valtraduite < limite_qualite THEN 'inf_limite_qualite'
         ELSE 'erreur'
-    END AS resultat
+    END AS resultat,
+    JSON_OBJECT(CASE WHEN valtraduite > 0 THEN cdparametresiseeaux END, valtraduite)
+        AS parametres_detectes
 FROM latest_metabolite_results
 WHERE row_number = 1

@@ -17,6 +17,7 @@ models:
         type: SMALLINT
       - name: categorie
         description: "Catégorie du paramètre (pesticides, pfas, vcm, nitrates, etc.) selon la classification établie."
+        type: VARCHAR
         tests:
           - accepted_values:
               values: ["cvm"]
@@ -27,7 +28,11 @@ models:
           - dbt_utils.expression_is_true:
               expression: "LIKE 'bilan_annuel%'"
       - name: nb_depassements
+        description: "Nombre de prélèvements qui dépassent la valeur de référence"
+        type: INTEGER
       - name: nb_prelevements
+        description: "Nombre de prélèvements total"
+        type: INTEGER
       - name: ratio_limite_qualite
         description: "Pourcentage de prélèvements qui dépassent la limite"
         type: FLOAT
@@ -45,26 +50,31 @@ models:
           - not_null
           - unique
       - name: categorie
+        description: "Catégorie du paramètre (pesticides, pfas, vcm, nitrates, etc.) selon la classification établie."
+        type: VARCHAR
         tests:
           - not_null
       - name: periode
+        description: "Période du résultat"
         type: VARCHAR
         tests:
           - accepted_values:
               values: ["dernier_prel"]
-      - name: dernier_prel_datetime
+      - name: date_dernier_prel
+        description: "Date du dernier prélèvement considéré"
         type: TIMESTAMP
         tests:
           - not_null
           - dbt_utils.expression_is_true:
               expression: ">= CURRENT_DATE - INTERVAL 1 YEAR"
-      - name: dernier_prel_valeur
-        type: FLOAT
       - name: nb_parametres
+        description: "nombre de paramètres mesurés sur le prélèvement pour la catégorie considérée"
         type: INTEGER
         tests:
           - not_null
       - name: resultat
+        description: "classification de la substance pour le prélèvement"
+        type: VARCHAR
         tests:
           - not_null
           - accepted_values:
@@ -72,6 +82,9 @@ models:
                 - non_quantifie
                 - sup_0_5
                 - inf_0_5
+      - name: parametres_detectes
+        description: "JSON contenant les paramètres détectés (valtraduite > 0) avec leurs valeurs correspondantes."
+        type: JSON
 
   - name: int__resultats_cvm_udi_annuel
     description: Résultats CVM par UDI pour la temporalité 'bilan_annuel'
@@ -83,6 +96,7 @@ models:
     columns:
       - name: cdreseau
         description: "Code de l'installation (unité de distribution)"
+        type: VARCHAR
         tests:
           - not_null
       - name: annee
@@ -90,6 +104,7 @@ models:
         type: SMALLINT
       - name: categorie
         description: "Catégorie du paramètre (pesticides, pfas, vcm, nitrates, etc.) selon la classification établie."
+        type: VARCHAR
         tests:
           - accepted_values:
               values: ["cvm"]
@@ -100,7 +115,11 @@ models:
           - dbt_utils.expression_is_true:
               expression: "LIKE 'bilan_annuel%'"
       - name: nb_depassements
+        description: "Nombre de prélèvements qui dépassent la valeur de référence"
+        type: INTEGER
       - name: nb_prelevements
+        description: "Nombre de prélèvements total"
+        type: INTEGER
       - name: ratio_limite_qualite
         description: "Pourcentage de prélèvements qui dépassent la limite"
         type: FLOAT
@@ -114,30 +133,37 @@ models:
     description: Resultats CVM par UDI pour la temporalité 'derniers prélèvements'
     columns:
       - name: cdreseau
+        description: "Code de l'installation (unité de distribution)"
+        type: VARCHAR
         tests:
           - not_null
           - unique
       - name: categorie
+        description: "Catégorie du paramètre (pesticides, pfas, vcm, nitrates, etc.) selon la classification établie."
+        type: VARCHAR
         tests:
           - not_null
       - name: periode
+        description: "Période du résultat"
         type: VARCHAR
         tests:
           - accepted_values:
               values: ["dernier_prel"]
-      - name: dernier_prel_datetime
+      - name: date_dernier_prel
+        description: "Date du dernier prélèvement considéré"
         type: TIMESTAMP
         tests:
           - not_null
           - dbt_utils.expression_is_true:
               expression: ">= CURRENT_DATE - INTERVAL 1 YEAR"
-      - name: dernier_prel_valeur
-        type: FLOAT
       - name: nb_parametres
+        description: "Nombre de paramètres analysés"
         type: INTEGER
         tests:
           - not_null
       - name: resultat
+        description: "Interprétation du résultat en fonction des seuils et des valeurs mesurées."
+        type: VARCHAR
         tests:
           - not_null
           - accepted_values:
@@ -145,3 +171,6 @@ models:
                 - non_quantifie
                 - sup_0_5
                 - inf_0_5
+      - name: parametres_detectes
+        description: "JSON contenant les paramètres détectés (valtraduite > 0) avec leurs valeurs correspondantes."
+        type: JSON

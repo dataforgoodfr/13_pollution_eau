@@ -1,0 +1,96 @@
+models:
+  - name: int__resultats_pesticide_udi_annuel
+    description: Résultats des pesticides par UDI pour la temporalité 'bilan_annuel'
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - cdreseau
+            - annee
+    columns:
+      - name: cdreseau
+        description: "Code de l'installation (UDI)."
+        type: VARCHAR
+        tests:
+          - not_null
+      - name: annee
+        description: "Annee du prevelvement"
+        type: SMALLINT
+      - name: categorie
+        description: "Catégorie du paramètre analysé (ici, toujours 'pesticide')."
+        type: VARCHAR
+        tests:
+          - accepted_values:
+              values:
+                - "pesticide"
+      - name: periode
+        description: "Période du résultat"
+        type: VARCHAR
+        tests:
+          - dbt_utils.expression_is_true:
+              expression: "LIKE 'bilan_annuel%'"
+      - name: nb_depassements
+        description: "Nombre de prélèvements avec dépassement de la limite de qualité."
+        type: INTEGER
+      - name: nb_sup_valeur_sanitaire
+        description: "Nombre de prélèvements avec dépassement de la valeur sanitaire."
+        type: INTEGER
+      - name: nb_prelevements
+        description: "Nombre de prélèvements total"
+        type: INTEGER
+      - name: ratio_limite_qualite
+        description: "Pourcentage de prélèvements qui dépassent la limite"
+        type: FLOAT
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              max_value: 1
+
+  - name: int__resultats_pesticide_udi_dernier
+    description: Résultats des pesticides par UDI pour la temporalité 'derniers prélèvements'
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - cdreseau
+            - categorie
+    columns:
+      - name: cdreseau
+        description: "Code de l'installation (UDI)."
+        type: VARCHAR
+        tests:
+          - not_null
+      - name: categorie
+        description: "Catégorie du paramètre analysé (ici, toujours 'pesticide')."
+        type: VARCHAR
+        tests:
+          - accepted_values:
+              values:
+                - "pesticide"
+      - name: periode
+        description: "Période d'analyse des prélèvements (ici, toujours 'dernier_prel')."
+        type: VARCHAR
+        tests:
+          - accepted_values:
+              values: ["dernier_prel"]
+      - name: date_dernier_prel
+        description: "Date et heure du dernier prélèvement pris en compte dans l'analyse."
+        type: TIMESTAMP
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: ">= CURRENT_DATE - INTERVAL 1 YEAR"
+      - name: nb_parametres
+        type: INTEGER
+      - name: resultat
+        description: "Interprétation du résultat en fonction des seuils sanitaires et des valeurs mesurées."
+        type: VARCHAR
+        tests:
+          - accepted_values:
+              values:
+                - "non_quantifie"
+                - "inf_limite_qualite"
+                - "sup_limite_qualite"
+                - "sup_valeur_sanitaire"
+      - name: parametres_detectes
+        description: "JSON contenant les paramètres détectés (valtraduite > 0) avec leurs valeurs correspondantes."
+        type: JSON

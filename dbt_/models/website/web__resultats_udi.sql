@@ -17,11 +17,16 @@ categories AS (
         'pfas',
         'sub_indus_perchlorate',
         'sub_indus_14dioxane',
+        'pesticide',
+        'sub_active',
+        'metabolite',
         'metabolite_esa_metolachlore',
         'metabolite_chlorothalonil_r471811',
         'metabolite_chloridazone_desphenyl',
         'metabolite_chloridazone_methyl_desphenyl',
-        'metabolite_atrazine_desethyl'
+        'metabolite_atrazine_desethyl',
+        'nitrate',
+        'tous'
     ]) AS categorie
 ),
 
@@ -46,6 +51,35 @@ udi_periodes_categories AS (
         periodes AS p
     CROSS JOIN
         categories
+),
+
+-- Append results from 'tous' category (in another model to avoid circular dependency)
+results AS (
+    SELECT
+        cdreseau,
+        periode,
+        categorie,
+        resultat,
+        ratio,
+        date_dernier_prel,
+        nb_parametres,
+        nb_prelevements,
+        nb_sup_valeur_sanitaire,
+        parametres_detectes
+    FROM {{ ref('int__union_resultats_udi') }}
+    UNION ALL
+    SELECT
+        cdreseau,
+        periode,
+        categorie,
+        resultat,
+        null AS ratio,
+        date_dernier_prel,
+        nb_parametres,
+        null AS nb_prelevements,
+        null AS nb_sup_valeur_sanitaire,
+        null AS parametres_detectes
+    FROM {{ ref('int__resultats_tous_udi_dernier') }}
 )
 
 -- Final output with all UDI-periodes-categories combinations
@@ -56,15 +90,15 @@ SELECT
     upc.categorie,
     r.resultat,
     r.ratio,
-    r.dernier_prel_datetime,
-    r.dernier_prel_valeur,
+    r.date_dernier_prel,
     r.nb_parametres,
     r.nb_prelevements,
-    r.nb_sup_valeur_sanitaire
+    r.nb_sup_valeur_sanitaire,
+    r.parametres_detectes
 FROM
     udi_periodes_categories AS upc
 LEFT JOIN
-    {{ ref('int__union_resultats_udi') }} AS r
+    results AS r
     ON
         upc.cdreseau = r.cdreseau
         AND upc.periode = r.periode

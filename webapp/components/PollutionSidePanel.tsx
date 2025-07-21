@@ -8,6 +8,8 @@ import {
   CardContent,
 } from "@/components/ui/card";
 import { X } from "lucide-react";
+import type { PollutionStats } from "@/app/lib/data";
+import { getPropertyName } from "@/lib/property";
 
 function Tag({ content }: { content: string }) {
   return (
@@ -34,7 +36,7 @@ function ResultCard({
         </CardDescription>
       </CardHeader>
       <CardContent className="p-4 pt-0 pb-2">
-        <span className="font-bold text-lg">{result + "%"}</span>
+        <span className="font-bold text-lg">{result}</span>
       </CardContent>
     </Card>
   );
@@ -64,12 +66,20 @@ function ExplicationCard({
 
 export default function PollutionSidePanel({
   category,
+  pollutionStats,
   onClose,
 }: {
   category: string;
+  pollutionStats: PollutionStats;
   onClose?: () => void;
 }) {
   const categoryDetails = getCategoryById(category);
+
+  const getStatistic = (propertyName: string) => {
+    //const propertyName = getPropertyName("dernier_prel", category, variable);
+    const stat = pollutionStats.find((s) => s.stat_nom === propertyName);
+    return stat ? (stat.stat_chiffre ?? stat.stat_texte) : null;
+  };
 
   return (
     <div className="h-full flex flex-col relative">
@@ -114,16 +124,98 @@ export default function PollutionSidePanel({
             </div>
 
             <div className="flex flex-col gap-2">
-              <Tag content="Derniers prélèvement" />
+              <Tag content="Derniers prélèvements" />
+
+              {/* Affichage de la date de dernière mise à jour */}
+              <div className="text-sm text-gray-600 mb-2">
+                Date de dernière analyse:{" "}
+                {(() => {
+                  const dateValue = getStatistic("derniere_mise_a_jour");
+                  return dateValue
+                    ? new Date(dateValue).toLocaleDateString("fr-FR")
+                    : "Non disponible";
+                })()}
+              </div>
+
+              {/* Affichage du nombre et % des UDIs en non conformité */}
               <ResultCard
-                des="UDI avait au moins 1 PFAS > valeur sanitaire"
-                result="2"
-                bgColor="bg-chart-1"
+                des="UDIs en non-conformité"
+                result={(() => {
+                  const nombreNonConforme = getStatistic(
+                    getPropertyName(
+                      "dernier_prel",
+                      category,
+                      "nombre_non_conforme",
+                    ),
+                  );
+                  const totalUdis = getStatistic("total_udis");
+
+                  if (nombreNonConforme !== null && totalUdis) {
+                    const pourcentage = (
+                      (Number(nombreNonConforme) / Number(totalUdis)) *
+                      100
+                    ).toFixed(1);
+                    return `${nombreNonConforme} (${pourcentage}%)`;
+                  }
+                  return "--";
+                })()}
+                bgColor="bg-red-200"
               />
+
+              {/* Affichage spécifique pour PFAS - UDI avec dépassement de limite sanitaire */}
+              {category === "pfas" && (
+                <ResultCard
+                  des="UDI avec dépassement de limite sanitaire"
+                  result={(() => {
+                    const nombreSupLimiteSanitaire = getStatistic(
+                      "dernier_prel_pfas_nombre_sup_limite_sanitaire",
+                    );
+                    const totalUdis = getStatistic("total_udis");
+
+                    if (nombreSupLimiteSanitaire !== null && totalUdis) {
+                      const pourcentage = (
+                        (Number(nombreSupLimiteSanitaire) / Number(totalUdis)) *
+                        100
+                      ).toFixed(1);
+                      return `${nombreSupLimiteSanitaire} (${pourcentage}%)`;
+                    }
+                    return "--";
+                  })()}
+                  bgColor="bg-red-200"
+                />
+              )}
+
+              {/* Affichage du nombre et % des UDIs avec au moins une recherche */}
+              <ResultCard
+                des="UDIs avec au moins une recherche"
+                result={(() => {
+                  const nombreRecherche = getStatistic(
+                    getPropertyName(
+                      "dernier_prel",
+                      category,
+                      "nombre_recherche",
+                    ),
+                  );
+                  const totalUdis = getStatistic("total_udis");
+
+                  if (nombreRecherche !== null && totalUdis) {
+                    const pourcentage = (
+                      (Number(nombreRecherche) / Number(totalUdis)) *
+                      100
+                    ).toFixed(1);
+                    return `${nombreRecherche} (${pourcentage}%)`;
+                  }
+                  return "--";
+                })()}
+                bgColor="bg-gray-200"
+              />
+
               <ExplicationCard
                 bgColor="bg-blue-100"
-                quesion={"C'est quoi UDI"}
-                answer={"blablabal"}
+                quesion={"C'est quoi UDI ?"}
+                answer={
+                  "Une Unité de Distribution d'eau (UDI) est un système de distribution d'eau potable qui dessert une zone géographique donnée. Chaque UDI fait l'objet de contrôles sanitaires réguliers."
+                }
               />
             </div>
           </div>

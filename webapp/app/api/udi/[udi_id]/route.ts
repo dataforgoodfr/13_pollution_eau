@@ -41,7 +41,7 @@ async function GetUDIAdministrativeData(udi_id: string): Promise<UDI | null> {
     `);
 
     const prepared2 = await connection.prepare(`
-      SELECT periode, categorie , resultat , dernier_prel_datetime, nb_parametres
+      SELECT periode, categorie , resultat , date_dernier_prel, nb_parametres
       FROM web__resultats_udi 
       WHERE cdreseau = $1::VARCHAR
       order by periode, categorie
@@ -122,8 +122,8 @@ function GetUDIData(udi_id: string, result: DuckDBResultReader): Data[] {
         statut_blocs: [],
       };
       let recordDate: Date | null = null;
-      if (row.dernier_prel_datetime) {
-        recordDate = new Date(row.dernier_prel_datetime.toString());
+      if (row.date_dernier_prel) {
+        recordDate = new Date(row.date_dernier_prel.toString());
         dataRecord.dernier_prelevement_date = recordDate.toDateString();
       }
 

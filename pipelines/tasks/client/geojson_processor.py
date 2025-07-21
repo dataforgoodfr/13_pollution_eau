@@ -61,9 +61,7 @@ class GeoJSONProcessor:
 
     def generate_geojson(self):
         results_df = self.conn.sql(f"SELECT * FROM {self.config['result_table']}").df()
-        results_df["dernier_prel_datetime"] = results_df[
-            "dernier_prel_datetime"
-        ].dt.strftime(
+        results_df["date_dernier_prel"] = results_df["date_dernier_prel"].dt.strftime(
             "%Y-%m-%d %H:%M:%S"
         )  # convert timestamp to string because timestamp not json seriaziable
         results_df = results_df.astype(object).where(pd.notnull(results_df), "")

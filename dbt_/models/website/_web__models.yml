@@ -42,23 +42,25 @@ models:
                 - pfas
                 - sub_indus_perchlorate
                 - sub_indus_14dioxane
+                - pesticide
+                - sub_active
+                - metabolite
                 - metabolite_esa_metolachlore
                 - metabolite_chlorothalonil_r471811
                 - metabolite_chloridazone_desphenyl
                 - metabolite_chloridazone_methyl_desphenyl
                 - metabolite_atrazine_desethyl
+                - nitrate
+                - tous
       - name: resultat
         description: "Résultat qualitatif de l'analyse"
         type: VARCHAR
       - name: ratio
         description: "Ratio des valeurs par rapport à la limite réglementaire"
         type: FLOAT
-      - name: dernier_prel_datetime
+      - name: date_dernier_prel
         description: "Date et heure du dernier prélèvement"
         type: TIMESTAMP
-      - name: dernier_prel_valeur
-        description: "Valeur du dernier prélèvement"
-        type: FLOAT
       - name: nb_parametres
         description: "Nombre de paramètres analysés"
         type: INTEGER
@@ -68,6 +70,9 @@ models:
       - name: nb_sup_valeur_sanitaire
         description: "Nombre de prélèvements supérieurs à la valeur sanitaire"
         type: INTEGER
+      - name: parametres_detectes
+        description: "JSON contenant les paramètres détectés (valtraduite > 0) avec leurs valeurs correspondantes."
+        type: JSON
 
   - name: web__resultats_udi
     description: "Resultats des prélevements par unité de distribution (UDI) par période et catégorie de polluant"
@@ -110,23 +115,25 @@ models:
                 - pfas
                 - sub_indus_perchlorate
                 - sub_indus_14dioxane
+                - pesticide
+                - sub_active
+                - metabolite
                 - metabolite_esa_metolachlore
                 - metabolite_chlorothalonil_r471811
                 - metabolite_chloridazone_desphenyl
                 - metabolite_chloridazone_methyl_desphenyl
                 - metabolite_atrazine_desethyl
+                - nitrate
+                - tous
       - name: resultat
         description: "Résultat qualitatif de l'analyse"
         type: VARCHAR
       - name: ratio
         description: "Ratio des valeurs par rapport à la limite réglementaire"
         type: FLOAT
-      - name: dernier_prel_datetime
+      - name: date_dernier_prel
         description: "Date et heure du dernier prélèvement"
         type: TIMESTAMP
-      - name: dernier_prel_valeur
-        description: "Valeur du dernier prélèvement"
-        type: FLOAT
       - name: nb_parametres
         description: "Nombre de paramètres analysés"
         type: INTEGER
@@ -136,3 +143,21 @@ models:
       - name: nb_sup_valeur_sanitaire
         description: "Nombre de prélèvements supérieurs à la valeur sanitaire"
         type: INTEGER
+      - name: parametres_detectes
+        description: "JSON contenant les paramètres détectés (valtraduite > 0) avec leurs valeurs correspondantes."
+        type: JSON
+
+  - name: web__stats_udi
+    description: "Statistiques précalculées pour les UDIs - format simple pour l'API"
+    columns:
+      - name: stat_nom
+        description: "Nom de la statistique"
+        type: VARCHAR
+        tests:
+          - unique
+      - name: stat_chiffre
+        description: "Valeur numérique de la statistique (null si non applicable)"
+        type: FLOAT
+      - name: stat_texte
+        description: "Valeur textuelle de la statistique (null si non applicable)"
+        type: VARCHAR

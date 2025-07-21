@@ -59,7 +59,7 @@ SELECT
         )::float
         /
         count(DISTINCT referenceprel)::float
-    ) AS ratio_limite_sanitaire
+    ) AS ratio
 
 FROM metaux_lourds_prels
 

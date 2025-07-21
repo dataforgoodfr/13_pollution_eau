@@ -102,9 +102,7 @@ models:
         type: JSON
 
   - name: int__resultats_metaux_lourds_commune_annuel
-    description: >
-      Résultats des métaux lourds (Pb et As) par
-      commune pour la temporalité 'bilan_annuel'
+    description: Résultats des métaux lourds (Plomb et Arsenic) par commune pour la temporalité 'bilan_annuel'
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -117,13 +115,11 @@ models:
         type: VARCHAR
         tests:
           - not_null
-
       - name: annee
         description: "Année de prélèvement"
         type: smallint
         tests:
           - not_null
-
       - name: categorie
         description: "Catégorie du paramètre (pesticides, pfas, vcm, nitrates, etc.) selon la classification établie."
         type: VARCHAR
@@ -133,24 +129,18 @@ models:
               values:
                 - metaux_lourds_pb
                 - metaux_lourds_as
-
       - name: periode
         description: "Période du résultat"
         type: VARCHAR
         tests:
           - dbt_utils.expression_is_true:
               expression: "LIKE 'bilan_annuel%'"
-
       - name: nb_depassements
         type: INTEGER
-
       - name: nb_prelevements
         type: INTEGER
-
-      - name: ratio_limite_sanitaire
-        description: >
-          Pourcentage de prélèvements qui dépassent la
-          limite sanitaire
+      - name: ratio
+        description: Pourcentage de prélèvements qui dépassent la valeur sanitaire ou la limite de qualité
         type: FLOAT
         tests:
           - not_null
@@ -159,9 +149,7 @@ models:
               max_value: 1
 
   - name: int__resultats_metaux_lourds_udi_annuel
-    description: >
-      Résultats des métaux lourds (Pb et As) par
-      UDI pour la temporalité 'bilan_annuel'
+    description: Résultats des métaux lourds (Plomb et Arsenic) par UDI pour la temporalité 'bilan_annuel'
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -174,13 +162,11 @@ models:
         type: VARCHAR
         tests:
           - not_null
-
       - name: annee
         description: "Année de prélèvement"
         type: smallint
         tests:
           - not_null
-
       - name: categorie
         description: "Catégorie du paramètre (pesticides, pfas, vcm, nitrates, etc.) selon la classification établie."
         type: VARCHAR
@@ -190,24 +176,18 @@ models:
               values:
                 - metaux_lourds_pb
                 - metaux_lourds_as
-
       - name: periode
         description: "Période du résultat"
         type: VARCHAR
         tests:
           - dbt_utils.expression_is_true:
               expression: "LIKE 'bilan_annuel%'"
-
       - name: nb_depassements
         type: INTEGER
-
       - name: nb_prelevements
         type: INTEGER
-
-      - name: ratio_limite_sanitaire
-        description: >
-          Pourcentage de prélèvements qui dépassent la
-          limite sanitaire
+      - name: ratio
+        description: Pourcentage de prélèvements qui dépassent la valeur sanitaire ou la limite de qualité
         type: FLOAT
         tests:
           - not_null

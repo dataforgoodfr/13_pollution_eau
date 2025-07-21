@@ -25,6 +25,8 @@ categories AS (
         'metabolite_chloridazone_desphenyl',
         'metabolite_chloridazone_methyl_desphenyl',
         'metabolite_atrazine_desethyl',
+        'metaux_lourds_as',
+        'metaux_lourds_pb',
         'nitrate',
         'tous'
     ]) AS categorie

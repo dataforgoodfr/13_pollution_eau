@@ -30,7 +30,7 @@ WITH metaux_lourds_dernier_prel AS (
 -- pour chaque type de métaux lourds
 SELECT
     cdreseau,
-    datetimeprel AS dernier_prel_datetime,
+    datetimeprel AS date_dernier_prel,
     'dernier_prel' AS periode,
     1 AS nb_parametres,
     CASE

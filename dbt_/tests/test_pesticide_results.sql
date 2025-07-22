@@ -96,3 +96,15 @@ WHERE
             OR ratio_limite_qualite != 0.5
         )
     )
+    OR
+    (
+        -- cas particulier où le PESTOT est le seul paramètre qui dépasse la limite de qualité
+        -- (regarder la date de 2024-04-10 09:06:00)
+        cdreseau = '059000619'
+        AND annee = 2024
+        AND (
+            nb_prelevements != 6
+            OR nb_depassements != 4
+            OR nb_sup_valeur_sanitaire != 0
+        )
+    )

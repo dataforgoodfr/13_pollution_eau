@@ -20,9 +20,6 @@ last_pvl AS (
     WHERE
         categorie = 'pesticide'
         AND
-        -- On exclut le paramètre PESTOT qui est un TOTAL DES PESTICIDES ANALYSÉS
-        cdparametresiseeaux != 'PESTOT'
-        AND
         -- On garde les prélèvements de moins d'un an
         CURRENT_DATE - datetimeprel < INTERVAL 1 YEAR
 ),

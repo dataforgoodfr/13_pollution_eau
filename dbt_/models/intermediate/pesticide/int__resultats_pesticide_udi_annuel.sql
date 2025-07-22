@@ -20,9 +20,6 @@ pesticide_prels AS (
         {{ ref('int__resultats_udi_communes') }}
     WHERE
         categorie = 'pesticide'
-        AND
-        -- On exclut le paramètre PESTOT qui est un TOTAL DES PESTICIDES ANALYSÉS
-        cdparametresiseeaux != 'PESTOT'
 )
 
 SELECT

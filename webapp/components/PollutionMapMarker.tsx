@@ -2,7 +2,7 @@
 
 import { useEffect, useState, JSX } from "react";
 import { getPropertyName } from "@/lib/property";
-import { getCategoryById } from "@/lib/polluants";
+import { getCategoryById, getAllEnabledCategories } from "@/lib/polluants";
 import { getParameterName } from "@/lib/parameters";
 import { useMap, Marker, Popup } from "react-map-gl/maplibre";
 import { MapPin, X } from "lucide-react";
@@ -113,6 +113,111 @@ export default function PollutionMapMarker({
   const renderContent = () => {
     if (period === "dernier_prel") {
       // Rendering for "dernier_prel"
+
+      if (category === "tous") {
+        // Special rendering for "tous" category - show global status and all categories
+
+        // First show the global status for "tous"
+        const globalResultProperty = getPropertyName(
+          period,
+          category,
+          "resultat",
+        );
+        const globalResultValue =
+          globalResultProperty in selectedZoneData
+            ? selectedZoneData[globalResultProperty]
+            : "non_recherche";
+
+        const globalCategoryDetails = getCategoryById(category);
+        const globalResultColor =
+          globalCategoryDetails?.resultats[globalResultValue as string]
+            ?.couleur ||
+          globalCategoryDetails?.resultats["non_recherche"]?.couleur ||
+          "#9B9B9B";
+        const globalResultLabel =
+          globalCategoryDetails?.resultats[globalResultValue as string]
+            ?.label ||
+          globalCategoryDetails?.resultats["non_recherche"]?.label ||
+          "Non recherché";
+
+        // Get all enabled categories
+        const allCategories = getAllEnabledCategories();
+
+        // Filter categories that should be displayed
+        const categoriesToDisplay = allCategories.filter((cat) => {
+          const resultProperty = getPropertyName(period, cat.id, "resultat");
+          const resultValue =
+            resultProperty in selectedZoneData
+              ? selectedZoneData[resultProperty]
+              : "non_recherche";
+
+          // Only show if result is not "non_recherche" or "non_quantifie"
+          // Also exclude nitrate when result is "inf_limite_qualite"
+          return (
+            resultValue !== "" &&
+            resultValue !== "non_recherche" &&
+            resultValue !== "non_quantifie" &&
+            !(cat.id === "nitrate" && resultValue === "inf_limite_qualite")
+          );
+        });
+
+        return (
+          <>
+            <p className="text-sm font-bold">{title}</p>
+
+            {/* Global status */}
+            <div className="flex items-center gap-3 mb-3">
+              <div
+                className="w-3 h-3 rounded-full flex-shrink-0"
+                style={{ backgroundColor: globalResultColor }}
+              ></div>
+              <span className="text-sm">{globalResultLabel}</span>
+            </div>
+
+            {/* All categories - only show if there are categories to display */}
+            {categoriesToDisplay.length > 0 && (
+              <div className="mt-3">
+                <p className="font-medium mb-2 text-sm">Détail par polluant:</p>
+                <div className="space-y-1 text-xs">
+                  {categoriesToDisplay.map((cat) => {
+                    const resultProperty = getPropertyName(
+                      period,
+                      cat.id,
+                      "resultat",
+                    );
+                    const resultValue =
+                      resultProperty in selectedZoneData
+                        ? selectedZoneData[resultProperty]
+                        : "non_recherche";
+
+                    const resultColor =
+                      cat?.resultats[resultValue as string]?.couleur ||
+                      cat?.resultats["non_recherche"]?.couleur ||
+                      "#9B9B9B";
+                    const resultLabel =
+                      cat?.resultats[resultValue as string]?.label ||
+                      cat?.resultats["non_recherche"]?.label ||
+                      "Non recherché";
+
+                    return (
+                      <div key={cat.id} className="flex items-center gap-2">
+                        <span className="font-medium">{cat.nomAffichage}:</span>
+                        <div
+                          className="w-2 h-2 rounded-full flex-shrink-0"
+                          style={{ backgroundColor: resultColor }}
+                        ></div>
+                        {/* <span className="text-gray-600 leading-tight">
+                          {resultLabel}
+                        </span> */}
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+          </>
+        );
+      }
 
       const resultProperty = getPropertyName(period, category, "resultat");
       const resultValue =

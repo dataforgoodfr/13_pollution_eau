@@ -1124,3 +1124,23 @@ export function getCategoryById(
   // Not found anywhere
   return undefined;
 }
+
+// Helper function to get all enabled categories recursively
+export const getAllEnabledCategories = (
+  categories: ICategory[] = availableCategories,
+): ICategory[] => {
+  const result: ICategory[] = [];
+
+  for (const category of categories) {
+    if (!category.disable && category.id !== "tous") {
+      result.push(category);
+
+      // Recursively add children
+      if (category.enfants && category.enfants.length > 0) {
+        result.push(...getAllEnabledCategories(category.enfants));
+      }
+    }
+  }
+
+  return result;
+};

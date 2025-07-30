@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 
+from pipelines.tasks.client.core.duckdb_client import DuckDBClient
 from pipelines.tasks.client.core.https_client import HTTPSClient
 from pipelines.tasks.config.common import (
     logger,
@@ -7,7 +8,7 @@ from pipelines.tasks.config.common import (
 
 
 class HTTPSToDuckDBClient(HTTPSClient, ABC):
-    def __init__(self, config, duckdb_client):
+    def __init__(self, config, duckdb_client: DuckDBClient):
         super().__init__(config["source"]["base_url"])
         self.config = config
         self.duckdb_client = duckdb_client

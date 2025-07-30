@@ -22,7 +22,7 @@ Examples:
     - build_database --refresh-type custom --custom-years 2018,2024 --check_update : Process only the years 2018 and 2024 if their data has been modified from the source
 """
 
-from typing import List
+from typing import List, Literal
 
 from pipelines.tasks.client.commune_client import CommuneClient
 from pipelines.tasks.client.core.duckdb_client import DuckDBClient
@@ -38,7 +38,7 @@ logger = get_logger(__name__)
 
 
 def execute(
-    refresh_type: str = "all",
+    refresh_type: Literal["all", "last", "custom"] = "all",
     refresh_table: str = "all",
     custom_years: List[str] = None,
     drop_tables: bool = False,

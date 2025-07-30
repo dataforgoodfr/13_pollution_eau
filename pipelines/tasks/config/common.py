@@ -41,7 +41,10 @@ def download_file_from_https(url: str, filepath: Union[str, Path]):
     :param filepath: The path to the local file.
     :return: Downloaded file filename.
     """
-    response = requests.get(url, stream=True)
+    logger.info(f"Downloading file from {url} to {filepath}")
+    response = requests.get(
+        url, stream=True, headers={"Accept-Encoding": "gzip, deflate"}
+    )
     response.raise_for_status()
     response_size = int(response.headers.get("content-length", 0))
     filepath = Path(filepath)
@@ -50,7 +53,7 @@ def download_file_from_https(url: str, filepath: Union[str, Path]):
             total=response_size,
             unit="B",
             unit_scale=True,
-            desc=f"Processing file {filepath.name}",
+            desc=filepath.name,
             **tqdm_common,
         ) as pbar:
             for chunk in response.iter_content(chunk_size=8192):

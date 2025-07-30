@@ -2,9 +2,8 @@ from pathlib import Path
 from typing import Union
 
 import requests
-from tqdm import tqdm
 
-from pipelines.tasks.config.common import logger, tqdm_common
+from pipelines.tasks.config.common import download_file_from_https, logger
 
 
 class HTTPSClient:
@@ -14,30 +13,12 @@ class HTTPSClient:
     def download_file_from_https(self, path: str, filepath: Union[str, Path]):
         """
         Downloads a file from a https link to a local file.
-        :param path: The url where to download the file.
+        :param path: The url path to download the file.
         :param filepath: The path to the local file.
         :return: Downloaded file filename.
         """
         url = self.base_url + path
-        response = requests.get(
-            url, stream=True, headers={"Accept-Encoding": "gzip, deflate"}
-        )
-        response.raise_for_status()
-        response_size = int(response.headers.get("content-length", 0))
-        filepath = Path(filepath)
-        with open(filepath, "wb") as f:
-            with tqdm(
-                total=response_size,
-                unit="B",
-                unit_scale=True,
-                desc=f"Processing file {filepath.name}",
-                **tqdm_common,
-            ) as pbar:
-                for chunk in response.iter_content(chunk_size=8192):
-                    f.write(chunk)
-                    pbar.update(len(chunk))
-
-        return filepath.name
+        return download_file_from_https(url, filepath)
 
     @staticmethod
     def get_url_headers(url: str) -> dict:

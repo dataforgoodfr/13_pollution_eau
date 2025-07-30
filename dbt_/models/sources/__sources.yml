@@ -15,8 +15,9 @@ sources:
       - name: laposte_communes
       - name: cog_communes
       - name: opendatasoft_communes
-  - name: udi
+  - name: atlasante
     database: data
     schema: main
-    tables: 
-      - name: atlasante_udi
+    tables:
+      - name: atlasante_udi_2023
+      - name: atlasante_udi_corse

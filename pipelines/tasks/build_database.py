@@ -6,13 +6,13 @@ Args:
     - custom-years (str) : List of years to process when refresh_type is "custom"
     - drop-tables        : Drop all table before ingestion if flag is added
     - check-update       : For edc, only refresh table if source was updated since last refresh
-    - refresh-table (str): Source to refresh ("all", "edc", "commune", "udi")
+    - refresh-table (str): Source to refresh ("all", "edc", "commune", "atlasante")
 
 Examples:
     - build_database --refresh-table all : refresh all tables
-    - build_database --refresh-table edc : only refresh edc table
-    - build_database --refresh-table commune : only refresh commune table
-    - build_database --refresh-table udi : only refresh udi table
+    - build_database --refresh-table edc : only refresh edc tables
+    - build_database --refresh-table commune : only refresh commune tables
+    - build_database --refresh-table atlasante : only refresh tables from atlasante
     - build_database --refresh-type all : Process all years
     - build_database --refresh-type last : Process last year only
     - build_database --refresh-type custom --custom-years 2018,2024 : Process only the years 2018 and 2024
@@ -28,10 +28,10 @@ from pipelines.tasks.client.commune_client import CommuneClient
 from pipelines.tasks.client.core.duckdb_client import DuckDBClient
 from pipelines.tasks.client.datagouv_client import DataGouvClient
 from pipelines.tasks.client.opendatasoft_client import OpenDataSoftClient
-from pipelines.tasks.client.udi_client import UDIClient
+from pipelines.tasks.client.uploaded_geojson_client import UploadedGeoJSONClient
 from pipelines.tasks.config.config_insee import get_insee_config
 from pipelines.tasks.config.config_laposte import get_laposte_config
-from pipelines.tasks.config.config_udi import get_udi_config
+from pipelines.tasks.config.config_uploaded_geojson import uploaded_geojson_config
 from pipelines.utils.logger import get_logger
 
 logger = get_logger(__name__)
@@ -48,7 +48,7 @@ def execute(
     Execute the EDC dataset processing with specified parameters.
 
     :param refresh_type: Type of refresh to perform ("all", "last", or "custom")
-    :param refresh_table: which table to refresh ("all", "edc","commune", "udi")
+    :param refresh_table: which tables to refresh ("all", "edc", "commune", "atlasante")
     :param custom_years: List of years to process when refresh_type is "custom"
     :param drop_tables: Whether to drop edc tables in the database before data insertion.
     """
@@ -74,8 +74,8 @@ def execute(
         laposte.process_datasets()
         opendatasoft = OpenDataSoftClient(duckdb_client)
         opendatasoft.process_datasets()
-    if refresh_table == "all" or refresh_table == "udi":
-        udi_client = UDIClient(get_udi_config(), duckdb_client)
-        udi_client.process_datasets()
+    if refresh_table == "all" or refresh_table == "atlasante":
+        geojson_client = UploadedGeoJSONClient(uploaded_geojson_config, duckdb_client)
+        geojson_client.process_datasets()
 
     duckdb_client.close()

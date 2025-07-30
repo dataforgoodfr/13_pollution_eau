@@ -84,7 +84,7 @@ def run_build_database(
     module = importlib.import_module("tasks.build_database")
     task_func = getattr(module, "execute")
 
-    custom_years_list = None
+    custom_years_list = []
     if custom_years:
         custom_years_list = [year.strip() for year in custom_years.split(",")]
 

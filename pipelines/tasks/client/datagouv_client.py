@@ -222,7 +222,7 @@ class DataGouvClient(HTTPSClient):
     def process_edc_datasets(
         self,
         refresh_type: Literal["all", "last", "custom"] = "last",
-        custom_years: List[str] = None,
+        custom_years: List[str] = [],
         drop_tables: bool = False,
         check_update: bool = False,
     ):

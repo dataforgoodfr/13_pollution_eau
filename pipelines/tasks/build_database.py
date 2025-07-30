@@ -40,7 +40,7 @@ logger = get_logger(__name__)
 def execute(
     refresh_type: Literal["all", "last", "custom"] = "all",
     refresh_table: str = "all",
-    custom_years: List[str] = None,
+    custom_years: List[str] = [],
     drop_tables: bool = False,
     check_update: bool = False,
 ):

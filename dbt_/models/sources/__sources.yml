@@ -12,7 +12,6 @@ sources:
     database: data
     schema: main
     tables:
-      - name: laposte_communes
       - name: cog_communes
       - name: opendatasoft_communes
   - name: atlasante

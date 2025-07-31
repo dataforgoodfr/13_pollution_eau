@@ -30,7 +30,6 @@ from pipelines.tasks.client.datagouv_client import DataGouvClient
 from pipelines.tasks.client.opendatasoft_client import OpenDataSoftClient
 from pipelines.tasks.client.uploaded_geojson_client import UploadedGeoJSONClient
 from pipelines.tasks.config.config_insee import get_insee_config
-from pipelines.tasks.config.config_laposte import get_laposte_config
 from pipelines.tasks.config.config_uploaded_geojson import uploaded_geojson_config
 from pipelines.utils.logger import get_logger
 
@@ -70,8 +69,6 @@ def execute(
     if refresh_table == "all" or refresh_table == "commune":
         insee_client = CommuneClient(get_insee_config(), duckdb_client)
         insee_client.process_datasets()
-        laposte = CommuneClient(get_laposte_config(), duckdb_client)
-        laposte.process_datasets()
         opendatasoft = OpenDataSoftClient(duckdb_client)
         opendatasoft.process_datasets()
     if refresh_table == "all" or refresh_table == "atlasante":

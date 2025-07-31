@@ -191,8 +191,17 @@ class PmtilesClient:
                 pmtiles_file,  # Output PMTiles file
                 "--layer",  # layer name in vector tiles
                 layer_name,
-                "--coalesce-densest-as-needed",
+                "--drop-densest-as-needed",
                 "--extend-zooms-if-still-dropping",
+                "-B",
+                "5",  # Show all features at zoom 5 and above
+                "--simplification",
+                "8",  # Simplification factor
+                "--no-tiny-polygon-reduction",
+                "--no-simplification-of-shared-nodes",
+                "--no-feature-limit",  # Don't limit tiles to 200,000 features
+                "--no-tile-size-limit",  # Don't limit tiles to 500K bytes
+                # "--visvalingam",  # Use Visvalingam-Whyatt simplification
                 geojson_file,  # Input GeoJSON file
             ]
 

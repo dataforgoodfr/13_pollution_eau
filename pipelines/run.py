@@ -160,6 +160,23 @@ def run_upload_udi(env):
     task_func(env)
 
 
+@run.command("generate_pmtiles_legacy")
+@click.option(
+    "--env",
+    type=click.Choice(["dev", "prod"]),
+    default="dev",
+    help="Environment to upload to. It will override environment defined in .env",
+)
+def run_generate_pmtiles_legacy(env):
+    """Generate and upload pmtiles files using legacy method."""
+    env = get_environment(default=env)
+    logger.info(f"Running on env {env}")
+
+    module = importlib.import_module("tasks.generate_pmtiles_legacy")
+    task_func = getattr(module, "execute")
+    task_func(env)
+
+
 @run.command("generate_pmtiles")
 @click.option(
     "--env",
@@ -167,14 +184,20 @@ def run_upload_udi(env):
     default="dev",
     help="Environment to upload to. It will override environment defined in .env",
 )
-def run_generate_pmtiles(env):
-    """Generate and upload merged new GeoJSON file."""
+@click.option(
+    "--upload",
+    is_flag=True,
+    default=False,
+    help="Upload PMTiles files to S3 after generation.",
+)
+def run_generate_pmtiles(env, upload):
+    """Generate and optionally upload PMTiles files."""
     env = get_environment(default=env)
-    logger.info(f"Running on env {env}")
+    logger.info(f"Running DuckDB PMTiles generation on env {env}")
 
     module = importlib.import_module("tasks.generate_pmtiles")
     task_func = getattr(module, "execute")
-    task_func(env)
+    task_func(env, upload)
 
 
 @run.command("download_pmtiles")

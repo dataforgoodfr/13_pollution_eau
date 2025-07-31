@@ -62,7 +62,7 @@ jobs:
     - name: Generate geo_json, convert geo_json to pmtiles and update pmtiles to Storage
       run: |
         uv pip install .[pmtiles]
-        uv run pipelines/run.py run generate_pmtiles  
+        uv run pipelines/run.py run generate_pmtiles --upload
 
     - name: Create Issue if Failed
       if: failure()

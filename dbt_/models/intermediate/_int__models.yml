@@ -448,3 +448,16 @@ models:
       - name: parametres_detectes
         description: "JSON contenant les paramètres détectés (valtraduite > 0) avec leurs valeurs correspondantes."
         type: JSON
+
+  - name: int__udi_geom
+    description: "Union des tracés des UDIs de France et de Corse"
+    columns:
+      - name: code_udi
+        description: "Code de l'unité de distribution (UDI)"
+        type: VARCHAR
+        tests:
+          - not_null
+          - unique
+      - name: geom
+        description: "Géométrie associée à l'UDI, formatée en GeoJSON."
+        type: STRING

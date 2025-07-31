@@ -24,6 +24,7 @@ os.makedirs(DATABASE_FOLDER, exist_ok=True)
 tqdm_common = {
     "ncols": 100,
     "bar_format": "{l_bar}{bar}| {n_fmt}/{total_fmt}",
+    "mininterval": 2.0,  # Log progress every 2 second
 }
 
 

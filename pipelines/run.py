@@ -54,7 +54,7 @@ def run():
 )
 @click.option(
     "--refresh-table",
-    type=click.Choice(["all", "edc", "commune", "udi"]),
+    type=click.Choice(["all", "edc", "commune", "atlasante"]),
     default="all",
     help="choose type of table to refresh",
 )

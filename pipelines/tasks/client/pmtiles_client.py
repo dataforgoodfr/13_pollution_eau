@@ -1,7 +1,6 @@
 import json
 import subprocess
 from pathlib import Path
-from typing import Dict, Any
 import pandas as pd
 
 from pipelines.config.config import get_s3_path_pmtiles
@@ -77,7 +76,7 @@ class PmtilesClient:
             SELECT 
                 {id_select},
                 {pivot_sql}
-            FROM {config['result_table']}
+            FROM {config["result_table"]}
             GROUP BY {id_select}
         ),
         
@@ -85,8 +84,8 @@ class PmtilesClient:
             SELECT 
                 {geom_select},
                 pr.*
-            FROM {config['geom_table']} g
-            LEFT JOIN pivoted_results pr ON g.{config['geom_id_column']} = pr.{config['result_id_column']}
+            FROM {config["geom_table"]} g
+            LEFT JOIN pivoted_results pr ON g.{config["geom_id_column"]} = pr.{config["result_id_column"]}
             WHERE g.geom IS NOT NULL
         )
         

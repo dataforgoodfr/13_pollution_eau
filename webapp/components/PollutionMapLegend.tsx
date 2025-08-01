@@ -77,14 +77,11 @@ export default function PollutionMapLegend({
             color={categoryDetails.resultatsAnnuels.nonRechercheCouleur || ""}
             label={categoryDetails.resultatsAnnuels.nonRechercheLabel || ""}
           />
-          <div className="flex items-center gap-3 text-gray-900">
-            {categoryDetails.resultatsAnnuels.ratioLabel}:
-          </div>
           {categoryDetails.resultatsAnnuels.ratioLimites?.map((item) => (
             <LegendItem
               key={item.couleur + item.label}
               color={item.couleur}
-              label={item.label}
+              label={`${item.label} ${categoryDetails.resultatsAnnuels?.ratioLabel}`}
             />
           ))}
           {categoryDetails.resultatsAnnuels.valeurSanitaireLabel && (

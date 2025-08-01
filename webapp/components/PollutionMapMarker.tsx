@@ -206,9 +206,9 @@ export default function PollutionMapMarker({
                           className="w-2 h-2 rounded-full flex-shrink-0"
                           style={{ backgroundColor: resultColor }}
                         ></div>
-                        {/* <span className="text-gray-600 leading-tight">
+                        <span className="text-gray-600 leading-tight">
                           {resultLabel}
-                        </span> */}
+                        </span>
                       </div>
                     );
                   })}
@@ -274,13 +274,13 @@ export default function PollutionMapMarker({
           </div>
           {date && (
             <p className="mb-2">
-              Dernier prélèvement le{" "}
+              Dernière analyse le{" "}
               {new Date(date.toString()).toLocaleDateString("fr-FR")}
             </p>
           )}
           {parsedValues && Object.keys(parsedValues).length > 0 && (
             <div className="mt-3">
-              <p className="font-medium mb-2">Paramètres détectés:</p>
+              <p className="font-medium mb-2">Substances quantifiées:</p>
               <ul className="space-y-1">
                 {Object.entries(parsedValues).map(([param, value]) => (
                   <li key={param} className="flex justify-between items-center">
@@ -345,7 +345,7 @@ export default function PollutionMapMarker({
           for (const limit of ratioLimits) {
             if (Number(ratioValue) <= limit.limite) {
               resultColor = limit.couleur;
-              resultLabel = `${categoryDetails?.resultatsAnnuels?.ratioLabel}: ${(Number(ratioValue) * 100).toFixed(0)}%`;
+              resultLabel = `${(Number(ratioValue) * 100).toFixed(0)}% ${categoryDetails?.resultatsAnnuels?.ratioLabel}`;
               break;
             }
           }
@@ -368,8 +368,8 @@ export default function PollutionMapMarker({
               <>
                 <p className="">
                   {Number(selectedZoneData[nbPrelevementsProp]) === 1
-                    ? "1 prélèvement dans l'année"
-                    : `${selectedZoneData[nbPrelevementsProp]} prélèvements dans l'année`}
+                    ? "1 analyse dans l'année"
+                    : `${selectedZoneData[nbPrelevementsProp]} analyses dans l'année`}
                 </p>
 
                 {categoryDetails?.resultatsAnnuels &&
@@ -378,8 +378,8 @@ export default function PollutionMapMarker({
                   selectedZoneData[nbSupValeurSanitaireProp] !== undefined && (
                     <p className="">
                       {Number(selectedZoneData[nbSupValeurSanitaireProp]) > 0
-                        ? `${selectedZoneData[nbSupValeurSanitaireProp]} prélèvements avec des valeurs supérieures à la valeur sanitaire`
-                        : "Aucun prélèvement avec des valeurs supérieures à la valeur sanitaire"}
+                        ? `${selectedZoneData[nbSupValeurSanitaireProp]} analyses avec des valeurs supérieures à la valeur sanitaire`
+                        : "Aucune analyse avec des valeurs supérieures à la valeur sanitaire"}
                     </p>
                   )}
               </>

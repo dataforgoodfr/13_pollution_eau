@@ -107,8 +107,7 @@ export const availableCategories: ICategory[] = [
         { limite: 0.75, label: "50 - 75%", couleur: "#F3903F" },
         { limite: 1, label: "75 - 100%", couleur: "#ED683C" },
       ],
-      ratioLabel:
-        "Part des prélèvements où les paramètres analysés ont dépassé la limite réglementaire",
+      ratioLabel: "des analyses non conforme",
       valeurSanitaire: true,
       valeurSanitaireLabel:
         "Au moins 1 dépassement de valeur sanitaire au cours de l'année",
@@ -134,7 +133,7 @@ export const availableCategories: ICategory[] = [
       "* Limite non réglementaire, recommandée par le Haut Conseil de la Santé Publique \n** Eau conforme à la limite réglementaire mais qui dépasse la limite recommandée par le HCSP",
     resultats: {
       non_recherche: {
-        label: "Non recherché",
+        label: "Non recherché dans les 12 derniers mois",
         couleur: "#9B9B9B",
         couleurFond: "#9B9B9B",
         picto: null,
@@ -183,8 +182,7 @@ export const availableCategories: ICategory[] = [
         { limite: 0.75, label: "50 - 75%", couleur: "#F3903F" },
         { limite: 1, label: "75 - 100%", couleur: "#ED683C" },
       ],
-      ratioLabel:
-        "Part des prélèvements où les PFAS ont dépassé la limite réglementaire",
+      ratioLabel: "des analyses non conforme",
       valeurSanitaire: true,
       valeurSanitaireLabel:
         "Au moins 1 dépassement de valeur sanitaire au cours de l'année",
@@ -206,7 +204,7 @@ export const availableCategories: ICategory[] = [
       "Agriculture, consommation de produits traités, eau potable.",
     resultats: {
       non_recherche: {
-        label: "Non recherché",
+        label: "Non recherché dans les 12 derniers mois",
         couleur: "#9B9B9B",
         couleurFond: "#9B9B9B",
         picto: null,
@@ -247,8 +245,7 @@ export const availableCategories: ICategory[] = [
         { limite: 0.75, label: "50 - 75%", couleur: "#F3903F" },
         { limite: 1, label: "75 - 100%", couleur: "#ED683C" },
       ],
-      ratioLabel:
-        "Part des prélèvements où les pesticides ont dépassé la limite réglementaire",
+      ratioLabel: "des analyses non conforme",
       valeurSanitaire: true,
       valeurSanitaireLabel:
         "Au moins 1 dépassement de valeur sanitaire au cours de l'année",
@@ -271,7 +268,7 @@ export const availableCategories: ICategory[] = [
         sousCategories: true,
         resultats: {
           non_recherche: {
-            label: "Non recherché",
+            label: "Non recherché dans les 12 derniers mois",
             couleur: "#9B9B9B",
             couleurFond: "#9B9B9B",
             picto: null,
@@ -313,8 +310,7 @@ export const availableCategories: ICategory[] = [
             { limite: 0.75, label: "50 - 75%", couleur: "#F3903F" },
             { limite: 1, label: "75 - 100%", couleur: "#ED683C" },
           ],
-          ratioLabel:
-            "Part des prélèvements où les substances actives pesticides ont dépassé la limite réglementaire",
+          ratioLabel: "des analyses non conforme",
           valeurSanitaire: true,
           valeurSanitaireLabel:
             "Au moins 1 dépassement de valeur sanitaire au cours de l'année",
@@ -336,7 +332,7 @@ export const availableCategories: ICategory[] = [
         sousCategories: false,
         resultats: {
           non_recherche: {
-            label: "Non recherché",
+            label: "Non recherché dans les 12 derniers mois",
             couleur: "#9B9B9B",
             couleurFond: "#9B9B9B",
             picto: null,
@@ -377,8 +373,7 @@ export const availableCategories: ICategory[] = [
             { limite: 0.75, label: "50 - 75%", couleur: "#F3903F" },
             { limite: 1, label: "75 - 100%", couleur: "#ED683C" },
           ],
-          ratioLabel:
-            "Part des prélèvements où les métabolites ont dépassé la limite réglementaire",
+          ratioLabel: "des analyses non conforme",
           valeurSanitaire: true,
           valeurSanitaireLabel:
             "Au moins 1 dépassement de valeur sanitaire au cours de l'année",
@@ -400,7 +395,7 @@ export const availableCategories: ICategory[] = [
             sousCategories: false,
             resultats: {
               non_recherche: {
-                label: "Non recherché",
+                label: "Non recherché dans les 12 derniers mois",
                 couleur: "#9B9B9B",
                 couleurFond: "#9B9B9B",
                 picto: null,
@@ -448,8 +443,7 @@ export const availableCategories: ICategory[] = [
                 { limite: 0.75, label: "50 - 75%", couleur: "#F3903F" },
                 { limite: 1, label: "75 - 100%", couleur: "#ED683C" },
               ],
-              ratioLabel:
-                "Part des prélèvements où l'ESA métolachlore a dépassé la limite réglementaire",
+              ratioLabel: "des analyses non conforme",
               valeurSanitaire: true,
               valeurSanitaireLabel:
                 "Au moins 1 dépassement de valeur sanitaire au cours de l'année",
@@ -471,7 +465,7 @@ export const availableCategories: ICategory[] = [
             sousCategories: false,
             resultats: {
               non_recherche: {
-                label: "Non recherché",
+                label: "Non recherché dans les 12 derniers mois",
                 couleur: "#9B9B9B",
                 couleurFond: "#9B9B9B",
                 picto: null,
@@ -519,8 +513,7 @@ export const availableCategories: ICategory[] = [
                 { limite: 0.75, label: "50 - 75%", couleur: "#F3903F" },
                 { limite: 1, label: "75 - 100%", couleur: "#ED683C" },
               ],
-              ratioLabel:
-                "Part des prélèvements où le Chlorothalonil R471811 a dépassé la limite réglementaire",
+              ratioLabel: "des analyses non conforme",
               valeurSanitaire: true,
               valeurSanitaireLabel:
                 "Au moins 1 dépassement de valeur sanitaire au cours de l'année",
@@ -541,7 +534,7 @@ export const availableCategories: ICategory[] = [
             sousCategories: false,
             resultats: {
               non_recherche: {
-                label: "Non recherché",
+                label: "Non recherché dans les 12 derniers mois",
                 couleur: "#9B9B9B",
                 couleurFond: "#9B9B9B",
                 picto: null,
@@ -583,8 +576,7 @@ export const availableCategories: ICategory[] = [
                 { limite: 0.75, label: "50 - 75%", couleur: "#F3903F" },
                 { limite: 1, label: "75 - 100%", couleur: "#ED683C" },
               ],
-              ratioLabel:
-                "Part des prélèvements où la Chloridazone desphényl a dépassé la limite réglementaire",
+              ratioLabel: "des analyses non conforme",
               valeurSanitaire: true,
               valeurSanitaireLabel:
                 "Au moins 1 dépassement de valeur sanitaire au cours de l'année",
@@ -604,7 +596,7 @@ export const availableCategories: ICategory[] = [
             sousCategories: false,
             resultats: {
               non_recherche: {
-                label: "Non recherché",
+                label: "Non recherché dans les 12 derniers mois",
                 couleur: "#9B9B9B",
                 couleurFond: "#9B9B9B",
                 picto: null,
@@ -646,8 +638,7 @@ export const availableCategories: ICategory[] = [
                 { limite: 0.75, label: "50 - 75%", couleur: "#F3903F" },
                 { limite: 1, label: "75 - 100%", couleur: "#ED683C" },
               ],
-              ratioLabel:
-                "Part des prélèvements où la Chloridazone methyl desphényl a dépassé la limite réglementaire",
+              ratioLabel: "des analyses non conforme",
               valeurSanitaire: true,
               valeurSanitaireLabel:
                 "Au moins 1 dépassement de valeur sanitaire au cours de l'année",
@@ -668,7 +659,7 @@ export const availableCategories: ICategory[] = [
             sousCategories: false,
             resultats: {
               non_recherche: {
-                label: "Non recherché",
+                label: "Non recherché dans les 12 derniers mois",
                 couleur: "#9B9B9B",
                 couleurFond: "#9B9B9B",
                 picto: null,
@@ -710,8 +701,7 @@ export const availableCategories: ICategory[] = [
                 { limite: 0.75, label: "50 - 75%", couleur: "#F3903F" },
                 { limite: 1, label: "75 - 100%", couleur: "#ED683C" },
               ],
-              ratioLabel:
-                "Part des prélèvements où l'Atrazine déséthyl a dépassé la limite réglementaire",
+              ratioLabel: "des analyses non conforme",
               valeurSanitaire: true,
               valeurSanitaireLabel:
                 "Au moins 1 dépassement de valeur sanitaire au cours de l'année",
@@ -737,7 +727,7 @@ export const availableCategories: ICategory[] = [
       "Agriculture intensive, effluents industriels et domestiques.",
     resultats: {
       non_recherche: {
-        label: "Non recherché",
+        label: "Non recherché dans les 12 derniers mois",
         couleur: "#9B9B9B",
         couleurFond: "#9B9B9B",
         picto: null,
@@ -767,8 +757,7 @@ export const availableCategories: ICategory[] = [
         { limite: 0.75, label: "50 - 75%", couleur: "#FF5353" },
         { limite: 1, label: "75 - 100%", couleur: "#FF0000" },
       ],
-      ratioLabel:
-        "Part des prélèvements où les nitrates ont dépassé la limite réglementaire",
+      ratioLabel: "des analyses non conforme",
       valeurSanitaire: false,
     },
   },
@@ -784,7 +773,7 @@ export const availableCategories: ICategory[] = [
     sourcesExposition: "Industrie plastique, eau contaminée.",
     resultats: {
       non_recherche: {
-        label: "Non recherché",
+        label: "Non recherché dans les 12 derniers mois",
         couleur: "#9B9B9B",
         couleurFond: "#9B9B9B",
         picto: null,
@@ -820,7 +809,7 @@ export const availableCategories: ICategory[] = [
         { limite: 0.75, label: "50 - 75%", couleur: "#F3903F" },
         { limite: 1, label: "75 - 100%", couleur: "#ED683C" },
       ],
-      ratioLabel: "Part des prélèvements dépassant la limite",
+      ratioLabel: "des analyses non conforme",
       valeurSanitaire: false,
     },
   },
@@ -854,7 +843,7 @@ export const availableCategories: ICategory[] = [
         sousCategories: true,
         resultats: {
           non_recherche: {
-            label: "Non recherché",
+            label: "Non recherché dans les 12 derniers mois",
             couleur: "#9B9B9B",
             couleurFond: "#9B9B9B",
             picto: null,
@@ -889,7 +878,7 @@ export const availableCategories: ICategory[] = [
             { limite: 0.75, label: "50 - 75%", couleur: "#F3903F" },
             { limite: 1, label: "75 - 100%", couleur: "#ED683C" },
           ],
-          ratioLabel: "Part des prélèvements dépassant la limite sanitaire",
+          ratioLabel: "des analyses non conforme",
           valeurSanitaire: false,
         },
       },
@@ -907,7 +896,7 @@ export const availableCategories: ICategory[] = [
         sousCategories: true,
         resultats: {
           non_recherche: {
-            label: "Non recherché",
+            label: "Non recherché dans les 12 derniers mois",
             couleur: "#9B9B9B",
             couleurFond: "#9B9B9B",
             picto: null,
@@ -949,7 +938,7 @@ export const availableCategories: ICategory[] = [
             { limite: 0.75, label: "50 - 75%", couleur: "#F3903F" },
             { limite: 1, label: "75 - 100%", couleur: "#ED683C" },
           ],
-          ratioLabel: "Part des prélèvements dépassant la limite sanitaire",
+          ratioLabel: "des analyses non conforme",
           valeurSanitaire: false,
         },
       },
@@ -984,7 +973,7 @@ export const availableCategories: ICategory[] = [
         sousCategories: false,
         resultats: {
           non_recherche: {
-            label: "Non recherché",
+            label: "Non recherché dans les 12 derniers mois",
             couleur: "#9B9B9B",
             couleurFond: "#9B9B9B",
             picto: null,
@@ -1027,8 +1016,7 @@ export const availableCategories: ICategory[] = [
             { limite: 0.75, label: "50 - 75%", couleur: "#F3903F" },
             { limite: 1, label: "75 - 100%", couleur: "#ED683C" },
           ],
-          ratioLabel:
-            "Part des prélèvements où l'Arsenic a dépassé la limite sanitaire",
+          ratioLabel: "des analyses non conforme",
           valeurSanitaire: false,
         },
       },
@@ -1051,7 +1039,7 @@ export const availableCategories: ICategory[] = [
         sousCategories: false,
         resultats: {
           non_recherche: {
-            label: "Non recherché",
+            label: "Non recherché dans les 12 derniers mois",
             couleur: "#9B9B9B",
             couleurFond: "#9B9B9B",
             picto: null,
@@ -1092,8 +1080,7 @@ export const availableCategories: ICategory[] = [
             { limite: 0.75, label: "50 - 75%", couleur: "#F3903F" },
             { limite: 1, label: "75 - 100%", couleur: "#ED683C" },
           ],
-          ratioLabel:
-            "Part des prélèvements où le Plomb a dépassé la limite réglementaire",
+          ratioLabel: "des analyses non conforme",
           valeurSanitaire: false,
         },
       },

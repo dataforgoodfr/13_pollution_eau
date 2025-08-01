@@ -62,6 +62,7 @@ export interface ICategory {
   blocsStatut?: BlocStatut[];
   resultats: { [key: string]: DetailResultat };
   resultatsAnnuels?: ResultatsAnnuels;
+  unite?: string;
 }
 
 export const availableCategories: ICategory[] = [
@@ -77,6 +78,7 @@ export const availableCategories: ICategory[] = [
       "Dépend du polluant : effets cancérigènes, neurotoxiques, perturbateurs endocriniens, maladies chroniques, etc.",
     regulation: "Directive cadre sur l'eau (DCE), Code de l'environnement.",
     sourcesExposition: "Eau potable, air, alimentation, sols contaminés.",
+    unite: undefined,
     resultats: {
       inf_limites: {
         label: "Aucun dépassement des limites réglementaire",
@@ -129,6 +131,7 @@ export const availableCategories: ICategory[] = [
       "Réglementation en cours d'évolution, restriction progressive en Europe.",
     sourcesExposition:
       "Ustensiles de cuisine, emballages alimentaires, eau potable.",
+    unite: "µg/L",
     detailsLegende:
       "* Limite non réglementaire, recommandée par le Haut Conseil de la Santé Publique \n** Eau conforme à la limite réglementaire mais qui dépasse la limite recommandée par le HCSP",
     resultats: {
@@ -202,6 +205,7 @@ export const availableCategories: ICategory[] = [
       "LMR (Limites Maximales de Résidus), règlement (CE) n°1107/2009.",
     sourcesExposition:
       "Agriculture, consommation de produits traités, eau potable.",
+    unite: "µg/L",
     resultats: {
       non_recherche: {
         label: "Non recherché dans les 12 derniers mois",
@@ -266,6 +270,7 @@ export const availableCategories: ICategory[] = [
         sourcesExposition:
           "Pulvérisation agricole, résidus dans l'eau et les aliments.",
         sousCategories: true,
+        unite: "µg/L",
         resultats: {
           non_recherche: {
             label: "Non recherché dans les 12 derniers mois",
@@ -330,6 +335,7 @@ export const availableCategories: ICategory[] = [
         sourcesExposition:
           "Dégradation dans l'eau et les sols, consommation d'eau potable.",
         sousCategories: false,
+        unite: "µg/L",
         resultats: {
           non_recherche: {
             label: "Non recherché dans les 12 derniers mois",
@@ -393,6 +399,7 @@ export const availableCategories: ICategory[] = [
             detailsLegende:
               "* Si l'ESA métolachlore était considéré comme un métabolite pertinent, l'eau serait déclarée \"non conforme\".",
             sousCategories: false,
+            unite: "µg/L",
             resultats: {
               non_recherche: {
                 label: "Non recherché dans les 12 derniers mois",
@@ -463,6 +470,7 @@ export const availableCategories: ICategory[] = [
             detailsLegende:
               '* Si le Chlorothalonil R471811 était considéré comme un métabolite pertinent, l\'eau serait déclarée "non conforme".',
             sousCategories: false,
+            unite: "µg/L",
             resultats: {
               non_recherche: {
                 label: "Non recherché dans les 12 derniers mois",
@@ -532,6 +540,7 @@ export const availableCategories: ICategory[] = [
             regulation: "Limite de 0,1 µg/L en eau potable.",
             sourcesExposition: "Présent dans les eaux souterraines.",
             sousCategories: false,
+            unite: "µg/L",
             resultats: {
               non_recherche: {
                 label: "Non recherché dans les 12 derniers mois",
@@ -594,6 +603,7 @@ export const availableCategories: ICategory[] = [
             regulation: "Surveillance renforcée en eau potable.",
             sourcesExposition: "Contamination des ressources en eau.",
             sousCategories: false,
+            unite: "µg/L",
             resultats: {
               non_recherche: {
                 label: "Non recherché dans les 12 derniers mois",
@@ -657,6 +667,7 @@ export const availableCategories: ICategory[] = [
             regulation: "Limite de 0,1 µg/L en eau potable.",
             sourcesExposition: "Contamination résiduelle des sols et nappes.",
             sousCategories: false,
+            unite: "µg/L",
             resultats: {
               non_recherche: {
                 label: "Non recherché dans les 12 derniers mois",
@@ -725,6 +736,7 @@ export const availableCategories: ICategory[] = [
       "Limite de 50 mg/L pour les nitrates, 0,5 mg/L pour les nitrites en eau potable.",
     sourcesExposition:
       "Agriculture intensive, effluents industriels et domestiques.",
+    unite: "mg/L",
     resultats: {
       non_recherche: {
         label: "Non recherché dans les 12 derniers mois",
@@ -771,6 +783,7 @@ export const availableCategories: ICategory[] = [
     risquesSante: "Cancérigène avéré, hépatotoxicité.",
     regulation: "Seuil de 0,5 µg/L en eau potable.",
     sourcesExposition: "Industrie plastique, eau contaminée.",
+    unite: "µg/L",
     resultats: {
       non_recherche: {
         label: "Non recherché dans les 12 derniers mois",
@@ -825,6 +838,7 @@ export const availableCategories: ICategory[] = [
       "Encadrement par le Code de l'environnement et les normes REACH.",
     sourcesExposition:
       "Déchets industriels, effluents rejetés dans l'environnement.",
+    unite: "µg/L",
     resultats: {
       // disable -> pas de résultats
     },
@@ -841,6 +855,7 @@ export const availableCategories: ICategory[] = [
         sourcesExposition:
           "Industries pharmaceutiques et plastiques, eau contaminée.",
         sousCategories: true,
+        unite: "µg/L",
         resultats: {
           non_recherche: {
             label: "Non recherché dans les 12 derniers mois",
@@ -894,6 +909,7 @@ export const availableCategories: ICategory[] = [
         regulation: "Valeur-guide en eau potable (4 µg/L en France).",
         sourcesExposition: "Munitions, feux d'artifice, engrais contaminés.",
         sousCategories: true,
+        unite: "µg/L",
         resultats: {
           non_recherche: {
             label: "Non recherché dans les 12 derniers mois",
@@ -956,6 +972,7 @@ export const availableCategories: ICategory[] = [
       "Réglementation stricte selon le métal (Plomb, Mercure, Cadmium, etc.).",
     sourcesExposition:
       "Pollution industrielle, anciennes canalisations, alimentation.",
+    unite: "µg/L",
     resultats: {
       // disable -> pas de résultats
     },
@@ -971,6 +988,7 @@ export const availableCategories: ICategory[] = [
         regulation: "Limite de 10 µg/L en eau potable.",
         sourcesExposition: "Eau souterraine, pesticides, industries.",
         sousCategories: false,
+        unite: "µg/L",
         resultats: {
           non_recherche: {
             label: "Non recherché dans les 12 derniers mois",
@@ -1037,6 +1055,7 @@ export const availableCategories: ICategory[] = [
         detailsLegende:
           "* Une nouvelle limite réglementaire fixée à 5 µg/L s'appliquera en 2036. D'ici cette date, la limite actuelle de 10 µg/L continue de s'appliquer.",
         sousCategories: false,
+        unite: "µg/L",
         resultats: {
           non_recherche: {
             label: "Non recherché dans les 12 derniers mois",

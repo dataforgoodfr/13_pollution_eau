@@ -287,7 +287,9 @@ export default function PollutionMapMarker({
                     <span className="font-light">
                       {getParameterName(param)}:
                     </span>
-                    <span className="ml-2 font-light">{value}</span>
+                    <span className="ml-2 font-light">
+                      {value} {categoryDetails?.unite || ""}
+                    </span>
                   </li>
                 ))}
               </ul>

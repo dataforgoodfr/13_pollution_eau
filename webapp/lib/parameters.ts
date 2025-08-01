@@ -826,7 +826,7 @@ export const PARAMETER_NAMES: Record<string, string> = {
   MCPABU: "MCPA-butotyl",
   MEPIQU1: "Mepiquat chlorure (utiliser MEPIQUA)",
   AMISUL: "Amisulbron",
-  PESTOT: "Total des pesticides analysés",
+  PESTOT: "Total pesticides",
 };
 
 export function getParameterName(code: string): string {

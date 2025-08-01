@@ -133,7 +133,7 @@ export const availableCategories: ICategory[] = [
       "Ustensiles de cuisine, emballages alimentaires, eau potable.",
     unite: "µg/L",
     detailsLegende:
-      "* Limite non réglementaire, recommandée par le Haut Conseil de la Santé Publique \n** Eau conforme à la limite réglementaire mais qui dépasse la limite recommandée par le HCSP",
+      "* Limite non réglementaire, recommandée par le Haut Conseil de la Santé Publique (HCSP) \n** Eau conforme à la limite réglementaire mais qui dépasse la limite recommandée par le HCSP",
     resultats: {
       non_recherche: {
         label: "Non recherché dans les 12 derniers mois",

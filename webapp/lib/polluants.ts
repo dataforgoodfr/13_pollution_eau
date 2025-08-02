@@ -80,6 +80,12 @@ export const availableCategories: ICategory[] = [
     sourcesExposition: "Eau potable, air, alimentation, sols contaminés.",
     unite: undefined,
     resultats: {
+      non_recherche: {
+        label: "Aucun polluants recherché dans les 12 derniers mois",
+        couleur: "#9B9B9B",
+        couleurFond: "#9B9B9B",
+        picto: null,
+      },
       inf_limites: {
         label: "Aucun dépassement des limites réglementaire",
         couleur: "#B4E681",

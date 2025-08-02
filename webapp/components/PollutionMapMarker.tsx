@@ -110,7 +110,24 @@ export default function PollutionMapMarker({
 
   console.log("Selected zone id:", code);
 
+  const errorColor = "#333333"; // Black color for unmatched cases
+  const errorLabel = "Résultat manquant";
+
   const renderContent = () => {
+    // Check if we have data for the selected zone
+    if (
+      (!("cdreseau" in selectedZoneData) &&
+        !("commune_code_insee" in selectedZoneData)) ||
+      code === undefined ||
+      code === null
+    ) {
+      return (
+        <p className="text-sm text-gray-500">
+          Aucune donnée disponible pour cette zone.
+        </p>
+      );
+    }
+
     if (period === "dernier_prel") {
       // Rendering for "dernier_prel"
 
@@ -131,14 +148,10 @@ export default function PollutionMapMarker({
         const globalCategoryDetails = getCategoryById(category);
         const globalResultColor =
           globalCategoryDetails?.resultats[globalResultValue as string]
-            ?.couleur ||
-          globalCategoryDetails?.resultats["non_recherche"]?.couleur ||
-          "#9B9B9B";
+            ?.couleur || errorColor;
         const globalResultLabel =
           globalCategoryDetails?.resultats[globalResultValue as string]
-            ?.label ||
-          globalCategoryDetails?.resultats["non_recherche"]?.label ||
-          "Non recherché";
+            ?.label || errorLabel;
 
         // Get all enabled categories
         const allCategories = getAllEnabledCategories();
@@ -192,12 +205,10 @@ export default function PollutionMapMarker({
 
                     const resultColor =
                       cat?.resultats[resultValue as string]?.couleur ||
-                      cat?.resultats["non_recherche"]?.couleur ||
-                      "#9B9B9B";
+                      errorColor;
                     const resultLabel =
                       cat?.resultats[resultValue as string]?.label ||
-                      cat?.resultats["non_recherche"]?.label ||
-                      "Non recherché";
+                      errorLabel;
 
                     return (
                       <div key={cat.id} className="flex items-center gap-2">
@@ -223,25 +234,14 @@ export default function PollutionMapMarker({
       const resultValue =
         resultProperty in selectedZoneData
           ? selectedZoneData[resultProperty]
-          : undefined;
-
-      if (resultValue === undefined || !code) {
-        return (
-          <p className="text-sm text-gray-500">
-            Aucune donnée disponible pour cette zone.
-          </p>
-        );
-      }
+          : "non_recherche";
 
       const categoryDetails = getCategoryById(category);
       const resultColor =
         categoryDetails?.resultats[resultValue as string]?.couleur ||
-        categoryDetails?.resultats["non_recherche"]?.couleur ||
-        "#333333";
+        errorColor;
       const resultLabel =
-        categoryDetails?.resultats[resultValue as string]?.label ||
-        categoryDetails?.resultats["non_recherche"]?.label ||
-        "Résultat manquant";
+        categoryDetails?.resultats[resultValue as string]?.label || errorLabel;
 
       const values =
         selectedZoneData[
@@ -314,32 +314,26 @@ export default function PollutionMapMarker({
 
       const categoryDetails = getCategoryById(category);
 
-      let resultColor = "#333333";
-      let resultLabel = "Résultat manquant";
+      let resultColor = errorColor;
+      let resultLabel = errorLabel;
       if (
-        selectedZoneData[nbPrelevementsProp] === 0 ||
-        selectedZoneData[nbPrelevementsProp] === ""
+        !(nbPrelevementsProp in selectedZoneData) ||
+        selectedZoneData[nbPrelevementsProp] === 0
       ) {
         resultColor =
-          categoryDetails?.resultatsAnnuels?.nonRechercheCouleur || "#333333";
+          categoryDetails?.resultatsAnnuels?.nonRechercheCouleur || errorColor;
         resultLabel =
-          categoryDetails?.resultatsAnnuels?.nonRechercheLabel ||
-          "Résultat manquant";
+          categoryDetails?.resultatsAnnuels?.nonRechercheLabel || errorLabel;
       } else if (
-        selectedZoneData[nbSupValeurSanitaireProp] !== null &&
-        selectedZoneData[nbSupValeurSanitaireProp] !== undefined &&
+        nbSupValeurSanitaireProp in selectedZoneData &&
         Number(selectedZoneData[nbSupValeurSanitaireProp]) > 0
       ) {
         resultColor =
           categoryDetails?.resultatsAnnuels?.valeurSanitaireCouleur ||
-          "#333333";
+          errorColor;
         resultLabel =
-          categoryDetails?.resultatsAnnuels?.valeurSanitaireLabel ||
-          "Résultat manquant";
-      } else if (
-        selectedZoneData[ratioProp] !== null &&
-        selectedZoneData[ratioProp] !== undefined
-      ) {
+          categoryDetails?.resultatsAnnuels?.valeurSanitaireLabel || errorLabel;
+      } else if (ratioProp in selectedZoneData) {
         const ratioValue = selectedZoneData[ratioProp];
         if (ratioValue !== undefined && ratioValue !== null) {
           const ratioLimits =

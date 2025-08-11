@@ -224,7 +224,6 @@ export const PARAMETER_NAMES: Record<string, string> = {
   ISOXAFL: "Isoxaflutole",
   PPX: "Propoxur",
   DMTHP: "Dimethenamide-p",
-  DAL_SPD: "Dalapon spd",
   DALAPON: "Dalapon 85",
   CHLOMEQ: "Chloroméquat chlorure (utiliser CLMQ)",
   THBZ: "Thiabendazole",

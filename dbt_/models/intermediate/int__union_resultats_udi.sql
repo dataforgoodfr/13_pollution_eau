@@ -103,7 +103,7 @@ SELECT
     null AS date_dernier_prel,
     null AS nb_parametres,
     nb_prelevements,
-    null AS nb_sup_valeur_sanitaire,
+    nb_sup_valeur_sanitaire,
     null AS parametres_detectes
 FROM
     {{ ref('int__resultats_metabolite_udi_annuel') }}
@@ -132,7 +132,7 @@ SELECT
     null AS date_dernier_prel,
     null AS nb_parametres,
     nb_prelevements,
-    null AS nb_sup_valeur_sanitaire,
+    nb_sup_valeur_sanitaire,
     null AS parametres_detectes
 FROM
     {{ ref('int__resultats_metabolite_specifique_udi_annuel') }}
@@ -161,7 +161,7 @@ SELECT
     null AS date_dernier_prel,
     null AS nb_parametres,
     nb_prelevements,
-    null AS nb_sup_valeur_sanitaire,
+    nb_sup_valeur_sanitaire,
     null AS parametres_detectes
 FROM
     {{ ref('int__resultats_sub_active_udi_annuel') }}
@@ -190,7 +190,7 @@ SELECT
     null AS date_dernier_prel,
     null AS nb_parametres,
     nb_prelevements,
-    null AS nb_sup_valeur_sanitaire,
+    nb_sup_valeur_sanitaire,
     null AS parametres_detectes
 FROM
     {{ ref('int__resultats_pesticide_udi_annuel') }}

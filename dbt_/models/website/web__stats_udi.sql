@@ -19,77 +19,84 @@ total_udis AS (
     WHERE periode = 'dernier_prel'
 ),
 
--- Statistiques par catégorie pour dernier prélèvement - non conformes
-stats_categories_non_conforme AS (
+-- Statistiques par catégorie pour dernier prélèvement
+stats_dernier_prel AS (
     SELECT
         NULL AS stat_texte,
-        'dernier_prel_' || categorie || '_nombre_non_conforme' AS stat_nom,
-        count(
-            CASE
-                WHEN
-                    -- Détermine si le résultat est non-conforme selon la catégorie
-                    (
-                        categorie IN ('tous')
-                        AND resultat IN ('sup_limite_qualite', 'sup_limite_sanitaire')
-                    )
-                    OR (
-                        categorie = 'pfas'
-                        AND resultat IN ('sup_valeur_sanitaire', 'somme_20pfas_sup_0_1')
-                    )
-                    OR (
-                        categorie IN ('pesticide', 'sub_active')
-                        AND resultat IN ('sup_limite_qualite', 'sup_valeur_sanitaire')
-                    )
-                    OR (
-                        categorie LIKE 'metabolite%'
-                        AND resultat IN ('sup_limite_qualite', 'sup_valeur_sanitaire')
-                    )
-                    OR (categorie = 'nitrate' AND resultat = 'sup_limite_qualite')
-                    OR (categorie = 'cvm' AND resultat = 'sup_0_5')
-                    OR (categorie = 'sub_indus_14dioxane' AND resultat = 'sup_valeur_sanitaire')
-                    OR (
-                        categorie = 'sub_indus_perchlorate'
-                        AND resultat IN ('sup_valeur_sanitaire', 'sup_valeur_sanitaire_2')
-                    )
-                    OR (
-                        categorie = 'metaux_lourds_as'
-                        AND resultat IN ('sup_limite_qualite', 'sup_valeur_sanitaire')
-                    )
-                    OR (categorie = 'metaux_lourds_pb' AND resultat = 'sup_limite_qualite')
-                    THEN 1
-            END
-        ) AS stat_chiffre
+        'dernier_prel_' || categorie || '_' || coalesce(resultat, 'non_recherche')
+            AS stat_nom,
+        count(*) AS stat_chiffre
     FROM {{ ref('web__resultats_udi') }}
     WHERE
         periode = 'dernier_prel'
-        AND resultat IS NOT NULL
-    GROUP BY categorie
+
+    GROUP BY categorie, resultat
+
 ),
 
--- Statistiques par catégorie pour dernier prélèvement - recherchées
-stats_categories_recherche AS (
+-- Statistiques par catégorie et année pour bilan annuel - ratios par intervalles
+stats_bilan_annuel_ratio AS (
     SELECT
         NULL AS stat_texte,
-        'dernier_prel_' || categorie || '_nombre_recherche' AS stat_nom,
-        count(DISTINCT cdreseau) AS stat_chiffre
+        periode || '_' || categorie || '_ratio_'
+        || CASE
+            WHEN ratio = 0 THEN '0'
+            WHEN ratio <= 0.25 THEN '0.25'
+            WHEN ratio <= 0.5 THEN '0.5'
+            WHEN ratio <= 0.75 THEN '0.75'
+            WHEN ratio <= 1 THEN '1'
+            ELSE 'erreur'
+        END AS stat_nom,
+        count(*) AS stat_chiffre
     FROM {{ ref('web__resultats_udi') }}
     WHERE
-        periode = 'dernier_prel'
-        AND resultat IS NOT NULL
-    GROUP BY categorie
+        periode LIKE 'bilan_annuel_%'
+        AND ratio IS NOT NULL
+        AND (
+            nb_sup_valeur_sanitaire IS NULL
+            OR nb_sup_valeur_sanitaire = 0
+        )
+    GROUP BY
+        periode,
+        categorie,
+        CASE
+            WHEN ratio = 0 THEN '0'
+            WHEN ratio <= 0.25 THEN '0.25'
+            WHEN ratio <= 0.5 THEN '0.5'
+            WHEN ratio <= 0.75 THEN '0.75'
+            WHEN ratio <= 1 THEN '1'
+            ELSE 'erreur'
+        END
 ),
 
--- Statistique spécifique pour PFAS - nombre d'UDI sup limite sanitaire
-stats_pfas_sup_limite_sanitaire AS (
+-- Statistiques par catégorie et année pour bilan annuel - non recherche (ratio null)
+stats_bilan_annuel_non_recherche AS (
     SELECT
         NULL AS stat_texte,
-        'dernier_prel_pfas_nombre_sup_limite_sanitaire' AS stat_nom,
-        count(DISTINCT cdreseau) AS stat_chiffre
+        periode || '_' || categorie || '_non_recherche' AS stat_nom,
+        count(*) AS stat_chiffre
     FROM {{ ref('web__resultats_udi') }}
     WHERE
-        periode = 'dernier_prel'
-        AND categorie = 'pfas'
-        AND resultat = 'sup_valeur_sanitaire'
+        periode LIKE 'bilan_annuel_%'
+        AND ratio IS NULL
+        AND (
+            nb_sup_valeur_sanitaire IS NULL
+            OR nb_sup_valeur_sanitaire = 0
+        )
+    GROUP BY periode, categorie
+),
+
+-- Statistiques par catégorie et année pour bilan annuel - dépassements valeur sanitaire
+stats_bilan_annuel_sup_sanitaire AS (
+    SELECT
+        NULL AS stat_texte,
+        periode || '_' || categorie || '_sup_valeur_sanitaire' AS stat_nom,
+        count(CASE WHEN nb_sup_valeur_sanitaire > 0 THEN 1 END) AS stat_chiffre
+    FROM {{ ref('web__resultats_udi') }}
+    WHERE
+        periode LIKE 'bilan_annuel_%'
+        AND nb_sup_valeur_sanitaire IS NOT NULL
+    GROUP BY periode, categorie
 )
 
 -- Union de toutes les statistiques
@@ -109,16 +116,22 @@ SELECT
     stat_nom,
     stat_chiffre,
     stat_texte
-FROM stats_categories_non_conforme
+FROM stats_dernier_prel
 UNION ALL
 SELECT
     stat_nom,
     stat_chiffre,
     stat_texte
-FROM stats_categories_recherche
+FROM stats_bilan_annuel_ratio
 UNION ALL
 SELECT
     stat_nom,
     stat_chiffre,
     stat_texte
-FROM stats_pfas_sup_limite_sanitaire
+FROM stats_bilan_annuel_non_recherche
+UNION ALL
+SELECT
+    stat_nom,
+    stat_chiffre,
+    stat_texte
+FROM stats_bilan_annuel_sup_sanitaire

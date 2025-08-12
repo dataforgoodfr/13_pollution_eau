@@ -116,6 +116,7 @@ export default function PollutionMap({
             <PollutionMapLegend
               period={period}
               category={category}
+              pollutionStats={pollutionStats}
               onClose={() => setShowLegend(false)}
             />
           </div>
@@ -141,7 +142,6 @@ export default function PollutionMap({
           >
             <PollutionSidePanel
               category={category}
-              pollutionStats={pollutionStats}
               onClose={() => setSidePanelOpen(false)}
             />
           </div>

@@ -47,9 +47,6 @@ export interface ICategory {
   enfants: ICategory[];
   affichageBlocPageUDI: boolean;
   description: string;
-  risquesSante: string;
-  regulation: string;
-  sourcesExposition: string;
   detailsLegende?: string;
   sousCategories?: boolean;
   titreStatut?: string;
@@ -74,11 +71,6 @@ export const availableCategories: ICategory[] = [
     affichageBlocPageUDI: true,
     description:
       "Ensemble des substances chimiques et biologiques pouvant contaminer l'eau, l'air et les sols.",
-    risquesSante:
-      "Dépend du polluant : effets cancérigènes, neurotoxiques, perturbateurs endocriniens, maladies chroniques, etc.",
-    regulation: "Directive cadre sur l'eau (DCE), Code de l'environnement.",
-    sourcesExposition: "Eau potable, air, alimentation, sols contaminés.",
-    unite: undefined,
     resultats: {
       non_recherche: {
         label: "Aucun polluants recherché dans les 12 derniers mois",
@@ -131,15 +123,6 @@ export const availableCategories: ICategory[] = [
     affichageBlocPageUDI: true,
     description:
       "Polluants éternels, utilisés dans l'industrie pour leurs propriétés antiadhésives et imperméables.",
-    risquesSante:
-      "Perturbateurs endocriniens, cancers, toxicité hépatique et immunitaire.",
-    regulation:
-      "Réglementation en cours d'évolution, restriction progressive en Europe.",
-    sourcesExposition:
-      "Ustensiles de cuisine, emballages alimentaires, eau potable.",
-    unite: "µg/L",
-    detailsLegende:
-      "* Limite non réglementaire, recommandée par le Haut Conseil de la Santé Publique (HCSP) \n** Eau conforme à la limite réglementaire mais qui dépasse la limite recommandée par le HCSP",
     resultats: {
       non_recherche: {
         label: "Non recherché dans les 12 derniers mois",
@@ -205,13 +188,6 @@ export const availableCategories: ICategory[] = [
     affichageBlocPageUDI: true,
     description:
       "Substances chimiques utilisées pour lutter contre les nuisibles agricoles.",
-    risquesSante:
-      "Cancers, troubles neurologiques, perturbations endocriniennes, toxicité aiguë.",
-    regulation:
-      "LMR (Limites Maximales de Résidus), règlement (CE) n°1107/2009.",
-    sourcesExposition:
-      "Agriculture, consommation de produits traités, eau potable.",
-    unite: "µg/L",
     resultats: {
       non_recherche: {
         label: "Non recherché dans les 12 derniers mois",
@@ -270,11 +246,6 @@ export const availableCategories: ICategory[] = [
         enfants: [],
         description:
           "Molécules ayant un effet biocide contre les organismes nuisibles.",
-        risquesSante:
-          "Toxicité variable : certains sont cancérigènes ou reprotoxiques.",
-        regulation: "Autorisation par l'ANSES, encadrement par l'UE.",
-        sourcesExposition:
-          "Pulvérisation agricole, résidus dans l'eau et les aliments.",
         sousCategories: true,
         unite: "µg/L",
         resultats: {
@@ -334,12 +305,6 @@ export const availableCategories: ICategory[] = [
         disable: false,
         affichageBlocPageUDI: false,
         description: "Produits de dégradation des substances actives.",
-        risquesSante:
-          "Moins étudiés que les substances actives, certains sont toxiques.",
-        regulation:
-          "Réglementation récente : seuils pour certains métabolites en eau potable.",
-        sourcesExposition:
-          "Dégradation dans l'eau et les sols, consommation d'eau potable.",
         sousCategories: false,
         unite: "µg/L",
         resultats: {
@@ -399,9 +364,6 @@ export const availableCategories: ICategory[] = [
             enfants: [],
             affichageBlocPageUDI: false,
             description: "Métabolite du métolachlore, herbicide.",
-            risquesSante: "Peu de données, potentiellement toxique.",
-            regulation: "Limite de 0,1 µg/L en eau potable.",
-            sourcesExposition: "Contamination de l'eau souterraine.",
             detailsLegende:
               "* Si l'ESA métolachlore était considéré comme un métabolite pertinent, l'eau serait déclarée \"non conforme\".",
             sousCategories: false,
@@ -470,9 +432,6 @@ export const availableCategories: ICategory[] = [
             enfants: [],
             affichageBlocPageUDI: true,
             description: "Métabolite du fongicide chlorothalonil.",
-            risquesSante: "Classé comme probablement cancérigène.",
-            regulation: "Interdit en 2019 par l'UE.",
-            sourcesExposition: "Présent dans les nappes phréatiques.",
             detailsLegende:
               '* Si le Chlorothalonil R471811 était considéré comme un métabolite pertinent, l\'eau serait déclarée "non conforme".',
             sousCategories: false,
@@ -542,9 +501,6 @@ export const availableCategories: ICategory[] = [
             affichageBlocPageUDI: true,
             description:
               "Métabolite de la chloridazone, herbicide utilisé pour les betteraves.",
-            risquesSante: "Potentiellement toxique.",
-            regulation: "Limite de 0,1 µg/L en eau potable.",
-            sourcesExposition: "Présent dans les eaux souterraines.",
             sousCategories: false,
             unite: "µg/L",
             resultats: {
@@ -605,9 +561,6 @@ export const availableCategories: ICategory[] = [
             enfants: [],
             affichageBlocPageUDI: true,
             description: "Autre métabolite de la chloridazone.",
-            risquesSante: "Effets toxiques incertains.",
-            regulation: "Surveillance renforcée en eau potable.",
-            sourcesExposition: "Contamination des ressources en eau.",
             sousCategories: false,
             unite: "µg/L",
             resultats: {
@@ -669,9 +622,6 @@ export const availableCategories: ICategory[] = [
             affichageBlocPageUDI: true,
             description:
               "Métabolite de l'atrazine, herbicide interdit depuis 2003.",
-            risquesSante: "Suspecté d'être perturbateur endocrinien.",
-            regulation: "Limite de 0,1 µg/L en eau potable.",
-            sourcesExposition: "Contamination résiduelle des sols et nappes.",
             sousCategories: false,
             unite: "µg/L",
             resultats: {
@@ -737,12 +687,6 @@ export const availableCategories: ICategory[] = [
     affichageBlocPageUDI: true,
     description:
       "Résidus azotés provenant des engrais et des déchets organiques.",
-    risquesSante: "Méthémoglobinémie, risque de cancer gastro-intestinal.",
-    regulation:
-      "Limite de 50 mg/L pour les nitrates, 0,5 mg/L pour les nitrites en eau potable.",
-    sourcesExposition:
-      "Agriculture intensive, effluents industriels et domestiques.",
-    unite: "mg/L",
     resultats: {
       non_recherche: {
         label: "Non recherché dans les 12 derniers mois",
@@ -786,10 +730,6 @@ export const availableCategories: ICategory[] = [
     enfants: [],
     affichageBlocPageUDI: true,
     description: "Utilisé pour produire le PVC, polluant volatil.",
-    risquesSante: "Cancérigène avéré, hépatotoxicité.",
-    regulation: "Seuil de 0,5 µg/L en eau potable.",
-    sourcesExposition: "Industrie plastique, eau contaminée.",
-    unite: "µg/L",
     resultats: {
       non_recherche: {
         label: "Non recherché dans les 12 derniers mois",
@@ -838,13 +778,6 @@ export const availableCategories: ICategory[] = [
     disable: true,
     affichageBlocPageUDI: true,
     description: "Composés chimiques issus des processus industriels.",
-    risquesSante:
-      "Variable selon la substance, risques cancérigènes et toxiques.",
-    regulation:
-      "Encadrement par le Code de l'environnement et les normes REACH.",
-    sourcesExposition:
-      "Déchets industriels, effluents rejetés dans l'environnement.",
-    unite: "µg/L",
     resultats: {
       // disable -> pas de résultats
     },
@@ -856,10 +789,6 @@ export const availableCategories: ICategory[] = [
         enfants: [],
         affichageBlocPageUDI: true,
         description: "Solvant industriel persistant dans l'eau.",
-        risquesSante: "Cancérigène probable, toxicité rénale et hépatique.",
-        regulation: "Surveillance en cours, pas de norme spécifique.",
-        sourcesExposition:
-          "Industries pharmaceutiques et plastiques, eau contaminée.",
         sousCategories: true,
         unite: "µg/L",
         resultats: {
@@ -911,9 +840,6 @@ export const availableCategories: ICategory[] = [
         affichageBlocPageUDI: true,
         description:
           "Produit chimique utilisé dans les explosifs et les engrais.",
-        risquesSante: "Perturbateur thyroïdien.",
-        regulation: "Valeur-guide en eau potable (4 µg/L en France).",
-        sourcesExposition: "Munitions, feux d'artifice, engrais contaminés.",
         sousCategories: true,
         unite: "µg/L",
         resultats: {
@@ -973,11 +899,6 @@ export const availableCategories: ICategory[] = [
     affichageBlocPageUDI: true,
     description:
       "Éléments toxiques présents naturellement ou issus de l'activité humaine.",
-    risquesSante: "Cancers, atteintes neurologiques, troubles rénaux.",
-    regulation:
-      "Réglementation stricte selon le métal (Plomb, Mercure, Cadmium, etc.).",
-    sourcesExposition:
-      "Pollution industrielle, anciennes canalisations, alimentation.",
     unite: "µg/L",
     resultats: {
       // disable -> pas de résultats
@@ -990,9 +911,6 @@ export const availableCategories: ICategory[] = [
         enfants: [],
         affichageBlocPageUDI: true,
         description: "Métal toxique d'origine naturelle et industrielle.",
-        risquesSante: "Cancérigène avéré, toxicité chronique.",
-        regulation: "Limite de 10 µg/L en eau potable.",
-        sourcesExposition: "Eau souterraine, pesticides, industries.",
         sousCategories: false,
         unite: "µg/L",
         resultats: {
@@ -1052,12 +970,6 @@ export const availableCategories: ICategory[] = [
         affichageBlocPageUDI: true,
         description:
           "Métal autrefois utilisé dans les canalisations et peintures.",
-        risquesSante:
-          "Neurotoxique, saturnisme, atteintes rénales et cardiovasculaires.",
-        regulation:
-          "Interdit dans l'essence et les peintures, limite de 10 µg/L en eau potable.",
-        sourcesExposition:
-          "Vieilles canalisations, pollution industrielle, sol contaminé.",
         detailsLegende:
           "* Une nouvelle limite réglementaire fixée à 5 µg/L s'appliquera en 2036. D'ici cette date, la limite actuelle de 10 µg/L continue de s'appliquer.",
         sousCategories: false,

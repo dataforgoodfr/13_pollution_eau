@@ -400,12 +400,11 @@ export const availableCategories: ICategory[] = [
                 couleurFond: "#F3903F",
                 picto: "warning",
               },
-              sup_valeur_sanitaire: {
-                label:
-                  "Concentration > 3 µg/L (dépassement de la valeur sanitaire transitoire)",
-                couleur: "#E93E3A",
-                couleurFond: "#E93E3A",
-                picto: "red cross",
+              sup_limite_qualite_sup_3: {
+                label: "Concentration > 3 µg/L",
+                couleur: "#d94801",
+                couleurFond: "#d94801",
+                picto: "warning",
               },
             },
             resultatsAnnuels: {
@@ -468,12 +467,11 @@ export const availableCategories: ICategory[] = [
                 couleurFond: "#F3903F",
                 picto: "warning",
               },
-              sup_valeur_sanitaire: {
-                label:
-                  "Concentration > 3 µg/L (dépassement de la valeur sanitaire transitoire)",
-                couleur: "#E93E3A",
-                couleurFond: "#E93E3A",
-                picto: "red cross",
+              sup_limite_qualite_sup_3: {
+                label: "Concentration > 3 µg/L",
+                couleur: "#F3903F",
+                couleurFond: "#F3903F",
+                picto: "warning",
               },
             },
             resultatsAnnuels: {

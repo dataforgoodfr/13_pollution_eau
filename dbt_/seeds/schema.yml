@@ -63,21 +63,3 @@ seeds:
         description: "Unité de la valeur sanitaire 2"
       - name: valeur_sanitaire_2_commentaire
         description: "Commentaire sur la valeur sanitaire 2"
-
-  - name: mapping_categories
-    description: "Table de mapping des catégories de paramètres de qualité de l'eau."
-    columns:
-      - name: cdparametresiseeaux
-        description: "Code SISE-Eaux (Système d'Information des services Santé-Environnement Eaux) du paramètre"
-      - name: cdparametre
-        description: "Code SANDRE (Service National d'Administration des Données et Référentiels sur l'Eau) du paramètre"
-      - name: libmajparametre
-        description: "Nom du paramètre en majuscule"
-      - name: libminparametre
-        description: "Nom du paramètre en minuscule"
-      - name: casparam
-        description: "Code CAS (Chemical Abstracts Service) de la substance chimique"
-      - name: categorie
-        description: "Catégorie du paramètre (pesticides, nitrites, etc.)"
-        tests:
-          - not_null

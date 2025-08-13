@@ -15,7 +15,8 @@ SELECT
             'inf_limite_qualite_sup_0_1',
             'somme_20pfas_sup_0_1',
             'somme_20pfas_inf_0_1_et_4pfas_sup_0_02',
-            'sup_limite_qualite'
+            'sup_limite_qualite',
+            'sup_limite_qualite_sup_3'
         )) THEN 'sup_limite_qualite'
 
         WHEN BOOL_AND(resultat IN (

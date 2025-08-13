@@ -501,14 +501,9 @@ export default function PollutionSidePanel({
               {(categoryDetails.nomAffichage || "UNKOWN").toUpperCase()}
             </div>
           </div>
-          <div className="bg-white p-4 flex flex-col gap-4 rounded-t-lg flex-1 overflow-y-auto">
-            <div className="text-black  pt-4">
-              {categoryDetails.description || ""}
-            </div>
+          <div className="bg-white p-4 py-8 flex flex-col gap-4 rounded-t-lg flex-1 overflow-y-auto">
             {explanation && (
-              <div className="text-black pt-4 space-y-4">
-                {explanation.content}
-              </div>
+              <div className="text-black space-y-4">{explanation.content}</div>
             )}
           </div>
         </>

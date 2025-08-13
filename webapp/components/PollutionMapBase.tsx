@@ -4,6 +4,8 @@ import { useEffect, useMemo, JSX } from "react";
 import ReactMapGl, {
   MapLayerMouseEvent,
   ViewStateChangeEvent,
+  NavigationControl,
+  AttributionControl,
 } from "react-map-gl/maplibre";
 import maplibregl from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
@@ -153,6 +155,8 @@ export default function PollutionMapBaseLayer({
       onClick={onClick}
       onMove={handleMapStateChange}
       interactiveLayerIds={["color-layer"]}
+      attributionControl={false}
+      cooperativeGestures={true}
     >
       {marker ? (
         <PollutionMapMarker
@@ -164,6 +168,8 @@ export default function PollutionMapBaseLayer({
           setSelectedZoneCode={setSelectedZoneCode}
         />
       ) : null}
+      <AttributionControl compact={true} />
+      <NavigationControl position="bottom-right" showCompass={false} />
     </ReactMapGl>
   );
 }

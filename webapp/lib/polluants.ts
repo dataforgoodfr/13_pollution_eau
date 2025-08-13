@@ -46,6 +46,7 @@ export interface ICategory {
   disable: boolean;
   enfants: ICategory[];
   affichageBlocPageUDI: boolean;
+  description: string;
   detailsLegende?: string;
   sousCategories?: boolean;
   titreStatut?: string;
@@ -68,6 +69,8 @@ export const availableCategories: ICategory[] = [
     disable: false,
     enfants: [],
     affichageBlocPageUDI: true,
+    description:
+      "Ensemble des substances chimiques et biologiques pouvant contaminer l'eau, l'air et les sols.",
     resultats: {
       non_recherche: {
         label: "Aucun polluants recherché dans les 12 derniers mois",
@@ -118,6 +121,8 @@ export const availableCategories: ICategory[] = [
     disable: false,
     enfants: [],
     affichageBlocPageUDI: true,
+    description:
+      "Polluants éternels, utilisés dans l'industrie pour leurs propriétés antiadhésives et imperméables.",
     resultats: {
       non_recherche: {
         label: "Non recherché dans les 12 derniers mois",
@@ -181,6 +186,8 @@ export const availableCategories: ICategory[] = [
     nomAffichage: "Pesticides",
     disable: false,
     affichageBlocPageUDI: true,
+    description:
+      "Substances chimiques utilisées pour lutter contre les nuisibles agricoles.",
     resultats: {
       non_recherche: {
         label: "Non recherché dans les 12 derniers mois",
@@ -237,6 +244,8 @@ export const availableCategories: ICategory[] = [
         disable: false,
         affichageBlocPageUDI: false,
         enfants: [],
+        description:
+          "Molécules ayant un effet biocide contre les organismes nuisibles.",
         sousCategories: true,
         unite: "µg/L",
         resultats: {
@@ -295,6 +304,7 @@ export const availableCategories: ICategory[] = [
         nomAffichage: "Métabolites",
         disable: false,
         affichageBlocPageUDI: false,
+        description: "Produits de dégradation des substances actives.",
         sousCategories: false,
         unite: "µg/L",
         resultats: {
@@ -353,6 +363,7 @@ export const availableCategories: ICategory[] = [
             disable: false,
             enfants: [],
             affichageBlocPageUDI: false,
+            description: "Métabolite du métolachlore, herbicide.",
             detailsLegende:
               "* Si l'ESA métolachlore était considéré comme un métabolite pertinent, l'eau serait déclarée \"non conforme\".",
             sousCategories: false,
@@ -420,6 +431,7 @@ export const availableCategories: ICategory[] = [
             disable: false,
             enfants: [],
             affichageBlocPageUDI: true,
+            description: "Métabolite du fongicide chlorothalonil.",
             detailsLegende:
               '* Si le Chlorothalonil R471811 était considéré comme un métabolite pertinent, l\'eau serait déclarée "non conforme".',
             sousCategories: false,
@@ -487,6 +499,8 @@ export const availableCategories: ICategory[] = [
             disable: false,
             enfants: [],
             affichageBlocPageUDI: true,
+            description:
+              "Métabolite de la chloridazone, herbicide utilisé pour les betteraves.",
             sousCategories: false,
             unite: "µg/L",
             resultats: {
@@ -546,6 +560,7 @@ export const availableCategories: ICategory[] = [
             disable: false,
             enfants: [],
             affichageBlocPageUDI: true,
+            description: "Autre métabolite de la chloridazone.",
             sousCategories: false,
             unite: "µg/L",
             resultats: {
@@ -605,6 +620,8 @@ export const availableCategories: ICategory[] = [
             disable: false,
             enfants: [],
             affichageBlocPageUDI: true,
+            description:
+              "Métabolite de l'atrazine, herbicide interdit depuis 2003.",
             sousCategories: false,
             unite: "µg/L",
             resultats: {
@@ -668,6 +685,8 @@ export const availableCategories: ICategory[] = [
     disable: false,
     enfants: [],
     affichageBlocPageUDI: true,
+    description:
+      "Résidus azotés provenant des engrais et des déchets organiques.",
     resultats: {
       non_recherche: {
         label: "Non recherché dans les 12 derniers mois",
@@ -710,6 +729,7 @@ export const availableCategories: ICategory[] = [
     disable: false,
     enfants: [],
     affichageBlocPageUDI: true,
+    description: "Utilisé pour produire le PVC, polluant volatil.",
     resultats: {
       non_recherche: {
         label: "Non recherché dans les 12 derniers mois",
@@ -757,6 +777,7 @@ export const availableCategories: ICategory[] = [
     nomAffichage: "Substances industrielles",
     disable: true,
     affichageBlocPageUDI: true,
+    description: "Composés chimiques issus des processus industriels.",
     resultats: {
       // disable -> pas de résultats
     },
@@ -767,6 +788,7 @@ export const availableCategories: ICategory[] = [
         disable: false,
         enfants: [],
         affichageBlocPageUDI: true,
+        description: "Solvant industriel persistant dans l'eau.",
         sousCategories: true,
         unite: "µg/L",
         resultats: {
@@ -816,6 +838,8 @@ export const availableCategories: ICategory[] = [
         disable: false,
         enfants: [],
         affichageBlocPageUDI: true,
+        description:
+          "Produit chimique utilisé dans les explosifs et les engrais.",
         sousCategories: true,
         unite: "µg/L",
         resultats: {
@@ -873,6 +897,8 @@ export const availableCategories: ICategory[] = [
     nomAffichage: "Métaux lourds",
     disable: true,
     affichageBlocPageUDI: true,
+    description:
+      "Éléments toxiques présents naturellement ou issus de l'activité humaine.",
     unite: "µg/L",
     resultats: {
       // disable -> pas de résultats
@@ -884,6 +910,7 @@ export const availableCategories: ICategory[] = [
         disable: false,
         enfants: [],
         affichageBlocPageUDI: true,
+        description: "Métal toxique d'origine naturelle et industrielle.",
         sousCategories: false,
         unite: "µg/L",
         resultats: {
@@ -941,6 +968,8 @@ export const availableCategories: ICategory[] = [
         disable: false,
         enfants: [],
         affichageBlocPageUDI: true,
+        description:
+          "Métal autrefois utilisé dans les canalisations et peintures.",
         detailsLegende:
           "* Une nouvelle limite réglementaire fixée à 5 µg/L s'appliquera en 2036. D'ici cette date, la limite actuelle de 10 µg/L continue de s'appliquer.",
         sousCategories: false,

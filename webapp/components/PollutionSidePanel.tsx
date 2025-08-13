@@ -1,12 +1,12 @@
 "use client";
-import { Info } from "lucide-react";
+// import { Info } from "lucide-react";
 import { getCategoryById } from "@/lib/polluants";
-import {
-  Card,
-  CardHeader,
-  CardDescription,
-  CardContent,
-} from "@/components/ui/card";
+// import {
+//   Card,
+//   CardHeader,
+//   CardDescription,
+//   CardContent,
+// } from "@/components/ui/card";
 import { X } from "lucide-react";
 
 function Tag({ content }: { content: string }) {
@@ -15,27 +15,27 @@ function Tag({ content }: { content: string }) {
   );
 }
 
-function ExplicationCard({
-  bgColor,
-  quesion,
-  answer,
-}: {
-  bgColor: string;
-  quesion: string;
-  answer: string;
-}) {
-  return (
-    <Card className={`${bgColor} shadow-none rounded-lg`}>
-      <CardHeader className="p-4 pb-0">
-        <CardDescription className={`rounded-3xl flex items-center gap-1`}>
-          <Info />
-          {quesion}
-        </CardDescription>
-      </CardHeader>
-      <CardContent className="p-4 pt-2">{answer}</CardContent>
-    </Card>
-  );
-}
+// function ExplicationCard({
+//   bgColor,
+//   quesion,
+//   answer,
+// }: {
+//   bgColor: string;
+//   quesion: string;
+//   answer: string;
+// }) {
+//   return (
+//     <Card className={`${bgColor} shadow-none rounded-lg`}>
+//       <CardHeader className="p-4 pb-0">
+//         <CardDescription className={`rounded-3xl flex items-center gap-1`}>
+//           <Info />
+//           {quesion}
+//         </CardDescription>
+//       </CardHeader>
+//       <CardContent className="p-4 pt-2">{answer}</CardContent>
+//     </Card>
+//   );
+// }
 
 const categoryExplanations: Record<
   string,

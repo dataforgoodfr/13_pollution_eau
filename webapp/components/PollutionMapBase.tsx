@@ -105,7 +105,11 @@ export default function PollutionMapBaseLayer({
         source: source,
         "source-layer": sourceLayer,
         paint: {
-          "fill-color": generateColorExpression(category, period, colorblindMode),
+          "fill-color": generateColorExpression(
+            category,
+            period,
+            colorblindMode,
+          ),
           "fill-opacity": [
             "case",
             ["==", ["get", idProperty], selectedZoneCode || ""],

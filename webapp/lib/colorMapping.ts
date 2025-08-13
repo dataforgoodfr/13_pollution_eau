@@ -82,7 +82,11 @@ export function generateColorExpression(
       ["!", ["has", ratioProp]],
       ["==", ["get", nbPrelevementsProp], 0],
     ]);
-    cases.push(colorblindMode ? categoryDetails.resultatsAnnuels.nonRechercheCouleurAlt : categoryDetails.resultatsAnnuels.nonRechercheCouleur);
+    cases.push(
+      colorblindMode
+        ? categoryDetails.resultatsAnnuels.nonRechercheCouleurAlt
+        : categoryDetails.resultatsAnnuels.nonRechercheCouleur,
+    );
 
     // Check if nb_sup_valeur_sanitaire is > 0 and not empty
     if (
@@ -95,7 +99,11 @@ export function generateColorExpression(
         ["==", ["typeof", ["get", nbSupValeurSanitaireProp]], "number"],
         [">", ["get", nbSupValeurSanitaireProp], 0],
       ]);
-      cases.push(colorblindMode ? categoryDetails.resultatsAnnuels.valeurSanitaireCouleurAlt : categoryDetails.resultatsAnnuels.valeurSanitaireCouleur);
+      cases.push(
+        colorblindMode
+          ? categoryDetails.resultatsAnnuels.valeurSanitaireCouleurAlt
+          : categoryDetails.resultatsAnnuels.valeurSanitaireCouleur,
+      );
     }
 
     // Color scale for ratio values using ratioLimites

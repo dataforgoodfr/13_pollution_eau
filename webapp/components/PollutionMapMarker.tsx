@@ -149,8 +149,9 @@ export default function PollutionMapMarker({
 
         const globalCategoryDetails = getCategoryById(category);
         const globalResultColor =
-          globalCategoryDetails?.resultats[globalResultValue as string]
-            ?.[colorblindMode ? 'couleurAlt' : 'couleur'] || errorColor;
+          globalCategoryDetails?.resultats[globalResultValue as string]?.[
+            colorblindMode ? "couleurAlt" : "couleur"
+          ] || errorColor;
         const globalResultLabel =
           globalCategoryDetails?.resultats[globalResultValue as string]
             ?.label || errorLabel;
@@ -206,8 +207,9 @@ export default function PollutionMapMarker({
                         : "non_recherche";
 
                     const resultColor =
-                      cat?.resultats[resultValue as string]?.[colorblindMode ? 'couleurAlt' : 'couleur'] ||
-                      errorColor;
+                      cat?.resultats[resultValue as string]?.[
+                        colorblindMode ? "couleurAlt" : "couleur"
+                      ] || errorColor;
                     const resultLabel =
                       cat?.resultats[resultValue as string]?.label ||
                       errorLabel;
@@ -240,8 +242,9 @@ export default function PollutionMapMarker({
 
       const categoryDetails = getCategoryById(category);
       const resultColor =
-        categoryDetails?.resultats[resultValue as string]?.[colorblindMode ? 'couleurAlt' : 'couleur'] ||
-        errorColor;
+        categoryDetails?.resultats[resultValue as string]?.[
+          colorblindMode ? "couleurAlt" : "couleur"
+        ] || errorColor;
       const resultLabel =
         categoryDetails?.resultats[resultValue as string]?.label || errorLabel;
 
@@ -323,7 +326,9 @@ export default function PollutionMapMarker({
         selectedZoneData[nbPrelevementsProp] === 0
       ) {
         resultColor =
-          categoryDetails?.resultatsAnnuels?.[colorblindMode ? 'nonRechercheCouleurAlt' : 'nonRechercheCouleur'] || errorColor;
+          categoryDetails?.resultatsAnnuels?.[
+            colorblindMode ? "nonRechercheCouleurAlt" : "nonRechercheCouleur"
+          ] || errorColor;
         resultLabel =
           categoryDetails?.resultatsAnnuels?.nonRechercheLabel || errorLabel;
       } else if (
@@ -331,8 +336,11 @@ export default function PollutionMapMarker({
         Number(selectedZoneData[nbSupValeurSanitaireProp]) > 0
       ) {
         resultColor =
-          categoryDetails?.resultatsAnnuels?.[colorblindMode ? 'valeurSanitaireCouleurAlt' : 'valeurSanitaireCouleur'] ||
-          errorColor;
+          categoryDetails?.resultatsAnnuels?.[
+            colorblindMode
+              ? "valeurSanitaireCouleurAlt"
+              : "valeurSanitaireCouleur"
+          ] || errorColor;
         resultLabel =
           categoryDetails?.resultatsAnnuels?.valeurSanitaireLabel || errorLabel;
       } else if (ratioProp in selectedZoneData) {

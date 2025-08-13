@@ -43,15 +43,16 @@ pfas_results_udi_agg AS (
                 ELSE 0
             END
         ) AS sum_20_pfas_above_limit,
-        COUNT(
-            DISTINCT CASE
+        MAX(
+            CASE
                 WHEN
                     valeur_sanitaire_1 IS NOT NULL
                     AND valtraduite IS NOT NULL
                     AND valtraduite >= valeur_sanitaire_1
-                    THEN cdparametresiseeaux
+                    THEN 1
+                ELSE 0
             END
-        ) AS nb_pfas_above_vs
+        ) AS has_pfas_above_vs
     FROM pfas_prels
     GROUP BY referenceprel, cdreseau, annee
     -- On drop les très rares cas où il n'y a pas la somme des 20 PFAS
@@ -69,6 +70,6 @@ SELECT
         /
         COUNT(DISTINCT referenceprel)
     ), 2) AS ratio_limite_qualite,
-    SUM(nb_pfas_above_vs) AS nb_sup_valeur_sanitaire
+    SUM(has_pfas_above_vs) AS nb_sup_valeur_sanitaire
 FROM pfas_results_udi_agg
 GROUP BY cdreseau, annee

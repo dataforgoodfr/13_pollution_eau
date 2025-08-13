@@ -55,8 +55,13 @@ SELECT
     CASE
         WHEN valtraduite = 0 OR valtraduite IS null THEN 'non_quantifie'
         WHEN valtraduite >= valeur_sanitaire_1 THEN 'sup_valeur_sanitaire'
+        -- On applique le seuil de 3µg/l uniquement pour le ESA-métolachlore et le R471811
+        WHEN
+            type_metabolite IN ('metabolite_esa_metolachlore', 'metabolite_chlorothalonil_r471811')
+            AND valtraduite >= 3
+            THEN 'sup_limite_qualite_sup_3'
         WHEN valtraduite >= limite_qualite THEN 'sup_limite_qualite'
-        -- On applique le seuil de 0.1 uniquement pour des métabolites spécifiques
+        -- On applique le seuil de 0.1µg/l uniquement pour le ESA-métolachlore et le R471811
         WHEN
             valtraduite >= 0.1
             AND type_metabolite IN (

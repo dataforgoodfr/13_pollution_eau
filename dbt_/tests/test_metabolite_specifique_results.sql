@@ -61,8 +61,8 @@ WHERE
     (
         cdreseau = '002000074'
         AND categorie = 'metabolite_chlorothalonil_r471811'
-        AND date_dernier_prel = TIMESTAMP '2024-11-25 09:29:00'
-        AND resultat != 'sup_valeur_sanitaire'
+        AND date_dernier_prel = TIMESTAMP '2025-04-09 09:02:00'
+        AND resultat != 'sup_limite_qualite_sup_3'
     )
 -- annuel udi
 UNION ALL
@@ -131,7 +131,19 @@ WHERE
         AND (
             nb_prelevements != 4
             OR nb_depassements != 2
-            OR nb_sup_valeur_sanitaire != 2
+            OR nb_sup_valeur_sanitaire != 0
             OR ratio_limite_qualite != 0.5
+        )
+    )
+    OR
+    (
+        cdreseau = '002000389'
+        AND categorie = 'metabolite_chloridazone_desphenyl'
+        AND annee = 2024
+        AND (
+            nb_prelevements != 19
+            OR nb_depassements != 19
+            OR nb_sup_valeur_sanitaire != 4
+            OR ratio_limite_qualite != 1.0
         )
     )

@@ -45,7 +45,7 @@ const categoryExplanations: Record<
     title: "Tout polluant",
     content: (
       <>
-        <Tag content="Qu'affiche la carte ?" />
+        <Tag content="Que montre la carte ?" />
         <p>
           Les couleurs indiquent l’état de la qualité de l’eau potable vis à vis
           des principaux contaminants chimiques de l’eau pour lesquels des
@@ -106,7 +106,7 @@ const categoryExplanations: Record<
     title: "Pesticides",
     content: (
       <>
-        <Tag content="Qu'affiche la carte ?" />
+        <Tag content="Que montre la carte ?" />
         <p>
           La carte “pesticides” indique les résultats d’analyses obtenus pour
           les <b>substances actives</b> chimiques contenues dans les produits
@@ -170,7 +170,7 @@ const categoryExplanations: Record<
     title: "Substances actives",
     content: (
       <>
-        <Tag content="Qu'affiche la carte ?" />
+        <Tag content="Que montre la carte ?" />
         <p>
           La carte “substance actives” indique les résultats d’analyse obtenus
           pour les <b>substances actives</b> chimiques contenues dans les
@@ -223,7 +223,7 @@ const categoryExplanations: Record<
     title: "Métabolites",
     content: (
       <>
-        <Tag content="Qu'affiche la carte ?" />
+        <Tag content="Que montre la carte ?" />
         <p>
           La carte “métabolites” indique les résultats d’analyse obtenus pour
           les métabolites de pesticides. Les métabolites sont des substances
@@ -281,7 +281,7 @@ const categoryExplanations: Record<
     title: "Nitrates",
     content: (
       <>
-        <Tag content="Qu'affiche la carte ?" />
+        <Tag content="Que montre la carte ?" />
         <p>
           La carte “nitrates” indique les résultats d’analyse obtenus pour les
           nitrates (NO3-) et les nitrites (NO2-). Les nitrates et les nitrites
@@ -333,7 +333,7 @@ const categoryExplanations: Record<
     title: "PFAS",
     content: (
       <>
-        <Tag content="Qu'affiche la carte ?" />
+        <Tag content="Que montre la carte ?" />
         <p>
           Les PFAS sont une famille de plusieurs milliers de substances
           fabriquées par l’homme qui ont comme caractéristique commune d’être
@@ -390,7 +390,7 @@ const categoryExplanations: Record<
     title: "CVM",
     content: (
       <>
-        <Tag content="Qu'affiche la carte ?" />
+        <Tag content="Que montre la carte ?" />
         <p>
           La carte “CVM” indique les résultats d’analyse obtenus pour le
           Chlorure de Vinyl Monomère.
@@ -403,7 +403,7 @@ const categoryExplanations: Record<
     title: "Perchlorates",
     content: (
       <>
-        <Tag content="Qu'affiche la carte ?" />
+        <Tag content="Que montre la carte ?" />
         <p>
           La carte “perchlorate” indique les résultats d’analyse obtenus pour
           l’ion perchlorate (ClO4), principalement présent dans l’environnement

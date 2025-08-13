@@ -19,6 +19,7 @@ import type {
 export function generateColorExpression(
   category: string,
   period: string,
+  colorblindMode: boolean = false,
 ): DataDrivenPropertyValueSpecification<ColorSpecification> {
   const cases = [];
 
@@ -49,8 +50,8 @@ export function generateColorExpression(
         cases.push(["==", ["get", resultatProp], value]);
       }
 
-      // Check if the color is valid
-      const color = detail.couleur || detail.couleurFond;
+      // Check if the color is valid and use colorblind alternative if needed
+      const color = colorblindMode ? detail.couleurAlt : detail.couleur;
       const isValidColor = color && color.startsWith("#");
 
       cases.push(isValidColor ? color : errorColor);
@@ -81,7 +82,7 @@ export function generateColorExpression(
       ["!", ["has", ratioProp]],
       ["==", ["get", nbPrelevementsProp], 0],
     ]);
-    cases.push(categoryDetails.resultatsAnnuels.nonRechercheCouleur);
+    cases.push(colorblindMode ? categoryDetails.resultatsAnnuels.nonRechercheCouleurAlt : categoryDetails.resultatsAnnuels.nonRechercheCouleur);
 
     // Check if nb_sup_valeur_sanitaire is > 0 and not empty
     if (
@@ -94,13 +95,13 @@ export function generateColorExpression(
         ["==", ["typeof", ["get", nbSupValeurSanitaireProp]], "number"],
         [">", ["get", nbSupValeurSanitaireProp], 0],
       ]);
-      cases.push(categoryDetails.resultatsAnnuels.valeurSanitaireCouleur);
+      cases.push(colorblindMode ? categoryDetails.resultatsAnnuels.valeurSanitaireCouleurAlt : categoryDetails.resultatsAnnuels.valeurSanitaireCouleur);
     }
 
     // Color scale for ratio values using ratioLimites
     categoryDetails.resultatsAnnuels.ratioLimites.forEach((l) => {
       cases.push(["<=", ["get", ratioProp], l.limite]);
-      cases.push(l.couleur);
+      cases.push(colorblindMode ? l.couleurAlt : l.couleur);
     });
   }
 

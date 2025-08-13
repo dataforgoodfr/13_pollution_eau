@@ -166,9 +166,9 @@ function PopulateCategoryFields(dataRecord: Categorie) {
       if (infoStatut) {
         dataRecord.statut_titre = infoStatut.label;
         dataRecord.statut_couleur = infoStatut.couleur;
-        if (infoStatut.couleurFond) {
-          dataRecord.statut_couleur_background = infoStatut.couleurFond;
-        }
+
+        dataRecord.statut_couleur_background = infoStatut.couleur;
+
         if (infoStatut.picto) {
           dataRecord.statut_picto = infoStatut.picto;
         }
@@ -184,9 +184,7 @@ function PopulateCategoryFields(dataRecord: Categorie) {
           bloc_picto: null,
           bloc_polluants: [],
         };
-        if (res.couleurFond) {
-          SB.bloc_couleur_background = res.couleurFond;
-        }
+        SB.bloc_couleur_background = res.couleur;
         if (res.picto) {
           SB.bloc_picto = res.picto;
         }

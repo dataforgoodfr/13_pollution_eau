@@ -35,6 +35,7 @@ export default function PollutionMap({
   } | null>(null);
   const [sidePanelOpen, setSidePanelOpen] = useState(false);
   const [showLegend, setShowLegend] = useState(false);
+  const [colorblindMode, setColorblindMode] = useState(false);
 
   useEffect(() => {
     const isMobile = window.innerWidth < 768;
@@ -70,6 +71,7 @@ export default function PollutionMap({
           onMapStateChange={setMapState}
           marker={marker}
           setMarker={setMarker}
+          colorblindMode={colorblindMode}
         />
 
         <div className="absolute top-4 left-4 z-10 flex overflow-x-auto scrollbar-hide">
@@ -117,6 +119,8 @@ export default function PollutionMap({
               period={period}
               category={category}
               pollutionStats={pollutionStats}
+              colorblindMode={colorblindMode}
+              setColorblindMode={setColorblindMode}
               onClose={() => setShowLegend(false)}
             />
           </div>

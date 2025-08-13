@@ -39,6 +39,7 @@ type PollutionMapBaseLayerProps = {
       content?: JSX.Element;
     } | null,
   ) => void;
+  colorblindMode?: boolean;
 };
 
 export default function PollutionMapBaseLayer({
@@ -51,6 +52,7 @@ export default function PollutionMapBaseLayer({
   onMapStateChange,
   marker,
   setMarker,
+  colorblindMode = false,
 }: PollutionMapBaseLayerProps) {
   useEffect(() => {
     // adds the support for PMTiles
@@ -103,7 +105,7 @@ export default function PollutionMapBaseLayer({
         source: source,
         "source-layer": sourceLayer,
         paint: {
-          "fill-color": generateColorExpression(category, period),
+          "fill-color": generateColorExpression(category, period, colorblindMode),
           "fill-opacity": [
             "case",
             ["==", ["get", idProperty], selectedZoneCode || ""],
@@ -143,7 +145,7 @@ export default function PollutionMapBaseLayer({
       ...DEFAULT_MAP_STYLE,
       layers: [...getDefaultLayers(), ...dynamicLayers],
     } as maplibregl.StyleSpecification;
-  }, [selectedZoneCode, displayMode, category, period]);
+  }, [selectedZoneCode, displayMode, category, period, colorblindMode]);
 
   return (
     <ReactMapGl
@@ -166,6 +168,7 @@ export default function PollutionMapBaseLayer({
           marker={marker}
           selectedZoneCode={selectedZoneCode}
           setSelectedZoneCode={setSelectedZoneCode}
+          colorblindMode={colorblindMode}
         />
       ) : null}
       <AttributionControl compact={true} />

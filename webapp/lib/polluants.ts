@@ -6,7 +6,6 @@ interface Polluant {
 interface BlocStatut {
   nomBloc: string;
   couleurBloc: string;
-  couleurFondBloc: string;
   pictoBloc: string | null;
   polluants: Polluant[];
 }
@@ -14,7 +13,7 @@ interface BlocStatut {
 interface DetailResultat {
   label: string;
   couleur: string;
-  couleurFond?: string;
+  couleurAlt: string;
   picto?: string | null;
   affichageBlocPageUDI?: boolean;
   sousCategorie?: boolean;
@@ -24,16 +23,19 @@ interface RatioLimite {
   limite: number;
   label: string;
   couleur: string;
+  couleurAlt: string;
 }
 
 interface ResultatsAnnuels {
   nonRechercheLabel: string;
   nonRechercheCouleur: string;
+  nonRechercheCouleurAlt: string;
   ratioLimites: RatioLimite[];
   ratioLabel: string;
   valeurSanitaire: boolean;
   valeurSanitaireLabel?: string;
   valeurSanitaireCouleur?: string;
+  valeurSanitaireCouleurAlt?: string;
   simpleLabels?: Array<{
     label: string;
     couleur: string;
@@ -52,7 +54,7 @@ export interface ICategory {
   titreStatut?: string;
   descriptionStatut?: string;
   couleurStatut?: string;
-  couleurFondStatut?: string;
+  couleurAltStatut?: string;
   picto?: string | null;
   dateDernierPrelèvement?: string;
   nombrePolluantsDernierPrelèvement?: number;
@@ -74,44 +76,66 @@ export const availableCategories: ICategory[] = [
     resultats: {
       non_recherche: {
         label: "Aucun polluants recherché dans les 12 derniers mois",
-        couleur: "#9B9B9B",
-        couleurFond: "#9B9B9B",
+        couleur: "#cccccc",
+        couleurAlt: "#f7f7f7",
         picto: null,
       },
       inf_limites: {
         label: "Aucun dépassement des limites réglementaire",
-        couleur: "#B4E681",
-        couleurFond: "#B4E681",
+        couleur: "#bae4b3",
+        couleurAlt: "#c7e9c0",
         picto: null,
       },
       sup_limite_qualite: {
         label: "Au moins un dépassement des limites réglementaire",
-        couleur: "#F3903F",
-        couleurFond: "#F3903F",
+        couleur: "#fe9929",
+        couleurAlt: "#fe9929",
         picto: "warning",
       },
       sup_limite_sanitaire: {
         label: "Au moins un dépassement des limites sanitaires",
-        couleur: "#E93E3A",
-        couleurFond: "#E93E3A",
+        couleur: "#f03b20",
+        couleurAlt: "#bd0026",
         picto: "red cross",
       },
     },
     resultatsAnnuels: {
       nonRechercheLabel: "Aucune recherche dans l'année",
-      nonRechercheCouleur: "#f7f7f7",
+      nonRechercheCouleur: "#cccccc",
+      nonRechercheCouleurAlt: "#f7f7f7",
       ratioLimites: [
-        { limite: 0, label: "0%", couleur: "#c7e9c0" },
-        { limite: 0.25, label: "≤ 25%", couleur: "#fdae6b" },
-        { limite: 0.5, label: "25 - 50%", couleur: "#fd8d3c" },
-        { limite: 0.75, label: "50 - 75%", couleur: "#f16913" },
-        { limite: 1, label: "75 - 100%", couleur: "#d94801" },
+        { limite: 0, label: "0%", couleur: "#bae4b3", couleurAlt: "#c7e9c0" },
+        {
+          limite: 0.25,
+          label: "≤ 25%",
+          couleur: "#fdbe85",
+          couleurAlt: "#fdae6b",
+        },
+        {
+          limite: 0.5,
+          label: "25 - 50%",
+          couleur: "#fd8d3c",
+          couleurAlt: "#fd8d3c",
+        },
+        {
+          limite: 0.75,
+          label: "50 - 75%",
+          couleur: "#e6550d",
+          couleurAlt: "#f16913",
+        },
+        {
+          limite: 1,
+          label: "75 - 100%",
+          couleur: "#a63603",
+          couleurAlt: "#d94801",
+        },
       ],
       ratioLabel: "des analyses non conforme",
       valeurSanitaire: true,
       valeurSanitaireLabel:
         "Au moins 1 dépassement de valeur sanitaire au cours de l'année",
-      valeurSanitaireCouleur: "#99000d",
+      valeurSanitaireCouleur: "#f03b20",
+      valeurSanitaireCouleurAlt: "#bd0026",
     },
   },
   {
@@ -126,59 +150,81 @@ export const availableCategories: ICategory[] = [
     resultats: {
       non_recherche: {
         label: "Non recherché dans les 12 derniers mois",
-        couleur: "#9B9B9B",
-        couleurFond: "#9B9B9B",
+        couleur: "#cccccc",
+        couleurAlt: "#f7f7f7",
         picto: null,
       },
       non_quantifie: {
         label: "Aucun PFAS quantifié",
-        couleur: "#B4E681",
-        couleurFond: "#B4E681",
+        couleur: "#bae4b3",
+        couleurAlt: "#c7e9c0",
         picto: null,
       },
       somme_20pfas_inf_0_1_et_4pfas_inf_0_02: {
         label:
           "Au moins un PFAS quantifié mais les concentrations sont inférieures aux limites réglementaire et recommandée",
         couleur: "#FFF33B",
-        couleurFond: "#FFF33B",
+        couleurAlt: "#FFF33B",
         picto: null,
       },
       somme_20pfas_inf_0_1_et_4pfas_sup_0_02: {
         label:
           "La somme des 4 PFAS (PFOA, PFOS, PFNA, PFHxS) > 0,02 µg/L* mais la somme des 20 PFAS < 0,1 µg/L**",
         couleur: "#FDC70C",
-        couleurFond: "#FDC70C",
+        couleurAlt: "#FDC70C",
         picto: null,
       },
       somme_20pfas_sup_0_1: {
         label:
           "Somme des 20 PFAS > 0,1 µg/L (eau non conforme à la limite réglementaire)",
-        couleur: "#F3903F",
-        couleurFond: "#F3903F",
+        couleur: "#fe9929",
+        couleurAlt: "#fe9929",
         picto: null,
       },
       sup_valeur_sanitaire: {
         label: "Au moins un PFAS dépasse la limite sanitaire",
-        couleur: "#E93E3A",
-        couleurFond: "#E93E3A",
+        couleur: "#f03b20",
+        couleurAlt: "#bd0026",
         picto: "red cross",
       },
     },
     resultatsAnnuels: {
       nonRechercheLabel: "Aucune recherche dans l'année",
-      nonRechercheCouleur: "#f7f7f7",
+      nonRechercheCouleur: "#cccccc",
+      nonRechercheCouleurAlt: "#f7f7f7",
       ratioLimites: [
-        { limite: 0, label: "0%", couleur: "#c7e9c0" },
-        { limite: 0.25, label: "≤ 25%", couleur: "#fdae6b" },
-        { limite: 0.5, label: "25 - 50%", couleur: "#fd8d3c" },
-        { limite: 0.75, label: "50 - 75%", couleur: "#f16913" },
-        { limite: 1, label: "75 - 100%", couleur: "#d94801" },
+        { limite: 0, label: "0%", couleur: "#bae4b3", couleurAlt: "#c7e9c0" },
+        {
+          limite: 0.25,
+          label: "≤ 25%",
+          couleur: "#fdbe85",
+          couleurAlt: "#fdae6b",
+        },
+        {
+          limite: 0.5,
+          label: "25 - 50%",
+          couleur: "#fd8d3c",
+          couleurAlt: "#fd8d3c",
+        },
+        {
+          limite: 0.75,
+          label: "50 - 75%",
+          couleur: "#e6550d",
+          couleurAlt: "#f16913",
+        },
+        {
+          limite: 1,
+          label: "75 - 100%",
+          couleur: "#a63603",
+          couleurAlt: "#d94801",
+        },
       ],
       ratioLabel: "des analyses non conforme",
       valeurSanitaire: true,
       valeurSanitaireLabel:
         "Au moins 1 dépassement de valeur sanitaire au cours de l'année",
-      valeurSanitaireCouleur: "#bd0026",
+      valeurSanitaireCouleur: "#f03b20",
+      valeurSanitaireCouleurAlt: "#bd0026",
     },
   },
   {
@@ -191,51 +237,73 @@ export const availableCategories: ICategory[] = [
     resultats: {
       non_recherche: {
         label: "Non recherché dans les 12 derniers mois",
-        couleur: "#9B9B9B",
-        couleurFond: "#9B9B9B",
+        couleur: "#cccccc",
+        couleurAlt: "#f7f7f7",
         picto: null,
       },
       non_quantifie: {
         label: "Aucun pesticide quantifié",
-        couleur: "#B4E681",
-        couleurFond: "#B4E681",
+        couleur: "#bae4b3",
+        couleurAlt: "#c7e9c0",
         picto: null,
       },
       inf_limite_qualite: {
         label:
           "Au moins un pesticide quantifié mais sans dépassement de la limite réglementaire",
         couleur: "#FFF33B",
-        couleurFond: "#FFF33B",
+        couleurAlt: "#FFF33B",
         picto: null,
       },
       sup_limite_qualite: {
         label: "Au moins un pesticide dépasse la limite réglementaire",
-        couleur: "#F3903F",
-        couleurFond: "#F3903F",
+        couleur: "#fe9929",
+        couleurAlt: "#fe9929",
         picto: "warning",
       },
       sup_valeur_sanitaire: {
         label: "Au moins un pesticide dépasse la limite sanitaire",
-        couleur: "#E93E3A",
-        couleurFond: "#E93E3A",
+        couleur: "#f03b20",
+        couleurAlt: "#bd0026",
         picto: "red cross",
       },
     },
     resultatsAnnuels: {
       nonRechercheLabel: "Aucune recherche dans l'année",
-      nonRechercheCouleur: "#f7f7f7",
+      nonRechercheCouleur: "#cccccc",
+      nonRechercheCouleurAlt: "#f7f7f7",
       ratioLimites: [
-        { limite: 0, label: "0%", couleur: "#c7e9c0" },
-        { limite: 0.25, label: "≤ 25%", couleur: "#fdae6b" },
-        { limite: 0.5, label: "25 - 50%", couleur: "#fd8d3c" },
-        { limite: 0.75, label: "50 - 75%", couleur: "#f16913" },
-        { limite: 1, label: "75 - 100%", couleur: "#d94801" },
+        { limite: 0, label: "0%", couleur: "#bae4b3", couleurAlt: "#c7e9c0" },
+        {
+          limite: 0.25,
+          label: "≤ 25%",
+          couleur: "#fdbe85",
+          couleurAlt: "#fdae6b",
+        },
+        {
+          limite: 0.5,
+          label: "25 - 50%",
+          couleur: "#fd8d3c",
+          couleurAlt: "#fd8d3c",
+        },
+        {
+          limite: 0.75,
+          label: "50 - 75%",
+          couleur: "#e6550d",
+          couleurAlt: "#f16913",
+        },
+        {
+          limite: 1,
+          label: "75 - 100%",
+          couleur: "#a63603",
+          couleurAlt: "#d94801",
+        },
       ],
       ratioLabel: "des analyses non conforme",
       valeurSanitaire: true,
       valeurSanitaireLabel:
         "Au moins 1 dépassement de valeur sanitaire au cours de l'année",
-      valeurSanitaireCouleur: "#bd0026",
+      valeurSanitaireCouleur: "#f03b20",
+      valeurSanitaireCouleurAlt: "#bd0026",
     },
     enfants: [
       {
@@ -251,52 +319,79 @@ export const availableCategories: ICategory[] = [
         resultats: {
           non_recherche: {
             label: "Non recherché dans les 12 derniers mois",
-            couleur: "#9B9B9B",
-            couleurFond: "#9B9B9B",
+            couleur: "#cccccc",
+            couleurAlt: "#f7f7f7",
             picto: null,
           },
           non_quantifie: {
             label: "Aucune substance active quantifiée",
-            couleur: "#B4E681",
-            couleurFond: "#B4E681",
+            couleur: "#bae4b3",
+            couleurAlt: "#c7e9c0",
             picto: null,
           },
           inf_limite_qualite: {
             label:
               "Au moins une substance active quantifiée mais sans dépassement de la limite réglementaire",
             couleur: "#FFF33B",
-            couleurFond: "#FFF33B",
+            couleurAlt: "#FFF33B",
             picto: null,
           },
           sup_limite_qualite: {
             label:
               "Au moins une substance active dépasse la limite réglementaire",
-            couleur: "#F3903F",
-            couleurFond: "#F3903F",
+            couleur: "#fe9929",
+            couleurAlt: "#fe9929",
             picto: "warning",
           },
           sup_valeur_sanitaire: {
             label: "Au moins une substance active dépasse la limite sanitaire",
-            couleur: "#E93E3A",
-            couleurFond: "#E93E3A",
+            couleur: "#f03b20",
+            couleurAlt: "#bd0026",
             picto: "red cross",
           },
         },
         resultatsAnnuels: {
           nonRechercheLabel: "Aucune recherche dans l'année",
-          nonRechercheCouleur: "#f7f7f7",
+          nonRechercheCouleur: "#cccccc",
+          nonRechercheCouleurAlt: "#f7f7f7",
           ratioLimites: [
-            { limite: 0, label: "0%", couleur: "#c7e9c0" },
-            { limite: 0.25, label: "≤ 25%", couleur: "#fdae6b" },
-            { limite: 0.5, label: "25 - 50%", couleur: "#fd8d3c" },
-            { limite: 0.75, label: "50 - 75%", couleur: "#f16913" },
-            { limite: 1, label: "75 - 100%", couleur: "#d94801" },
+            {
+              limite: 0,
+              label: "0%",
+              couleur: "#bae4b3",
+              couleurAlt: "#c7e9c0",
+            },
+            {
+              limite: 0.25,
+              label: "≤ 25%",
+              couleur: "#fdbe85",
+              couleurAlt: "#fdae6b",
+            },
+            {
+              limite: 0.5,
+              label: "25 - 50%",
+              couleur: "#fd8d3c",
+              couleurAlt: "#fd8d3c",
+            },
+            {
+              limite: 0.75,
+              label: "50 - 75%",
+              couleur: "#e6550d",
+              couleurAlt: "#f16913",
+            },
+            {
+              limite: 1,
+              label: "75 - 100%",
+              couleur: "#a63603",
+              couleurAlt: "#d94801",
+            },
           ],
           ratioLabel: "des analyses non conforme",
           valeurSanitaire: true,
           valeurSanitaireLabel:
             "Au moins 1 dépassement de valeur sanitaire au cours de l'année",
-          valeurSanitaireCouleur: "#bd0026",
+          valeurSanitaireCouleur: "#f03b20",
+          valeurSanitaireCouleurAlt: "#bd0026",
         },
       },
       {
@@ -310,51 +405,78 @@ export const availableCategories: ICategory[] = [
         resultats: {
           non_recherche: {
             label: "Non recherché dans les 12 derniers mois",
-            couleur: "#9B9B9B",
-            couleurFond: "#9B9B9B",
+            couleur: "#cccccc",
+            couleurAlt: "#f7f7f7",
             picto: null,
           },
           non_quantifie: {
             label: "Aucun métabolite quantifié",
-            couleur: "#B4E681",
-            couleurFond: "#B4E681",
+            couleur: "#bae4b3",
+            couleurAlt: "#c7e9c0",
             picto: null,
           },
           inf_limite_qualite: {
             label:
               "Au moins un métabolite quantifié mais sans dépassement de la limite réglementaire",
             couleur: "#FFF33B",
-            couleurFond: "#FFF33B",
+            couleurAlt: "#FFF33B",
             picto: null,
           },
           sup_limite_qualite: {
             label: "Au moins un métabolite dépasse la limite réglementaire",
-            couleur: "#F3903F",
-            couleurFond: "#F3903F",
+            couleur: "#fe9929",
+            couleurAlt: "#fe9929",
             picto: "warning",
           },
           sup_valeur_sanitaire: {
             label: "Au moins un métabolite dépasse la limite sanitaire",
-            couleur: "#E93E3A",
-            couleurFond: "#E93E3A",
+            couleur: "#f03b20",
+            couleurAlt: "#bd0026",
             picto: "red cross",
           },
         },
         resultatsAnnuels: {
           nonRechercheLabel: "Aucune recherche dans l'année",
-          nonRechercheCouleur: "#f7f7f7",
+          nonRechercheCouleur: "#cccccc",
+          nonRechercheCouleurAlt: "#f7f7f7",
           ratioLimites: [
-            { limite: 0, label: "0%", couleur: "#c7e9c0" },
-            { limite: 0.25, label: "≤ 25%", couleur: "#fdae6b" },
-            { limite: 0.5, label: "25 - 50%", couleur: "#fd8d3c" },
-            { limite: 0.75, label: "50 - 75%", couleur: "#f16913" },
-            { limite: 1, label: "75 - 100%", couleur: "#d94801" },
+            {
+              limite: 0,
+              label: "0%",
+              couleur: "#bae4b3",
+              couleurAlt: "#c7e9c0",
+            },
+            {
+              limite: 0.25,
+              label: "≤ 25%",
+              couleur: "#fdbe85",
+              couleurAlt: "#fdae6b",
+            },
+            {
+              limite: 0.5,
+              label: "25 - 50%",
+              couleur: "#fd8d3c",
+              couleurAlt: "#fd8d3c",
+            },
+            {
+              limite: 0.75,
+              label: "50 - 75%",
+              couleur: "#e6550d",
+              couleurAlt: "#f16913",
+            },
+            {
+              limite: 1,
+              label: "75 - 100%",
+              couleur: "#a63603",
+              couleurAlt: "#d94801",
+            },
           ],
           ratioLabel: "des analyses non conforme",
           valeurSanitaire: true,
           valeurSanitaireLabel:
             "Au moins 1 dépassement de valeur sanitaire au cours de l'année",
-          valeurSanitaireCouleur: "#bd0026",
+          valeurSanitaireCouleur: "#f03b20",
+          valeurSanitaireCouleurAlt: "#bd0026",
         },
         enfants: [
           {
@@ -371,57 +493,84 @@ export const availableCategories: ICategory[] = [
             resultats: {
               non_recherche: {
                 label: "Non recherché dans les 12 derniers mois",
-                couleur: "#9B9B9B",
-                couleurFond: "#9B9B9B",
+                couleur: "#cccccc",
+                couleurAlt: "#f7f7f7",
                 picto: null,
               },
               non_quantifie: {
                 label: "Non quantifié",
-                couleur: "#B4E681",
-                couleurFond: "#B4E681",
+                couleur: "#bae4b3",
+                couleurAlt: "#c7e9c0",
                 picto: null,
               },
               inf_limite_qualite: {
                 label: "Concentration < 0,1 µg/L",
                 couleur: "#FFF33B",
-                couleurFond: "#FFF33B",
+                couleurAlt: "#FFF33B",
                 picto: null,
               },
               inf_limite_qualite_sup_0_1: {
                 label: "Concentration comprise entre 0,1 et 0,9 µg/L*",
                 couleur: "#FDC70C",
-                couleurFond: "#FDC70C",
+                couleurAlt: "#FDC70C",
                 picto: null,
               },
               sup_limite_qualite: {
                 label:
                   "Concentration > 0,9 µg/L (eau non conforme à la limite réglementaire)",
-                couleur: "#F3903F",
-                couleurFond: "#F3903F",
+                couleur: "#fe9929",
+                couleurAlt: "#fe9929",
                 picto: "warning",
               },
               sup_limite_qualite_sup_3: {
                 label: "Concentration > 3 µg/L",
-                couleur: "#d94801",
-                couleurFond: "#d94801",
+                couleur: "#d95f0e",
+                couleurAlt: "#d95f0e",
                 picto: "warning",
               },
             },
             resultatsAnnuels: {
               nonRechercheLabel: "Aucune recherche dans l'année",
-              nonRechercheCouleur: "#f7f7f7",
+              nonRechercheCouleur: "#cccccc",
+              nonRechercheCouleurAlt: "#f7f7f7",
               ratioLimites: [
-                { limite: 0, label: "0%", couleur: "#c7e9c0" },
-                { limite: 0.25, label: "≤ 25%", couleur: "#fdae6b" },
-                { limite: 0.5, label: "25 - 50%", couleur: "#fd8d3c" },
-                { limite: 0.75, label: "50 - 75%", couleur: "#f16913" },
-                { limite: 1, label: "75 - 100%", couleur: "#d94801" },
+                {
+                  limite: 0,
+                  label: "0%",
+                  couleur: "#bae4b3",
+                  couleurAlt: "#c7e9c0",
+                },
+                {
+                  limite: 0.25,
+                  label: "≤ 25%",
+                  couleur: "#fdbe85",
+                  couleurAlt: "#fdae6b",
+                },
+                {
+                  limite: 0.5,
+                  label: "25 - 50%",
+                  couleur: "#fd8d3c",
+                  couleurAlt: "#fd8d3c",
+                },
+                {
+                  limite: 0.75,
+                  label: "50 - 75%",
+                  couleur: "#e6550d",
+                  couleurAlt: "#f16913",
+                },
+                {
+                  limite: 1,
+                  label: "75 - 100%",
+                  couleur: "#a63603",
+                  couleurAlt: "#d94801",
+                },
               ],
               ratioLabel: "des analyses non conforme",
               valeurSanitaire: true,
               valeurSanitaireLabel:
                 "Au moins 1 dépassement de valeur sanitaire au cours de l'année",
-              valeurSanitaireCouleur: "#bd0026",
+              valeurSanitaireCouleur: "#f03b20",
+              valeurSanitaireCouleurAlt: "#bd0026",
             },
           },
           {
@@ -438,57 +587,84 @@ export const availableCategories: ICategory[] = [
             resultats: {
               non_recherche: {
                 label: "Non recherché dans les 12 derniers mois",
-                couleur: "#9B9B9B",
-                couleurFond: "#9B9B9B",
+                couleur: "#cccccc",
+                couleurAlt: "#f7f7f7",
                 picto: null,
               },
               non_quantifie: {
                 label: "Non quantifié",
-                couleur: "#B4E681",
-                couleurFond: "#B4E681",
+                couleur: "#bae4b3",
+                couleurAlt: "#c7e9c0",
                 picto: null,
               },
               inf_limite_qualite: {
                 label: "Concentration < 0,1 µg/L",
                 couleur: "#FFF33B",
-                couleurFond: "#FFF33B",
+                couleurAlt: "#FFF33B",
                 picto: null,
               },
               inf_limite_qualite_sup_0_1: {
                 label: "Concentration comprise entre 0,1 et 0,9 µg/L*",
                 couleur: "#FDC70C",
-                couleurFond: "#FDC70C",
+                couleurAlt: "#FDC70C",
                 picto: null,
               },
               sup_limite_qualite: {
                 label:
                   "Concentration > 0,9 µg/L (eau non conforme à la limite réglementaire)",
-                couleur: "#F3903F",
-                couleurFond: "#F3903F",
+                couleur: "#fe9929",
+                couleurAlt: "#fe9929",
                 picto: "warning",
               },
               sup_limite_qualite_sup_3: {
                 label: "Concentration > 3 µg/L",
-                couleur: "#F3903F",
-                couleurFond: "#F3903F",
+                couleur: "#d95f0e",
+                couleurAlt: "#d95f0e",
                 picto: "warning",
               },
             },
             resultatsAnnuels: {
               nonRechercheLabel: "Aucune recherche dans l'année",
-              nonRechercheCouleur: "#f7f7f7",
+              nonRechercheCouleur: "#cccccc",
+              nonRechercheCouleurAlt: "#f7f7f7",
               ratioLimites: [
-                { limite: 0, label: "0%", couleur: "#c7e9c0" },
-                { limite: 0.25, label: "≤ 25%", couleur: "#fdae6b" },
-                { limite: 0.5, label: "25 - 50%", couleur: "#fd8d3c" },
-                { limite: 0.75, label: "50 - 75%", couleur: "#f16913" },
-                { limite: 1, label: "75 - 100%", couleur: "#d94801" },
+                {
+                  limite: 0,
+                  label: "0%",
+                  couleur: "#bae4b3",
+                  couleurAlt: "#c7e9c0",
+                },
+                {
+                  limite: 0.25,
+                  label: "≤ 25%",
+                  couleur: "#fdbe85",
+                  couleurAlt: "#fdae6b",
+                },
+                {
+                  limite: 0.5,
+                  label: "25 - 50%",
+                  couleur: "#fd8d3c",
+                  couleurAlt: "#fd8d3c",
+                },
+                {
+                  limite: 0.75,
+                  label: "50 - 75%",
+                  couleur: "#e6550d",
+                  couleurAlt: "#f16913",
+                },
+                {
+                  limite: 1,
+                  label: "75 - 100%",
+                  couleur: "#a63603",
+                  couleurAlt: "#d94801",
+                },
               ],
               ratioLabel: "des analyses non conforme",
               valeurSanitaire: true,
               valeurSanitaireLabel:
                 "Au moins 1 dépassement de valeur sanitaire au cours de l'année",
-              valeurSanitaireCouleur: "#bd0026",
+              valeurSanitaireCouleur: "#f03b20",
+              valeurSanitaireCouleurAlt: "#bd0026",
             },
           },
           {
@@ -504,52 +680,79 @@ export const availableCategories: ICategory[] = [
             resultats: {
               non_recherche: {
                 label: "Non recherché dans les 12 derniers mois",
-                couleur: "#9B9B9B",
-                couleurFond: "#9B9B9B",
+                couleur: "#cccccc",
+                couleurAlt: "#f7f7f7",
                 picto: null,
               },
               non_quantifie: {
                 label: "Non quantifié",
-                couleur: "#B4E681",
-                couleurFond: "#B4E681",
+                couleur: "#bae4b3",
+                couleurAlt: "#c7e9c0",
                 picto: null,
               },
               inf_limite_qualite: {
                 label: "Concentration < 0,1 µg/L",
                 couleur: "#FFF33B",
-                couleurFond: "#FFF33B",
+                couleurAlt: "#FFF33B",
                 picto: null,
               },
               sup_limite_qualite: {
                 label:
                   "Concentration > 0,1 µg/L (eau non conforme à la limite réglementaire)",
-                couleur: "#F3903F",
-                couleurFond: "#F3903F",
+                couleur: "#fe9929",
+                couleurAlt: "#fe9929",
                 picto: "warning",
               },
               sup_valeur_sanitaire: {
                 label:
                   "Concentration > 11 µg/L (dépassement de la valeur sanitaire)",
-                couleur: "#E93E3A",
-                couleurFond: "#E93E3A",
+                couleur: "#f03b20",
+                couleurAlt: "#bd0026",
                 picto: "red cross",
               },
             },
             resultatsAnnuels: {
               nonRechercheLabel: "Aucune recherche dans l'année",
-              nonRechercheCouleur: "#f7f7f7",
+              nonRechercheCouleur: "#cccccc",
+              nonRechercheCouleurAlt: "#f7f7f7",
               ratioLimites: [
-                { limite: 0, label: "0%", couleur: "#c7e9c0" },
-                { limite: 0.25, label: "≤ 25%", couleur: "#fdae6b" },
-                { limite: 0.5, label: "25 - 50%", couleur: "#fd8d3c" },
-                { limite: 0.75, label: "50 - 75%", couleur: "#f16913" },
-                { limite: 1, label: "75 - 100%", couleur: "#d94801" },
+                {
+                  limite: 0,
+                  label: "0%",
+                  couleur: "#bae4b3",
+                  couleurAlt: "#c7e9c0",
+                },
+                {
+                  limite: 0.25,
+                  label: "≤ 25%",
+                  couleur: "#fdbe85",
+                  couleurAlt: "#fdae6b",
+                },
+                {
+                  limite: 0.5,
+                  label: "25 - 50%",
+                  couleur: "#fd8d3c",
+                  couleurAlt: "#fd8d3c",
+                },
+                {
+                  limite: 0.75,
+                  label: "50 - 75%",
+                  couleur: "#e6550d",
+                  couleurAlt: "#f16913",
+                },
+                {
+                  limite: 1,
+                  label: "75 - 100%",
+                  couleur: "#a63603",
+                  couleurAlt: "#d94801",
+                },
               ],
               ratioLabel: "des analyses non conforme",
               valeurSanitaire: true,
               valeurSanitaireLabel:
                 "Au moins 1 dépassement de valeur sanitaire au cours de l'année",
-              valeurSanitaireCouleur: "#bd0026",
+              valeurSanitaireCouleur: "#f03b20",
+              valeurSanitaireCouleurAlt: "#bd0026",
             },
           },
           {
@@ -564,52 +767,79 @@ export const availableCategories: ICategory[] = [
             resultats: {
               non_recherche: {
                 label: "Non recherché dans les 12 derniers mois",
-                couleur: "#9B9B9B",
-                couleurFond: "#9B9B9B",
+                couleur: "#cccccc",
+                couleurAlt: "#f7f7f7",
                 picto: null,
               },
               non_quantifie: {
                 label: "Non quantifié",
-                couleur: "#B4E681",
-                couleurFond: "#B4E681",
+                couleur: "#bae4b3",
+                couleurAlt: "#c7e9c0",
                 picto: null,
               },
               inf_limite_qualite: {
                 label: "Concentration < 0,1 µg/L",
                 couleur: "#FFF33B",
-                couleurFond: "#FFF33B",
+                couleurAlt: "#FFF33B",
                 picto: null,
               },
               sup_limite_qualite: {
                 label:
                   "Concentration > 0,1 µg/L (eau non conforme à la limite réglementaire)",
-                couleur: "#F3903F",
-                couleurFond: "#F3903F",
+                couleur: "#fe9929",
+                couleurAlt: "#fe9929",
                 picto: "warning",
               },
               sup_valeur_sanitaire: {
                 label:
                   "Concentration > 110 µg/L (dépassement de la valeur sanitaire)",
-                couleur: "#E93E3A",
-                couleurFond: "#E93E3A",
+                couleur: "#f03b20",
+                couleurAlt: "#bd0026",
                 picto: "red cross",
               },
             },
             resultatsAnnuels: {
               nonRechercheLabel: "Aucune recherche dans l'année",
-              nonRechercheCouleur: "#f7f7f7",
+              nonRechercheCouleur: "#cccccc",
+              nonRechercheCouleurAlt: "#f7f7f7",
               ratioLimites: [
-                { limite: 0, label: "0%", couleur: "#c7e9c0" },
-                { limite: 0.25, label: "≤ 25%", couleur: "#fdae6b" },
-                { limite: 0.5, label: "25 - 50%", couleur: "#fd8d3c" },
-                { limite: 0.75, label: "50 - 75%", couleur: "#f16913" },
-                { limite: 1, label: "75 - 100%", couleur: "#d94801" },
+                {
+                  limite: 0,
+                  label: "0%",
+                  couleur: "#bae4b3",
+                  couleurAlt: "#c7e9c0",
+                },
+                {
+                  limite: 0.25,
+                  label: "≤ 25%",
+                  couleur: "#fdbe85",
+                  couleurAlt: "#fdae6b",
+                },
+                {
+                  limite: 0.5,
+                  label: "25 - 50%",
+                  couleur: "#fd8d3c",
+                  couleurAlt: "#fd8d3c",
+                },
+                {
+                  limite: 0.75,
+                  label: "50 - 75%",
+                  couleur: "#e6550d",
+                  couleurAlt: "#f16913",
+                },
+                {
+                  limite: 1,
+                  label: "75 - 100%",
+                  couleur: "#a63603",
+                  couleurAlt: "#d94801",
+                },
               ],
               ratioLabel: "des analyses non conforme",
               valeurSanitaire: true,
               valeurSanitaireLabel:
                 "Au moins 1 dépassement de valeur sanitaire au cours de l'année",
-              valeurSanitaireCouleur: "#bd0026",
+              valeurSanitaireCouleur: "#f03b20",
+              valeurSanitaireCouleurAlt: "#bd0026",
             },
           },
           {
@@ -625,52 +855,79 @@ export const availableCategories: ICategory[] = [
             resultats: {
               non_recherche: {
                 label: "Non recherché dans les 12 derniers mois",
-                couleur: "#9B9B9B",
-                couleurFond: "#9B9B9B",
+                couleur: "#cccccc",
+                couleurAlt: "#f7f7f7",
                 picto: null,
               },
               non_quantifie: {
                 label: "Non quantifié",
-                couleur: "#B4E681",
-                couleurFond: "#B4E681",
+                couleur: "#bae4b3",
+                couleurAlt: "#c7e9c0",
                 picto: null,
               },
               inf_limite_qualite: {
                 label: "Concentration < 0,1 µg/L",
                 couleur: "#FFF33B",
-                couleurFond: "#FFF33B",
+                couleurAlt: "#FFF33B",
                 picto: null,
               },
               sup_limite_qualite: {
                 label:
                   "Concentration > 0,1 µg/L (eau non conforme à la limite réglementaire)",
-                couleur: "#F3903F",
-                couleurFond: "#F3903F",
+                couleur: "#fe9929",
+                couleurAlt: "#fe9929",
                 picto: "warning",
               },
               sup_valeur_sanitaire: {
                 label:
                   "Concentration > 60 µg/L (dépassement de la valeur sanitaire)",
-                couleur: "#E93E3A",
-                couleurFond: "#E93E3A",
+                couleur: "#f03b20",
+                couleurAlt: "#bd0026",
                 picto: "red cross",
               },
             },
             resultatsAnnuels: {
               nonRechercheLabel: "Aucune recherche dans l'année",
-              nonRechercheCouleur: "#f7f7f7",
+              nonRechercheCouleur: "#cccccc",
+              nonRechercheCouleurAlt: "#f7f7f7",
               ratioLimites: [
-                { limite: 0, label: "0%", couleur: "#c7e9c0" },
-                { limite: 0.25, label: "≤ 25%", couleur: "#fdae6b" },
-                { limite: 0.5, label: "25 - 50%", couleur: "#fd8d3c" },
-                { limite: 0.75, label: "50 - 75%", couleur: "#f16913" },
-                { limite: 1, label: "75 - 100%", couleur: "#d94801" },
+                {
+                  limite: 0,
+                  label: "0%",
+                  couleur: "#bae4b3",
+                  couleurAlt: "#c7e9c0",
+                },
+                {
+                  limite: 0.25,
+                  label: "≤ 25%",
+                  couleur: "#fdbe85",
+                  couleurAlt: "#fdae6b",
+                },
+                {
+                  limite: 0.5,
+                  label: "25 - 50%",
+                  couleur: "#fd8d3c",
+                  couleurAlt: "#fd8d3c",
+                },
+                {
+                  limite: 0.75,
+                  label: "50 - 75%",
+                  couleur: "#e6550d",
+                  couleurAlt: "#f16913",
+                },
+                {
+                  limite: 1,
+                  label: "75 - 100%",
+                  couleur: "#a63603",
+                  couleurAlt: "#d94801",
+                },
               ],
               ratioLabel: "des analyses non conforme",
               valeurSanitaire: true,
               valeurSanitaireLabel:
                 "Au moins 1 dépassement de valeur sanitaire au cours de l'année",
-              valeurSanitaireCouleur: "#bd0026",
+              valeurSanitaireCouleur: "#f03b20",
+              valeurSanitaireCouleurAlt: "#bd0026",
             },
           },
         ],
@@ -688,34 +945,55 @@ export const availableCategories: ICategory[] = [
     resultats: {
       non_recherche: {
         label: "Non recherché dans les 12 derniers mois",
-        couleur: "#9B9B9B",
-        couleurFond: "#9B9B9B",
+        couleur: "#cccccc",
+        couleurAlt: "#f7f7f7",
         picto: null,
       },
       inf_limite_qualite: {
         label:
           "Concentrations inférieures aux limites réglementaire (eau conforme)",
-        couleur: "#B4E681",
-        couleurFond: "#B4E681",
+        couleur: "#bae4b3",
+        couleurAlt: "#c7e9c0",
         picto: null,
       },
       sup_limite_qualite: {
         label:
           "Concentrations supérieures aux limites réglementaire (eau non conforme avec recommandation de non-consommation pour les femmes enceintes et les nourrissons)",
-        couleur: "#E93E3A",
-        couleurFond: "#E93E3A",
+        couleur: "#f03b20",
+        couleurAlt: "#bd0026",
         picto: "red cross",
       },
     },
     resultatsAnnuels: {
       nonRechercheLabel: "Aucune recherche dans l'année",
-      nonRechercheCouleur: "#f7f7f7",
+      nonRechercheCouleur: "#cccccc",
+      nonRechercheCouleurAlt: "#f7f7f7",
       ratioLimites: [
-        { limite: 0, label: "0%", couleur: "#c7e9c0" },
-        { limite: 0.25, label: "≤ 25%", couleur: "#fc9272" },
-        { limite: 0.5, label: "25 - 50%", couleur: "#fb6a4a" },
-        { limite: 0.75, label: "50 - 75%", couleur: "#ef3b2c" },
-        { limite: 1, label: "75 - 100%", couleur: "#cb181d" },
+        { limite: 0, label: "0%", couleur: "#bae4b3", couleurAlt: "#c7e9c0" },
+        {
+          limite: 0.25,
+          label: "≤ 25%",
+          couleur: "#fcae91",
+          couleurAlt: "#fc9272",
+        },
+        {
+          limite: 0.5,
+          label: "25 - 50%",
+          couleur: "#fb6a4a",
+          couleurAlt: "#fb6a4a",
+        },
+        {
+          limite: 0.75,
+          label: "50 - 75%",
+          couleur: "#de2d26",
+          couleurAlt: "#ef3b2c",
+        },
+        {
+          limite: 1,
+          label: "75 - 100%",
+          couleur: "#a50f15",
+          couleurAlt: "#cb181d",
+        },
       ],
       ratioLabel: "des analyses non conforme",
       valeurSanitaire: false,
@@ -731,40 +1009,61 @@ export const availableCategories: ICategory[] = [
     resultats: {
       non_recherche: {
         label: "Non recherché dans les 12 derniers mois",
-        couleur: "#9B9B9B",
-        couleurFond: "#9B9B9B",
+        couleur: "#cccccc",
+        couleurAlt: "#f7f7f7",
         picto: null,
       },
       non_quantifie: {
         label: "Non quantifié",
-        couleur: "#B4E681",
-        couleurFond: "#B4E681",
+        couleur: "#bae4b3",
+        couleurAlt: "#c7e9c0",
         picto: null,
       },
       inf_0_5: {
         label:
           "Concentration < 0,5 µg/L (eau conforme à la limite réglementaire et sanitaire)",
         couleur: "#FFF33B",
-        couleurFond: "#FFF33B",
+        couleurAlt: "#FFF33B",
         picto: null,
       },
       sup_0_5: {
         label:
           "Concentration > 0,5 µg/L (eau non conforme à la limite réglementaire et sanitaire)",
-        couleur: "#E93E3A",
-        couleurFond: "#E93E3A",
+        couleur: "#f03b20",
+        couleurAlt: "#bd0026",
         picto: "red cross",
       },
     },
     resultatsAnnuels: {
       nonRechercheLabel: "Aucune recherche dans l'année",
-      nonRechercheCouleur: "#f7f7f7",
+      nonRechercheCouleur: "#cccccc",
+      nonRechercheCouleurAlt: "#f7f7f7",
       ratioLimites: [
-        { limite: 0, label: "0%", couleur: "#c7e9c0" },
-        { limite: 0.25, label: "≤ 25%", couleur: "#fdae6b" },
-        { limite: 0.5, label: "25 - 50%", couleur: "#fd8d3c" },
-        { limite: 0.75, label: "50 - 75%", couleur: "#f16913" },
-        { limite: 1, label: "75 - 100%", couleur: "#d94801" },
+        { limite: 0, label: "0%", couleur: "#bae4b3", couleurAlt: "#c7e9c0" },
+        {
+          limite: 0.25,
+          label: "≤ 25%",
+          couleur: "#fdbe85",
+          couleurAlt: "#fdae6b",
+        },
+        {
+          limite: 0.5,
+          label: "25 - 50%",
+          couleur: "#fd8d3c",
+          couleurAlt: "#fd8d3c",
+        },
+        {
+          limite: 0.75,
+          label: "50 - 75%",
+          couleur: "#e6550d",
+          couleurAlt: "#f16913",
+        },
+        {
+          limite: 1,
+          label: "75 - 100%",
+          couleur: "#a63603",
+          couleurAlt: "#d94801",
+        },
       ],
       ratioLabel: "des analyses non conforme",
       valeurSanitaire: false,
@@ -792,39 +1091,65 @@ export const availableCategories: ICategory[] = [
         resultats: {
           non_recherche: {
             label: "Non recherché dans les 12 derniers mois",
-            couleur: "#9B9B9B",
-            couleurFond: "#9B9B9B",
+            couleur: "#cccccc",
+            couleurAlt: "#f7f7f7",
             picto: null,
           },
           non_quantifie: {
             label: "Non quantifié",
-            couleur: "#B4E681",
-            couleurFond: "#B4E681",
+            couleur: "#bae4b3",
+            couleurAlt: "#c7e9c0",
             picto: null,
           },
           inf_valeur_sanitaire: {
             label: "Concentration < 0,35 µg/L",
             couleur: "#FFF33B",
-            couleurFond: "#FFF33B",
+            couleurAlt: "#FFF33B",
             picto: null,
           },
           sup_valeur_sanitaire: {
             label:
               "Concentration > 0,35 µg/L (dépassement de la limite sanitaire préconisée par l'agence américaine de protection de l'environnement)",
-            couleur: "#E93E3A",
-            couleurFond: "#E93E3A",
+            couleur: "#f03b20",
+            couleurAlt: "#bd0026",
             picto: "red cross",
           },
         },
         resultatsAnnuels: {
           nonRechercheLabel: "Aucune recherche dans l'année",
-          nonRechercheCouleur: "#f7f7f7",
+          nonRechercheCouleur: "#cccccc",
+          nonRechercheCouleurAlt: "#f7f7f7",
           ratioLimites: [
-            { limite: 0, label: "0%", couleur: "#c7e9c0" },
-            { limite: 0.25, label: "≤ 25%", couleur: "#fdae6b" },
-            { limite: 0.5, label: "25 - 50%", couleur: "#fd8d3c" },
-            { limite: 0.75, label: "50 - 75%", couleur: "#f16913" },
-            { limite: 1, label: "75 - 100%", couleur: "#d94801" },
+            {
+              limite: 0,
+              label: "0%",
+              couleur: "#bae4b3",
+              couleurAlt: "#c7e9c0",
+            },
+            {
+              limite: 0.25,
+              label: "≤ 25%",
+              couleur: "#fdbe85",
+              couleurAlt: "#fdae6b",
+            },
+            {
+              limite: 0.5,
+              label: "25 - 50%",
+              couleur: "#fd8d3c",
+              couleurAlt: "#fd8d3c",
+            },
+            {
+              limite: 0.75,
+              label: "50 - 75%",
+              couleur: "#e6550d",
+              couleurAlt: "#f16913",
+            },
+            {
+              limite: 1,
+              label: "75 - 100%",
+              couleur: "#a63603",
+              couleurAlt: "#d94801",
+            },
           ],
           ratioLabel: "des analyses non conforme",
           valeurSanitaire: false,
@@ -843,46 +1168,72 @@ export const availableCategories: ICategory[] = [
         resultats: {
           non_recherche: {
             label: "Non recherché dans les 12 derniers mois",
-            couleur: "#9B9B9B",
-            couleurFond: "#9B9B9B",
+            couleur: "#cccccc",
+            couleurAlt: "#f7f7f7",
             picto: null,
           },
           non_quantifie: {
             label: "Non quantifié",
-            couleur: "#B4E681",
-            couleurFond: "#B4E681",
+            couleur: "#bae4b3",
+            couleurAlt: "#c7e9c0",
             picto: null,
           },
           inf_valeur_sanitaire: {
             label: "Concentration < 4 µg/L",
             couleur: "#FFF33B",
-            couleurFond: "#FFF33B",
+            couleurAlt: "#FFF33B",
             picto: null,
           },
           sup_valeur_sanitaire: {
             label:
               "Concentration comprise entre 4 µg/L et 15 µg/L (l'eau ne doit pas être utilisée pour la préparation des biberons des nourrissons de moins de 6 mois)",
             couleur: "#FB726C",
-            couleurFond: "#FB726C",
+            couleurAlt: "#FB726C",
             picto: "red cross",
           },
           sup_valeur_sanitaire_2: {
             label:
               "Concentration > 15 µg/L (l'eau ne doit pas être utilisée pour la préparation des biberons des nourrissons de moins de 6 mois ni consommée par les femmes enceintes et allaitantes)",
             couleur: "#FC3127",
-            couleurFond: "#FC3127",
+            couleurAlt: "#FC3127",
             picto: "red cross",
           },
         },
         resultatsAnnuels: {
           nonRechercheLabel: "Aucune recherche dans l'année",
-          nonRechercheCouleur: "#f7f7f7",
+          nonRechercheCouleur: "#cccccc",
+          nonRechercheCouleurAlt: "#f7f7f7",
           ratioLimites: [
-            { limite: 0, label: "0%", couleur: "#c7e9c0" },
-            { limite: 0.25, label: "≤ 25%", couleur: "#fdae6b" },
-            { limite: 0.5, label: "25 - 50%", couleur: "#fd8d3c" },
-            { limite: 0.75, label: "50 - 75%", couleur: "#f16913" },
-            { limite: 1, label: "75 - 100%", couleur: "#d94801" },
+            {
+              limite: 0,
+              label: "0%",
+              couleur: "#bae4b3",
+              couleurAlt: "#c7e9c0",
+            },
+            {
+              limite: 0.25,
+              label: "≤ 25%",
+              couleur: "#fdbe85",
+              couleurAlt: "#fdae6b",
+            },
+            {
+              limite: 0.5,
+              label: "25 - 50%",
+              couleur: "#fd8d3c",
+              couleurAlt: "#fd8d3c",
+            },
+            {
+              limite: 0.75,
+              label: "50 - 75%",
+              couleur: "#e6550d",
+              couleurAlt: "#f16913",
+            },
+            {
+              limite: 1,
+              label: "75 - 100%",
+              couleur: "#a63603",
+              couleurAlt: "#d94801",
+            },
           ],
           ratioLabel: "des analyses non conforme",
           valeurSanitaire: false,
@@ -914,47 +1265,73 @@ export const availableCategories: ICategory[] = [
         resultats: {
           non_recherche: {
             label: "Non recherché dans les 12 derniers mois",
-            couleur: "#9B9B9B",
-            couleurFond: "#9B9B9B",
+            couleur: "#cccccc",
+            couleurAlt: "#f7f7f7",
             picto: null,
           },
           non_quantifie: {
             label: "Non quantifié",
-            couleur: "#B4E681",
-            couleurFond: "#B4E681",
+            couleur: "#bae4b3",
+            couleurAlt: "#c7e9c0",
             picto: null,
           },
           inf_limite_qualite: {
             label:
               "Concentration < 10 µg/L (eau conforme à la limite réglementaire)",
             couleur: "#FFF33B",
-            couleurFond: "#FFF33B",
+            couleurAlt: "#FFF33B",
             picto: null,
           },
           sup_limite_qualite: {
             label:
               "Concentration comprise entre 10 µg/L et 13 µg/L (eau non conforme à la limite réglementaire mais peut être utilisée pour les usages alimentaires)",
-            couleur: "#F3903F",
-            couleurFond: "#F3903F",
+            couleur: "#fe9929",
+            couleurAlt: "#fe9929",
             picto: "warning",
           },
           sup_valeur_sanitaire: {
             label:
               "Concentration > 13 µg/L (eau ne pouvant être utilisée pour les usages alimentaires)",
-            couleur: "#E93E3A",
-            couleurFond: "#E93E3A",
+            couleur: "#f03b20",
+            couleurAlt: "#bd0026",
             picto: "red cross",
           },
         },
         resultatsAnnuels: {
           nonRechercheLabel: "Aucune recherche dans l'année",
-          nonRechercheCouleur: "#f7f7f7",
+          nonRechercheCouleur: "#cccccc",
+          nonRechercheCouleurAlt: "#f7f7f7",
           ratioLimites: [
-            { limite: 0, label: "0%", couleur: "#c7e9c0" },
-            { limite: 0.25, label: "≤ 25%", couleur: "#fdae6b" },
-            { limite: 0.5, label: "25 - 50%", couleur: "#fd8d3c" },
-            { limite: 0.75, label: "50 - 75%", couleur: "#f16913" },
-            { limite: 1, label: "75 - 100%", couleur: "#d94801" },
+            {
+              limite: 0,
+              label: "0%",
+              couleur: "#bae4b3",
+              couleurAlt: "#c7e9c0",
+            },
+            {
+              limite: 0.25,
+              label: "≤ 25%",
+              couleur: "#fdbe85",
+              couleurAlt: "#fdae6b",
+            },
+            {
+              limite: 0.5,
+              label: "25 - 50%",
+              couleur: "#fd8d3c",
+              couleurAlt: "#fd8d3c",
+            },
+            {
+              limite: 0.75,
+              label: "50 - 75%",
+              couleur: "#e6550d",
+              couleurAlt: "#f16913",
+            },
+            {
+              limite: 1,
+              label: "75 - 100%",
+              couleur: "#a63603",
+              couleurAlt: "#d94801",
+            },
           ],
           ratioLabel: "des analyses non conforme",
           valeurSanitaire: false,
@@ -975,45 +1352,71 @@ export const availableCategories: ICategory[] = [
         resultats: {
           non_recherche: {
             label: "Non recherché dans les 12 derniers mois",
-            couleur: "#9B9B9B",
-            couleurFond: "#9B9B9B",
+            couleur: "#cccccc",
+            couleurAlt: "#f7f7f7",
             picto: null,
           },
           non_quantifie: {
             label: "Non quantifié",
-            couleur: "#B4E681",
-            couleurFond: "#B4E681",
+            couleur: "#bae4b3",
+            couleurAlt: "#c7e9c0",
             picto: null,
           },
           inf_limite_qualite: {
             label: "Concentration < 5 µg/L*",
             couleur: "#FFF33B",
-            couleurFond: "#FFF33B",
+            couleurAlt: "#FFF33B",
             picto: null,
           },
           sup_limite_qualite_2036: {
             label: "Concentration comprise entre 5 µg/L et 10 µg/L*",
             couleur: "#FDC70C",
-            couleurFond: "#FDC70C",
+            couleurAlt: "#FDC70C",
             picto: null,
           },
           sup_limite_qualite: {
             label:
               "Concentration > 10 µg/L (eau non conforme à la limite réglementaire actuellement en vigueur)",
-            couleur: "#E93E3A",
-            couleurFond: "#E93E3A",
+            couleur: "#f03b20",
+            couleurAlt: "#bd0026",
             picto: "red cross",
           },
         },
         resultatsAnnuels: {
           nonRechercheLabel: "Aucune recherche dans l'année",
-          nonRechercheCouleur: "#f7f7f7",
+          nonRechercheCouleur: "#cccccc",
+          nonRechercheCouleurAlt: "#f7f7f7",
           ratioLimites: [
-            { limite: 0, label: "0%", couleur: "#c7e9c0" },
-            { limite: 0.25, label: "≤ 25%", couleur: "#fdae6b" },
-            { limite: 0.5, label: "25 - 50%", couleur: "#fd8d3c" },
-            { limite: 0.75, label: "50 - 75%", couleur: "#f16913" },
-            { limite: 1, label: "75 - 100%", couleur: "#d94801" },
+            {
+              limite: 0,
+              label: "0%",
+              couleur: "#bae4b3",
+              couleurAlt: "#c7e9c0",
+            },
+            {
+              limite: 0.25,
+              label: "≤ 25%",
+              couleur: "#fdbe85",
+              couleurAlt: "#fdae6b",
+            },
+            {
+              limite: 0.5,
+              label: "25 - 50%",
+              couleur: "#fd8d3c",
+              couleurAlt: "#fd8d3c",
+            },
+            {
+              limite: 0.75,
+              label: "50 - 75%",
+              couleur: "#e6550d",
+              couleurAlt: "#f16913",
+            },
+            {
+              limite: 1,
+              label: "75 - 100%",
+              couleur: "#a63603",
+              couleurAlt: "#d94801",
+            },
           ],
           ratioLabel: "des analyses non conforme",
           valeurSanitaire: false,

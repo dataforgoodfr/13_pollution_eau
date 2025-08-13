@@ -15,6 +15,8 @@ interface PollutionMapLegendProps {
   period: string;
   category: string;
   pollutionStats: PollutionStats;
+  colorblindMode: boolean;
+  setColorblindMode: (value: boolean) => void;
 }
 
 function LegendItem({
@@ -67,6 +69,8 @@ export default function PollutionMapLegend({
   period,
   category,
   pollutionStats,
+  colorblindMode,
+  setColorblindMode,
 }: PollutionMapLegendProps) {
   const categoryDetails = getCategoryById(category);
   if (!categoryDetails) {
@@ -117,7 +121,7 @@ export default function PollutionMapLegend({
 
       return {
         label: value.label,
-        color: value.couleur || value.couleurFond,
+        color: colorblindMode ? value.couleurAlt : value.couleur,
         count,
         percentage,
       };
@@ -197,7 +201,11 @@ export default function PollutionMapLegend({
       <>
         <div className="space-y-3 text-sm">
           <LegendItem
-            color={categoryDetails.resultatsAnnuels.nonRechercheCouleur || ""}
+            color={
+              colorblindMode
+                ? categoryDetails.resultatsAnnuels.nonRechercheCouleurAlt
+                : categoryDetails.resultatsAnnuels.nonRechercheCouleur || ""
+            }
             label={categoryDetails.resultatsAnnuels.nonRechercheLabel || ""}
             count={nonRechercheStats.count}
             percentage={nonRechercheStats.percentage}
@@ -217,7 +225,7 @@ export default function PollutionMapLegend({
             return (
               <LegendItem
                 key={item.couleur + item.label}
-                color={item.couleur}
+                color={colorblindMode ? item.couleurAlt : item.couleur}
                 label={`${item.label} ${categoryDetails.resultatsAnnuels?.ratioLabel}`}
                 count={stats.count}
                 percentage={stats.percentage}
@@ -227,7 +235,10 @@ export default function PollutionMapLegend({
           {categoryDetails.resultatsAnnuels.valeurSanitaireLabel && (
             <LegendItem
               color={
-                categoryDetails.resultatsAnnuels.valeurSanitaireCouleur || ""
+                colorblindMode
+                  ? categoryDetails.resultatsAnnuels.valeurSanitaireCouleurAlt
+                  : categoryDetails.resultatsAnnuels.valeurSanitaireCouleur ||
+                    ""
               }
               label={
                 categoryDetails.resultatsAnnuels.valeurSanitaireLabel || ""
@@ -249,11 +260,6 @@ export default function PollutionMapLegend({
             <h2 className="text font-semibold text-gray-900">
               {categoryDetails.nomAffichage}
             </h2>
-            {getLastUpdateDate() && (
-              <p className="text-xs text-gray-500 mt-1">
-                {getLastUpdateDate()}
-              </p>
-            )}
           </div>
           <button
             onClick={onClose}
@@ -261,6 +267,19 @@ export default function PollutionMapLegend({
             aria-label="Close legend"
           >
             <X />
+          </button>
+        </div>
+        <div className="mb-2">
+          {getLastUpdateDate() && (
+            <p className="text-xs text-gray-500 mt-1">{getLastUpdateDate()}</p>
+          )}
+          <button
+            onClick={() => setColorblindMode(!colorblindMode)}
+            className="text-xs text-blue-600 hover:text-blue-800 underline cursor-pointer"
+          >
+            {colorblindMode
+              ? "Désactiver les couleurs adaptées aux daltoniens"
+              : "Activer les couleurs adaptées aux daltoniens"}
           </button>
         </div>
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, JSX, useEffect } from "react";
+import { useState, JSX } from "react";
 import PollutionMapBaseLayer from "@/components/PollutionMapBase";
 import PollutionMapFilters from "@/components/PollutionMapFilters";
 import PollutionSidePanel from "@/components/PollutionSidePanel";
@@ -33,15 +33,17 @@ export default function PollutionMap({
     latitude: number;
     content?: JSX.Element;
   } | null>(null);
-  const [sidePanelOpen, setSidePanelOpen] = useState(false);
-  const [showLegend, setShowLegend] = useState(false);
-  const [colorblindMode, setColorblindMode] = useState(false);
 
-  useEffect(() => {
-    const isMobile = window.innerWidth < 768;
-    setSidePanelOpen(!isMobile);
-    setShowLegend(!isMobile);
-  }, []);
+  const [isMobile] = useState(() => {
+    if (typeof window !== "undefined") {
+      return window.innerWidth < 768;
+    }
+    return false; // Default to false for SSR
+  });
+
+  const [sidePanelOpen, setSidePanelOpen] = useState(() => !isMobile);
+  const [showLegend, setShowLegend] = useState(() => !isMobile);
+  const [colorblindMode, setColorblindMode] = useState(false);
 
   const handleAddressSelect = async (result: FilterResult | null) => {
     if (result) {
@@ -72,6 +74,7 @@ export default function PollutionMap({
           marker={marker}
           setMarker={setMarker}
           colorblindMode={colorblindMode}
+          isMobile={isMobile}
         />
 
         <div className="absolute top-4 left-4 z-10 flex overflow-x-auto scrollbar-hide">

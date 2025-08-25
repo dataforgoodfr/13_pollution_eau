@@ -40,6 +40,7 @@ type PollutionMapBaseLayerProps = {
     } | null,
   ) => void;
   colorblindMode?: boolean;
+  isMobile?: boolean;
 };
 
 export default function PollutionMapBaseLayer({
@@ -53,6 +54,7 @@ export default function PollutionMapBaseLayer({
   marker,
   setMarker,
   colorblindMode = false,
+  isMobile = false,
 }: PollutionMapBaseLayerProps) {
   useEffect(() => {
     // adds the support for PMTiles
@@ -162,7 +164,7 @@ export default function PollutionMapBaseLayer({
       onMove={handleMapStateChange}
       interactiveLayerIds={["color-layer"]}
       attributionControl={false}
-      cooperativeGestures={true}
+      cooperativeGestures={isMobile}
     >
       {marker ? (
         <PollutionMapMarker

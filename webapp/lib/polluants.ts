@@ -82,7 +82,7 @@ export const availableCategories: ICategory[] = [
       },
       inf_limites: {
         label: "Aucun dépassement des limites réglementaire",
-        couleur: "#31a354",
+        couleur: "#74c476",
         couleurAlt: "#c7e9c0",
         picto: null,
       },
@@ -104,7 +104,7 @@ export const availableCategories: ICategory[] = [
       nonRechercheCouleur: "#cccccc",
       nonRechercheCouleurAlt: "#f7f7f7",
       ratioLimites: [
-        { limite: 0, label: "0%", couleur: "#31a354", couleurAlt: "#c7e9c0" },
+        { limite: 0, label: "0%", couleur: "#74c476", couleurAlt: "#c7e9c0" },
         {
           limite: 0.25,
           label: "≤ 25%",
@@ -156,7 +156,7 @@ export const availableCategories: ICategory[] = [
       },
       non_quantifie: {
         label: "Aucun PFAS quantifié",
-        couleur: "#31a354",
+        couleur: "#74c476",
         couleurAlt: "#c7e9c0",
         picto: null,
       },
@@ -193,7 +193,7 @@ export const availableCategories: ICategory[] = [
       nonRechercheCouleur: "#cccccc",
       nonRechercheCouleurAlt: "#f7f7f7",
       ratioLimites: [
-        { limite: 0, label: "0%", couleur: "#31a354", couleurAlt: "#c7e9c0" },
+        { limite: 0, label: "0%", couleur: "#74c476", couleurAlt: "#c7e9c0" },
         {
           limite: 0.25,
           label: "≤ 25%",
@@ -243,7 +243,7 @@ export const availableCategories: ICategory[] = [
       },
       non_quantifie: {
         label: "Aucun pesticide quantifié",
-        couleur: "#31a354",
+        couleur: "#74c476",
         couleurAlt: "#c7e9c0",
         picto: null,
       },
@@ -272,7 +272,7 @@ export const availableCategories: ICategory[] = [
       nonRechercheCouleur: "#cccccc",
       nonRechercheCouleurAlt: "#f7f7f7",
       ratioLimites: [
-        { limite: 0, label: "0%", couleur: "#31a354", couleurAlt: "#c7e9c0" },
+        { limite: 0, label: "0%", couleur: "#74c476", couleurAlt: "#c7e9c0" },
         {
           limite: 0.25,
           label: "≤ 25%",
@@ -325,7 +325,7 @@ export const availableCategories: ICategory[] = [
           },
           non_quantifie: {
             label: "Aucune substance active quantifiée",
-            couleur: "#31a354",
+            couleur: "#74c476",
             couleurAlt: "#c7e9c0",
             picto: null,
           },
@@ -358,7 +358,7 @@ export const availableCategories: ICategory[] = [
             {
               limite: 0,
               label: "0%",
-              couleur: "#31a354",
+              couleur: "#74c476",
               couleurAlt: "#c7e9c0",
             },
             {
@@ -411,7 +411,7 @@ export const availableCategories: ICategory[] = [
           },
           non_quantifie: {
             label: "Aucun métabolite quantifié",
-            couleur: "#31a354",
+            couleur: "#74c476",
             couleurAlt: "#c7e9c0",
             picto: null,
           },
@@ -443,7 +443,7 @@ export const availableCategories: ICategory[] = [
             {
               limite: 0,
               label: "0%",
-              couleur: "#31a354",
+              couleur: "#74c476",
               couleurAlt: "#c7e9c0",
             },
             {
@@ -499,7 +499,7 @@ export const availableCategories: ICategory[] = [
               },
               non_quantifie: {
                 label: "Non quantifié",
-                couleur: "#31a354",
+                couleur: "#74c476",
                 couleurAlt: "#c7e9c0",
                 picto: null,
               },
@@ -537,7 +537,7 @@ export const availableCategories: ICategory[] = [
                 {
                   limite: 0,
                   label: "0%",
-                  couleur: "#31a354",
+                  couleur: "#74c476",
                   couleurAlt: "#c7e9c0",
                 },
                 {
@@ -593,7 +593,7 @@ export const availableCategories: ICategory[] = [
               },
               non_quantifie: {
                 label: "Non quantifié",
-                couleur: "#31a354",
+                couleur: "#74c476",
                 couleurAlt: "#c7e9c0",
                 picto: null,
               },
@@ -631,7 +631,7 @@ export const availableCategories: ICategory[] = [
                 {
                   limite: 0,
                   label: "0%",
-                  couleur: "#31a354",
+                  couleur: "#74c476",
                   couleurAlt: "#c7e9c0",
                 },
                 {
@@ -686,7 +686,7 @@ export const availableCategories: ICategory[] = [
               },
               non_quantifie: {
                 label: "Non quantifié",
-                couleur: "#31a354",
+                couleur: "#74c476",
                 couleurAlt: "#c7e9c0",
                 picto: null,
               },
@@ -719,7 +719,7 @@ export const availableCategories: ICategory[] = [
                 {
                   limite: 0,
                   label: "0%",
-                  couleur: "#31a354",
+                  couleur: "#74c476",
                   couleurAlt: "#c7e9c0",
                 },
                 {
@@ -773,7 +773,7 @@ export const availableCategories: ICategory[] = [
               },
               non_quantifie: {
                 label: "Non quantifié",
-                couleur: "#31a354",
+                couleur: "#74c476",
                 couleurAlt: "#c7e9c0",
                 picto: null,
               },
@@ -806,7 +806,7 @@ export const availableCategories: ICategory[] = [
                 {
                   limite: 0,
                   label: "0%",
-                  couleur: "#31a354",
+                  couleur: "#74c476",
                   couleurAlt: "#c7e9c0",
                 },
                 {
@@ -861,7 +861,7 @@ export const availableCategories: ICategory[] = [
               },
               non_quantifie: {
                 label: "Non quantifié",
-                couleur: "#31a354",
+                couleur: "#74c476",
                 couleurAlt: "#c7e9c0",
                 picto: null,
               },
@@ -894,7 +894,7 @@ export const availableCategories: ICategory[] = [
                 {
                   limite: 0,
                   label: "0%",
-                  couleur: "#31a354",
+                  couleur: "#74c476",
                   couleurAlt: "#c7e9c0",
                 },
                 {
@@ -952,7 +952,7 @@ export const availableCategories: ICategory[] = [
       inf_limite_qualite: {
         label:
           "Concentrations inférieures aux limites réglementaire (eau conforme)",
-        couleur: "#31a354",
+        couleur: "#74c476",
         couleurAlt: "#c7e9c0",
         picto: null,
       },
@@ -969,7 +969,7 @@ export const availableCategories: ICategory[] = [
       nonRechercheCouleur: "#cccccc",
       nonRechercheCouleurAlt: "#f7f7f7",
       ratioLimites: [
-        { limite: 0, label: "0%", couleur: "#31a354", couleurAlt: "#c7e9c0" },
+        { limite: 0, label: "0%", couleur: "#74c476", couleurAlt: "#c7e9c0" },
         {
           limite: 0.25,
           label: "≤ 25%",
@@ -1015,7 +1015,7 @@ export const availableCategories: ICategory[] = [
       },
       non_quantifie: {
         label: "Non quantifié",
-        couleur: "#31a354",
+        couleur: "#74c476",
         couleurAlt: "#c7e9c0",
         picto: null,
       },
@@ -1039,7 +1039,7 @@ export const availableCategories: ICategory[] = [
       nonRechercheCouleur: "#cccccc",
       nonRechercheCouleurAlt: "#f7f7f7",
       ratioLimites: [
-        { limite: 0, label: "0%", couleur: "#31a354", couleurAlt: "#c7e9c0" },
+        { limite: 0, label: "0%", couleur: "#74c476", couleurAlt: "#c7e9c0" },
         {
           limite: 0.25,
           label: "≤ 25%",
@@ -1097,7 +1097,7 @@ export const availableCategories: ICategory[] = [
           },
           non_quantifie: {
             label: "Non quantifié",
-            couleur: "#31a354",
+            couleur: "#74c476",
             couleurAlt: "#c7e9c0",
             picto: null,
           },
@@ -1123,7 +1123,7 @@ export const availableCategories: ICategory[] = [
             {
               limite: 0,
               label: "0%",
-              couleur: "#31a354",
+              couleur: "#74c476",
               couleurAlt: "#c7e9c0",
             },
             {
@@ -1174,7 +1174,7 @@ export const availableCategories: ICategory[] = [
           },
           non_quantifie: {
             label: "Non quantifié",
-            couleur: "#31a354",
+            couleur: "#74c476",
             couleurAlt: "#c7e9c0",
             picto: null,
           },
@@ -1207,7 +1207,7 @@ export const availableCategories: ICategory[] = [
             {
               limite: 0,
               label: "0%",
-              couleur: "#31a354",
+              couleur: "#74c476",
               couleurAlt: "#c7e9c0",
             },
             {
@@ -1271,7 +1271,7 @@ export const availableCategories: ICategory[] = [
           },
           non_quantifie: {
             label: "Non quantifié",
-            couleur: "#31a354",
+            couleur: "#74c476",
             couleurAlt: "#c7e9c0",
             picto: null,
           },
@@ -1305,7 +1305,7 @@ export const availableCategories: ICategory[] = [
             {
               limite: 0,
               label: "0%",
-              couleur: "#31a354",
+              couleur: "#74c476",
               couleurAlt: "#c7e9c0",
             },
             {
@@ -1358,7 +1358,7 @@ export const availableCategories: ICategory[] = [
           },
           non_quantifie: {
             label: "Non quantifié",
-            couleur: "#31a354",
+            couleur: "#74c476",
             couleurAlt: "#c7e9c0",
             picto: null,
           },
@@ -1390,7 +1390,7 @@ export const availableCategories: ICategory[] = [
             {
               limite: 0,
               label: "0%",
-              couleur: "#31a354",
+              couleur: "#74c476",
               couleurAlt: "#c7e9c0",
             },
             {

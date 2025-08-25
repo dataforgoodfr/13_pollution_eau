@@ -81,8 +81,11 @@ models:
           - not_null
           - accepted_values:
               values:
-                - inf_limite_qualite
-                - sup_limite_qualite
+                - non_quantifie
+                - sup_valeur_sanitaire
+                - inf_valeur_sanitaire
+                - no3_inf_25
+                - no3_inf_40
       - name: parametres_detectes
         description: "JSON contenant les paramètres détectés (valtraduite > 0) avec leurs valeurs correspondantes."
         type: JSON

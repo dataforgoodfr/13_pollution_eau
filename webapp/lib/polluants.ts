@@ -975,7 +975,7 @@ export const availableCategories: ICategory[] = [
       },
       sup_valeur_sanitaire: {
         label:
-          "Concentration > 50 mg/L (eau non conforme devant être déconseillée à la consommation pour les femmes enceintes et les nourrissons) ",
+          "Concentration > 50 mg/L (eau non conforme devant être déconseillée à la consommation pour les femmes enceintes et les nourrissons)",
         couleur: "#f03b20",
         couleurAlt: "#bd0026",
         picto: "red cross",

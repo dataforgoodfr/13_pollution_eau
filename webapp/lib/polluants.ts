@@ -936,7 +936,7 @@ export const availableCategories: ICategory[] = [
   },
   {
     id: "nitrate",
-    nomAffichage: "Nitrates et Nitrites",
+    nomAffichage: "Nitrates",
     disable: false,
     enfants: [],
     affichageBlocPageUDI: true,
@@ -949,16 +949,33 @@ export const availableCategories: ICategory[] = [
         couleurAlt: "#f7f7f7",
         picto: null,
       },
-      inf_limite_qualite: {
-        label:
-          "Concentrations inférieures aux limites réglementaire (eau conforme)",
+      non_quantifie: {
+        label: "Non quantifié",
         couleur: "#74c476",
         couleurAlt: "#c7e9c0",
         picto: null,
       },
-      sup_limite_qualite: {
+      no3_inf_25: {
+        label: "Concentration < 25 mg/L",
+        couleur: "#FFF33B",
+        couleurAlt: "#FFF33B",
+        picto: null,
+      },
+      no3_inf_40: {
+        label: "Concentration comprise entre 25 et 40 mg/L",
+        couleur: "#FDC70C",
+        couleurAlt: "#FDC70C",
+        picto: null,
+      },
+      inf_valeur_sanitaire: {
+        label: "Concentration comprise entre 40 et 50 mg/L",
+        couleur: "#fe9929",
+        couleurAlt: "#fe9929",
+        picto: null,
+      },
+      sup_valeur_sanitaire: {
         label:
-          "Concentrations supérieures aux limites réglementaire (eau non conforme avec recommandation de non-consommation pour les femmes enceintes et les nourrissons)",
+          "Concentration > 50 mg/L (eau non conforme devant être déconseillée à la consommation pour les femmes enceintes et les nourrissons)",
         couleur: "#f03b20",
         couleurAlt: "#bd0026",
         picto: "red cross",

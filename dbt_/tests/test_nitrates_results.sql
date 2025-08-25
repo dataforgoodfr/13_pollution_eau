@@ -11,56 +11,32 @@ FROM
 WHERE
     (
         cdreseau = '001000003'
-        AND date_dernier_prel = '2025-01-21 12:35:00'
-        AND resultat != 'inf_limite_qualite'
+        AND date_dernier_prel = '2025-05-23 09:06:00'
+        AND resultat != 'no3_inf_25'
     )
     OR
     (
-        cdreseau = '001000260'
-        AND date_dernier_prel = '2024-12-06 12:02:00'
-        AND resultat != 'inf_limite_qualite'
-    )
-    OR
-    (
-        cdreseau = '001000268'
-        AND date_dernier_prel = '2025-01-13 09:57:00'
-        AND resultat != 'inf_limite_qualite'
+        cdreseau = '037000175'
+        AND date_dernier_prel = '2025-06-17 10:02:00'
+        AND resultat != 'no3_inf_40'
     )
     OR
     (
         cdreseau = '002000060'
-        AND date_dernier_prel = '2024-10-18 08:50:00'
-        AND resultat != 'sup_limite_qualite'
+        AND date_dernier_prel = '2025-04-10 09:22:00'
+        AND resultat != 'sup_valeur_sanitaire'
     )
     OR
     (
-        cdreseau = '095000346'
-        AND date_dernier_prel = '2025-02-27 08:35:00'
-        AND resultat != 'inf_limite_qualite'
+        cdreseau = '060001271'
+        AND date_dernier_prel = '2025-04-09 13:44:00'
+        AND resultat != 'inf_valeur_sanitaire'
     )
     OR
     (
         cdreseau = '973000028'
-        AND date_dernier_prel = '2024-12-02 11:30:00'
-        AND resultat != 'inf_limite_qualite'
-    )
-    OR
-    (
-        cdreseau = '008000681'
-        AND date_dernier_prel = '2025-02-12 11:38:00'
-        AND resultat != 'sup_limite_qualite'
-    )
-    OR
-    (
-        cdreseau = '008000546'
-        AND date_dernier_prel = '2025-02-07 10:38:00'
-        AND resultat != 'sup_limite_qualite'
-    )
-    OR
-    (
-        cdreseau = '011000196'
-        AND date_dernier_prel = '2024-11-27 10:57:00'
-        AND resultat != 'inf_limite_qualite'
+        AND date_dernier_prel = '2025-05-20 10:44:00'
+        AND resultat != 'non_quantifie'
     )
 UNION ALL
 -- annuel
@@ -90,6 +66,7 @@ WHERE
         AND (
             nb_prelevements != 1
             OR nb_depassements != 0
+            OR ratio != 0
         )
     )
     OR
@@ -98,7 +75,10 @@ WHERE
         AND annee = '2024'
         AND (
             nb_prelevements != 27
-            OR nb_depassements != 27 -- depassements de N03
+            OR nb_depassements != 25
+            -- il y a 2 prélèvements = à 50 (= valeur_sanitaire_1)
+            -- comme c'est un strict > dans la requête, on a 25 et pas 27
+            OR ratio < 0.92
         )
     )
     OR
@@ -106,7 +86,7 @@ WHERE
         cdreseau = '089003503'
         AND annee = '2020'
         AND (
-            nb_prelevements != 12 -- depassements de N03 et N03_N02
+            nb_prelevements != 12
             OR nb_depassements != 3
             OR ratio != 0.25
         )
@@ -116,9 +96,9 @@ WHERE
         cdreseau = '055000713'
         AND annee = '2023'
         AND (
-            nb_prelevements != 14
-            OR nb_depassements != 6 -- depassements de N02
-            OR ratio < 0.42
+            nb_prelevements != 4
+            OR nb_depassements != 0
+            OR ratio != 0
         )
     )
     OR
@@ -127,6 +107,7 @@ WHERE
         AND annee = '2021'
         AND (
             nb_prelevements != 63
-            OR nb_depassements != 4 -- depassements de N03 et N03_N02
+            OR nb_depassements != 1
+            -- il y a 1 prélèvement = à 50 (= valeur_sanitaire_1)
         )
     )

@@ -25,7 +25,9 @@ SELECT
             'inf_limite_qualite_sup_0_1',
             'somme_20pfas_inf_0_1_et_4pfas_inf_0_02',
             'sup_limite_qualite_2036',
-            'inf_0_5'
+            'inf_0_5',
+            'no3_inf_25',
+            'no3_inf_40'
         )) THEN 'inf_limites'
 
         ELSE 'erreur'

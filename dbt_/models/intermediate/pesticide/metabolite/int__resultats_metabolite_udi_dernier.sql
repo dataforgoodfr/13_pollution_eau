@@ -6,6 +6,7 @@ last_pvl AS (
         cdparametresiseeaux,
         valtraduite,
         limite_qualite,
+        limite_indicative,
         valeur_sanitaire_1,
         datetimeprel,
         DENSE_RANK()
@@ -32,6 +33,7 @@ aggregated AS (
         cdparametresiseeaux,
         MAX(valtraduite) AS valtraduite,
         MAX(limite_qualite) AS limite_qualite,
+        MAX(limite_indicative) AS limite_indicative,
         MAX(valeur_sanitaire_1) AS valeur_sanitaire_1,
         MAX(datetimeprel) AS datetimeprel
     FROM last_pvl
@@ -54,8 +56,16 @@ SELECT
             BOOL_OR(valtraduite IS NOT NULL AND valtraduite >= limite_qualite)
             THEN 'sup_limite_qualite'
         WHEN
-            BOOL_OR(valtraduite IS NOT NULL AND valtraduite < limite_qualite)
-            THEN 'inf_limite_qualite'
+            BOOL_OR(valtraduite IS NOT NULL AND valtraduite >= limite_indicative)
+            THEN 'sup_limite_indicative'
+        WHEN
+            BOOL_OR(
+                valtraduite IS NOT NULL
+                AND (limite_qualite IS NULL OR valtraduite < limite_qualite)
+                AND (limite_indicative IS NULL OR valtraduite <= limite_indicative)
+                AND (limite_qualite IS NOT NULL OR limite_indicative IS NOT NULL)
+            )
+            THEN 'inf_limites'
         ELSE 'erreur'
     END AS resultat,
     TO_JSON(

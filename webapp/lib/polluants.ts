@@ -426,13 +426,21 @@ export const availableCategories: ICategory[] = [
           },
           inf_limite_qualite: {
             label:
-              "Au moins un métabolite quantifié mais sans dépassement de la limite réglementaire",
+              "Au moins un métabolite quantifié sans dépassement de la limite réglementaire ou indicative",
             couleur: "#FFF33B",
             couleurAlt: "#FFF33B",
             picto: null,
           },
+          sup_limite_indicative: {
+            label:
+              "Au moins un métabolite non-pertinent dépasse la limite indicative de 0,9 µg/L",
+            couleur: "#FDC70C",
+            couleurAlt: "#FDC70C",
+            picto: null,
+          },
           sup_limite_qualite: {
-            label: "Au moins un métabolite dépasse la limite réglementaire",
+            label:
+              "Au moins un métabolite pertinent dépasse la limite de qualité de 0,1 µg/L (eau non conforme)",
             couleur: "#fe9929",
             couleurAlt: "#fe9929",
             picto: "warning",

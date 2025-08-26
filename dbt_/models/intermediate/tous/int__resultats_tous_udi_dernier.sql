@@ -23,6 +23,8 @@ SELECT
             'inf_valeur_sanitaire',
             'inf_limite_qualite',
             'inf_limite_qualite_sup_0_1',
+            'sup_limite_indicative',
+            'inf_limites',
             'somme_20pfas_inf_0_1_et_4pfas_inf_0_02',
             'sup_limite_qualite_2036',
             'inf_0_5',

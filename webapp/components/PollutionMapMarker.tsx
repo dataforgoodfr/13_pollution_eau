@@ -305,6 +305,8 @@ export default function PollutionMapMarker({
     } else {
       // Rendering for "bilan_annuel"
 
+      const annee = period.split("_")[2];
+
       const ratioProp = getPropertyName(period, category, "ratio");
       const nbPrelevementsProp = getPropertyName(
         period,
@@ -371,24 +373,34 @@ export default function PollutionMapMarker({
 
           {selectedZoneData[nbPrelevementsProp] &&
             Number(selectedZoneData[nbPrelevementsProp]) > 0 && (
-              <>
-                <p className="">
-                  {Number(selectedZoneData[nbPrelevementsProp]) === 1
-                    ? "1 analyse dans l'année"
-                    : `${selectedZoneData[nbPrelevementsProp]} analyses dans l'année`}
-                </p>
+              <p>
+                {Number(selectedZoneData[nbPrelevementsProp]) === 1
+                  ? `1 analyse en ${annee}`
+                  : `${selectedZoneData[nbPrelevementsProp]} analyses en ${annee}`}
+
+                {selectedZoneData[ratioProp] !== null &&
+                  selectedZoneData[ratioProp] !== undefined && (
+                    <>
+                      <br />
+                      {Math.round(
+                        Number(selectedZoneData[ratioProp]) *
+                          Number(selectedZoneData[nbPrelevementsProp]),
+                      )}{" "}
+                      sont {categoryDetails?.resultatsAnnuels?.ratioLabel}
+                    </>
+                  )}
 
                 {categoryDetails?.resultatsAnnuels &&
                   "valeurSanitaireLabel" in categoryDetails.resultatsAnnuels &&
                   selectedZoneData[nbSupValeurSanitaireProp] !== null &&
                   selectedZoneData[nbSupValeurSanitaireProp] !== undefined && (
-                    <p className="">
-                      {Number(selectedZoneData[nbSupValeurSanitaireProp]) > 0
-                        ? `${selectedZoneData[nbSupValeurSanitaireProp]} analyses avec des valeurs supérieures à la valeur sanitaire`
-                        : "Aucune analyse avec des valeurs supérieures à la valeur sanitaire"}
-                    </p>
+                    <>
+                      <br />
+                      {selectedZoneData[nbSupValeurSanitaireProp]} dépassent la
+                      limite sanitaire
+                    </>
                   )}
-              </>
+              </p>
             )}
         </>
       );

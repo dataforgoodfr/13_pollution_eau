@@ -226,7 +226,7 @@ export default function PollutionMapLegend({
               <LegendItem
                 key={item.couleur + item.label}
                 color={colorblindMode ? item.couleurAlt : item.couleur}
-                label={`${item.label} ${categoryDetails.resultatsAnnuels?.ratioLabel}`}
+                label={`${item.label} des ${categoryDetails.resultatsAnnuels?.ratioLabelPlural}`}
                 count={stats.count}
                 percentage={stats.percentage}
               />

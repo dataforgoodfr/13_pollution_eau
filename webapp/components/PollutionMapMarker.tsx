@@ -353,7 +353,7 @@ export default function PollutionMapMarker({
           for (const limit of ratioLimits) {
             if (Number(ratioValue) <= limit.limite) {
               resultColor = colorblindMode ? limit.couleurAlt : limit.couleur;
-              resultLabel = `${(Number(ratioValue) * 100).toFixed(0)}% ${categoryDetails?.resultatsAnnuels?.ratioLabel}`;
+              resultLabel = `${(Number(ratioValue) * 100).toFixed(0)}% des ${categoryDetails?.resultatsAnnuels?.ratioLabelPlural}`;
               break;
             }
           }
@@ -375,8 +375,8 @@ export default function PollutionMapMarker({
             Number(selectedZoneData[nbPrelevementsProp]) > 0 && (
               <p>
                 {Number(selectedZoneData[nbPrelevementsProp]) === 1
-                  ? `1 analyse en ${annee}`
-                  : `${selectedZoneData[nbPrelevementsProp]} analyses en ${annee}`}
+                  ? `1 analyse au total en ${annee}`
+                  : `${selectedZoneData[nbPrelevementsProp]} analyses au total en ${annee}`}
 
                 {selectedZoneData[ratioProp] !== null &&
                   selectedZoneData[ratioProp] !== undefined && (
@@ -386,7 +386,12 @@ export default function PollutionMapMarker({
                         Number(selectedZoneData[ratioProp]) *
                           Number(selectedZoneData[nbPrelevementsProp]),
                       )}{" "}
-                      sont {categoryDetails?.resultatsAnnuels?.ratioLabel}
+                      {Math.round(
+                        Number(selectedZoneData[ratioProp]) *
+                          Number(selectedZoneData[nbPrelevementsProp]),
+                      ) > 1
+                        ? categoryDetails?.resultatsAnnuels?.ratioLabelPlural
+                        : categoryDetails?.resultatsAnnuels?.ratioLabelSingular}
                     </>
                   )}
 
@@ -396,8 +401,11 @@ export default function PollutionMapMarker({
                   selectedZoneData[nbSupValeurSanitaireProp] !== undefined && (
                     <>
                       <br />
-                      {selectedZoneData[nbSupValeurSanitaireProp]} dépassent la
-                      limite sanitaire
+                      {selectedZoneData[nbSupValeurSanitaireProp]}
+                      {Number(selectedZoneData[nbSupValeurSanitaireProp]) > 1
+                        ? " analyses dépassent "
+                        : " analyse dépasse "}
+                      la limite sanitaire
                     </>
                   )}
               </p>

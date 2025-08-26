@@ -31,7 +31,8 @@ interface ResultatsAnnuels {
   nonRechercheCouleur: string;
   nonRechercheCouleurAlt: string;
   ratioLimites: RatioLimite[];
-  ratioLabel: string;
+  ratioLabelSingular: string;
+  ratioLabelPlural: string;
   valeurSanitaire: boolean;
   valeurSanitaireLabel?: string;
   valeurSanitaireCouleur?: string;
@@ -130,7 +131,8 @@ export const availableCategories: ICategory[] = [
           couleurAlt: "#d94801",
         },
       ],
-      ratioLabel: "des analyses non conformes",
+      ratioLabelSingular: "analyse non conforme",
+      ratioLabelPlural: "analyses non conformes",
       valeurSanitaire: true,
       valeurSanitaireLabel:
         "Au moins 1 dépassement de valeur sanitaire au cours de l'année",
@@ -222,7 +224,8 @@ export const availableCategories: ICategory[] = [
           couleurAlt: "#d94801",
         },
       ],
-      ratioLabel: "des analyses non conformes",
+      ratioLabelSingular: "analyse non conforme",
+      ratioLabelPlural: "analyses non conformes",
       valeurSanitaire: true,
       valeurSanitaireLabel:
         "Au moins 1 dépassement de valeur sanitaire au cours de l'année",
@@ -302,7 +305,8 @@ export const availableCategories: ICategory[] = [
           couleurAlt: "#d94801",
         },
       ],
-      ratioLabel: "des analyses non conformes",
+      ratioLabelSingular: "analyse non conforme",
+      ratioLabelPlural: "analyses non conformes",
       valeurSanitaire: true,
       valeurSanitaireLabel:
         "Au moins 1 dépassement de valeur sanitaire au cours de l'année",
@@ -390,7 +394,8 @@ export const availableCategories: ICategory[] = [
               couleurAlt: "#d94801",
             },
           ],
-          ratioLabel: "des analyses non conformes",
+          ratioLabelSingular: "analyse non conforme",
+          ratioLabelPlural: "analyses non conformes",
           valeurSanitaire: true,
           valeurSanitaireLabel:
             "Au moins 1 dépassement de valeur sanitaire au cours de l'année",
@@ -475,7 +480,8 @@ export const availableCategories: ICategory[] = [
               couleurAlt: "#d94801",
             },
           ],
-          ratioLabel: "des analyses non conformes",
+          ratioLabelSingular: "analyse non conforme",
+          ratioLabelPlural: "analyses non conformes",
           valeurSanitaire: true,
           valeurSanitaireLabel:
             "Au moins 1 dépassement de valeur sanitaire au cours de l'année",
@@ -569,7 +575,8 @@ export const availableCategories: ICategory[] = [
                   couleurAlt: "#d94801",
                 },
               ],
-              ratioLabel: "des analyses non conformes",
+              ratioLabelSingular: "analyse non conforme",
+              ratioLabelPlural: "analyses non conformes",
               valeurSanitaire: true,
               valeurSanitaireLabel:
                 "Au moins 1 dépassement de valeur sanitaire au cours de l'année",
@@ -663,7 +670,8 @@ export const availableCategories: ICategory[] = [
                   couleurAlt: "#d94801",
                 },
               ],
-              ratioLabel: "des analyses non conformes",
+              ratioLabelSingular: "analyse non conforme",
+              ratioLabelPlural: "analyses non conformes",
               valeurSanitaire: true,
               valeurSanitaireLabel:
                 "Au moins 1 dépassement de valeur sanitaire au cours de l'année",
@@ -751,7 +759,8 @@ export const availableCategories: ICategory[] = [
                   couleurAlt: "#d94801",
                 },
               ],
-              ratioLabel: "des analyses non conformes",
+              ratioLabelSingular: "analyse non conforme",
+              ratioLabelPlural: "analyses non conformes",
               valeurSanitaire: true,
               valeurSanitaireLabel:
                 "Au moins 1 dépassement de valeur sanitaire au cours de l'année",
@@ -838,7 +847,8 @@ export const availableCategories: ICategory[] = [
                   couleurAlt: "#d94801",
                 },
               ],
-              ratioLabel: "des analyses non conformes",
+              ratioLabelSingular: "analyse non conforme",
+              ratioLabelPlural: "analyses non conformes",
               valeurSanitaire: true,
               valeurSanitaireLabel:
                 "Au moins 1 dépassement de valeur sanitaire au cours de l'année",
@@ -926,7 +936,8 @@ export const availableCategories: ICategory[] = [
                   couleurAlt: "#d94801",
                 },
               ],
-              ratioLabel: "des analyses non conformes",
+              ratioLabelSingular: "analyse non conforme",
+              ratioLabelPlural: "analyses non conformes",
               valeurSanitaire: true,
               valeurSanitaireLabel:
                 "Au moins 1 dépassement de valeur sanitaire au cours de l'année",
@@ -1017,7 +1028,8 @@ export const availableCategories: ICategory[] = [
           couleurAlt: "#cb181d",
         },
       ],
-      ratioLabel: "des analyses non conformes",
+      ratioLabelSingular: "analyse non conforme",
+      ratioLabelPlural: "analyses non conformes",
       valeurSanitaire: false,
     },
   },
@@ -1088,7 +1100,8 @@ export const availableCategories: ICategory[] = [
           couleurAlt: "#d94801",
         },
       ],
-      ratioLabel: "des analyses non conformes",
+      ratioLabelSingular: "analyse non conforme",
+      ratioLabelPlural: "analyses non conformes",
       valeurSanitaire: false,
     },
   },
@@ -1174,7 +1187,8 @@ export const availableCategories: ICategory[] = [
               couleurAlt: "#d94801",
             },
           ],
-          ratioLabel: "des analyses non conformes",
+          ratioLabelSingular: "analyse non conforme",
+          ratioLabelPlural: "analyses non conformes",
           valeurSanitaire: false,
         },
       },
@@ -1258,7 +1272,8 @@ export const availableCategories: ICategory[] = [
               couleurAlt: "#d94801",
             },
           ],
-          ratioLabel: "des analyses non conformes",
+          ratioLabelSingular: "analyse non conforme",
+          ratioLabelPlural: "analyses non conformes",
           valeurSanitaire: false,
         },
       },
@@ -1356,7 +1371,8 @@ export const availableCategories: ICategory[] = [
               couleurAlt: "#d94801",
             },
           ],
-          ratioLabel: "des analyses non conformes",
+          ratioLabelSingular: "analyse non conforme",
+          ratioLabelPlural: "analyses non conformes",
           valeurSanitaire: false,
         },
       },
@@ -1441,7 +1457,8 @@ export const availableCategories: ICategory[] = [
               couleurAlt: "#d94801",
             },
           ],
-          ratioLabel: "des analyses non conformes",
+          ratioLabelSingular: "analyse non conforme",
+          ratioLabelPlural: "analyses non conformes",
           valeurSanitaire: false,
         },
       },

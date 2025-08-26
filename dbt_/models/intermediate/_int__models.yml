@@ -237,6 +237,10 @@ models:
         description: "Limite de qualité selon le fichier de référence de Générations Futures."
         type: FLOAT
 
+      - name: limite_indicative
+        description: "Limite indicative selon le fichier de référence de Générations Futures."
+        type: FLOAT
+
       - name: valeur_sanitaire_1
         description: "Valeur sanitaire de référence selon le fichier de référence de Générations Futures."
         type: FLOAT

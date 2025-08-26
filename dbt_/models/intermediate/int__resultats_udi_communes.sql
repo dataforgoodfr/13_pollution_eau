@@ -42,6 +42,7 @@ resultats_with_ref AS (
         r.categorie_2,
         r.categorie_3,
         r.limite_qualite,
+        r.limite_indicative,
         r.valeur_sanitaire_1,
         r.valeur_sanitaire_2
     FROM

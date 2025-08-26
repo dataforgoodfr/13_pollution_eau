@@ -5,6 +5,8 @@ SELECT
     MAX(categorie_3) AS categorie_3,
     MAX(limite_qualite) AS limite_qualite,
     MAX(limite_qualite_unite) AS limite_qualite_unite,
+    MAX(limite_indicative) AS limite_indicative,
+    MAX(limite_indicative_unite) AS limite_indicative_unite,
     MAX(valeur_sanitaire_1) AS valeur_sanitaire_1,
     MAX(valeur_sanitaire_1_unite) AS valeur_sanitaire_1_unite,
     MAX(valeur_sanitaire_2) AS valeur_sanitaire_2,

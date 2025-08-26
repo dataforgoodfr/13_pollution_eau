@@ -2,6 +2,10 @@ version: 2
 
 seeds:
   - name: references_generations_futures
+    config:
+      quote_char: '"'
+      delimiter: ","
+      full_refresh: true
     description: "Table de référence fournie par Générations Futures"
     columns:
       - name: cdparametresiseeaux
@@ -45,6 +49,13 @@ seeds:
         description: "Unité de la limite de qualité"
       - name: limite_qualite_commentaire
         description: "Commentaire sur la limite de qualité"
+      - name: limite_indicative
+        description: "Limite indicative du paramètre"
+        tests:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: double
+      - name: limite_indicative_unite
+        description: "Unité de la limite indicative"
       - name: valeur_sanitaire_1
         description: "Valeur sanitaire"
         tests:

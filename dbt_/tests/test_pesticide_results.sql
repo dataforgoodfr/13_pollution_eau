@@ -16,7 +16,7 @@ WHERE
     OR
     (
         cdreseau = '061000423'
-        AND date_dernier_prel = TIMESTAMP '2025-03-13 08:44:00'
+        AND date_dernier_prel = TIMESTAMP '2025-06-16 12:30:00'
         AND resultat != 'sup_valeur_sanitaire'
     )
     OR
@@ -29,6 +29,12 @@ WHERE
     (
         cdreseau = '089000445'
         AND date_dernier_prel = TIMESTAMP '2025-03-28 09:19:00'
+        AND resultat != 'sup_valeur_sanitaire'
+    )
+    OR
+    (
+        cdreseau = '034000996'
+        AND date_dernier_prel = TIMESTAMP '2025-06-20 09:27:00'
         AND resultat != 'sup_limite_qualite'
     )
 -- annuel udi
@@ -59,7 +65,7 @@ WHERE
         AND (
             nb_prelevements != 12
             OR nb_depassements != 12
-            OR nb_sup_valeur_sanitaire != 0
+            OR nb_sup_valeur_sanitaire != 12
             OR ratio_limite_qualite != 1.0
         )
     )
@@ -70,7 +76,7 @@ WHERE
         AND (
             nb_prelevements != 13
             OR nb_depassements != 13
-            OR nb_sup_valeur_sanitaire != 0
+            OR nb_sup_valeur_sanitaire != 4
             OR ratio_limite_qualite != 1.0
         )
     )

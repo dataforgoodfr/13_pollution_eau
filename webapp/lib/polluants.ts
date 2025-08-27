@@ -424,7 +424,7 @@ export const availableCategories: ICategory[] = [
             couleurAlt: "#c7e9c0",
             picto: null,
           },
-          inf_limite_qualite: {
+          inf_limites: {
             label:
               "Au moins un métabolite quantifié sans dépassement de la limite réglementaire ou indicative",
             couleur: "#FFF33B",
@@ -543,8 +543,8 @@ export const availableCategories: ICategory[] = [
               sup_valeur_sanitaire: {
                 label:
                   "Concentration > 3 µg/L (dépassement de la valeur sanitaire)",
-                couleur: "#d95f0e",
-                couleurAlt: "#d95f0e",
+                couleur: "#f03b20",
+                couleurAlt: "#bd0026",
                 picto: "warning",
               },
             },
@@ -639,8 +639,8 @@ export const availableCategories: ICategory[] = [
               sup_valeur_sanitaire: {
                 label:
                   "Concentration > 3 µg/L (dépassement de la valeur sanitaire)",
-                couleur: "#d95f0e",
-                couleurAlt: "#d95f0e",
+                couleur: "#f03b20",
+                couleurAlt: "#bd0026",
                 picto: "warning",
               },
             },

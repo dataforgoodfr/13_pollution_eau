@@ -1500,7 +1500,7 @@ export function getCategoryById(
   return undefined;
 }
 
-// Helper function to get all enabled categories recursively
+// Helper function to get all enabled categories recursively, excluding "tous"
 export const getAllEnabledCategories = (
   categories: ICategory[] = availableCategories,
 ): ICategory[] => {
@@ -1509,11 +1509,11 @@ export const getAllEnabledCategories = (
   for (const category of categories) {
     if (!category.disable && category.id !== "tous") {
       result.push(category);
+    }
 
-      // Recursively add children
-      if (category.enfants && category.enfants.length > 0) {
-        result.push(...getAllEnabledCategories(category.enfants));
-      }
+    // Recursively add children
+    if (category.enfants && category.enfants.length > 0) {
+      result.push(...getAllEnabledCategories(category.enfants));
     }
   }
 

@@ -69,8 +69,8 @@ WHERE
         AND annee = 2024
         AND (
             nb_prelevements != 4
-            OR nb_depassements != 2
+            OR nb_depassements != 1
             OR nb_sup_valeur_sanitaire != 1
-            OR ratio_limite_qualite != 0.5
+            OR ratio_limite_qualite != 0.25
         )
     )

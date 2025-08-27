@@ -46,14 +46,17 @@ SELECT
     CASE
         WHEN BOOL_AND(valtraduite IS NULL OR valtraduite = 0) THEN 'non_quantifie'
         WHEN
-            BOOL_OR(valtraduite IS NOT NULL AND valtraduite >= valeur_sanitaire_1)
+            BOOL_OR(valtraduite >= valeur_sanitaire_1)
             THEN 'sup_valeur_sanitaire'
         WHEN
-            BOOL_OR(valtraduite IS NOT NULL AND valtraduite >= limite_qualite)
+            BOOL_OR(valtraduite >= limite_qualite)
             THEN 'sup_limite_qualite'
         WHEN
-            BOOL_OR(valtraduite IS NOT NULL AND valtraduite < limite_qualite)
-            THEN 'inf_limite_qualite'
+            BOOL_OR(
+                (limite_qualite IS NOT NULL AND valtraduite < limite_qualite)
+                OR (valeur_sanitaire_1 IS NOT NULL AND valtraduite < valeur_sanitaire_1)
+            )
+            THEN 'inf_limite_qualite' -- TODO: rename to 'inf_limites' ?
         ELSE 'erreur'
     END AS resultat,
     TO_JSON(

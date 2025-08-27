@@ -14,15 +14,16 @@ SELECT
         WHEN BOOL_OR(resultat IN (
             'somme_20pfas_sup_0_1',
             'somme_20pfas_inf_0_1_et_4pfas_sup_0_02',
-            'sup_limite_qualite',
-            'sup_limite_qualite_sup_3'
+            'sup_limite_qualite'
         )) THEN 'sup_limite_qualite'
 
         WHEN BOOL_AND(resultat IN (
             'non_quantifie',
             'inf_valeur_sanitaire',
             'inf_limite_qualite',
-            'inf_limite_qualite_sup_0_1',
+            'inf_limites_sup_0_1',
+            'sup_limite_indicative',
+            'inf_limites',
             'somme_20pfas_inf_0_1_et_4pfas_inf_0_02',
             'sup_limite_qualite_2036',
             'inf_0_5',

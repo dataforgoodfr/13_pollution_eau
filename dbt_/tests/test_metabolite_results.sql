@@ -10,26 +10,26 @@ FROM
 WHERE
     (
         cdreseau = '079000210'
-        AND date_dernier_prel = TIMESTAMP '2025-03-25 08:19:00'
+        AND date_dernier_prel = TIMESTAMP '2025-06-17 08:15:00'
         AND resultat != 'sup_valeur_sanitaire'
     )
     OR
     (
         cdreseau = '051000766'
-        AND date_dernier_prel = TIMESTAMP '2025-03-31 10:15:00'
+        AND date_dernier_prel = TIMESTAMP '2025-04-29 12:07:00'
         AND resultat != 'sup_limite_qualite'
     )
     OR
     (
-        cdreseau = '076000522'
-        AND date_dernier_prel = TIMESTAMP '2025-03-25 12:50:00'
-        AND resultat != 'sup_limite_qualite'
+        cdreseau = '010000150'
+        AND date_dernier_prel = TIMESTAMP '2025-06-20 10:46:00'
+        AND resultat != 'sup_limite_indicative'
     )
     OR
     (
         cdreseau = '051000773'
         AND date_dernier_prel = TIMESTAMP '2025-03-28 10:28:00'
-        AND resultat != 'inf_limite_qualite'
+        AND resultat != 'inf_limites'
     )
     OR
     (
@@ -60,10 +60,9 @@ WHERE
         AND annee = 2024
         AND (
             nb_prelevements != 20
-            OR nb_depassements != 11
-            OR nb_sup_valeur_sanitaire != 0
-            OR ratio_limite_qualite < 0.55
-            OR ratio_limite_qualite > 0.56
+            OR nb_depassements != 0
+            OR nb_sup_valeur_sanitaire != 11
+            OR ratio_limite_qualite != 0
         )
     )
     OR
@@ -72,9 +71,9 @@ WHERE
         AND annee = 2024
         AND (
             nb_prelevements != 4
-            OR nb_depassements != 4
-            OR nb_sup_valeur_sanitaire != 0
-            OR ratio_limite_qualite != 1
+            OR nb_depassements != 3
+            OR nb_sup_valeur_sanitaire != 1
+            OR ratio_limite_qualite != 0.75
         )
     )
     OR

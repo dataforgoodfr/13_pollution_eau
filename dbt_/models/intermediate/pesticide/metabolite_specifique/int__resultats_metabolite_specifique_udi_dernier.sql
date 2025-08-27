@@ -55,20 +55,20 @@ SELECT
     CASE
         WHEN valtraduite = 0 OR valtraduite IS null THEN 'non_quantifie'
         WHEN valtraduite >= valeur_sanitaire_1 THEN 'sup_valeur_sanitaire'
-        -- On applique le seuil de 3µg/l uniquement pour le ESA-métolachlore et le R471811
-        WHEN
-            type_metabolite IN ('metabolite_esa_metolachlore', 'metabolite_chlorothalonil_r471811')
-            AND valtraduite >= 3
-            THEN 'sup_limite_qualite_sup_3'
         WHEN valtraduite >= limite_qualite THEN 'sup_limite_qualite'
+        WHEN valtraduite >= limite_indicative THEN 'sup_limite_indicative'
         -- On applique le seuil de 0.1µg/l uniquement pour le ESA-métolachlore et le R471811
         WHEN
             valtraduite >= 0.1
             AND type_metabolite IN (
                 'metabolite_esa_metolachlore', 'metabolite_chlorothalonil_r471811'
             )
-            THEN 'inf_limite_qualite_sup_0_1'
-        WHEN valtraduite < limite_qualite THEN 'inf_limite_qualite'
+            THEN 'inf_limites_sup_0_1'
+        WHEN
+            (limite_indicative IS null AND valtraduite < limite_qualite)
+            OR
+            (limite_qualite IS null AND valtraduite < limite_indicative)
+            THEN 'inf_limites'
         ELSE 'erreur'
     END AS resultat,
     JSON_OBJECT(CASE WHEN valtraduite > 0 THEN cdparametresiseeaux END, valtraduite)

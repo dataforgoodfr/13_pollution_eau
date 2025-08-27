@@ -88,7 +88,8 @@ models:
           - accepted_values:
               values:
                 - "non_quantifie"
-                - "inf_limite_qualite"
+                - "inf_limites"
+                - "sup_limite_indicative"
                 - "sup_limite_qualite"
                 - "sup_valeur_sanitaire"
       - name: parametres_detectes

@@ -27,7 +27,7 @@ WHERE
         cdreseau = '001000277'
         AND categorie = 'metabolite_atrazine_desethyl'
         AND date_dernier_prel = TIMESTAMP '2025-01-22 11:24:00'
-        AND resultat != 'inf_limite_qualite'
+        AND resultat != 'inf_limites'
     )
     OR
     (
@@ -45,24 +45,24 @@ WHERE
     )
     OR
     (
-        cdreseau = '001000589'
+        cdreseau = '002000557'
         AND categorie = 'metabolite_chlorothalonil_r471811'
-        AND date_dernier_prel = TIMESTAMP '2025-02-12 11:17:00'
-        AND resultat != 'inf_limite_qualite_sup_0_1'
+        AND date_dernier_prel = TIMESTAMP '2025-02-20 13:53:00'
+        AND resultat != 'inf_limites_sup_0_1'
     )
     OR
     (
         cdreseau = '001000589'
         AND categorie = 'metabolite_esa_metolachlore'
-        AND date_dernier_prel = TIMESTAMP '2025-02-12 11:17:00'
-        AND resultat != 'sup_limite_qualite'
+        AND date_dernier_prel = TIMESTAMP '2025-04-28 11:39:00'
+        AND resultat != 'sup_limite_indicative'
     )
     OR
     (
         cdreseau = '002000074'
         AND categorie = 'metabolite_chlorothalonil_r471811'
         AND date_dernier_prel = TIMESTAMP '2025-04-09 09:02:00'
-        AND resultat != 'sup_limite_qualite_sup_3'
+        AND resultat != 'sup_valeur_sanitaire'
     )
 -- annuel udi
 UNION ALL
@@ -118,9 +118,9 @@ WHERE
         AND annee = 2024
         AND (
             nb_prelevements != 4
-            OR nb_depassements != 4
+            OR nb_depassements != 0
             OR nb_sup_valeur_sanitaire != 0
-            OR ratio_limite_qualite != 1.0
+            OR ratio_limite_qualite != 0.0
         )
     )
     OR
@@ -130,9 +130,9 @@ WHERE
         AND annee = 2024
         AND (
             nb_prelevements != 4
-            OR nb_depassements != 2
-            OR nb_sup_valeur_sanitaire != 0
-            OR ratio_limite_qualite != 0.5
+            OR nb_depassements != 0
+            OR nb_sup_valeur_sanitaire != 2
+            OR ratio_limite_qualite != 0.0
         )
     )
     OR
@@ -145,5 +145,17 @@ WHERE
             OR nb_depassements != 19
             OR nb_sup_valeur_sanitaire != 4
             OR ratio_limite_qualite != 1.0
+        )
+    )
+    OR
+    (
+        cdreseau = '080001050'
+        AND categorie = 'metabolite_atrazine_desethyl'
+        AND annee = 2022
+        AND (
+            nb_prelevements != 4
+            OR nb_depassements != 3
+            OR nb_sup_valeur_sanitaire != 0
+            OR ratio_limite_qualite != 0.75
         )
     )

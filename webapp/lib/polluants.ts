@@ -426,13 +426,21 @@ export const availableCategories: ICategory[] = [
           },
           inf_limite_qualite: {
             label:
-              "Au moins un métabolite quantifié mais sans dépassement de la limite réglementaire",
+              "Au moins un métabolite quantifié sans dépassement de la limite réglementaire ou indicative",
             couleur: "#FFF33B",
             couleurAlt: "#FFF33B",
             picto: null,
           },
+          sup_limite_indicative: {
+            label:
+              "Au moins un métabolite non-pertinent dépasse la limite indicative de 0,9 µg/L",
+            couleur: "#FDC70C",
+            couleurAlt: "#FDC70C",
+            picto: null,
+          },
           sup_limite_qualite: {
-            label: "Au moins un métabolite dépasse la limite réglementaire",
+            label:
+              "Au moins un métabolite pertinent dépasse la limite de qualité de 0,1 µg/L (eau non conforme)",
             couleur: "#fe9929",
             couleurAlt: "#fe9929",
             picto: "warning",
@@ -513,27 +521,28 @@ export const availableCategories: ICategory[] = [
                 couleurAlt: "#c7e9c0",
                 picto: null,
               },
-              inf_limite_qualite: {
+              inf_limites: {
                 label: "Concentration < 0,1 µg/L",
                 couleur: "#FFF33B",
                 couleurAlt: "#FFF33B",
                 picto: null,
               },
-              inf_limite_qualite_sup_0_1: {
+              inf_limites_sup_0_1: {
                 label: "Concentration comprise entre 0,1 et 0,9 µg/L*",
                 couleur: "#FDC70C",
                 couleurAlt: "#FDC70C",
                 picto: null,
               },
-              sup_limite_qualite: {
+              sup_limite_indicative: {
                 label:
-                  "Concentration > 0,9 µg/L (eau non conforme à la limite réglementaire)",
+                  "Concentration > 0,9 µg/L (dépassement de la limite indicative)",
                 couleur: "#fe9929",
                 couleurAlt: "#fe9929",
                 picto: "warning",
               },
-              sup_limite_qualite_sup_3: {
-                label: "Concentration > 3 µg/L",
+              sup_valeur_sanitaire: {
+                label:
+                  "Concentration > 3 µg/L (dépassement de la valeur sanitaire)",
                 couleur: "#d95f0e",
                 couleurAlt: "#d95f0e",
                 picto: "warning",
@@ -608,27 +617,28 @@ export const availableCategories: ICategory[] = [
                 couleurAlt: "#c7e9c0",
                 picto: null,
               },
-              inf_limite_qualite: {
+              inf_limites: {
                 label: "Concentration < 0,1 µg/L",
                 couleur: "#FFF33B",
                 couleurAlt: "#FFF33B",
                 picto: null,
               },
-              inf_limite_qualite_sup_0_1: {
+              inf_limites_sup_0_1: {
                 label: "Concentration comprise entre 0,1 et 0,9 µg/L*",
                 couleur: "#FDC70C",
                 couleurAlt: "#FDC70C",
                 picto: null,
               },
-              sup_limite_qualite: {
+              sup_limite_indicative: {
                 label:
-                  "Concentration > 0,9 µg/L (eau non conforme à la limite réglementaire)",
+                  "Concentration > 0,9 µg/L (dépassement de la limite indicative)",
                 couleur: "#fe9929",
                 couleurAlt: "#fe9929",
                 picto: "warning",
               },
-              sup_limite_qualite_sup_3: {
-                label: "Concentration > 3 µg/L",
+              sup_valeur_sanitaire: {
+                label:
+                  "Concentration > 3 µg/L (dépassement de la valeur sanitaire)",
                 couleur: "#d95f0e",
                 couleurAlt: "#d95f0e",
                 picto: "warning",
@@ -702,7 +712,7 @@ export const availableCategories: ICategory[] = [
                 couleurAlt: "#c7e9c0",
                 picto: null,
               },
-              inf_limite_qualite: {
+              inf_limites: {
                 label: "Concentration < 0,1 µg/L",
                 couleur: "#FFF33B",
                 couleurAlt: "#FFF33B",
@@ -710,7 +720,7 @@ export const availableCategories: ICategory[] = [
               },
               sup_limite_qualite: {
                 label:
-                  "Concentration > 0,1 µg/L (eau non conforme à la limite réglementaire)",
+                  "Concentration > 0,1 µg/L (dépassement de la limite de qualité, eau non conforme)",
                 couleur: "#fe9929",
                 couleurAlt: "#fe9929",
                 picto: "warning",
@@ -790,7 +800,7 @@ export const availableCategories: ICategory[] = [
                 couleurAlt: "#c7e9c0",
                 picto: null,
               },
-              inf_limite_qualite: {
+              inf_limites: {
                 label: "Concentration < 0,1 µg/L",
                 couleur: "#FFF33B",
                 couleurAlt: "#FFF33B",
@@ -798,7 +808,7 @@ export const availableCategories: ICategory[] = [
               },
               sup_limite_qualite: {
                 label:
-                  "Concentration > 0,1 µg/L (eau non conforme à la limite réglementaire)",
+                  "Concentration > 0, 1 µg/L (dépassement de la limite de qualité, eau non conforme)",
                 couleur: "#fe9929",
                 couleurAlt: "#fe9929",
                 picto: "warning",
@@ -879,7 +889,7 @@ export const availableCategories: ICategory[] = [
                 couleurAlt: "#c7e9c0",
                 picto: null,
               },
-              inf_limite_qualite: {
+              inf_limites: {
                 label: "Concentration < 0,1 µg/L",
                 couleur: "#FFF33B",
                 couleurAlt: "#FFF33B",
@@ -887,7 +897,7 @@ export const availableCategories: ICategory[] = [
               },
               sup_limite_qualite: {
                 label:
-                  "Concentration > 0,1 µg/L (eau non conforme à la limite réglementaire)",
+                  "Concentration > 0,1 µg/L (dépassement de la limite de qualité, eau non conforme)",
                 couleur: "#fe9929",
                 couleurAlt: "#fe9929",
                 picto: "warning",
@@ -1490,7 +1500,7 @@ export function getCategoryById(
   return undefined;
 }
 
-// Helper function to get all enabled categories recursively
+// Helper function to get all enabled categories recursively, excluding "tous"
 export const getAllEnabledCategories = (
   categories: ICategory[] = availableCategories,
 ): ICategory[] => {
@@ -1499,11 +1509,11 @@ export const getAllEnabledCategories = (
   for (const category of categories) {
     if (!category.disable && category.id !== "tous") {
       result.push(category);
+    }
 
-      // Recursively add children
-      if (category.enfants && category.enfants.length > 0) {
-        result.push(...getAllEnabledCategories(category.enfants));
-      }
+    // Recursively add children
+    if (category.enfants && category.enfants.length > 0) {
+      result.push(...getAllEnabledCategories(category.enfants));
     }
   }
 

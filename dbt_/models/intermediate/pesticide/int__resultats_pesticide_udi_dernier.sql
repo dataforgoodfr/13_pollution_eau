@@ -4,6 +4,8 @@ last_pvl AS (
         cdreseau,
         categorie,
         cdparametresiseeaux,
+        categorie_2,
+        categorie_3,
         valtraduite,
         limite_qualite,
         valeur_sanitaire_1,
@@ -28,13 +30,35 @@ aggregated AS (
     SELECT
         cdreseau,
         cdparametresiseeaux,
+        categorie_2,
+        categorie_3,
         MAX(valtraduite) AS valtraduite,
         MAX(limite_qualite) AS limite_qualite,
         MAX(valeur_sanitaire_1) AS valeur_sanitaire_1,
         MAX(datetimeprel) AS datetimeprel
     FROM last_pvl
     WHERE row_number = 1
-    GROUP BY cdreseau, cdparametresiseeaux
+    GROUP BY cdreseau, cdparametresiseeaux, categorie_2, categorie_3
+),
+
+-- ajout d'une colonne total pesticide (somme des substances actives + métabolites pertinents)
+with_total_pesticide AS (
+    SELECT
+        *,
+        SUM(
+            CASE
+                WHEN
+                    (
+                        categorie_2 = 'sub_active'
+                        OR (categorie_2 = 'metabolite' AND categorie_3 = 'pertinent_par_defaut')
+                        OR (categorie_2 = 'metabolite' AND categorie_3 = 'pertinent')
+                    )
+                    AND valtraduite IS NOT NULL
+                    THEN valtraduite
+                ELSE 0
+            END
+        ) OVER (PARTITION BY cdreseau) AS total_pesticide
+    FROM aggregated
 )
 
 SELECT
@@ -50,6 +74,7 @@ SELECT
             THEN 'sup_valeur_sanitaire'
         WHEN
             BOOL_OR(valtraduite >= limite_qualite)
+            OR MAX(total_pesticide) > 0.5
             THEN 'sup_limite_qualite'
         WHEN
             BOOL_OR(
@@ -65,14 +90,14 @@ SELECT
                 cdparametresiseeaux
                 ORDER BY cdparametresiseeaux
             ) FILTER (WHERE valtraduite > 0
-            ),
+            ) || ['TOTALPESTICIDE'],
             LIST(
                 valtraduite
                 ORDER BY cdparametresiseeaux
             ) FILTER (WHERE valtraduite > 0
-            )
+            ) || [MAX(total_pesticide)]
         )
     ) AS parametres_detectes
 
-FROM aggregated
+FROM with_total_pesticide
 GROUP BY cdreseau

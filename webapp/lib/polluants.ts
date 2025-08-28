@@ -174,14 +174,14 @@ export const availableCategories: ICategory[] = [
       },
       somme_20pfas_inf_0_1_et_4pfas_sup_0_02: {
         label:
-          "La somme des 4 PFAS (PFOA, PFOS, PFNA, PFHxS) > 0,02 µg/L* mais la somme des 20 PFAS < 0,1 µg/L**",
+          "La somme des 4 PFAS (PFOA, PFOS, PFNA, PFHxS) ≥ 0,02 µg/L* mais la somme des 20 PFAS < 0,1 µg/L**",
         couleur: "#FDC70C",
         couleurAlt: "#FDC70C",
         picto: null,
       },
       somme_20pfas_sup_0_1: {
         label:
-          "Somme des 20 PFAS > 0,1 µg/L (eau non conforme à la limite réglementaire)",
+          "Somme des 20 PFAS ≥ 0,1 µg/L (eau non conforme à la limite réglementaire)",
         couleur: "#fe9929",
         couleurAlt: "#fe9929",
         picto: null,

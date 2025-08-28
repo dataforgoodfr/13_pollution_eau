@@ -73,12 +73,12 @@ aggregated_results AS (
                     cdparametresiseeaux
                     ORDER BY cdparametresiseeaux
                 ) FILTER (WHERE valtraduite > 0
-                ),
+                ) || ['SUM_4_PFAS'],
                 LIST(
                     valtraduite
                     ORDER BY cdparametresiseeaux
                 ) FILTER (WHERE valtraduite > 0
-                )
+                ) || [sum_4_pfas]
             )
         ) AS parametres_detectes
     FROM latest_pfas_results

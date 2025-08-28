@@ -321,6 +321,30 @@ export default function PollutionMapMarker({
 
       const categoryDetails = getCategoryById(category);
 
+      // Get parametres_detectes for annual data
+      const parametresDetectesProp = getPropertyName(
+        period,
+        category,
+        "parametres_detectes",
+      );
+      const parametresDetectesValue = selectedZoneData[parametresDetectesProp];
+
+      // Parse JSON values if they exist
+      let parsedMaxValues: Record<string, number> | null = null;
+      if (
+        parametresDetectesValue &&
+        typeof parametresDetectesValue === "string"
+      ) {
+        try {
+          parsedMaxValues = JSON.parse(parametresDetectesValue);
+        } catch (error) {
+          console.error(
+            "Error parsing parametres_detectes for annual data:",
+            error,
+          );
+        }
+      }
+
       let resultColor = errorColor;
       let resultLabel = errorLabel;
       if (
@@ -410,6 +434,26 @@ export default function PollutionMapMarker({
                   )}
               </p>
             )}
+
+          {parsedMaxValues && Object.keys(parsedMaxValues).length > 0 && (
+            <div className="mt-3">
+              <p className="font-medium mb-2">
+                Concentration maximale retrouvée au cours de l&apos;année:
+              </p>
+              <ul className="space-y-1">
+                {Object.entries(parsedMaxValues).map(([param, value]) => (
+                  <li key={param} className="flex justify-between items-center">
+                    <span className="font-light">
+                      {getParameterName(param)}:
+                    </span>
+                    <span className="ml-2 font-light">
+                      {value} {categoryDetails?.unite || ""}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
         </>
       );
     }

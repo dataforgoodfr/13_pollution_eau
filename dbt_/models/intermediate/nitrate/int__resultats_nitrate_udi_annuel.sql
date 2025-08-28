@@ -42,7 +42,10 @@ SELECT
         )::float
         /
         count(DISTINCT referenceprel)::float
-    ) AS ratio
+    ) AS ratio,
+    to_json({
+        'NO3': max(valtraduite)
+    }) AS parametres_detectes
 
 FROM nitrate_prels
 

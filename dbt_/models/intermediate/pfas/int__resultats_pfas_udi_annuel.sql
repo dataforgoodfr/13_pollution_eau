@@ -70,6 +70,10 @@ SELECT
         /
         COUNT(DISTINCT referenceprel)
     ), 2) AS ratio_limite_qualite,
-    SUM(has_pfas_above_vs) AS nb_sup_valeur_sanitaire
+    SUM(has_pfas_above_vs) AS nb_sup_valeur_sanitaire,
+    TO_JSON({
+        'SPFAS': MAX(sum_20_pfas)
+    }) AS parametres_detectes
+
 FROM pfas_results_udi_agg
 GROUP BY cdreseau, annee

@@ -42,7 +42,10 @@ SELECT
         )::float
         /
         count(DISTINCT referenceprel)::float
-    ) AS ratio_limite_qualite
+    ) AS ratio_limite_qualite,
+    to_json({
+        'CLVYL': max(valtraduite)
+    }) AS parametres_detectes
 
 FROM cvm_prels
 

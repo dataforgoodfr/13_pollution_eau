@@ -17,7 +17,7 @@ SELECT
     null AS nb_parametres,
     nb_prelevements,
     null AS nb_sup_valeur_sanitaire,
-    null AS parametres_detectes
+    parametres_detectes
 FROM
     {{ ref('int__resultats_cvm_udi_annuel') }}
 UNION ALL
@@ -75,7 +75,7 @@ SELECT
     null AS nb_parametres,
     nb_prelevements,
     null AS nb_sup_valeur_sanitaire,
-    null AS parametres_detectes
+    parametres_detectes
 FROM
     {{ ref('int__resultats_nitrate_udi_annuel') }}
 UNION ALL
@@ -191,7 +191,7 @@ SELECT
     null AS nb_parametres,
     nb_prelevements,
     nb_sup_valeur_sanitaire,
-    null AS parametres_detectes
+    parametres_detectes
 FROM
     {{ ref('int__resultats_pesticide_udi_annuel') }}
 UNION ALL
@@ -220,7 +220,7 @@ SELECT
     null AS nb_parametres,
     nb_prelevements,
     nb_sup_valeur_sanitaire,
-    null AS parametres_detectes
+    parametres_detectes
 FROM
     {{ ref('int__resultats_pfas_udi_annuel') }}
 UNION ALL
@@ -249,7 +249,7 @@ SELECT
     null AS nb_parametres,
     nb_prelevements,
     null AS nb_sup_valeur_sanitaire,
-    null AS parametres_detectes
+    parametres_detectes
 FROM
     {{ ref('int__resultats_sub_indus_udi_annuel') }}
 UNION ALL

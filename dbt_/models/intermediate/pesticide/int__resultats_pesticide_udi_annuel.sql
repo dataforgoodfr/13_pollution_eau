@@ -55,7 +55,12 @@ SELECT
         )::float
         /
         COUNT(DISTINCT referenceprel)::float
-    ) AS ratio_limite_qualite
+    ) AS ratio_limite_qualite,
+    TO_JSON({
+        'PESTOT': MAX(
+            CASE WHEN cdparametresiseeaux = 'PESTOT' THEN valtraduite ELSE 0 END
+        )
+    }) AS parametres_detectes
 
 FROM pesticide_prels
 

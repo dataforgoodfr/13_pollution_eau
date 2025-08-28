@@ -46,7 +46,10 @@ SELECT
         )::float
         /
         count(DISTINCT referenceprel)::float
-    ) AS ratio_limite_sanitaire
+    ) AS ratio_limite_sanitaire,
+    json_object(
+        max(cdparametresiseeaux), max(valtraduite)
+    ) AS parametres_detectes
 
 FROM prels
 

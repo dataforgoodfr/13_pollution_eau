@@ -24,6 +24,13 @@ last_pvl AS (
         AND
         -- On garde les prélèvements de moins d'un an
         CURRENT_DATE - datetimeprel < INTERVAL 1 YEAR
+        AND
+        -- On exclut le paramètre PESTOT qui est un total de pesticides.
+        -- On recalcule un total pesticide plus adapté plus bas.
+        -- Par contre, dans le bilan annuel (int__resultats_pesticide_udi_annuel.sql), on le garde
+        -- (au lieu de le recalculer) car il a changé dans le temps et on veut pas gérer
+        -- l'historique des règles de calcul.
+        cdparametresiseeaux != 'PESTOT'
 ),
 
 aggregated AS (

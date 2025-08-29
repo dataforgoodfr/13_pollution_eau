@@ -92,6 +92,55 @@ const getGlobalLastPrelevementResults = (
   return { nonConforme, deconseille };
 };
 
+const getGlobalAnnualResults = (
+  selectedZoneData: Record<string, string | number | null>,
+  period: string,
+) => {
+  // Categories to display in details
+  const displayCategories = [
+    "pfas",
+    "pesticide",
+    "nitrate",
+    "cvm",
+    "sub_indus_perchlorate",
+    "sub_indus_14dioxane",
+    "metaux_lourds_as",
+    "metaux_lourds_pb",
+  ];
+
+  const nonConformeDetails: string[] = [];
+
+  displayCategories.forEach((catId) => {
+    const nbPrelevementsProp = getPropertyName(
+      period,
+      catId,
+      "nb_prelevements",
+    );
+    const ratioProp = getPropertyName(period, catId, "ratio");
+    const nbPrelevements = selectedZoneData[nbPrelevementsProp];
+    const ratio = selectedZoneData[ratioProp];
+
+    // Skip if no data or no samples
+    if (!nbPrelevements || Number(nbPrelevements) === 0) {
+      return;
+    }
+
+    const categoryDetails = getCategoryById(catId);
+    if (!categoryDetails) return;
+
+    const categoryName = categoryDetails.nomAffichage;
+
+    if (ratio !== null && ratio !== undefined) {
+      const percentageNonConforme = Math.round(Number(ratio) * 100);
+      nonConformeDetails.push(
+        `${categoryName}: ${percentageNonConforme}% non conformes`,
+      );
+    }
+  });
+
+  return { nonConformeDetails };
+};
+
 export default function PollutionMapMarker({
   period,
   category,
@@ -250,7 +299,7 @@ export default function PollutionMapMarker({
                 {/* Non conforme section */}
                 {nonConforme.length > 0 && (
                   <div>
-                    <p className="font-medium mb-2 text-sm">
+                    <p className="font-medium mb-2">
                       Eau non conforme aux limites réglementaires pour:
                     </p>
                     <ul className="space-y-1 text-xs pl-2">
@@ -267,7 +316,7 @@ export default function PollutionMapMarker({
                 {/* Déconseillé section */}
                 {deconseille.length > 0 && (
                   <div>
-                    <p className="font-medium mb-2 text-sm">
+                    <p className="font-medium mb-2">
                       Eau déconseillée à la consommation pour toute ou partie de
                       la population en raison de la présence de:
                     </p>
@@ -406,6 +455,7 @@ export default function PollutionMapMarker({
 
       let resultColor = errorColor;
       let resultLabel = errorLabel;
+      const ratioValue = selectedZoneData[ratioProp];
       if (
         !(nbPrelevementsProp in selectedZoneData) ||
         selectedZoneData[nbPrelevementsProp] === 0
@@ -428,20 +478,23 @@ export default function PollutionMapMarker({
           ] || errorColor;
         resultLabel =
           categoryDetails?.resultatsAnnuels?.valeurSanitaireLabel || errorLabel;
-      } else if (ratioProp in selectedZoneData) {
-        const ratioValue = selectedZoneData[ratioProp];
-        if (ratioValue !== undefined && ratioValue !== null) {
-          const ratioLimits =
-            categoryDetails?.resultatsAnnuels?.ratioLimites || [];
-          for (const limit of ratioLimits) {
-            if (Number(ratioValue) <= limit.limite) {
-              resultColor = colorblindMode ? limit.couleurAlt : limit.couleur;
-              resultLabel = `${(Number(ratioValue) * 100).toFixed(0)}% des ${categoryDetails?.resultatsAnnuels?.ratioLabelPlural}`;
-              break;
-            }
+      } else if (ratioValue !== undefined && ratioValue !== null) {
+        const ratioLimits =
+          categoryDetails?.resultatsAnnuels?.ratioLimites || [];
+        for (const limit of ratioLimits) {
+          if (Number(ratioValue) <= limit.limite) {
+            resultColor = colorblindMode ? limit.couleurAlt : limit.couleur;
+            resultLabel = `${(Number(ratioValue) * 100).toFixed(0)}% des ${categoryDetails?.resultatsAnnuels?.ratioLabelPlural}`;
+            break;
           }
         }
       }
+
+      // Get detailed breakdown for annual data
+      const { nonConformeDetails } = getGlobalAnnualResults(
+        selectedZoneData,
+        period,
+      );
 
       return (
         <>
@@ -494,25 +547,48 @@ export default function PollutionMapMarker({
               </p>
             )}
 
-          {parsedMaxValues && Object.keys(parsedMaxValues).length > 0 && (
-            <div className="mt-3">
-              <p className="font-medium mb-2">
-                Concentration maximale retrouvée au cours de l&apos;année:
-              </p>
-              <ul className="space-y-1">
-                {Object.entries(parsedMaxValues).map(([param, value]) => (
-                  <li key={param} className="flex justify-between items-center">
-                    <span className="font-light">
-                      {getParameterName(param)}:
-                    </span>
-                    <span className="ml-2 font-light">
-                      {value} {categoryDetails?.unite || ""}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
+          {category != "tous" &&
+            parsedMaxValues &&
+            Object.keys(parsedMaxValues).length > 0 && (
+              <div className="mt-3">
+                <p className="font-medium mb-2">
+                  Concentration maximale retrouvée au cours de l&apos;année:
+                </p>
+                <ul className="space-y-1">
+                  {Object.entries(parsedMaxValues).map(([param, value]) => (
+                    <li
+                      key={param}
+                      className="flex justify-between items-center"
+                    >
+                      <span className="font-light">
+                        {getParameterName(param)}:
+                      </span>
+                      <span className="ml-2 font-light">
+                        {value} {categoryDetails?.unite || ""}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+          {category === "tous" &&
+            ratioValue !== 0 &&
+            nonConformeDetails.length > 0 && (
+              <div className="mt-3 space-y-3">
+                <div>
+                  <p className="font-medium mb-2">Détail par catégorie :</p>
+                  <ul className="space-y-1 text-xs pl-2">
+                    {nonConformeDetails.map((item, index) => (
+                      <li key={index} className="flex items-start">
+                        <span className="mr-2">-</span>
+                        <span>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            )}
         </>
       );
     }

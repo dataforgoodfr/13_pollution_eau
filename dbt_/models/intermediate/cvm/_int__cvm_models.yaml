@@ -80,8 +80,8 @@ models:
           - accepted_values:
               values:
                 - non_quantifie
-                - sup_0_5
-                - inf_0_5
+                - cvm_sup_0_5
+                - inf_limites
       - name: parametres_detectes
         description: "JSON contenant les paramètres détectés (valtraduite > 0) avec leurs valeurs correspondantes."
         type: JSON
@@ -169,8 +169,8 @@ models:
           - accepted_values:
               values:
                 - non_quantifie
-                - sup_0_5
-                - inf_0_5
+                - cvm_sup_0_5
+                - inf_limites
       - name: parametres_detectes
         description: "JSON contenant les paramètres détectés (valtraduite > 0) avec leurs valeurs correspondantes."
         type: JSON

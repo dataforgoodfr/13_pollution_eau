@@ -28,14 +28,14 @@ WHERE
         cdreseau = '087003637'
         AND categorie = 'cvm'
         AND date_dernier_prel = '2024-07-04 10:50:00'
-        AND resultat != 'sup_0_5'
+        AND resultat != 'cvm_sup_0_5'
     )
     OR
     (
         cdreseau = '095004048'
         AND categorie = 'cvm'
         AND date_dernier_prel = '2024-07-23 08:26:00'
-        AND resultat != 'inf_0_5'
+        AND resultat != 'inf_limites'
     )
 UNION ALL
 -- annuel

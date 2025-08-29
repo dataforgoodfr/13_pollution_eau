@@ -81,7 +81,7 @@ SELECT
             THEN 'sup_valeur_sanitaire'
         WHEN
             BOOL_OR(valtraduite >= limite_qualite)
-            OR MAX(total_pesticide) > 0.5
+            OR MAX(total_pesticide) >= 0.5
             THEN 'sup_limite_qualite'
         WHEN
             BOOL_OR(

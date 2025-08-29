@@ -1064,14 +1064,14 @@ export const availableCategories: ICategory[] = [
         couleurAlt: "#c7e9c0",
         picto: null,
       },
-      inf_0_5: {
+      inf_limites: {
         label:
           "Concentration < 0,5 µg/L (eau conforme à la limite réglementaire et sanitaire)",
         couleur: "#FFF33B",
         couleurAlt: "#FFF33B",
         picto: null,
       },
-      sup_0_5: {
+      cvm_sup_0_5: {
         label:
           "Concentration > 0,5 µg/L (eau non conforme à la limite réglementaire et sanitaire)",
         couleur: "#f03b20",

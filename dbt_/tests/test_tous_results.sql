@@ -7,19 +7,19 @@ FROM
     {{ ref('int__resultats_tous_udi_dernier') }}
 WHERE
     (
-        cdreseau = '001000404'
-        AND date_dernier_prel = '2025-01-21 12:12:00'
+        cdreseau = '001000598'
+        AND date_dernier_prel = '2025-03-26 10:59:00'
         AND resultat != 'sup_limite_qualite'
     )
     OR
     (
         cdreseau = '976003881'
-        AND date_dernier_prel = '2024-06-18 10:21:00'
+        AND date_dernier_prel = '2025-05-22 12:12:00'
         AND resultat != 'inf_limites'
     )
     OR
     (
         cdreseau = '088002246'
-        AND date_dernier_prel = '2024-10-22 10:33:00'
+        AND date_dernier_prel = '2025-04-22 08:11:00'
         AND resultat != 'sup_limite_sanitaire'
     )

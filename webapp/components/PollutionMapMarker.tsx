@@ -339,16 +339,23 @@ export default function PollutionMapMarker({
             <div className="mt-3">
               <p className="font-medium mb-2">Substances quantifiées:</p>
               <ul className="space-y-1">
-                {Object.entries(parsedValues).map(([param, value]) => (
-                  <li key={param} className="flex justify-between items-center">
-                    <span className="font-light">
-                      {getParameterName(param)}:
-                    </span>
-                    <span className="ml-2 font-light">
-                      {value} {categoryDetails?.unite || ""}
-                    </span>
-                  </li>
-                ))}
+                {Object.entries(parsedValues)
+                  .sort(
+                    ([, valueA], [, valueB]) => Number(valueB) - Number(valueA),
+                  )
+                  .map(([param, value]) => (
+                    <li
+                      key={param}
+                      className="flex justify-between items-center"
+                    >
+                      <span className="font-light">
+                        {getParameterName(param)}:
+                      </span>
+                      <span className="ml-2 font-light">
+                        {value} {categoryDetails?.unite || ""}
+                      </span>
+                    </li>
+                  ))}
               </ul>
             </div>
           )}

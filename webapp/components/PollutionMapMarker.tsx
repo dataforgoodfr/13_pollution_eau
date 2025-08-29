@@ -2,7 +2,7 @@
 
 import { useEffect, useState, JSX } from "react";
 import { getPropertyName } from "@/lib/property";
-import { getCategoryById, getAllEnabledCategories } from "@/lib/polluants";
+import { getCategoryById } from "@/lib/polluants";
 import { getParameterName } from "@/lib/parameters";
 import { useMap, Marker, Popup } from "react-map-gl/maplibre";
 import { MapPin, X } from "lucide-react";
@@ -19,6 +19,77 @@ type PollutionMapMarkerProps = {
   selectedZoneCode: string | null;
   setSelectedZoneCode: (code: string | null) => void;
   colorblindMode?: boolean;
+};
+
+const getGlobalLastPrelevementResults = (
+  selectedZoneData: Record<string, string | number | null>,
+) => {
+  // Categories to display in details
+  const displayCategories = [
+    "pfas",
+    "pesticide",
+    "nitrate",
+    "cvm",
+    "sub_indus_perchlorate",
+    "sub_indus_14dioxane",
+    "metaux_lourds_as",
+    "metaux_lourds_pb",
+  ];
+
+  const nonConforme: string[] = [];
+  const deconseille: string[] = [];
+
+  displayCategories.forEach((catId) => {
+    const resultProperty = getPropertyName("dernier_prel", catId, "resultat");
+    const dateProperty = getPropertyName(
+      "dernier_prel",
+      catId,
+      "date_dernier_prel",
+    );
+
+    const resultValue = selectedZoneData[resultProperty];
+    const dateValue = selectedZoneData[dateProperty];
+
+    if (
+      !resultValue ||
+      resultValue === "non_recherche" ||
+      resultValue === "non_quantifie"
+    ) {
+      return;
+    }
+
+    const categoryDetails = getCategoryById(catId);
+    if (!categoryDetails) return;
+
+    const categoryName = categoryDetails.nomAffichage;
+    const dateStr = dateValue
+      ? new Date(dateValue.toString()).toLocaleDateString("fr-FR")
+      : "";
+    const displayText = dateStr
+      ? `${categoryName} (le ${dateStr})`
+      : categoryName;
+
+    // Add to nonConforme list if applicable
+    if (
+      resultValue === "sup_limite_qualite" ||
+      resultValue === "somme_20pfas_sup_0_1" ||
+      (catId === "nitrate" && resultValue === "sup_valeur_sanitaire") ||
+      resultValue === "cvm_sup_0_5"
+    ) {
+      nonConforme.push(displayText);
+    }
+
+    // Add to deconseille list if applicable
+    if (
+      resultValue === "sup_valeur_sanitaire" ||
+      resultValue === "sup_valeur_sanitaire_2" ||
+      resultValue === "cvm_sup_0_5"
+    ) {
+      deconseille.push(displayText);
+    }
+  });
+
+  return { nonConforme, deconseille };
 };
 
 export default function PollutionMapMarker({
@@ -134,7 +205,7 @@ export default function PollutionMapMarker({
       // Rendering for "dernier_prel"
 
       if (category === "tous") {
-        // Special rendering for "tous" category - show global status and all categories
+        // Special rendering for "tous" category - show global status and detailed breakdown
 
         // First show the global status for "tous"
         const globalResultProperty = getPropertyName(
@@ -156,26 +227,9 @@ export default function PollutionMapMarker({
           globalCategoryDetails?.resultats[globalResultValue as string]
             ?.label || errorLabel;
 
-        // Get all enabled categories
-        const allCategories = getAllEnabledCategories();
-
-        // Filter categories that should be displayed
-        const categoriesToDisplay = allCategories.filter((cat) => {
-          const resultProperty = getPropertyName(period, cat.id, "resultat");
-          const resultValue =
-            resultProperty in selectedZoneData
-              ? selectedZoneData[resultProperty]
-              : "non_recherche";
-
-          // Only show if result is not "non_recherche" or "non_quantifie"
-          // Also exclude nitrate when result is "inf_limite_qualite"
-          return (
-            resultValue !== "" &&
-            resultValue !== "non_recherche" &&
-            resultValue !== "non_quantifie" &&
-            !(cat.id === "nitrate" && resultValue === "inf_limite_qualite")
-          );
-        });
+        // Get detailed breakdown
+        const { nonConforme, deconseille } =
+          getGlobalLastPrelevementResults(selectedZoneData);
 
         return (
           <>
@@ -190,50 +244,48 @@ export default function PollutionMapMarker({
               <span className="text-sm">{globalResultLabel}</span>
             </div>
 
-            {/* All categories - only show if there are categories to display */}
-            {categoriesToDisplay.length > 0 && (
-              <div className="mt-3">
-                <p className="font-medium mb-2 text-sm">Détail par polluant:</p>
-                <div className="space-y-1 text-xs">
-                  {categoriesToDisplay.map((cat) => {
-                    const resultProperty = getPropertyName(
-                      period,
-                      cat.id,
-                      "resultat",
-                    );
-                    const resultValue =
-                      resultProperty in selectedZoneData
-                        ? selectedZoneData[resultProperty]
-                        : "non_recherche";
+            {/* Detailed breakdown */}
+            {(nonConforme.length > 0 || deconseille.length > 0) && (
+              <div className="mt-3 space-y-3">
+                {/* Non conforme section */}
+                {nonConforme.length > 0 && (
+                  <div>
+                    <p className="font-medium mb-2 text-sm">
+                      Eau non conforme aux limites réglementaires pour:
+                    </p>
+                    <ul className="space-y-1 text-xs pl-2">
+                      {nonConforme.map((item, index) => (
+                        <li key={index} className="flex items-start">
+                          <span className="mr-2">-</span>
+                          <span>{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
 
-                    const resultColor =
-                      cat?.resultats[resultValue as string]?.[
-                        colorblindMode ? "couleurAlt" : "couleur"
-                      ] || errorColor;
-                    const resultLabel =
-                      cat?.resultats[resultValue as string]?.label ||
-                      errorLabel;
-
-                    return (
-                      <div key={cat.id} className="flex items-center gap-2">
-                        <span className="font-medium">{cat.nomAffichage}:</span>
-                        <div
-                          className="w-2 h-2 rounded-full flex-shrink-0"
-                          style={{ backgroundColor: resultColor }}
-                        ></div>
-                        <span className="text-gray-600 leading-tight">
-                          {resultLabel}
-                        </span>
-                      </div>
-                    );
-                  })}
-                </div>
+                {/* Déconseillé section */}
+                {deconseille.length > 0 && (
+                  <div>
+                    <p className="font-medium mb-2 text-sm">
+                      Eau déconseillée à la consommation pour toute ou partie de
+                      la population en raison de la présence de:
+                    </p>
+                    <ul className="space-y-1 text-xs pl-2">
+                      {deconseille.map((item, index) => (
+                        <li key={index} className="flex items-start">
+                          <span className="mr-2">-</span>
+                          <span>{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
               </div>
             )}
           </>
         );
       }
-
       const resultProperty = getPropertyName(period, category, "resultat");
       const resultValue =
         resultProperty in selectedZoneData

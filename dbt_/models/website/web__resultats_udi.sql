@@ -74,6 +74,19 @@ results AS (
         cdreseau,
         periode,
         categorie,
+        null AS resultat,
+        ratio,
+        null AS date_dernier_prel,
+        null AS nb_parametres,
+        nb_prelevements,
+        nb_sup_valeur_sanitaire,
+        null AS parametres_detectes
+    FROM {{ ref('int__resultats_tous_udi_annuel') }}
+    UNION ALL
+    SELECT
+        cdreseau,
+        periode,
+        categorie,
         resultat,
         null AS ratio,
         date_dernier_prel,

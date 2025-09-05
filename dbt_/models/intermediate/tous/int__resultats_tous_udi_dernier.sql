@@ -16,11 +16,10 @@ SELECT
             'sup_limite_qualite'
         )) THEN 'sup_limite_qualite'
 
-        WHEN BOOL_AND(resultat IN (
-            'non_quantifie',
+        WHEN BOOL_OR(resultat IN (
             'inf_valeur_sanitaire',
             'inf_limite_qualite',
-            'inf_limites_sup_0_1',
+            -- 'inf_limites_sup_0_1',
             --'sup_limite_indicative',
             'inf_limites',
             'somme_20pfas_inf_0_1_et_4pfas_sup_0_02',
@@ -28,7 +27,12 @@ SELECT
             'sup_limite_qualite_2036',
             'no3_inf_25',
             'no3_inf_40'
-        )) THEN 'inf_limites'
+
+        )) THEN 'quantifie'
+
+        WHEN BOOL_AND(resultat IN (
+            'non_quantifie'
+        )) THEN 'non_quantifie'
 
         ELSE 'erreur'
     END AS resultat

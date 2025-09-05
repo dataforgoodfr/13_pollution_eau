@@ -69,6 +69,7 @@ models:
         tests:
           - accepted_values:
               values:
-                - "inf_limites"
+                - "non_quantifie"
+                - "quantifie"
                 - "sup_limite_qualite"
                 - "sup_limite_sanitaire"

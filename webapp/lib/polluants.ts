@@ -81,10 +81,17 @@ export const availableCategories: ICategory[] = [
         couleurAlt: "#f7f7f7",
         picto: null,
       },
-      inf_limites: {
-        label: "Aucun dépassement des limites réglementaire",
+      non_quantifie: {
+        label: "Aucun polliuant quantifié",
         couleur: "#74c476",
         couleurAlt: "#c7e9c0",
+        picto: null,
+      },
+      quantifie: {
+        label:
+          "Au moins un polluant quantifié sans dépassement des limites réglementaires",
+        couleur: "#FFF33B",
+        couleurAlt: "#FFF33B",
         picto: null,
       },
       sup_limite_qualite: {

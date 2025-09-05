@@ -17,9 +17,15 @@ WHERE
     )
     OR
     (
-        cdreseau = '976003881'
-        AND date_dernier_prel = '2025-05-22 12:12:00'
-        AND resultat != 'inf_limites'
+        cdreseau = '049000506'
+        AND date_dernier_prel = '2025-07-08 08:30:00'
+        AND resultat != 'quantifie'
+    )
+    OR
+    (
+        cdreseau = '033000400'
+        AND date_dernier_prel = '2025-07-17 09:50:00'
+        AND resultat != 'non_quantifie'
     )
     OR
     (

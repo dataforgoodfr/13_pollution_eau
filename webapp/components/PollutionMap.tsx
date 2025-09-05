@@ -20,7 +20,6 @@ export default function PollutionMap({
 }) {
   const [period, setPeriod] = useState("dernier_prel");
   const [category, setCategory] = useState("tous");
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [displayMode, setDisplayMode] = useState<"communes" | "udis">("udis");
   const [mapState, setMapState] = useState<{
     longitude: number;
@@ -83,8 +82,8 @@ export default function PollutionMap({
             setPeriod={setPeriod}
             category={category}
             setCategory={setCategory}
-            // displayMode={displayMode}
-            // setDisplayMode={setDisplayMode}
+            displayMode={displayMode}
+            setDisplayMode={setDisplayMode}
           />
         </div>
 

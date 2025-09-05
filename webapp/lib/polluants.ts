@@ -82,7 +82,7 @@ export const availableCategories: ICategory[] = [
         picto: null,
       },
       non_quantifie: {
-        label: "Aucun polliuant quantifié",
+        label: "Aucun polluant quantifié",
         couleur: "#74c476",
         couleurAlt: "#c7e9c0",
         picto: null,

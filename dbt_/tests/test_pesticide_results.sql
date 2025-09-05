@@ -29,7 +29,7 @@ WHERE
     (
         cdreseau = '089000445'
         AND date_dernier_prel = TIMESTAMP '2025-03-28 09:19:00'
-        AND resultat != 'sup_valeur_sanitaire'
+        AND resultat != 'inf_limite_qualite'
     )
     OR
     (
@@ -40,7 +40,7 @@ WHERE
 -- annuel udi
 UNION ALL
 SELECT
-    'bilan_annuel' AS periode,
+    periode,
     cdreseau,
     '' AS resultat,
     ratio_limite_qualite,
@@ -65,7 +65,7 @@ WHERE
         AND (
             nb_prelevements != 12
             OR nb_depassements != 12
-            OR nb_sup_valeur_sanitaire != 12
+            OR nb_sup_valeur_sanitaire != 11
             OR ratio_limite_qualite != 1.0
         )
     )
@@ -76,7 +76,7 @@ WHERE
         AND (
             nb_prelevements != 13
             OR nb_depassements != 13
-            OR nb_sup_valeur_sanitaire != 4
+            OR nb_sup_valeur_sanitaire != 0
             OR ratio_limite_qualite != 1.0
         )
     )

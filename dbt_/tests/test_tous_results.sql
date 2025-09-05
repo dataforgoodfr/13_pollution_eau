@@ -71,6 +71,6 @@ WHERE
             ratio >= 0.5
             -- ratio = 12/28 ~= 0.42
             OR
-            nb_sup_valeur_sanitaire != 12
+            nb_sup_valeur_sanitaire != 11
         )
     )

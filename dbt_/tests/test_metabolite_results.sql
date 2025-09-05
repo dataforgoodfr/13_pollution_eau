@@ -61,7 +61,7 @@ WHERE
         AND (
             nb_prelevements != 20
             OR nb_depassements != 0
-            OR nb_sup_valeur_sanitaire != 11
+            OR nb_sup_valeur_sanitaire != 6
             OR ratio_limite_qualite != 0
         )
     )
@@ -72,7 +72,7 @@ WHERE
         AND (
             nb_prelevements != 4
             OR nb_depassements != 3
-            OR nb_sup_valeur_sanitaire != 1
+            OR nb_sup_valeur_sanitaire != 0
             OR ratio_limite_qualite != 0.75
         )
     )

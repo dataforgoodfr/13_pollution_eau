@@ -129,11 +129,16 @@ const getGlobalAnnualResults = (
     if (!categoryDetails) return;
 
     const categoryName = categoryDetails.nomAffichage;
+    const label =
+      categoryDetails.resultatsAnnuels?.ratioLabelPlural.replace(
+        "analyses ",
+        "",
+      ) || "non conformes";
 
     if (ratio !== null && ratio !== undefined) {
       const percentageNonConforme = Math.round(Number(ratio) * 100);
       nonConformeDetails.push(
-        `${categoryName}: ${percentageNonConforme}% non conformes`,
+        `${categoryName}: ${percentageNonConforme}% ${label}`,
       );
     }
   });

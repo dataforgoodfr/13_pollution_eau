@@ -25,6 +25,38 @@ SELECT
     COUNT(
         DISTINCT
         CASE
+            -- Chlorothalonil R471811 : changement de limite qualité en 2025, on hard code une
+            -- limite pour les années précédentes
+            WHEN
+                valtraduite IS NOT NULL
+                AND cdparametresiseeaux IN ('471811R', 'R471811')
+                AND annee < 2025
+                AND valtraduite >= 0.1
+                THEN referenceprel
+            -- ESA métolachlore : changement de limite qualité en 2023, on hard code une
+            -- limite pour les années précédentes
+            WHEN
+                valtraduite IS NOT NULL
+                AND cdparametresiseeaux IN ('ESAMTC', 'MTCESA')
+                AND annee < 2023
+                AND valtraduite >= 0.1
+                THEN referenceprel
+            -- Metolachlor NOA 413173 : change de limite qualité en 2023, on hard code une
+            -- limite pour les années précédentes
+            WHEN
+                valtraduite IS NOT NULL
+                AND cdparametresiseeaux IN ('MTCNOA', 'NOAMTC')
+                AND annee < 2023
+                AND valtraduite >= 0.1
+                THEN referenceprel
+            -- OXA métolachlore : change de limite qualité en 2022, on hard code une
+            -- limite pour les années précédentes
+            WHEN
+                valtraduite IS NOT NULL
+                AND cdparametresiseeaux IN ('OXAMTC', 'MTCOXA')
+                AND annee < 2022
+                AND valtraduite >= 0.1
+                THEN referenceprel
             WHEN
                 valtraduite IS NOT NULL AND valtraduite >= limite_qualite
                 THEN referenceprel
@@ -43,6 +75,38 @@ SELECT
         COUNT(
             DISTINCT
             CASE
+                -- Chlorothalonil R471811 : changement de limite qualité en 2025, on hard code une
+                -- limite pour les années précédentes
+                WHEN
+                    valtraduite IS NOT NULL
+                    AND cdparametresiseeaux IN ('471811R', 'R471811')
+                    AND annee < 2025
+                    AND valtraduite >= 0.1
+                    THEN referenceprel
+                -- ESA métolachlore : changement de limite qualité en 2023, on hard code une
+                -- limite pour les années précédentes
+                WHEN
+                    valtraduite IS NOT NULL
+                    AND cdparametresiseeaux IN ('ESAMTC', 'MTCESA')
+                    AND annee < 2023
+                    AND valtraduite >= 0.1
+                    THEN referenceprel
+                -- Metolachlor NOA 413173 : change de limite qualité en 2023, on hard code une
+                -- limite pour les années précédentes
+                WHEN
+                    valtraduite IS NOT NULL
+                    AND cdparametresiseeaux IN ('MTCNOA', 'NOAMTC')
+                    AND annee < 2023
+                    AND valtraduite >= 0.1
+                    THEN referenceprel
+                -- OXA métolachlore : change de limite qualité en 2022, on hard code une
+                -- limite pour les années précédentes
+                WHEN
+                    valtraduite IS NOT NULL
+                    AND cdparametresiseeaux IN ('OXAMTC', 'MTCOXA')
+                    AND annee < 2022
+                    AND valtraduite >= 0.1
+                    THEN referenceprel
                 WHEN
                     valtraduite IS NOT NULL AND valtraduite >= limite_qualite
                     THEN referenceprel

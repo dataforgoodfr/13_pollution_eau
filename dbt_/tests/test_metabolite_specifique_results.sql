@@ -67,7 +67,7 @@ WHERE
 -- annuel udi
 UNION ALL
 SELECT
-    'bilan_annuel' AS periode,
+    periode,
     cdreseau,
     categorie,
     '' AS resultat,
@@ -130,9 +130,21 @@ WHERE
         AND annee = 2024
         AND (
             nb_prelevements != 4
-            OR nb_depassements != 0
+            OR nb_depassements != 4
             OR nb_sup_valeur_sanitaire != 2
-            OR ratio_limite_qualite != 0.0
+            OR ratio_limite_qualite != 1.0
+        )
+    )
+    OR
+    (
+        cdreseau = '002000074'
+        AND categorie = 'metabolite_chlorothalonil_r471811'
+        AND annee = 2025
+        AND (
+            -- pour l'instant on a pas tout les prélèvements de 2025
+            -- mais on sait déjà qu'avec la règle (pas de limite qualité)
+            -- on aura forcément 0 dépassement de la limite qualité
+            ratio_limite_qualite != 0.0
         )
     )
     OR

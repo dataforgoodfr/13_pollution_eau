@@ -47,7 +47,7 @@ WHERE
 -- annuel udi
 UNION ALL
 SELECT
-    'bilan_annuel' AS periode,
+    periode,
     cdreseau,
     '' AS resultat,
     ratio_limite_qualite,
@@ -60,9 +60,10 @@ WHERE
         AND annee = 2024
         AND (
             nb_prelevements != 20
-            OR nb_depassements != 0
+            OR nb_depassements != 14
             OR nb_sup_valeur_sanitaire != 6
-            OR ratio_limite_qualite != 0
+            OR ratio_limite_qualite < 0.69
+            OR ratio_limite_qualite > 0.7
         )
     )
     OR
@@ -71,9 +72,9 @@ WHERE
         AND annee = 2024
         AND (
             nb_prelevements != 4
-            OR nb_depassements != 3
+            OR nb_depassements != 4
             OR nb_sup_valeur_sanitaire != 0
-            OR ratio_limite_qualite != 0.75
+            OR ratio_limite_qualite != 1
         )
     )
     OR
@@ -104,9 +105,10 @@ WHERE
         AND annee = 2024
         AND (
             nb_prelevements != 5
-            OR nb_depassements != 0
+            OR nb_depassements != 2
             OR nb_sup_valeur_sanitaire != 0
-            OR ratio_limite_qualite != 0
+            OR ratio_limite_qualite < 0.4
+            OR ratio_limite_qualite > 0.41
         )
     )
     OR
@@ -118,5 +120,17 @@ WHERE
             OR nb_depassements != 2
             OR nb_sup_valeur_sanitaire != 0
             OR ratio_limite_qualite != 0.5
+        )
+    )
+    OR
+    (
+        -- test sur le Metolachlor NOA 413173
+        cdreseau = '067001860'
+        AND annee = 2022
+        AND (
+            nb_prelevements != 7
+            OR nb_depassements != 6
+            OR nb_sup_valeur_sanitaire != 1
+            OR ratio_limite_qualite < 0.85
         )
     )

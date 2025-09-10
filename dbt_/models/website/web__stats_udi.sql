@@ -52,10 +52,6 @@ stats_bilan_annuel_ratio AS (
     WHERE
         periode LIKE 'bilan_annuel_%'
         AND ratio IS NOT NULL
-        AND (
-            nb_sup_valeur_sanitaire IS NULL
-            OR nb_sup_valeur_sanitaire = 0
-        )
     GROUP BY
         periode,
         categorie,
@@ -79,23 +75,6 @@ stats_bilan_annuel_non_recherche AS (
     WHERE
         periode LIKE 'bilan_annuel_%'
         AND ratio IS NULL
-        AND (
-            nb_sup_valeur_sanitaire IS NULL
-            OR nb_sup_valeur_sanitaire = 0
-        )
-    GROUP BY periode, categorie
-),
-
--- Statistiques par catégorie et année pour bilan annuel - dépassements valeur sanitaire
-stats_bilan_annuel_sup_sanitaire AS (
-    SELECT
-        NULL AS stat_texte,
-        periode || '_' || categorie || '_sup_valeur_sanitaire' AS stat_nom,
-        count(CASE WHEN nb_sup_valeur_sanitaire > 0 THEN 1 END) AS stat_chiffre
-    FROM {{ ref('web__resultats_udi') }}
-    WHERE
-        periode LIKE 'bilan_annuel_%'
-        AND nb_sup_valeur_sanitaire IS NOT NULL
     GROUP BY periode, categorie
 )
 
@@ -129,9 +108,3 @@ SELECT
     stat_chiffre,
     stat_texte
 FROM stats_bilan_annuel_non_recherche
-UNION ALL
-SELECT
-    stat_nom,
-    stat_chiffre,
-    stat_texte
-FROM stats_bilan_annuel_sup_sanitaire

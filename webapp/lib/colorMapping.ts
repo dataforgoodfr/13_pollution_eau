@@ -69,11 +69,6 @@ export function generateColorExpression(
       category,
       "nb_prelevements",
     );
-    const nbSupValeurSanitaireProp = getPropertyName(
-      period,
-      category,
-      "nb_sup_valeur_sanitaire",
-    );
 
     // Check if nb_prelevements is 0 or empty (no research), or ratio is empty
     cases.push([
@@ -87,24 +82,6 @@ export function generateColorExpression(
         ? categoryDetails.resultatsAnnuels.nonRechercheCouleurAlt
         : categoryDetails.resultatsAnnuels.nonRechercheCouleur,
     );
-
-    // Check if nb_sup_valeur_sanitaire is > 0 and not empty
-    if (
-      categoryDetails.resultatsAnnuels.valeurSanitaire &&
-      categoryDetails.resultatsAnnuels.valeurSanitaireCouleur
-    ) {
-      cases.push([
-        "all",
-        ["has", nbSupValeurSanitaireProp],
-        ["==", ["typeof", ["get", nbSupValeurSanitaireProp]], "number"],
-        [">", ["get", nbSupValeurSanitaireProp], 0],
-      ]);
-      cases.push(
-        colorblindMode
-          ? categoryDetails.resultatsAnnuels.valeurSanitaireCouleurAlt
-          : categoryDetails.resultatsAnnuels.valeurSanitaireCouleur,
-      );
-    }
 
     // Color scale for ratio values using ratioLimites
     categoryDetails.resultatsAnnuels.ratioLimites.forEach((l) => {

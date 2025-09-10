@@ -466,18 +466,6 @@ export default function PollutionMapMarker({
           ] || errorColor;
         resultLabel =
           categoryDetails?.resultatsAnnuels?.nonRechercheLabel || errorLabel;
-      } else if (
-        nbSupValeurSanitaireProp in selectedZoneData &&
-        Number(selectedZoneData[nbSupValeurSanitaireProp]) > 0
-      ) {
-        resultColor =
-          categoryDetails?.resultatsAnnuels?.[
-            colorblindMode
-              ? "valeurSanitaireCouleurAlt"
-              : "valeurSanitaireCouleur"
-          ] || errorColor;
-        resultLabel =
-          categoryDetails?.resultatsAnnuels?.valeurSanitaireLabel || errorLabel;
       } else if (ratioValue !== undefined && ratioValue !== null) {
         const ratioLimits =
           categoryDetails?.resultatsAnnuels?.ratioLimites || [];

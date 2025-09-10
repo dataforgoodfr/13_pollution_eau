@@ -184,19 +184,6 @@ export default function PollutionMapLegend({
       return { count: null, percentage: null };
     })();
 
-    const valeurSanitaireStats = (() => {
-      if (!categoryDetails.resultatsAnnuels?.valeurSanitaire) {
-        return { count: null, percentage: null };
-      }
-      const statName = `${period}_${category}_sup_valeur_sanitaire`;
-      const count = getStatistic(statName);
-      if (count !== null && totalUdis) {
-        const percentage = (count / totalUdis) * 100;
-        return { count, percentage };
-      }
-      return { count: null, percentage: null };
-    })();
-
     legendContent = (
       <>
         <div className="space-y-3 text-sm">
@@ -210,7 +197,7 @@ export default function PollutionMapLegend({
             count={nonRechercheStats.count}
             percentage={nonRechercheStats.percentage}
           />
-          {categoryDetails.resultatsAnnuels.ratioLimites?.map((item) => {
+          {categoryDetails.resultatsAnnuels.ratioLimites.map((item) => {
             // Map the ratio limits to the corresponding database keys based on actual limit values
             let ratioKey: string;
             if (item.limite === 0) ratioKey = "0";
@@ -232,21 +219,6 @@ export default function PollutionMapLegend({
               />
             );
           })}
-          {categoryDetails.resultatsAnnuels.valeurSanitaireLabel && (
-            <LegendItem
-              color={
-                colorblindMode
-                  ? categoryDetails.resultatsAnnuels.valeurSanitaireCouleurAlt
-                  : categoryDetails.resultatsAnnuels.valeurSanitaireCouleur ||
-                    ""
-              }
-              label={
-                categoryDetails.resultatsAnnuels.valeurSanitaireLabel || ""
-              }
-              count={valeurSanitaireStats.count}
-              percentage={valeurSanitaireStats.percentage}
-            />
-          )}
         </div>
       </>
     );

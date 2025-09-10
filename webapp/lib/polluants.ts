@@ -33,14 +33,7 @@ interface ResultatsAnnuels {
   ratioLimites: RatioLimite[];
   ratioLabelSingular: string;
   ratioLabelPlural: string;
-  valeurSanitaire: boolean;
   valeurSanitaireLabel?: string;
-  valeurSanitaireCouleur?: string;
-  valeurSanitaireCouleurAlt?: string;
-  simpleLabels?: Array<{
-    label: string;
-    couleur: string;
-  }>;
 }
 
 export interface ICategory {
@@ -140,11 +133,8 @@ export const availableCategories: ICategory[] = [
       ],
       ratioLabelSingular: "analyse non conforme",
       ratioLabelPlural: "analyses non conformes",
-      valeurSanitaire: true,
       valeurSanitaireLabel:
         "Au moins 1 dépassement de valeur sanitaire au cours de l'année",
-      valeurSanitaireCouleur: "#f03b20",
-      valeurSanitaireCouleurAlt: "#bd0026",
     },
   },
   {
@@ -233,11 +223,8 @@ export const availableCategories: ICategory[] = [
       ],
       ratioLabelSingular: "analyse non conforme",
       ratioLabelPlural: "analyses non conformes",
-      valeurSanitaire: true,
       valeurSanitaireLabel:
         "Au moins 1 dépassement de valeur sanitaire au cours de l'année",
-      valeurSanitaireCouleur: "#f03b20",
-      valeurSanitaireCouleurAlt: "#bd0026",
     },
   },
   {
@@ -314,11 +301,8 @@ export const availableCategories: ICategory[] = [
       ],
       ratioLabelSingular: "analyse non conforme",
       ratioLabelPlural: "analyses non conformes",
-      valeurSanitaire: true,
       valeurSanitaireLabel:
         "Au moins 1 dépassement de valeur sanitaire au cours de l'année",
-      valeurSanitaireCouleur: "#f03b20",
-      valeurSanitaireCouleurAlt: "#bd0026",
     },
     enfants: [
       {
@@ -403,11 +387,8 @@ export const availableCategories: ICategory[] = [
           ],
           ratioLabelSingular: "analyse non conforme",
           ratioLabelPlural: "analyses non conformes",
-          valeurSanitaire: true,
           valeurSanitaireLabel:
             "Au moins 1 dépassement de valeur sanitaire au cours de l'année",
-          valeurSanitaireCouleur: "#f03b20",
-          valeurSanitaireCouleurAlt: "#bd0026",
         },
       },
       {
@@ -497,11 +478,8 @@ export const availableCategories: ICategory[] = [
           ],
           ratioLabelSingular: "analyse non conforme",
           ratioLabelPlural: "analyses non conformes",
-          valeurSanitaire: true,
           valeurSanitaireLabel:
             "Au moins 1 dépassement de valeur sanitaire au cours de l'année",
-          valeurSanitaireCouleur: "#f03b20",
-          valeurSanitaireCouleurAlt: "#bd0026",
         },
         enfants: [
           {
@@ -593,11 +571,8 @@ export const availableCategories: ICategory[] = [
               ],
               ratioLabelSingular: "analyse non conforme",
               ratioLabelPlural: "analyses non conformes",
-              valeurSanitaire: true,
               valeurSanitaireLabel:
                 "Au moins 1 dépassement de valeur sanitaire au cours de l'année",
-              valeurSanitaireCouleur: "#f03b20",
-              valeurSanitaireCouleurAlt: "#bd0026",
             },
           },
           {
@@ -689,11 +664,8 @@ export const availableCategories: ICategory[] = [
               ],
               ratioLabelSingular: "analyse non conforme",
               ratioLabelPlural: "analyses non conformes",
-              valeurSanitaire: true,
               valeurSanitaireLabel:
                 "Au moins 1 dépassement de valeur sanitaire au cours de l'année",
-              valeurSanitaireCouleur: "#f03b20",
-              valeurSanitaireCouleurAlt: "#bd0026",
             },
           },
           {
@@ -778,11 +750,8 @@ export const availableCategories: ICategory[] = [
               ],
               ratioLabelSingular: "analyse non conforme",
               ratioLabelPlural: "analyses non conformes",
-              valeurSanitaire: true,
               valeurSanitaireLabel:
                 "Au moins 1 dépassement de valeur sanitaire au cours de l'année",
-              valeurSanitaireCouleur: "#f03b20",
-              valeurSanitaireCouleurAlt: "#bd0026",
             },
           },
           {
@@ -866,11 +835,8 @@ export const availableCategories: ICategory[] = [
               ],
               ratioLabelSingular: "analyse non conforme",
               ratioLabelPlural: "analyses non conformes",
-              valeurSanitaire: true,
               valeurSanitaireLabel:
                 "Au moins 1 dépassement de valeur sanitaire au cours de l'année",
-              valeurSanitaireCouleur: "#f03b20",
-              valeurSanitaireCouleurAlt: "#bd0026",
             },
           },
           {
@@ -955,11 +921,8 @@ export const availableCategories: ICategory[] = [
               ],
               ratioLabelSingular: "analyse non conforme",
               ratioLabelPlural: "analyses non conformes",
-              valeurSanitaire: true,
               valeurSanitaireLabel:
                 "Au moins 1 dépassement de valeur sanitaire au cours de l'année",
-              valeurSanitaireCouleur: "#f03b20",
-              valeurSanitaireCouleurAlt: "#bd0026",
             },
           },
         ],
@@ -1047,7 +1010,6 @@ export const availableCategories: ICategory[] = [
       ],
       ratioLabelSingular: "analyse non conforme",
       ratioLabelPlural: "analyses non conformes",
-      valeurSanitaire: false,
     },
   },
   {
@@ -1119,7 +1081,6 @@ export const availableCategories: ICategory[] = [
       ],
       ratioLabelSingular: "analyse non conforme",
       ratioLabelPlural: "analyses non conformes",
-      valeurSanitaire: false,
     },
   },
   {
@@ -1206,7 +1167,6 @@ export const availableCategories: ICategory[] = [
           ],
           ratioLabelSingular: "analyse non conforme",
           ratioLabelPlural: "analyses non conformes",
-          valeurSanitaire: false,
         },
       },
       {
@@ -1291,7 +1251,6 @@ export const availableCategories: ICategory[] = [
           ],
           ratioLabelSingular: "analyse non conforme",
           ratioLabelPlural: "analyses non conformes",
-          valeurSanitaire: false,
         },
       },
     ],
@@ -1390,7 +1349,6 @@ export const availableCategories: ICategory[] = [
           ],
           ratioLabelSingular: "analyse non conforme",
           ratioLabelPlural: "analyses non conformes",
-          valeurSanitaire: false,
         },
       },
       {
@@ -1476,7 +1434,6 @@ export const availableCategories: ICategory[] = [
           ],
           ratioLabelSingular: "analyse non conforme",
           ratioLabelPlural: "analyses non conformes",
-          valeurSanitaire: false,
         },
       },
     ],

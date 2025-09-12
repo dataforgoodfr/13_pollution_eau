@@ -161,12 +161,23 @@ export default function PollutionMapMarker({
   > | null>(null);
   const [showPopup, setShowPopup] = useState<boolean>(true);
 
-  // Show popup when marker changes
+  // Show popup when marker changes and center map on marker
   useEffect(() => {
-    if (marker) {
+    if (marker && map) {
       setShowPopup(true);
+      // Center the map on the marker with vertical offset
+      const mapContainer = map.getContainer();
+      const mapHeight = mapContainer.offsetHeight;
+      const offsetY = mapHeight * 0.1; // 60% from top -> 10% offset from center
+
+      map.flyTo({
+        center: [marker.longitude, marker.latitude],
+        zoom: Math.max(map.getZoom(), 8), // Ensure minimum zoom level
+        duration: 1000,
+        offset: [0, offsetY],
+      });
     }
-  }, [marker]);
+  }, [marker, map]);
 
   useEffect(() => {
     if (!map || !marker) return;
@@ -593,7 +604,22 @@ export default function PollutionMapMarker({
         longitude={marker.longitude}
         latitude={marker.latitude}
         anchor="bottom"
-        onClick={() => setShowPopup(true)}
+        onClick={() => {
+          setShowPopup(true);
+          // Center the map on the marker with vertical offset when clicked
+          if (map) {
+            const mapContainer = map.getContainer();
+            const mapHeight = mapContainer.offsetHeight;
+            const offsetY = mapHeight * 0.1; // 40% from top means 10% offset from center
+
+            map.flyTo({
+              center: [marker.longitude, marker.latitude],
+              zoom: Math.max(map.getZoom(), 8), // Ensure minimum zoom level
+              duration: 1000,
+              offset: [0, -offsetY], // Negative Y moves the center point up
+            });
+          }
+        }}
       >
         <MapPin
           size={32}

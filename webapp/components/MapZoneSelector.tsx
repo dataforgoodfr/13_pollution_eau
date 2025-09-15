@@ -144,10 +144,10 @@ export default function MapZoneSelector() {
                   <TooltipTrigger asChild>
                     <Button
                       className={cn(
-                        "px-4 py-2 rounded w-[48px]",
+                        "px-4 py-2 rounded w-[48px]  border",
                         isSelected
-                          ? "bg-custom-drom text-white"
-                          : "bg-white text-custom-drom",
+                          ? "bg-custom-drom text-white border-custom-drom"
+                          : "bg-white text-custom-drom border-gray-500",
                         "hover:bg-custom-drom hover:text-white",
                       )}
                       onClick={handleClick}

@@ -131,12 +131,12 @@ export default function PollutionMapSearchBox({
             size={16}
             className="absolute left-3 text-gray-400 pointer-events-none"
           />
-          <div className="mx-1 ">
+          <div className="">
             <Input
-              className="max-w-fit min-w-[220px] outline-1 outline-blue-500 pl-7 bg-white rounded-2xl text-sm"
+              className="max-w-fit min-w-[220px] outline-1 pl-8 pr-8 bg-white rounded-2xl text-sm border-gray-500"
               key="TextInputCommune"
               value={filterString}
-              placeholder="Saisir votre adresse ou commune"
+              placeholder="Saisir adresse ou commune"
               onChange={HandleFilterChange}
               onFocus={() => {
                 if (filterString?.length >= 3) {

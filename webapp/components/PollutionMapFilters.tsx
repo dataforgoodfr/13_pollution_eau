@@ -91,7 +91,7 @@ export default function PollutionMapFilters({
     <>
       <Select value={period} onValueChange={(y) => setPeriod(y)}>
         <SelectTrigger
-          className="SelectTrigger bg-white rounded-2xl"
+          className="SelectTrigger bg-white rounded-2xl border-gray-500"
           aria-label="year-select"
         >
           <CalendarDays size={16} className="text-gray-400" />
@@ -110,7 +110,7 @@ export default function PollutionMapFilters({
 
       <Select value={category} onValueChange={setCategory}>
         <SelectTrigger
-          className="bg-white rounded-2xl"
+          className="bg-white rounded-2xl border-gray-500"
           aria-label="category-select"
         >
           <FlaskConical size={16} className="text-gray-400" />
@@ -125,7 +125,7 @@ export default function PollutionMapFilters({
 
       <Select value={displayMode} onValueChange={setDisplayMode}>
         <SelectTrigger
-          className="bg-white rounded-2xl"
+          className="bg-white rounded-2xl border-gray-500"
           aria-label="display-mode-select"
         >
           <Diamond size={16} className="text-gray-400" />

@@ -9,9 +9,9 @@ export const MAPLIBRE_MAP = {
     language: "fr",
   },
   initialViewState: {
-    longitude: 2.213749,
-    latitude: 46.227638,
-    zoom: 5,
+    longitude: 0.882755215151974,
+    latitude: 46.489410422633256,
+    zoom: 5.2,
   },
   countryBorderWidth: 2,
   countryBorderColor: "#bdb8b8",

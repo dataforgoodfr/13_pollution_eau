@@ -113,3 +113,24 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* MapLibre Popup styling overrides */
+.maplibregl-map {
+  font: inherit !important; /* Inherit font from website */
+  font-size: inherit !important; /* Inherit font size from website */
+  line-height: inherit !important; /* Inherit line height from website */
+  font-family: inherit !important; /* Inherit font family from website */
+}
+.maplibregl-popup {
+  max-width: 350px !important; /* Increase default max-width from 240px */
+  min-width: 300px !important; /* Set minimum width */
+}
+
+.maplibregl-popup-content {
+  border-radius: calc(
+    var(--radius)
+  ) !important; /* Match website's border radius */
+  box-shadow:
+    0 10px 15px -3px rgb(0 0 0 / 0.2),
+    0 4px 6px -4px rgb(0 0 0 / 0.2) !important; /* Modern shadow */
+}

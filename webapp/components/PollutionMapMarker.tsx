@@ -260,7 +260,7 @@ export default function PollutionMapMarker({
       code === null
     ) {
       return (
-        <p className="text-sm text-gray-500">
+        <p className="text-gray-500">
           Aucune donnée disponible pour cette zone.
         </p>
       );
@@ -298,7 +298,7 @@ export default function PollutionMapMarker({
 
         return (
           <>
-            <p className="text-sm font-bold">{title}</p>
+            <p className=" font-bold">{title}</p>
 
             {/* Global status */}
             <div className="flex items-center gap-3 mb-3">
@@ -306,19 +306,19 @@ export default function PollutionMapMarker({
                 className="w-3 h-3 rounded-full flex-shrink-0"
                 style={{ backgroundColor: globalResultColor }}
               ></div>
-              <span className="text-sm">{globalResultLabel}</span>
+              <span className="">{globalResultLabel}</span>
             </div>
 
             {/* Detailed breakdown */}
             {(nonConforme.length > 0 || deconseille.length > 0) && (
-              <div className="mt-3 space-y-3">
+              <div className="mt-3 space-y-3 text-xs">
                 {/* Non conforme section */}
                 {nonConforme.length > 0 && (
                   <div>
                     <p className="font-medium mb-2">
                       Eau non conforme aux limites réglementaires pour:
                     </p>
-                    <ul className="space-y-1 text-xs pl-2">
+                    <ul className="space-y-1 pl-2">
                       {nonConforme.map((item, index) => (
                         <li key={index} className="flex items-start">
                           <span className="mr-2">-</span>
@@ -336,7 +336,7 @@ export default function PollutionMapMarker({
                       Eau déconseillée à la consommation pour toute ou partie de
                       la population en raison de la présence de:
                     </p>
-                    <ul className="space-y-1 text-xs pl-2">
+                    <ul className="space-y-1 pl-2">
                       {deconseille.map((item, index) => (
                         <li key={index} className="flex items-start">
                           <span className="mr-2">-</span>
@@ -386,7 +386,7 @@ export default function PollutionMapMarker({
 
       return (
         <>
-          <p className="text-sm font-bold">{title}</p>
+          <p className="font-bold">{title}</p>
           <div className="flex items-center gap-3">
             <div
               className="w-3 h-3 rounded-full flex-shrink-0"
@@ -395,13 +395,13 @@ export default function PollutionMapMarker({
             <span className="">{resultLabel}</span>
           </div>
           {date && (
-            <p className="mb-2">
+            <p className="mb-2 text-xs">
               Dernière analyse le{" "}
               {new Date(date.toString()).toLocaleDateString("fr-FR")}
             </p>
           )}
           {parsedValues && Object.keys(parsedValues).length > 0 && (
-            <div className="mt-3">
+            <div className="mt-3 text-xs">
               <p className="font-medium mb-2">Substances quantifiées:</p>
               <ul className="space-y-1">
                 {Object.entries(parsedValues)
@@ -502,7 +502,7 @@ export default function PollutionMapMarker({
 
       return (
         <>
-          <p className="text-sm font-bold">{title}</p>
+          <p className="font-bold">{title}</p>
           <div className="flex items-center gap-3">
             <div
               className="w-3 h-3 rounded-full flex-shrink-0"
@@ -513,7 +513,7 @@ export default function PollutionMapMarker({
 
           {selectedZoneData[nbPrelevementsProp] &&
             Number(selectedZoneData[nbPrelevementsProp]) > 0 && (
-              <p>
+              <p className="text-xs">
                 {Number(selectedZoneData[nbPrelevementsProp]) === 1
                   ? `1 analyse au total en ${annee}`
                   : `${selectedZoneData[nbPrelevementsProp]} analyses au total en ${annee}`}
@@ -554,9 +554,9 @@ export default function PollutionMapMarker({
           {category != "tous" &&
             parsedMaxValues &&
             Object.keys(parsedMaxValues).length > 0 && (
-              <div className="mt-3">
+              <div className="mt-3 text-xs">
                 <p className="font-medium mb-2">
-                  Concentration maximale retrouvée au cours de l&apos;année:
+                  Concentration maximale retrouvée en {annee} :
                 </p>
                 <ul className="space-y-1">
                   {Object.entries(parsedMaxValues).map(([param, value]) => (
@@ -579,10 +579,10 @@ export default function PollutionMapMarker({
           {category === "tous" &&
             ratioValue !== 0 &&
             nonConformeDetails.length > 0 && (
-              <div className="mt-3 space-y-3">
+              <div className="mt-3 space-y-3 text-xs">
                 <div>
                   <p className="font-medium mb-2">Détail par catégorie :</p>
-                  <ul className="space-y-1 text-xs pl-2">
+                  <ul className="space-y-1 pl-2">
                     {nonConformeDetails.map((item, index) => (
                       <li key={index} className="flex items-start">
                         <span className="mr-2">-</span>
@@ -657,7 +657,7 @@ export default function PollutionMapMarker({
               </div>
             )}
 
-            <div className="space-y-2 pr-6">{renderContent()}</div>
+            <div className="space-y-2 pr-6 text-sm">{renderContent()}</div>
           </div>
         </Popup>
       )}

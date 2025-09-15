@@ -60,79 +60,127 @@ export default function PollutionMap({
   };
 
   return (
-    <div className="relative w-full h-full flex flex-col">
+    <div className="relative w-full h-full flex">
       <MapProvider>
-        <PollutionMapBaseLayer
-          period={period}
-          category={category}
-          displayMode={displayMode}
-          selectedZoneCode={selectedZoneCode}
-          setSelectedZoneCode={setSelectedZoneCode}
-          mapState={mapState}
-          onMapStateChange={setMapState}
-          marker={marker}
-          setMarker={setMarker}
-          colorblindMode={colorblindMode}
-          isMobile={isMobile}
-        />
-
-        <div className="absolute top-4 left-4 z-10 flex overflow-x-auto scrollbar-hide">
-          <PollutionMapFilters
+        {/* Map container - takes remaining space */}
+        <div
+          className={clsx(
+            "relative flex-1 transition-all duration-300",
+            // On mobile, hide map when panel is open (overlay)
+            isMobile && sidePanelOpen && "hidden",
+          )}
+        >
+          <PollutionMapBaseLayer
             period={period}
-            setPeriod={setPeriod}
             category={category}
-            setCategory={setCategory}
             displayMode={displayMode}
-            setDisplayMode={setDisplayMode}
+            selectedZoneCode={selectedZoneCode}
+            setSelectedZoneCode={setSelectedZoneCode}
+            mapState={mapState}
+            onMapStateChange={setMapState}
+            marker={marker}
+            setMarker={setMarker}
+            colorblindMode={colorblindMode}
+            isMobile={isMobile}
           />
-        </div>
 
-        <div
-          className={clsx(
-            "absolute top-4 right-20 z-9 transition-all duration-300",
-            sidePanelOpen && "mr-80",
-          )}
-        >
-          <PollutionMapSearchBox
-            communeInseeCode={selectedZoneCode}
-            onAddressFilter={handleAddressSelect}
-          />
-        </div>
+          {/* Mobile layout: better positioned overlays */}
+          <div
+            className={clsx(
+              "md:hidden absolute top-4 left-4 right-4 z-20 flex flex-col gap-2",
+              // Hide controls when panel is open on mobile to avoid conflicts
+              isMobile && sidePanelOpen && "hidden",
+            )}
+          >
+            <div className="flex justify-between items-start gap-2">
+              <PollutionMapFilters
+                period={period}
+                setPeriod={setPeriod}
+                category={category}
+                setCategory={setCategory}
+                displayMode={displayMode}
+                setDisplayMode={setDisplayMode}
+              />
+              {!sidePanelOpen && (
+                <button
+                  onClick={() => setSidePanelOpen(true)}
+                  className="bg-custom-drom text-white p-2 rounded-md shadow-md flex items-center justify-center"
+                  aria-label="Ouvrir le panneau"
+                >
+                  <div className="text-lg">☰</div>
+                </button>
+              )}
+            </div>
+            <div className="flex gap-2">
+              <div className="flex-1">
+                <PollutionMapSearchBox
+                  communeInseeCode={selectedZoneCode}
+                  onAddressFilter={handleAddressSelect}
+                />
+              </div>
+              <MapZoneSelector />
+            </div>
+          </div>
 
-        <div
-          className={clsx(
-            "absolute top-4 right-4 z-8 transition-all duration-300",
-            sidePanelOpen && "mr-80",
-          )}
-        >
-          <MapZoneSelector />
-        </div>
-
-        <div className="absolute left-4 bottom-4">
-          <HamburgerButton
-            visible={!showLegend}
-            onClick={() => setShowLegend(!showLegend)}
-          />
-        </div>
-
-        {showLegend && (
-          <div className="absolute left-4 bottom-4">
-            <PollutionMapLegend
+          {/* Desktop layout: absolute positioning */}
+          <div className="hidden md:block absolute top-4 left-4 z-10 overflow-x-auto scrollbar-hide">
+            <PollutionMapFilters
               period={period}
+              setPeriod={setPeriod}
               category={category}
-              pollutionStats={pollutionStats}
-              colorblindMode={colorblindMode}
-              setColorblindMode={setColorblindMode}
-              onClose={() => setShowLegend(false)}
+              setCategory={setCategory}
+              displayMode={displayMode}
+              setDisplayMode={setDisplayMode}
             />
           </div>
-        )}
+
+          <div className="hidden md:block absolute top-4 right-20 z-9">
+            <PollutionMapSearchBox
+              communeInseeCode={selectedZoneCode}
+              onAddressFilter={handleAddressSelect}
+            />
+          </div>
+
+          <div className="hidden md:block absolute top-4 right-4 z-8">
+            <MapZoneSelector />
+          </div>
+
+          <div className="absolute left-4 bottom-4">
+            <HamburgerButton
+              visible={!showLegend}
+              onClick={() => setShowLegend(!showLegend)}
+            />
+          </div>
+
+          {showLegend && (
+            <div className="absolute left-4 bottom-4">
+              <PollutionMapLegend
+                period={period}
+                category={category}
+                pollutionStats={pollutionStats}
+                colorblindMode={colorblindMode}
+                setColorblindMode={setColorblindMode}
+                onClose={() => setShowLegend(false)}
+              />
+            </div>
+          )}
+        </div>
 
         {/* Right side panel with handle */}
-        <div className="absolute top-0 right-0 h-full z-10">
-          {/* Panel handle - always visible */}
+        <div
+          className={clsx(
+            "relative flex h-full",
+            // On mobile, panel takes full width when open (overlay)
+            isMobile && sidePanelOpen && "absolute inset-0 z-40",
+          )}
+        >
+          {/* Panel handle - always visible on desktop, hidden on mobile when panel is closed */}
           <div
-            className="absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-6 cursor-pointer z-20"
+            className={clsx(
+              "absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-6 cursor-pointer z-20",
+              "md:block", // Always visible on desktop
+              isMobile && !sidePanelOpen && "hidden", // Hidden on mobile when panel is closed
+            )}
             onClick={() => setSidePanelOpen(!sidePanelOpen)}
           >
             <div className="bg-custom-drom text-white shadow-md rounded-l-md flex items-center justify-center h-16 w-6">
@@ -142,14 +190,22 @@ export default function PollutionMap({
 
           {/* Panel content */}
           <div
-            className={`bg-[#E2E8F0] transition-all duration-300 h-full overflow-y-auto ${
-              sidePanelOpen ? "w-80 opacity-100" : "w-0 opacity-0"
-            }`}
+            className={clsx(
+              "bg-[#E2E8F0] transition-all duration-300 h-full overflow-y-auto",
+              {
+                // When panel is open
+                "w-full md:w-80 opacity-100": sidePanelOpen,
+                // When panel is closed
+                "w-0 opacity-0": !sidePanelOpen,
+              },
+            )}
           >
-            <PollutionSidePanel
-              category={category}
-              onClose={() => setSidePanelOpen(false)}
-            />
+            {sidePanelOpen && (
+              <PollutionSidePanel
+                category={category}
+                onClose={() => setSidePanelOpen(false)}
+              />
+            )}
           </div>
         </div>
       </MapProvider>

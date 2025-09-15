@@ -49,6 +49,7 @@ aggregated AS (
 ),
 
 -- ajout d'une colonne total pesticide (somme des substances actives + métabolites pertinents)
+-- et d'une colonne total pesticide (somme des substances actives + tous les métabolites)
 with_total_pesticide AS (
     SELECT
         *,
@@ -64,7 +65,19 @@ with_total_pesticide AS (
                     THEN valtraduite
                 ELSE 0
             END
-        ) OVER (PARTITION BY cdreseau) AS total_pesticide
+        ) OVER (PARTITION BY cdreseau) AS total_pesticide,
+        SUM(
+            CASE
+                WHEN
+                    (
+                        categorie_2 = 'sub_active'
+                        OR categorie_2 = 'metabolite'
+                    )
+                    AND valtraduite IS NOT NULL
+                    THEN valtraduite
+                ELSE 0
+            END
+        ) OVER (PARTITION BY cdreseau) AS total_pesticide_all
     FROM aggregated
 )
 
@@ -97,12 +110,12 @@ SELECT
                 cdparametresiseeaux
                 ORDER BY cdparametresiseeaux
             ) FILTER (WHERE valtraduite > 0
-            ) || ['TOTALPESTICIDE'],
+            ) || ['TOTALPESTICIDE', 'TOTALPESTICIDEALL'],
             LIST(
                 valtraduite
                 ORDER BY cdparametresiseeaux
             ) FILTER (WHERE valtraduite > 0
-            ) || [MAX(total_pesticide)]
+            ) || [MAX(total_pesticide), MAX(total_pesticide_all)]
         )
     ) AS parametres_detectes
 

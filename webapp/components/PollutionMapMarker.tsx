@@ -403,7 +403,7 @@ export default function PollutionMapMarker({
           {parsedValues && Object.keys(parsedValues).length > 0 && (
             <div className="mt-3 text-xs">
               <p className="font-medium mb-2">Substances quantifiées:</p>
-              <ul className="space-y-1">
+              <ul className="space-y-1 max-h-60 overflow-y-scroll">
                 {Object.entries(parsedValues)
                   .sort(
                     ([, valueA], [, valueB]) => Number(valueB) - Number(valueA),
@@ -649,15 +649,15 @@ export default function PollutionMapMarker({
             </button>
             {marker.content && (
               <div className="mb-3 pb-3 border-b border-gray-200 pr-6">
-                <span className="">{marker.content}</span>
-                <br />
+                <span className="italic">{marker.content}</span>
+                {/* <br />
                 <span className="opacity-35">
                   Cette adresse est désservie par une unité de distribution.
-                </span>
+                </span> */}
               </div>
             )}
 
-            <div className="space-y-2 pr-6 text-sm">{renderContent()}</div>
+            <div className="space-y-2 text-sm">{renderContent()}</div>
           </div>
         </Popup>
       )}

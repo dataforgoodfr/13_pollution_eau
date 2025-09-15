@@ -76,7 +76,7 @@ export default function PollutionMap({
             isMobile={isMobile}
           />
 
-          <div className="absolute top-4 left-4 z-10 flex space-x-0 md:space-x-6 space-y-3 md:space-y-0 flex-col md:flex-row">
+          <div className="absolute top-4 left-4 z-10 flex space-x-0 md:space-x-6 space-y-1 md:space-y-0 flex-col md:flex-row">
             <PollutionMapFilters
               period={period}
               setPeriod={setPeriod}
@@ -85,9 +85,15 @@ export default function PollutionMap({
               displayMode={displayMode}
               setDisplayMode={setDisplayMode}
             />
+            <div className="md:hidden">
+              <PollutionMapSearchBox
+                communeInseeCode={selectedZoneCode}
+                onAddressFilter={handleAddressSelect}
+              />
+            </div>
           </div>
 
-          <div className="absolute top-4 right-20 z-9">
+          <div className="absolute top-4 right-20 z-9 hidden md:block">
             <PollutionMapSearchBox
               communeInseeCode={selectedZoneCode}
               onAddressFilter={handleAddressSelect}

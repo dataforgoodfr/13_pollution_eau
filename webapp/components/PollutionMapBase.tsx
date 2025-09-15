@@ -6,6 +6,7 @@ import ReactMapGl, {
   ViewStateChangeEvent,
   NavigationControl,
   AttributionControl,
+  FullscreenControl,
 } from "react-map-gl/maplibre";
 import maplibregl from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
@@ -179,6 +180,7 @@ export default function PollutionMapBaseLayer({
       ) : null}
       <AttributionControl compact={true} />
       <NavigationControl position="bottom-right" showCompass={false} />
+      <FullscreenControl position="bottom-right" />
     </ReactMapGl>
   );
 }

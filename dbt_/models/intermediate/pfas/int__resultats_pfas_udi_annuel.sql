@@ -30,6 +30,16 @@ pfas_results_udi_agg AS (
                 WHEN cdparametresiseeaux = 'SPFAS' THEN referenceprel
             END
         ) AS count_20_pfas,
+        -- On calcule une somme de 4 PFAS pour une limite recommandée par le
+        -- haut conseil de la santé public
+        SUM(
+            CASE
+                WHEN
+                    cdparametresiseeaux IN ('PFOA', 'PFOS', 'PFNA', 'PFHXS')
+                    THEN valtraduite
+                ELSE 0
+            END
+        ) AS sum_4_pfas,
         -- On check si la somme des 20 PFAS est supérieure
         -- à la limite reglementaire
         MAX(
@@ -72,7 +82,8 @@ SELECT
     ), 2) AS ratio_limite_qualite,
     SUM(has_pfas_above_vs) AS nb_sup_valeur_sanitaire,
     TO_JSON({
-        'SPFAS': MAX(sum_20_pfas)
+        'SPFAS': MAX(sum_20_pfas),
+        'SUM_4_PFAS': MAX(sum_4_pfas)
     }) AS parametres_detectes
 
 FROM pfas_results_udi_agg

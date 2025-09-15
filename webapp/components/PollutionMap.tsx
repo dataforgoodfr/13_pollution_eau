@@ -76,7 +76,7 @@ export default function PollutionMap({
           isMobile={isMobile}
         />
 
-        <div className="absolute top-4 left-4 z-10 flex overflow-x-auto scrollbar-hide">
+        <div className="absolute top-4 left-4 z-10 flex space-x-0 md:space-x-6 space-y-3 md:space-y-0 flex-col md:flex-row">
           <PollutionMapFilters
             period={period}
             setPeriod={setPeriod}

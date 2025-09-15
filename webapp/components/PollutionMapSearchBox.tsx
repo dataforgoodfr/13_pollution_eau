@@ -124,90 +124,84 @@ export default function PollutionMapSearchBox({
   }
 
   return (
-    <div className="flex items-center ml-6 p-2">
-      <div>
-        <div className="">
-          <Popover open={dropDownIsOpened} onOpenChange={setDropDownOpen}>
-            <PopoverAnchor asChild>
-              <div className="flex items-center relative">
-                <MapPin
-                  size={16}
-                  className="absolute left-3 text-gray-400 pointer-events-none"
-                />
-                <div className="mx-1 ">
-                  <Input
-                    className="max-w-fit min-w-[220px] outline-1 outline-blue-500 pl-7 bg-white rounded-2xl"
-                    key="TextInputCommune"
-                    value={filterString}
-                    placeholder="Saisir votre adresse ou commune"
-                    onChange={HandleFilterChange}
-                    onFocus={() => {
-                      if (filterString?.length >= 3) {
-                        setDropDownOpen(true);
-                      }
-                    }}
-                    autoComplete="off"
-                    data-1p-ignore
-                  />
-                </div>
-                {filterString && (
-                  <button
-                    onClick={clearSearch}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 focus:outline-none"
-                    aria-label="Clear search"
-                  >
-                    <X size={16} />
-                  </button>
-                )}
-              </div>
-            </PopoverAnchor>
-            <PopoverContent
-              asChild={true}
-              onOpenAutoFocus={(e) => e.preventDefault()}
-              align="start"
-              sideOffset={5}
-              className="p-0"
+    <Popover open={dropDownIsOpened} onOpenChange={setDropDownOpen}>
+      <PopoverAnchor asChild>
+        <div className="flex items-center relative">
+          <MapPin
+            size={16}
+            className="absolute left-3 text-gray-400 pointer-events-none"
+          />
+          <div className="mx-1 ">
+            <Input
+              className="max-w-fit min-w-[220px] outline-1 outline-blue-500 pl-7 bg-white rounded-2xl text-sm"
+              key="TextInputCommune"
+              value={filterString}
+              placeholder="Saisir votre adresse ou commune"
+              onChange={HandleFilterChange}
+              onFocus={() => {
+                if (filterString?.length >= 3) {
+                  setDropDownOpen(true);
+                }
+              }}
+              autoComplete="off"
+              data-1p-ignore
+            />
+          </div>
+          {filterString && (
+            <button
+              onClick={clearSearch}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 focus:outline-none"
+              aria-label="Clear search"
             >
-              <Command className="rounded-lg border shadow-md">
-                <CommandEmpty className="py-2 text-center text-sm text-muted-foreground">
-                  Aucune adresse trouvée.
-                </CommandEmpty>
-                <CommandList className="max-h-[300px] overflow-auto">
-                  <CommandGroup key="CommuneList">
-                    {communesList.map((feature) => {
-                      return (
-                        <CommandItem
-                          className="flex items-center py-2"
-                          key={feature.properties.id}
-                          value={feature.properties.id}
-                          onSelect={() => handleAddressSelect(feature)}
-                        >
-                          <div className="flex items-center w-full">
-                            <div className="flex-grow">
-                              {feature.properties.type === "municipality" ? (
-                                <HilightLabel
-                                  originalText={`${feature.properties.label} (${feature.properties.postcode})`}
-                                  textToHilight={filterString}
-                                />
-                              ) : (
-                                <HilightLabel
-                                  originalText={feature.properties.label}
-                                  textToHilight={filterString}
-                                />
-                              )}
-                            </div>
-                          </div>
-                        </CommandItem>
-                      );
-                    })}
-                  </CommandGroup>
-                </CommandList>
-              </Command>
-            </PopoverContent>
-          </Popover>
+              <X size={16} />
+            </button>
+          )}
         </div>
-      </div>
-    </div>
+      </PopoverAnchor>
+      <PopoverContent
+        asChild={true}
+        onOpenAutoFocus={(e) => e.preventDefault()}
+        align="start"
+        sideOffset={5}
+        className="p-0"
+      >
+        <Command className="rounded-lg border shadow-md">
+          <CommandEmpty className="py-2 text-center text-sm text-muted-foreground">
+            Aucune adresse trouvée.
+          </CommandEmpty>
+          <CommandList className="max-h-[300px] overflow-auto">
+            <CommandGroup key="CommuneList">
+              {communesList.map((feature) => {
+                return (
+                  <CommandItem
+                    className="flex items-center py-2"
+                    key={feature.properties.id}
+                    value={feature.properties.id}
+                    onSelect={() => handleAddressSelect(feature)}
+                  >
+                    <div className="flex items-center w-full">
+                      <div className="flex-grow">
+                        {feature.properties.type === "municipality" ? (
+                          <HilightLabel
+                            originalText={`${feature.properties.label} (${feature.properties.postcode})`}
+                            textToHilight={filterString}
+                          />
+                        ) : (
+                          <HilightLabel
+                            originalText={feature.properties.label}
+                            textToHilight={filterString}
+                          />
+                        )}
+                      </div>
+                    </div>
+                  </CommandItem>
+                );
+              })}
+            </CommandGroup>
+          </CommandList>
+        </Command>
+      </PopoverContent>
+    </Popover>
   );
 }
 

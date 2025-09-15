@@ -88,65 +88,59 @@ export default function PollutionMapFilters({
   ];
 
   return (
-    <div className="flex space-x-6 p-2">
-      <div className="shadow-sm">
-        <Select value={period} onValueChange={(y) => setPeriod(y)}>
-          <SelectTrigger
-            className="SelectTrigger bg-white rounded-2xl"
-            aria-label="year-select"
-          >
-            <CalendarDays size={16} className="text-gray-400" />
-            <div className="block mx-1">
-              <SelectValue placeholder="Année" />
-            </div>
-          </SelectTrigger>
-          <SelectContent>
-            {availablePeriods.map((p) => (
-              <SelectItem className="items-left" key={p.value} value={p.value}>
-                {p.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
+    <>
+      <Select value={period} onValueChange={(y) => setPeriod(y)}>
+        <SelectTrigger
+          className="SelectTrigger bg-white rounded-2xl"
+          aria-label="year-select"
+        >
+          <CalendarDays size={16} className="text-gray-400" />
+          <div className="block mx-1">
+            <SelectValue placeholder="Année" />
+          </div>
+        </SelectTrigger>
+        <SelectContent>
+          {availablePeriods.map((p) => (
+            <SelectItem className="items-left" key={p.value} value={p.value}>
+              {p.label}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
 
-      <div className="shadow-sm">
-        <Select value={category} onValueChange={setCategory}>
-          <SelectTrigger
-            className="bg-white rounded-2xl"
-            aria-label="category-select"
-          >
-            <FlaskConical size={16} className="text-gray-400" />
-            <div className="block mx-1">
-              <SelectValue placeholder="Polluant" className="mx-1" />
-            </div>
-          </SelectTrigger>
-          <SelectContent className="rounded-xl">
-            <CategoryItems items={availableCategories} />
-          </SelectContent>
-        </Select>
-      </div>
+      <Select value={category} onValueChange={setCategory}>
+        <SelectTrigger
+          className="bg-white rounded-2xl"
+          aria-label="category-select"
+        >
+          <FlaskConical size={16} className="text-gray-400" />
+          <div className="block mx-1">
+            <SelectValue placeholder="Polluant" className="mx-1" />
+          </div>
+        </SelectTrigger>
+        <SelectContent className="rounded-xl">
+          <CategoryItems items={availableCategories} />
+        </SelectContent>
+      </Select>
 
-      <div className="shadow-sm">
-        <Select value={displayMode} onValueChange={setDisplayMode}>
-          <SelectTrigger
-            className="bg-white rounded-2xl"
-            aria-label="display-mode-select"
-          >
-            <Diamond size={16} className="text-gray-400" />
-            <div className="block mx-1">
-              <SelectValue placeholder="Affichage" className="mx-1" />
-            </div>
-          </SelectTrigger>
-          <SelectContent className="rounded-xl">
-            {availableDisplayModes.map((mode) => (
-              <SelectItem key={mode.value} value={mode.value}>
-                {mode.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
-    </div>
+      <Select value={displayMode} onValueChange={setDisplayMode}>
+        <SelectTrigger
+          className="bg-white rounded-2xl"
+          aria-label="display-mode-select"
+        >
+          <Diamond size={16} className="text-gray-400" />
+          <div className="block mx-1">
+            <SelectValue placeholder="Affichage" className="mx-1" />
+          </div>
+        </SelectTrigger>
+        <SelectContent className="rounded-xl">
+          {availableDisplayModes.map((mode) => (
+            <SelectItem key={mode.value} value={mode.value}>
+              {mode.label}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+    </>
   );
 }

@@ -39,7 +39,6 @@ export default function PollutionMap({
     }
     return false; // Default to false for SSR
   });
-
   const [sidePanelOpen, setSidePanelOpen] = useState(() => !isMobile);
   const [showLegend, setShowLegend] = useState(() => !isMobile);
   const [colorblindMode, setColorblindMode] = useState(false);
@@ -60,92 +59,90 @@ export default function PollutionMap({
   };
 
   return (
-    <div className="relative w-full h-full flex flex-col">
+    <div className="w-full h-full flex">
       <MapProvider>
-        <PollutionMapBaseLayer
-          period={period}
-          category={category}
-          displayMode={displayMode}
-          selectedZoneCode={selectedZoneCode}
-          setSelectedZoneCode={setSelectedZoneCode}
-          mapState={mapState}
-          onMapStateChange={setMapState}
-          marker={marker}
-          setMarker={setMarker}
-          colorblindMode={colorblindMode}
-          isMobile={isMobile}
-        />
-
-        <div className="absolute top-4 left-4 z-10 flex space-x-0 md:space-x-6 space-y-3 md:space-y-0 flex-col md:flex-row">
-          <PollutionMapFilters
+        <div className="relative flex-1 transition-all duration-300 flex flex-col">
+          <PollutionMapBaseLayer
             period={period}
-            setPeriod={setPeriod}
             category={category}
-            setCategory={setCategory}
             displayMode={displayMode}
-            setDisplayMode={setDisplayMode}
+            selectedZoneCode={selectedZoneCode}
+            setSelectedZoneCode={setSelectedZoneCode}
+            mapState={mapState}
+            onMapStateChange={setMapState}
+            marker={marker}
+            setMarker={setMarker}
+            colorblindMode={colorblindMode}
+            isMobile={isMobile}
           />
-        </div>
 
-        <div
-          className={clsx(
-            "absolute top-4 right-20 z-9 transition-all duration-300",
-            sidePanelOpen && "mr-80",
-          )}
-        >
-          <PollutionMapSearchBox
-            communeInseeCode={selectedZoneCode}
-            onAddressFilter={handleAddressSelect}
-          />
-        </div>
-
-        <div
-          className={clsx(
-            "absolute top-4 right-4 z-8 transition-all duration-300",
-            sidePanelOpen && "mr-80",
-          )}
-        >
-          <MapZoneSelector />
-        </div>
-
-        <div className="absolute left-4 bottom-4">
-          <HamburgerButton
-            visible={!showLegend}
-            onClick={() => setShowLegend(!showLegend)}
-          />
-        </div>
-
-        {showLegend && (
-          <div className="absolute left-4 bottom-4">
-            <PollutionMapLegend
+          <div className="absolute top-4 left-4 z-10 flex space-x-0 md:space-x-6 space-y-3 md:space-y-0 flex-col md:flex-row">
+            <PollutionMapFilters
               period={period}
+              setPeriod={setPeriod}
               category={category}
-              pollutionStats={pollutionStats}
-              colorblindMode={colorblindMode}
-              setColorblindMode={setColorblindMode}
-              onClose={() => setShowLegend(false)}
+              setCategory={setCategory}
+              displayMode={displayMode}
+              setDisplayMode={setDisplayMode}
             />
           </div>
-        )}
 
-        {/* Right side panel with handle */}
-        <div className="absolute top-0 right-0 h-full z-10">
-          {/* Panel handle - always visible */}
+          <div className="absolute top-4 right-20 z-9">
+            <PollutionMapSearchBox
+              communeInseeCode={selectedZoneCode}
+              onAddressFilter={handleAddressSelect}
+            />
+          </div>
+
+          <div className="absolute top-4 right-4 z-8">
+            <MapZoneSelector />
+          </div>
+
+          <div className="absolute left-4 bottom-4">
+            <HamburgerButton
+              visible={!showLegend}
+              onClick={() => setShowLegend(!showLegend)}
+            />
+          </div>
+
+          {showLegend && (
+            <div className="absolute left-4 bottom-4">
+              <PollutionMapLegend
+                period={period}
+                category={category}
+                pollutionStats={pollutionStats}
+                colorblindMode={colorblindMode}
+                setColorblindMode={setColorblindMode}
+                onClose={() => setShowLegend(false)}
+              />
+            </div>
+          )}
+
+          {/* Side Panel toggle button  */}
           <div
-            className="absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-6 cursor-pointer z-20"
+            className="absolute right-0 top-1/2 transform -translate-y-1/2 cursor-pointer z-20"
             onClick={() => setSidePanelOpen(!sidePanelOpen)}
           >
             <div className="bg-custom-drom text-white shadow-md rounded-l-md flex items-center justify-center h-16 w-6">
               <div className="text-lg">{sidePanelOpen ? "›" : "‹"}</div>
             </div>
           </div>
+        </div>
 
+        {/* Side panel - responsive: hidden on mobile, visible on desktop */}
+        <div
+          className={clsx(
+            "bg-[#E2E8F0] transition-all duration-300 z-10",
+            // Mobile: full screen overlay when open, hidden when closed
+            "fixed inset-0 md:relative md:inset-auto",
+
+            sidePanelOpen
+              ? "block md:block md:w-[400px]"
+              : "hidden md:block md:w-0",
+          )}
+        >
           {/* Panel content */}
-          <div
-            className={`bg-[#E2E8F0] transition-all duration-300 h-full overflow-y-auto ${
-              sidePanelOpen ? "w-80 opacity-100" : "w-0 opacity-0"
-            }`}
-          >
+          <div className="h-full overflow-y-auto p-1 md:p-0">
             <PollutionSidePanel
               category={category}
               onClose={() => setSidePanelOpen(false)}

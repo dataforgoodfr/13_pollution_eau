@@ -133,7 +133,7 @@ SELECT
     null AS nb_parametres,
     nb_prelevements,
     nb_sup_valeur_sanitaire,
-    null AS parametres_detectes
+    parametres_detectes
 FROM
     {{ ref('int__resultats_metabolite_specifique_udi_annuel') }}
 UNION ALL

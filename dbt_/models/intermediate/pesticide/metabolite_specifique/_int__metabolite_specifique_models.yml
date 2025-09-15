@@ -105,6 +105,9 @@ models:
           - dbt_expectations.expect_column_values_to_be_between:
               min_value: 0
               max_value: 1
+      - name: parametres_detectes
+        description: "JSON contenant des paramètres détectés"
+        type: JSON
 
   - name: int__resultats_metabolite_specifique_udi_dernier
     description: Résultats des métabolites de pesticides spécifiques par UDI pour la temporalité 'derniers prélèvements'

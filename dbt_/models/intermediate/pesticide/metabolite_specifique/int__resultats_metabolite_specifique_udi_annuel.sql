@@ -95,7 +95,20 @@ SELECT
         )::float
         /
         COUNT(DISTINCT referenceprel)::float
-    ) AS ratio_limite_qualite
+    ) AS ratio_limite_qualite,
+    CASE
+        WHEN type_metabolite = 'metabolite_esa_metolachlore'
+            THEN TO_JSON({ 'ESAMTC': MAX(valtraduite) })
+        WHEN type_metabolite = 'metabolite_chlorothalonil_r471811'
+            THEN TO_JSON({ 'R471811': MAX(valtraduite) })
+        WHEN type_metabolite = 'metabolite_chloridazone_desphenyl'
+            THEN TO_JSON(({ 'CLDZ_D': MAX(valtraduite) }))
+        WHEN type_metabolite = 'metabolite_chloridazone_methyl_desphenyl'
+            THEN TO_JSON({ 'CLDZ_MD': MAX(valtraduite) })
+        WHEN type_metabolite = 'metabolite_atrazine_desethyl'
+            THEN TO_JSON(({ 'ADET': MAX(valtraduite) }))
+    END
+        AS parametres_detectes
 
 FROM metabolite_specifique_prels
 

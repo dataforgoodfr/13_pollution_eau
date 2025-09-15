@@ -1,0 +1,9 @@
+# Dockerfile for Clever Cloud - pulls pre-built unified image
+
+FROM ghcr.io/dataforgoodfr/13_pollution_eau/pollution-eau-unified:latest
+
+# Expose the port
+EXPOSE 8080
+
+# Use the same entrypoint as the unified image
+CMD ["node", "server.js"]

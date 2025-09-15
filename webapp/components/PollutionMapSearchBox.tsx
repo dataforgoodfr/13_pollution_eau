@@ -104,7 +104,7 @@ export default function PollutionMapSearchBox({
 
     const displayText =
       feature.properties.type === "municipality"
-        ? `${feature.properties.label} (${feature.properties.postcode})`
+        ? `${feature.properties.label}, ${feature.properties.postcode}`
         : feature.properties.label;
 
     setFilterString(displayText);
@@ -183,7 +183,7 @@ export default function PollutionMapSearchBox({
                       <div className="flex-grow">
                         {feature.properties.type === "municipality" ? (
                           <HilightLabel
-                            originalText={`${feature.properties.label} (${feature.properties.postcode})`}
+                            originalText={`${feature.properties.label}, ${feature.properties.postcode}`}
                             textToHilight={filterString}
                           />
                         ) : (

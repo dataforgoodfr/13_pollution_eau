@@ -134,7 +134,7 @@ export default function PollutionMapLegend({
     // dernier_prel
     legendContent = (
       <>
-        <div className="space-y-3 text-sm">
+        <div className="space-y-3 text-xs">
           {legendItems.map((item) => (
             <LegendItem
               key={item.color + item.label}
@@ -146,7 +146,7 @@ export default function PollutionMapLegend({
           ))}
         </div>
         {categoryDetails.detailsLegende && (
-          <p className="text-gray-500 mt-4 text-sm">
+          <p className="text-gray-500 mt-4 text-xs">
             {categoryDetails.detailsLegende?.split("\n").map((line, index) => (
               <React.Fragment key={index}>
                 {index > 0 && <br />}

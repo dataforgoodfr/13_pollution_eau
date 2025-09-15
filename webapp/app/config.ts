@@ -28,7 +28,8 @@ export const DEFAULT_MAP_STYLE: maplibregl.StyleSpecification = {
       type: "vector",
       maxzoom: MAPLIBRE_MAP.protomaps.maxzoom,
       url: `https://api.protomaps.com/tiles/v4.json?key=${MAPLIBRE_MAP.protomaps.api_key}`,
-      attribution: '<a href="https://osm.org/copyright">© OpenStreetMap</a>',
+      attribution:
+        '<a href="https://osm.org/copyright" class="text-xs">© OpenStreetMap</a>',
     },
     communes: {
       type: "vector",

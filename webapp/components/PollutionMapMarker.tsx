@@ -606,19 +606,6 @@ export default function PollutionMapMarker({
         anchor="bottom"
         onClick={() => {
           setShowPopup(true);
-          // Center the map on the marker with vertical offset when clicked
-          if (map) {
-            const mapContainer = map.getContainer();
-            const mapHeight = mapContainer.offsetHeight;
-            const offsetY = mapHeight * 0.1; // 40% from top means 10% offset from center
-
-            map.flyTo({
-              center: [marker.longitude, marker.latitude],
-              zoom: Math.max(map.getZoom(), 8), // Ensure minimum zoom level
-              duration: 1000,
-              offset: [0, -offsetY], // Negative Y moves the center point up
-            });
-          }
         }}
       >
         <MapPin

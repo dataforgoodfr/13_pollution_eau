@@ -159,7 +159,7 @@ jobs:
         with:
           appID: ${{ secrets.CLEVER_APP_ID }}
           setEnv: | # <- keep the pipe here
-            CC_DOCKERFILE=Dockerfile.unified
+            CC_DOCKERFILE=Dockerfile.clevercloud
         env:
           CLEVER_TOKEN: ${{ secrets.CLEVER_TOKEN }}
           CLEVER_SECRET: ${{ secrets.CLEVER_SECRET }}

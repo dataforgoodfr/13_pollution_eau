@@ -32,8 +32,8 @@ const getGlobalLastPrelevementResults = (
     "cvm",
     "sub_indus_perchlorate",
     "sub_indus_14dioxane",
-    "metaux_lourds_as",
-    "metaux_lourds_pb",
+    // "metaux_lourds_as",
+    // "metaux_lourds_pb",
   ];
 
   const nonConforme: string[] = [];
@@ -104,8 +104,8 @@ const getGlobalAnnualResults = (
     "cvm",
     "sub_indus_perchlorate",
     "sub_indus_14dioxane",
-    "metaux_lourds_as",
-    "metaux_lourds_pb",
+    // "metaux_lourds_as",
+    // "metaux_lourds_pb",
   ];
 
   const nonConformeDetails: string[] = [];

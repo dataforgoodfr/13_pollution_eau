@@ -50,7 +50,7 @@ WHERE
         cdreseau = '054000780'
         AND periode = 'bilan_annuel_2024'
         AND (
-            nb_prelevements != 8
+            nb_prelevements != 7
             -- cvm : 1
             -- metaux_lourds_as : 1
             -- nitrate : 5
@@ -66,7 +66,7 @@ WHERE
         cdreseau = '061000423'
         AND periode = 'bilan_annuel_2024'
         AND (
-            nb_prelevements != 28
+            nb_prelevements != 27
             -- cvm: 1
             -- metaux_lourds_as: 1
             -- nitrate: 14

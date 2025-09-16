@@ -1255,7 +1255,7 @@ export const availableCategories: ICategory[] = [
       },
     ],
   },
-  {
+  /*{
     id: "metaux-lourds",
     nomAffichage: "Métaux lourds",
     disable: true,
@@ -1437,7 +1437,7 @@ export const availableCategories: ICategory[] = [
         },
       },
     ],
-  },
+  },*/
 ];
 
 export function getCategoryById(

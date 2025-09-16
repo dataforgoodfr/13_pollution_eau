@@ -49,7 +49,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0 # Unshallow for Clever Cloud deploy
+          fetch-depth: 0 # Unshallow for Clever Cloud deploy and multi-commit change detection
 
       - name: Install uv
         uses: astral-sh/setup-uv@v5
@@ -74,7 +74,7 @@ jobs:
 
           # Check if pipeline rebuild is needed
           if [[ "${{ github.event.inputs.force_pipeline_rebuild }}" == "true" ]] || \
-             git diff --name-only HEAD^ HEAD | grep -E "^(dbt_/|pipelines/)" > /dev/null 2>&1 || \
+             git diff --name-only ${{ github.event.before }} HEAD | grep -E "^(dbt_/|pipelines/)" > /dev/null 2>&1 || \
              [[ "${{ github.event_name }}" == "schedule" ]]; then
             echo "needs_pipeline_rebuild=true" >> $GITHUB_OUTPUT
             echo "🔧 Pipeline rebuild needed"

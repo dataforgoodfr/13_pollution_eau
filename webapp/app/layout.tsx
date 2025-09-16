@@ -8,6 +8,11 @@ export const metadata: Metadata = {
     index: false,
     follow: false,
   },
+  icons: {
+    icon: "/dfg.png",
+    shortcut: "/dfg.png",
+    apple: "/dfg.png",
+  },
 };
 
 export const viewport: Viewport = {

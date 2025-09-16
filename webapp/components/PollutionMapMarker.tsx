@@ -622,7 +622,7 @@ export default function PollutionMapMarker({
           longitude={marker.longitude}
           latitude={marker.latitude}
           anchor="bottom"
-          className="-mt-5"
+          className="-mt-5 !z-[15]"
           closeButton={false}
           closeOnClick={false}
         >

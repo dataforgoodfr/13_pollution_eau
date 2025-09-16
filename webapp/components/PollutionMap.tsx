@@ -126,7 +126,7 @@ export default function PollutionMap({
 
           {/* Side Panel toggle button  */}
           <div
-            className="absolute right-0 top-1/2 transform -translate-y-1/2 cursor-pointer z-20"
+            className="absolute right-0 top-1/2 transform -translate-y-1/2 cursor-pointer z-[21]"
             onClick={() => setSidePanelOpen(!sidePanelOpen)}
           >
             <div className="bg-custom-drom text-white shadow-md rounded-l-md flex items-center justify-center h-16 w-6">
@@ -138,7 +138,7 @@ export default function PollutionMap({
         {/* Side panel - responsive: hidden on mobile, visible on desktop */}
         <div
           className={clsx(
-            "bg-[#E2E8F0] transition-all duration-300 z-10",
+            "bg-[#E2E8F0] transition-all duration-300 z-20",
             // Mobile: full screen overlay when open, hidden when closed
             "fixed inset-0 md:relative md:inset-auto",
 

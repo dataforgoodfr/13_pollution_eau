@@ -55,6 +55,9 @@ RUN npm run build
 # Runner stage - only contains the necessary runtime files
 FROM debian:bookworm-slim AS runner
 
+# Define build argument for API key
+ARG NEXT_PUBLIC_PROTOMAPS_API_KEY
+
 # Install Node.js (minimal dependencies for runtime)
 RUN apt-get update && apt-get install -y --no-install-recommends \
     nodejs \

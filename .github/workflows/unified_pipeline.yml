@@ -8,9 +8,9 @@ on:
       - "pipelines/**"
       - "webapp/**"
       - "Dockerfile.unified"
-  # schedule:
-  #   # Execute pipeline every Sunday at 11:00 AM (1h after current sync)
-  #   - cron: "0 11 * * 0"
+  schedule:
+    # Execute pipeline every Sunday at 10:00 AM
+    - cron: "0 10 * * 0"
   workflow_dispatch:
     inputs:
       force_refresh:

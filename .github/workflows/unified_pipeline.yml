@@ -1,4 +1,4 @@
-name: Unified Pipeline
+name: Data Pipeline and Website Deployment
 
 on:
   push:
@@ -19,20 +19,15 @@ on:
         type: boolean
         default: false
       force_pipeline_rebuild:
-        description: "Force pipeline rebuild (dbt + pmtiles)"
+        description: "Force pipeline rebuild (dbt run)"
         required: false
         type: boolean
         default: false
-      force_deploy:
-        description: "Force Docker deployment"
-        required: false
-        type: boolean
-        default: true
       reason:
         description: "Reason for manual execution"
         required: true
         type: string
-        default: "Manual unified pipeline execution"
+        default: "Manual pipeline execution"
 
 env:
   ENV: prod
@@ -87,15 +82,7 @@ jobs:
             echo "needs_pipeline_rebuild=false" >> $GITHUB_OUTPUT
           fi
 
-          # Check if deployment is needed
-          if [[ "${{ github.event.inputs.force_deploy }}" == "true" ]] || \
-             git diff --name-only HEAD^ HEAD | grep -E "^(webapp/|Dockerfile)" > /dev/null 2>&1 || \
-             [[ "${{ github.event_name }}" == "schedule" ]]; then
-            echo "needs_deployment=true" >> $GITHUB_OUTPUT
-            echo "🚀 Deployment needed"
-          else
-            echo "needs_deployment=false" >> $GITHUB_OUTPUT
-          fi
+          echo "🚀 Website deployment will always run"
 
       # Step 2: Always download current database
       - name: Download production database
@@ -123,22 +110,21 @@ jobs:
           cd dbt_
           uv run dbt build
 
-      - name: Generate pmtiles
-        if: steps.check.outputs.needs_pipeline_rebuild == 'true'
-        run: |
-          echo "🗺️ Generating pmtiles files..."
-          uv pip install .[pmtiles]
-          uv run pipelines/run.py run generate_pmtiles
-
       - name: Upload updated database to S3
         if: steps.check.outputs.needs_pipeline_rebuild == 'true'
         run: |
           echo "☁️ Uploading updated database to S3..."
           uv run pipelines/run.py run upload_database
 
-      # Step 5: Build and deploy Docker image (conditional)
+      # Build pmtiles for website deployment
+      - name: Generate pmtiles
+        run: |
+          echo "🗺️ Generating pmtiles files..."
+          uv pip install .[pmtiles]
+          uv run pipelines/run.py run generate_pmtiles
+
+      # Build and deploy Docker image
       - name: Log in to Container Registry
-        if: steps.check.outputs.needs_deployment == 'true'
         uses: docker/login-action@v3
         with:
           registry: ${{ env.REGISTRY }}
@@ -146,7 +132,6 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Extract metadata for Docker
-        if: steps.check.outputs.needs_deployment == 'true'
         id: meta
         uses: docker/metadata-action@v5
         with:
@@ -158,7 +143,6 @@ jobs:
             type=raw,value=latest,enable={{is_default_branch}}
 
       - name: Build and push Docker image
-        if: steps.check.outputs.needs_deployment == 'true'
         uses: docker/build-push-action@v5
         with:
           context: .
@@ -169,10 +153,13 @@ jobs:
           build-args: |
             NEXT_PUBLIC_PROTOMAPS_API_KEY=${{ secrets.NEXT_PUBLIC_PROTOMAPS_API_KEY }}
 
-      # Deploy to Clever Cloud (after image is built)
+      # Deploy to Clever Cloud
       - name: Deploy to Clever Cloud
-        if: steps.check.outputs.needs_deployment == 'true'
         uses: 47ng/actions-clever-cloud@v2.0.0
+        with:
+          appID: ${{ secrets.CLEVER_APP_ID }}
+          setEnv: | # <- keep the pipe here
+            CC_DOCKERFILE=Dockerfile.unified
         env:
           CLEVER_TOKEN: ${{ secrets.CLEVER_TOKEN }}
           CLEVER_SECRET: ${{ secrets.CLEVER_SECRET }}
@@ -202,18 +189,16 @@ jobs:
       # Summary
       - name: Output summary
         run: |
-          echo "🎉 Unified pipeline completed!"
+          echo "🎉 Data Pipeline and Website Deployment done!"
           echo "📊 Data refresh: ${{ steps.check.outputs.needs_data_refresh }}"
           echo "🔧 Pipeline rebuild: ${{ steps.check.outputs.needs_pipeline_rebuild }}"
-          echo "🚀 Deployment: ${{ steps.check.outputs.needs_deployment }}"
+          echo "🚀 Deployment: always"
 
           echo "## 🚀 Pipeline Summary" >> $GITHUB_STEP_SUMMARY
           echo "- **Data refresh**: ${{ steps.check.outputs.needs_data_refresh }}" >> $GITHUB_STEP_SUMMARY
           echo "- **Pipeline rebuild**: ${{ steps.check.outputs.needs_pipeline_rebuild }}" >> $GITHUB_STEP_SUMMARY
-          echo "- **Deployment**: ${{ steps.check.outputs.needs_deployment }}" >> $GITHUB_STEP_SUMMARY
-          if [[ "${{ steps.check.outputs.needs_deployment }}" == "true" ]]; then
-            echo "- **Docker image**: \`${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest\`" >> $GITHUB_STEP_SUMMARY
-          fi
+          echo "- **Deployment**: ✅ always" >> $GITHUB_STEP_SUMMARY
+          echo "- **Docker image**: \`${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest\`" >> $GITHUB_STEP_SUMMARY
 
       # Error handling
       - name: Create Issue on Failure
@@ -224,7 +209,7 @@ jobs:
             github.rest.issues.create({
               owner: context.repo.owner,
               repo: context.repo.name,
-              title: '❌ Unified Pipeline Failure',
+              title: '❌ Data Pipeline and Website Deployment Failure',
               body: `The unified pipeline has failed.\n\n**Trigger**: ${{ github.event_name }}\n**Reason**: ${{ github.event.inputs.reason || 'Automatic trigger' }}\n\nSee details: ${context.serverUrl}/${context.repo.owner}/${context.repo.name}/actions/runs/${context.runId}`,
               labels: ['bug', 'unified-pipeline']
             })

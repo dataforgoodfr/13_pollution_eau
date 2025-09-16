@@ -33,12 +33,11 @@ export const DEFAULT_MAP_STYLE: maplibregl.StyleSpecification = {
     },
     communes: {
       type: "vector",
-      url: "pmtiles://s3/prod/pmtiles/commune_data.pmtiles",
+      url: "pmtiles:///pmtiles/commune_data.pmtiles",
     },
     udis: {
       type: "vector",
-      url: "pmtiles://s3/prod/pmtiles/udi_data.pmtiles",
-      // url: "pmtiles:///udi_data.pmtiles",
+      url: "pmtiles:///pmtiles/udi_data.pmtiles",
     },
   },
   layers: [], // layers will be added dynamically in the Map component

@@ -31,7 +31,7 @@ const getGlobalLastPrelevementResults = (
     "nitrate",
     "cvm",
     "sub_indus_perchlorate",
-    "sub_indus_14dioxane",
+    // "sub_indus_14dioxane",
     // "metaux_lourds_as",
     // "metaux_lourds_pb",
   ];
@@ -103,7 +103,7 @@ const getGlobalAnnualResults = (
     "nitrate",
     "cvm",
     "sub_indus_perchlorate",
-    "sub_indus_14dioxane",
+    // "sub_indus_14dioxane",
     // "metaux_lourds_as",
     // "metaux_lourds_pb",
   ];

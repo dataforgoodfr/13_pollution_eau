@@ -17,7 +17,11 @@ last_pvl AS (
     FROM
         {{ ref('int__resultats_udi_communes') }}
     WHERE
-        cdparametresiseeaux IN ('14DAN', 'PCLAT')
+        cdparametresiseeaux IN (
+            -- Les résultats pour le 1,4 dioxane sont ignorés pour l'instant
+            --'14DAN',
+            'PCLAT'
+        )
         AND
         -- On garde les prélèvements de moins d'un an
         CURRENT_DATE - datetimeprel < INTERVAL 1 YEAR

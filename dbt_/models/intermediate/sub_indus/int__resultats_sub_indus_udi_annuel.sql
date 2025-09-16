@@ -14,7 +14,11 @@ prels AS (
     FROM
         {{ ref('int__resultats_udi_communes') }}
     WHERE
-        cdparametresiseeaux IN ('14DAN', 'PCLAT')
+        cdparametresiseeaux IN (
+            -- Les résultats pour le 1,4 dioxane sont ignorés pour l'instant
+            --'14DAN',
+            'PCLAT'
+        )
 )
 
 SELECT

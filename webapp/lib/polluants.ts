@@ -1083,7 +1083,7 @@ export const availableCategories: ICategory[] = [
       ratioLabelPlural: "analyses non conformes",
     },
   },
-  {
+  /*{
     id: "sub_indus",
     nomAffichage: "Substances industrielles",
     disable: true,
@@ -1168,93 +1168,92 @@ export const availableCategories: ICategory[] = [
           ratioLabelSingular: "analyse non conforme",
           ratioLabelPlural: "analyses non conformes",
         },
+      },*/
+  {
+    id: "sub_indus_perchlorate",
+    nomAffichage: "Perchlorate",
+    disable: false,
+    enfants: [],
+    affichageBlocPageUDI: true,
+    description: "Produit chimique utilisé dans les explosifs et les engrais.",
+    sousCategories: true,
+    unite: "µg/L",
+    resultats: {
+      non_recherche: {
+        label: "Non recherché dans les 12 derniers mois",
+        couleur: "#cccccc",
+        couleurAlt: "#f7f7f7",
+        picto: null,
       },
-      {
-        id: "sub_indus_perchlorate",
-        nomAffichage: "Perchlorate",
-        disable: false,
-        enfants: [],
-        affichageBlocPageUDI: true,
-        description:
-          "Produit chimique utilisé dans les explosifs et les engrais.",
-        sousCategories: true,
-        unite: "µg/L",
-        resultats: {
-          non_recherche: {
-            label: "Non recherché dans les 12 derniers mois",
-            couleur: "#cccccc",
-            couleurAlt: "#f7f7f7",
-            picto: null,
-          },
-          non_quantifie: {
-            label: "Non quantifié",
-            couleur: "#74c476",
-            couleurAlt: "#c7e9c0",
-            picto: null,
-          },
-          inf_valeur_sanitaire: {
-            label: "Concentration < 4 µg/L",
-            couleur: "#FFF33B",
-            couleurAlt: "#FFF33B",
-            picto: null,
-          },
-          sup_valeur_sanitaire: {
-            label:
-              "Concentration comprise entre 4 µg/L et 15 µg/L (l'eau ne doit pas être utilisée pour la préparation des biberons des nourrissons de moins de 6 mois)",
-            couleur: "#FB726C",
-            couleurAlt: "#FB726C",
-            picto: "red cross",
-          },
-          sup_valeur_sanitaire_2: {
-            label:
-              "Concentration > 15 µg/L (l'eau ne doit pas être utilisée pour la préparation des biberons des nourrissons de moins de 6 mois ni consommée par les femmes enceintes et allaitantes)",
-            couleur: "#FC3127",
-            couleurAlt: "#FC3127",
-            picto: "red cross",
-          },
-        },
-        resultatsAnnuels: {
-          nonRechercheLabel: "Aucune recherche dans l'année",
-          nonRechercheCouleur: "#cccccc",
-          nonRechercheCouleurAlt: "#f7f7f7",
-          ratioLimites: [
-            {
-              limite: 0,
-              label: "0%",
-              couleur: "#74c476",
-              couleurAlt: "#c7e9c0",
-            },
-            {
-              limite: 0.25,
-              label: "≤ 25%",
-              couleur: "#fdbe85",
-              couleurAlt: "#fdae6b",
-            },
-            {
-              limite: 0.5,
-              label: "25 - 50%",
-              couleur: "#fd8d3c",
-              couleurAlt: "#fd8d3c",
-            },
-            {
-              limite: 0.75,
-              label: "50 - 75%",
-              couleur: "#e6550d",
-              couleurAlt: "#f16913",
-            },
-            {
-              limite: 1,
-              label: "75 - 100%",
-              couleur: "#a63603",
-              couleurAlt: "#d94801",
-            },
-          ],
-          ratioLabelSingular: "analyse ≥ 4 µg/L",
-          ratioLabelPlural: "analyses ≥ 4 µg/L",
-        },
+      non_quantifie: {
+        label: "Non quantifié",
+        couleur: "#74c476",
+        couleurAlt: "#c7e9c0",
+        picto: null,
       },
-    ],
+      inf_valeur_sanitaire: {
+        label: "Concentration < 4 µg/L",
+        couleur: "#FFF33B",
+        couleurAlt: "#FFF33B",
+        picto: null,
+      },
+      sup_valeur_sanitaire: {
+        label:
+          "Concentration comprise entre 4 µg/L et 15 µg/L (l'eau ne doit pas être utilisée pour la préparation des biberons des nourrissons de moins de 6 mois)",
+        couleur: "#FB726C",
+        couleurAlt: "#FB726C",
+        picto: "red cross",
+      },
+      sup_valeur_sanitaire_2: {
+        label:
+          "Concentration > 15 µg/L (l'eau ne doit pas être utilisée pour la préparation des biberons des nourrissons de moins de 6 mois ni consommée par les femmes enceintes et allaitantes)",
+        couleur: "#FC3127",
+        couleurAlt: "#FC3127",
+        picto: "red cross",
+      },
+    },
+    resultatsAnnuels: {
+      nonRechercheLabel: "Aucune recherche dans l'année",
+      nonRechercheCouleur: "#cccccc",
+      nonRechercheCouleurAlt: "#f7f7f7",
+      ratioLimites: [
+        {
+          limite: 0,
+          label: "0%",
+          couleur: "#74c476",
+          couleurAlt: "#c7e9c0",
+        },
+        {
+          limite: 0.25,
+          label: "≤ 25%",
+          couleur: "#fdbe85",
+          couleurAlt: "#fdae6b",
+        },
+        {
+          limite: 0.5,
+          label: "25 - 50%",
+          couleur: "#fd8d3c",
+          couleurAlt: "#fd8d3c",
+        },
+        {
+          limite: 0.75,
+          label: "50 - 75%",
+          couleur: "#e6550d",
+          couleurAlt: "#f16913",
+        },
+        {
+          limite: 1,
+          label: "75 - 100%",
+          couleur: "#a63603",
+          couleurAlt: "#d94801",
+        },
+      ],
+      ratioLabelSingular: "analyse ≥ 4 µg/L",
+      ratioLabelPlural: "analyses ≥ 4 µg/L",
+    },
   },
+  /*],
+  },*/
   /*{
     id: "metaux-lourds",
     nomAffichage: "Métaux lourds",

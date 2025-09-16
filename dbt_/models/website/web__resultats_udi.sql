@@ -16,7 +16,8 @@ categories AS (
         'cvm',
         'pfas',
         'sub_indus_perchlorate',
-        'sub_indus_14dioxane',
+        -- Les résultats pour le 1,4 dioxane sont ignorés pour l'instant
+        --'sub_indus_14dioxane',
         'pesticide',
         'sub_active',
         'metabolite',

@@ -1,10 +1,11 @@
 "use client";
 
-import { useState, JSX } from "react";
+import { useState, JSX, useEffect } from "react";
 import PollutionMapBaseLayer from "@/components/PollutionMapBase";
 import PollutionMapFilters from "@/components/PollutionMapFilters";
 import PollutionSidePanel from "@/components/PollutionSidePanel";
 import PollutionMapSearchBox, { FilterResult } from "./PollutionMapSearchBox";
+import CVMInfoModal from "./CVMInfoModal";
 import { MAPLIBRE_MAP } from "@/app/config";
 import { MapProvider } from "react-map-gl/maplibre";
 import MapZoneSelector from "./MapZoneSelector";
@@ -42,6 +43,17 @@ export default function PollutionMap({
   const [sidePanelOpen, setSidePanelOpen] = useState(() => !isMobile);
   const [showLegend, setShowLegend] = useState(() => !isMobile);
   const [colorblindMode, setColorblindMode] = useState(false);
+  const [showCVMModal, setShowCVMModal] = useState(false);
+
+  // Show CVM modal when category changes to "cvm"
+  useEffect(() => {
+    if (category === "cvm") {
+      const cvmModalShown = sessionStorage.getItem("cvmModalShown");
+      if (!cvmModalShown) {
+        setShowCVMModal(true);
+      }
+    }
+  }, [category]);
 
   const handleAddressSelect = async (result: FilterResult | null) => {
     if (result) {
@@ -155,6 +167,11 @@ export default function PollutionMap({
             />
           </div>
         </div>
+
+        <CVMInfoModal
+          open={showCVMModal}
+          onOpenChange={setShowCVMModal}
+        />
       </MapProvider>
     </div>
   );

@@ -168,10 +168,7 @@ export default function PollutionMap({
           </div>
         </div>
 
-        <CVMInfoModal
-          open={showCVMModal}
-          onOpenChange={setShowCVMModal}
-        />
+        <CVMInfoModal open={showCVMModal} onOpenChange={setShowCVMModal} />
       </MapProvider>
     </div>
   );

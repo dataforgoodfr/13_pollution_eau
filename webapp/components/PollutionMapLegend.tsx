@@ -9,6 +9,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { Switch } from "@/components/ui/switch";
 
 interface PollutionMapLegendProps {
   onClose: () => void;
@@ -226,8 +227,8 @@ export default function PollutionMapLegend({
 
   return (
     <TooltipProvider>
-      <div className="bg-white rounded-lg shadow-lg p-6 max-w-md transform transition-all">
-        <div className="flex justify-between items-center mb-2">
+      <div className="bg-white rounded-lg shadow-lg p-5 max-w-md transform transition-all">
+        <div className="flex justify-between items-center mb-4">
           <div className="flex-1">
             <h2 className="text font-semibold text-gray-900">
               {categoryDetails.nomAffichage}
@@ -241,21 +242,27 @@ export default function PollutionMapLegend({
             <X />
           </button>
         </div>
-        <div className="mb-2">
-          {getLastUpdateDate() && (
-            <p className="text-xs text-gray-500 mt-1">{getLastUpdateDate()}</p>
-          )}
-          <button
-            onClick={() => setColorblindMode(!colorblindMode)}
-            className="text-xs text-blue-600 hover:text-blue-800 underline cursor-pointer"
-          >
-            {colorblindMode
-              ? "Désactiver les couleurs adaptées aux daltoniens"
-              : "Activer les couleurs adaptées aux daltoniens"}
-          </button>
-        </div>
 
-        <div>{legendContent}</div>
+        <div className="mb-4">{legendContent}</div>
+
+        <div className="space-y-2">
+          {getLastUpdateDate() && (
+            <p className="text-xs text-gray-500">{getLastUpdateDate()}</p>
+          )}
+          <div className="flex items-center gap-3">
+            <Switch
+              id="colorblind-switch"
+              checked={colorblindMode}
+              onCheckedChange={setColorblindMode}
+            />
+            <label
+              htmlFor="colorblind-switch"
+              className="text-xs text-gray-500 cursor-pointer select-none"
+            >
+              Couleurs adaptées aux daltoniens
+            </label>
+          </div>
+        </div>
       </div>
     </TooltipProvider>
   );

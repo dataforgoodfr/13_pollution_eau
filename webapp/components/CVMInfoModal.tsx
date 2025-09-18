@@ -72,9 +72,9 @@ export default function CVMInfoModal({
             >
               la carte publiée par le média Vert
             </a>{" "}
-            qui indique les communes rattachées à un réseau pour lequel au moins
-            1 dépassement de la limite réglementaire a été constaté entre 2014
-            et 2024.
+            qui indique les communes rattachées à un réseau pour lequel il y a
+            eu au moins 1 dépassement connu de la limite réglementaire entre
+            1997 et 2025.
           </p>
 
           <p>

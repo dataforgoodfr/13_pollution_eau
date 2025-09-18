@@ -188,7 +188,7 @@ export default function PollutionMapLegend({
 
     legendContent = (
       <>
-        <div className="space-y-3 text-sm">
+        <div className="space-y-3 text-xs">
           <LegendItem
             color={
               colorblindMode
@@ -254,10 +254,10 @@ export default function PollutionMapLegend({
         {/* Expandable content */}
         <div
           className={`transition-all duration-300 ease-in-out ${
-            isExpanded ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+            isExpanded ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
           }`}
           style={{
-            overflow: isExpanded ? 'visible' : 'hidden'
+            overflow: isExpanded ? "visible" : "hidden",
           }}
         >
           <div className="px-5 pb-5">

@@ -1,7 +1,7 @@
 import { getCategoryById } from "@/lib/polluants";
 import { getPropertyName } from "@/lib/property";
-import { X, Info } from "lucide-react";
-import React from "react";
+import { Info, ChevronUp, ChevronDown } from "lucide-react";
+import React, { useState } from "react";
 import type { PollutionStats } from "@/app/lib/data";
 import {
   Tooltip,
@@ -12,12 +12,12 @@ import {
 import { Switch } from "@/components/ui/switch";
 
 interface PollutionMapLegendProps {
-  onClose: () => void;
   period: string;
   category: string;
   pollutionStats: PollutionStats;
   colorblindMode: boolean;
   setColorblindMode: (value: boolean) => void;
+  isMobile?: boolean;
 }
 
 function LegendItem({
@@ -66,13 +66,14 @@ function LegendItem({
 }
 
 export default function PollutionMapLegend({
-  onClose,
   period,
   category,
   pollutionStats,
   colorblindMode,
   setColorblindMode,
+  isMobile = false,
 }: PollutionMapLegendProps) {
+  const [isExpanded, setIsExpanded] = useState(!isMobile);
   const categoryDetails = getCategoryById(category);
   if (!categoryDetails) {
     return null; // Handle the case where category details are not found
@@ -227,40 +228,59 @@ export default function PollutionMapLegend({
 
   return (
     <TooltipProvider>
-      <div className="bg-white rounded-lg shadow-lg p-5 max-w-md transform transition-all">
-        <div className="flex justify-between items-center mb-4">
+      <div className="bg-white rounded-2xl border border-gray-500 shadow-lg max-w-md transform transition-all duration-300 ease-in-out overflow-hidden">
+        {/* Always visible header bar */}
+        <div
+          className="flex justify-between items-center p-3 cursor-pointer hover:bg-gray-50 transition-colors"
+          onClick={() => setIsExpanded(!isExpanded)}
+        >
           <div className="flex-1">
-            <h2 className="text font-semibold text-gray-900">
-              {categoryDetails.nomAffichage}
+            <h2 className="text-sm font-medium text-gray-900">
+              Légende - {categoryDetails.nomAffichage}
             </h2>
           </div>
           <button
-            onClick={onClose}
+            onClick={(e) => {
+              e.stopPropagation();
+              setIsExpanded(!isExpanded);
+            }}
             className="text-gray-500 hover:text-gray-700 transition-colors duration-200"
-            aria-label="Close legend"
+            aria-label={isExpanded ? "Collapse legend" : "Expand legend"}
           >
-            <X />
+            {isExpanded ? <ChevronDown size={20} /> : <ChevronUp size={20} />}
           </button>
         </div>
 
-        <div className="mb-4">{legendContent}</div>
+        {/* Expandable content */}
+        <div
+          className={`transition-all duration-300 ease-in-out ${
+            isExpanded ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+          }`}
+          style={{
+            overflow: isExpanded ? 'visible' : 'hidden'
+          }}
+        >
+          <div className="px-5 pb-5">
+            <div className="mb-4">{legendContent}</div>
 
-        <div className="space-y-2">
-          {getLastUpdateDate() && (
-            <p className="text-xs text-gray-500">{getLastUpdateDate()}</p>
-          )}
-          <div className="flex items-center gap-3">
-            <Switch
-              id="colorblind-switch"
-              checked={colorblindMode}
-              onCheckedChange={setColorblindMode}
-            />
-            <label
-              htmlFor="colorblind-switch"
-              className="text-xs text-gray-500 cursor-pointer select-none"
-            >
-              Couleurs adaptées aux daltoniens
-            </label>
+            <div className="space-y-2">
+              {getLastUpdateDate() && (
+                <p className="text-xs text-gray-500">{getLastUpdateDate()}</p>
+              )}
+              <div className="flex items-center gap-3">
+                <Switch
+                  id="colorblind-switch"
+                  checked={colorblindMode}
+                  onCheckedChange={setColorblindMode}
+                />
+                <label
+                  htmlFor="colorblind-switch"
+                  className="text-xs text-gray-500 cursor-pointer select-none"
+                >
+                  Couleurs adaptées aux daltoniens
+                </label>
+              </div>
+            </div>
           </div>
         </div>
       </div>

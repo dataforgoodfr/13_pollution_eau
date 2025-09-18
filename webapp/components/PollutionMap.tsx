@@ -10,7 +10,6 @@ import { MAPLIBRE_MAP } from "@/app/config";
 import { MapProvider } from "react-map-gl/maplibre";
 import MapZoneSelector from "./MapZoneSelector";
 import PollutionMapLegend from "./PollutionMapLegend";
-import { HamburgerButton } from "./ui/hamburger-button";
 import { clsx } from "clsx";
 import type { PollutionStats } from "@/app/lib/data";
 
@@ -41,7 +40,6 @@ export default function PollutionMap({
     return false; // Default to false for SSR
   });
   const [sidePanelOpen, setSidePanelOpen] = useState(() => !isMobile);
-  const [showLegend, setShowLegend] = useState(() => !isMobile);
   const [colorblindMode, setColorblindMode] = useState(false);
   const [showCVMModal, setShowCVMModal] = useState(false);
 
@@ -116,25 +114,16 @@ export default function PollutionMap({
             <MapZoneSelector />
           </div>
 
-          <div className="absolute left-4 bottom-4">
-            <HamburgerButton
-              visible={!showLegend}
-              onClick={() => setShowLegend(!showLegend)}
+          <div className="absolute left-0 md:left-4 bottom-4 pl-4 pr-12 md:px-0 w-full md:w-auto">
+            <PollutionMapLegend
+              period={period}
+              category={category}
+              pollutionStats={pollutionStats}
+              colorblindMode={colorblindMode}
+              setColorblindMode={setColorblindMode}
+              isMobile={isMobile}
             />
           </div>
-
-          {showLegend && (
-            <div className="absolute left-4 bottom-4">
-              <PollutionMapLegend
-                period={period}
-                category={category}
-                pollutionStats={pollutionStats}
-                colorblindMode={colorblindMode}
-                setColorblindMode={setColorblindMode}
-                onClose={() => setShowLegend(false)}
-              />
-            </div>
-          )}
 
           {/* Side Panel toggle button  */}
           <div

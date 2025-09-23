@@ -28,13 +28,19 @@ type CategoryItemsProps = {
 const CategoryItems = memo(
   ({ items, hierarchie = 1, parentName = "" }: CategoryItemsProps) => {
     let cln = "";
+    let textStyle = "";
+
     if (hierarchie == 1) {
       cln = "pl-6";
+      textStyle = "font-semibold";
     } else if (hierarchie == 2) {
       cln = "pl-10";
+      textStyle = "font-nomal text-gray-800";
     } else {
       cln = "pl-14";
+      textStyle = "font-light text-gray-600";
     }
+
     return items.map((item) => {
       const key = parentName
         ? parentName + "_" + item.nomAffichage
@@ -46,7 +52,7 @@ const CategoryItems = memo(
             key={key}
             value={item.id}
             disabled={item.disable}
-            className={cln}
+            className={`${cln} ${textStyle}`}
           >
             {item.nomAffichage}
           </SelectItem>

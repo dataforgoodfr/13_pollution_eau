@@ -7,7 +7,7 @@ import {
   SelectItem,
 } from "@/components/ui/select";
 import { memo } from "react";
-import { FlaskConical, CalendarDays, Diamond } from "lucide-react";
+import { FlaskConical, CalendarDays } from "lucide-react";
 import { availableCategories, ICategory } from "@/lib/polluants";
 
 type PollutionMapFiltersProps = {
@@ -15,8 +15,6 @@ type PollutionMapFiltersProps = {
   setPeriod: (year: string) => void;
   category: string;
   setCategory: (type: string) => void;
-  displayMode: "communes" | "udis";
-  setDisplayMode: (mode: "communes" | "udis") => void;
 };
 
 type CategoryItemsProps = {
@@ -75,8 +73,6 @@ export default function PollutionMapFilters({
   setPeriod,
   category,
   setCategory,
-  displayMode,
-  setDisplayMode,
 }: PollutionMapFiltersProps) {
   const availablePeriods = [
     { value: "dernier_prel", label: "Dernière analyse" },
@@ -86,11 +82,6 @@ export default function PollutionMapFilters({
     { value: "bilan_annuel_2022", label: "Bilan des non-conformités en 2022" },
     { value: "bilan_annuel_2021", label: "Bilan des non-conformités en 2021" },
     { value: "bilan_annuel_2020", label: "Bilan des non-conformités en 2020" },
-  ];
-
-  const availableDisplayModes = [
-    { value: "udis" as const, label: "Réseaux d'eau" },
-    { value: "communes" as const, label: "Communes" },
   ];
 
   return (
@@ -126,25 +117,6 @@ export default function PollutionMapFilters({
         </SelectTrigger>
         <SelectContent className="rounded-xl">
           <CategoryItems items={availableCategories} />
-        </SelectContent>
-      </Select>
-
-      <Select value={displayMode} onValueChange={setDisplayMode}>
-        <SelectTrigger
-          className="bg-white rounded-2xl border-gray-500"
-          aria-label="display-mode-select"
-        >
-          <Diamond size={16} className="text-gray-400" />
-          <div className="block mx-1">
-            <SelectValue placeholder="Affichage" className="mx-1" />
-          </div>
-        </SelectTrigger>
-        <SelectContent className="rounded-xl">
-          {availableDisplayModes.map((mode) => (
-            <SelectItem key={mode.value} value={mode.value}>
-              {mode.label}
-            </SelectItem>
-          ))}
         </SelectContent>
       </Select>
     </>

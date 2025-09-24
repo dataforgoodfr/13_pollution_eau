@@ -92,8 +92,6 @@ export default function PollutionMap({
               setPeriod={setPeriod}
               category={category}
               setCategory={setCategory}
-              displayMode={displayMode}
-              setDisplayMode={setDisplayMode}
             />
             <div className="md:hidden">
               <PollutionMapSearchBox
@@ -111,7 +109,7 @@ export default function PollutionMap({
           </div>
 
           <div className="absolute top-4 right-4 z-8">
-            <MapZoneSelector />
+            <MapZoneSelector setDisplayMode={setDisplayMode} />
           </div>
 
           <div className="absolute left-0 md:left-4 bottom-4 pl-4 pr-12 md:px-0 w-full md:w-auto">
@@ -121,6 +119,7 @@ export default function PollutionMap({
               pollutionStats={pollutionStats}
               colorblindMode={colorblindMode}
               setColorblindMode={setColorblindMode}
+              displayMode={displayMode}
               isMobile={isMobile}
             />
           </div>

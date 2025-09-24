@@ -17,6 +17,7 @@ interface PollutionMapLegendProps {
   pollutionStats: PollutionStats;
   colorblindMode: boolean;
   setColorblindMode: (value: boolean) => void;
+  displayMode: "communes" | "udis";
   isMobile?: boolean;
 }
 
@@ -71,6 +72,7 @@ export default function PollutionMapLegend({
   pollutionStats,
   colorblindMode,
   setColorblindMode,
+  displayMode,
   isMobile = false,
 }: PollutionMapLegendProps) {
   const [isExpanded, setIsExpanded] = useState(!isMobile);
@@ -265,7 +267,10 @@ export default function PollutionMapLegend({
 
             <div className="space-y-2">
               {getLastUpdateDate() && (
-                <p className="text-xs text-gray-500">{getLastUpdateDate()}</p>
+                <p className="text-xs text-gray-500">
+                  {getLastUpdateDate()}
+                  {displayMode === "communes" && " - Les tracés de la carte affichent les communes"}
+                </p>
               )}
               <div className="flex items-center gap-3">
                 <Switch

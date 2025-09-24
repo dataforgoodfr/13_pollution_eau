@@ -401,6 +401,8 @@ models:
       - name: inseecommune
         description: "Code INSEE de la commune"
         type: VARCHAR
+        tests:
+          - not_null
       - name: periode
         description: "Période du résultat"
         tests:

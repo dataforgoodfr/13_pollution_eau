@@ -18,13 +18,18 @@ categories AS (
         'sub_indus_perchlorate',
         -- Les résultats pour le 1,4 dioxane sont ignorés pour l'instant
         --'sub_indus_14dioxane',
+        'pesticide',
+        'sub_active',
+        'metabolite',
         'metabolite_esa_metolachlore',
         'metabolite_chlorothalonil_r471811',
         'metabolite_chloridazone_desphenyl',
         'metabolite_chloridazone_methyl_desphenyl',
-        'metabolite_atrazine_desethyl'
-        -- 'metaux_lourds_as',
-        -- 'metaux_lourds_pb'
+        'metabolite_atrazine_desethyl',
+        --'metaux_lourds_as',
+        --'metaux_lourds_pb',
+        'nitrate',
+        'tous'
     ]) AS categorie
 ),
 
@@ -49,9 +54,51 @@ communes_periodes_categories AS (
         periodes AS p
     CROSS JOIN
         categories
+),
+
+-- Append results from 'tous' category (in another model to avoid circular dependency)
+results AS (
+    SELECT
+        inseecommune,
+        periode,
+        categorie,
+        resultat,
+        ratio,
+        date_dernier_prel,
+        nb_parametres,
+        nb_prelevements,
+        nb_sup_valeur_sanitaire,
+        parametres_detectes
+    FROM {{ ref('int__union_resultats_commune') }}
+    UNION ALL
+    SELECT
+        inseecommune,
+        periode,
+        categorie,
+        null AS resultat,
+        ratio,
+        null AS date_dernier_prel,
+        null AS nb_parametres,
+        nb_prelevements,
+        nb_sup_valeur_sanitaire,
+        null AS parametres_detectes
+    FROM {{ ref('int__resultats_tous_commune_annuel') }}
+    UNION ALL
+    SELECT
+        inseecommune,
+        periode,
+        categorie,
+        resultat,
+        null AS ratio,
+        date_dernier_prel,
+        nb_parametres,
+        null AS nb_prelevements,
+        null AS nb_sup_valeur_sanitaire,
+        null AS parametres_detectes
+    FROM {{ ref('int__resultats_tous_commune_dernier') }}
 )
 
--- Final output with all combinations
+-- Final output with all inseecommune-periodes-categories combinations
 SELECT
     cpc.commune_code_insee,
     cpc.commune_nom,
@@ -67,7 +114,7 @@ SELECT
 FROM
     communes_periodes_categories AS cpc
 LEFT JOIN
-    {{ ref('int__union_resultats_commune') }} AS r
+    results AS r
     ON
         cpc.commune_code_insee = r.inseecommune
         AND cpc.periode = r.periode

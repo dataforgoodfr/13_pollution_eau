@@ -1,21 +1,78 @@
-version: 2
-
 models:
-  - name: int__resultats_pfas_udi_dernier
-    description: "Résultats des derniers prélèvements pour les PFAS par UDI. Ce modèle sélectionne le dernier prélèvement pour chaque paramètre PFAS et agrège les résultats pour identifier les dépassements des seuils sanitaires."
+  - name: int__resultats_pfas_commune_annuel
+    description: Résultats des PFAS par commune pour la temporalité 'bilan_annuel'
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - inseecommune
+            - annee
     columns:
-      - name: cdreseau
-        description: "Code de l'installation (UDI)."
+      - name: inseecommune
+        description: "Code INSEE de la commune"
+        type: VARCHAR
         tests:
           - not_null
-          - unique
-
+      - name: annee
+        description: "Année du prélèvement (extraite de la colonne 'de_partition')."
+        type: SMALLINT
+        tests:
+          - not_null
       - name: categorie
         description: "Catégorie du paramètre analysé (ici, toujours 'pfas')."
+        type: VARCHAR
         tests:
           - accepted_values:
               values: ["pfas"]
+      - name: periode
+        description: "Période du résultat"
+        type: VARCHAR
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: "LIKE 'bilan_annuel%'"
+      - name: nb_prelevements
+        description: "Nombre total de prélèvements effectués dans l'année."
+        type: INTEGER
+        tests:
+          - not_null
+      - name: ratio_limite_qualite
+        description: "Ratio des prélèvements avec dépassement de la limite règlementaire (SPFAS >= 0.1 µg/L)."
+        type: FLOAT
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              max_value: 1
+      - name: nb_sup_valeur_sanitaire
+        description: "Indique le nombre de dépassement de limite sanitaire observé dans l'année."
+        type: INTEGER
+        tests:
+          - not_null
+      - name: parametres_detectes
+        description: "JSON contenant des paramètres détectés"
+        type: JSON
 
+  - name: int__resultats_pfas_commune_dernier
+    description: Résultats des PFAS par commune pour la temporalité 'derniers prélèvements'
+    columns:
+      - name: inseecommune
+        description: "Code INSEE de la commune"
+        type: VARCHAR
+        tests:
+          - not_null
+          - unique
+      - name: categorie
+        description: "Catégorie du paramètre analysé (ici, toujours 'pfas')."
+        type: VARCHAR
+        tests:
+          - accepted_values:
+              values: ["pfas"]
+      - name: periode
+        description: "Période d'analyse des prélèvements (ici, toujours 'dernier_prel')."
+        type: VARCHAR
+        tests:
+          - accepted_values:
+              values: ["dernier_prel"]
       - name: date_dernier_prel
         description: "Date et heure du dernier prélèvement pris en compte dans l'analyse."
         type: TIMESTAMP
@@ -23,7 +80,12 @@ models:
           - not_null
           - dbt_utils.expression_is_true:
               expression: ">= CURRENT_DATE - INTERVAL 1 YEAR"
-
+      - name: nb_parametres
+        description: "Nombre de paramètres analysés"
+        type: INTEGER
+      - name: parametres_detectes
+        description: "JSON contenant les paramètres détectés (valtraduite > 0) avec leurs valeurs correspondantes."
+        type: JSON
       - name: resultat
         description: "Interprétation du résultat en fonction des seuils sanitaires et des valeurs mesurées."
         type: VARCHAR
@@ -36,59 +98,45 @@ models:
                 - "somme_20pfas_sup_0_1"
                 - "sup_valeur_sanitaire"
 
-      - name: periode
-        description: "Période d'analyse des prélèvements (ici, toujours 'dernier_prel')."
-        type: VARCHAR
-        tests:
-          - accepted_values:
-              values: ["dernier_prel"]
-
-      - name: nb_parametres
-        description: "Nombre de paramètres analysés"
-        type: INTEGER
-
-      - name: parametres_detectes
-        description: "JSON contenant les paramètres détectés (valtraduite > 0) avec leurs valeurs correspondantes."
-        type: JSON
-
   - name: int__resultats_pfas_udi_annuel
     description: >
-      Bilan annuel des prélèvements d’eau potable pour les PFAS à l’échelle des UDI (Unités de distribution d’eau).
-      Ce modèle agrège les résultats des prélèvements d’une année donnée en identifiant la fréquence de dépassement
+      Bilan annuel des prélèvements d'eau potable pour les PFAS à l'échelle des UDI (Unités de distribution d'eau).
+      Ce modèle agrège les résultats des prélèvements d'une année donnée en identifiant la fréquence de dépassement
       de la limite règlementaire, et indique si la limite sanitaire a été depassée au moins une fois ou non.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - cdreseau
+            - annee
     columns:
       - name: cdreseau
-        description: "Code de l’unité de distribution d’eau (UDI)."
+        description: "Code de l'installation (UDI)."
+        type: VARCHAR
         tests:
           - not_null
-
       - name: annee
         description: "Année du prélèvement (extraite de la colonne 'de_partition')."
         type: SMALLINT
         tests:
           - not_null
-
       - name: categorie
         description: "Catégorie du paramètre analysé (ici, toujours 'pfas')."
         type: VARCHAR
         tests:
           - accepted_values:
               values: ["pfas"]
-
       - name: periode
-        description: "Période d’analyse, définie sous la forme 'bilan_annuel_<année>'."
+        description: "Période du résultat"
         type: VARCHAR
         tests:
           - not_null
           - dbt_utils.expression_is_true:
               expression: "LIKE 'bilan_annuel%'"
-
       - name: nb_prelevements
-        description: "Nombre total de prélèvements effectués dans l’année."
+        description: "Nombre total de prélèvements effectués dans l'année."
         type: INTEGER
         tests:
           - not_null
-
       - name: ratio_limite_qualite
         description: "Ratio des prélèvements avec dépassement de la limite règlementaire (SPFAS >= 0.1 µg/L)."
         type: FLOAT
@@ -97,9 +145,57 @@ models:
           - dbt_expectations.expect_column_values_to_be_between:
               min_value: 0
               max_value: 1
-
       - name: nb_sup_valeur_sanitaire
         description: "Indique le nombre de dépassement de limite sanitaire observé dans l'année."
         type: INTEGER
         tests:
           - not_null
+      - name: parametres_detectes
+        description: "JSON contenant des paramètres détectés"
+        type: JSON
+
+  - name: int__resultats_pfas_udi_dernier
+    description: "Résultats des derniers prélèvements pour les PFAS par UDI. Ce modèle sélectionne le dernier prélèvement pour chaque paramètre PFAS et agrège les résultats pour identifier les dépassements des seuils sanitaires."
+    columns:
+      - name: cdreseau
+        description: "Code de l'installation (UDI)."
+        type: VARCHAR
+        tests:
+          - not_null
+          - unique
+      - name: categorie
+        description: "Catégorie du paramètre analysé (ici, toujours 'pfas')."
+        type: VARCHAR
+        tests:
+          - accepted_values:
+              values: ["pfas"]
+      - name: periode
+        description: "Période d'analyse des prélèvements (ici, toujours 'dernier_prel')."
+        type: VARCHAR
+        tests:
+          - accepted_values:
+              values: ["dernier_prel"]
+      - name: date_dernier_prel
+        description: "Date et heure du dernier prélèvement pris en compte dans l'analyse."
+        type: TIMESTAMP
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: ">= CURRENT_DATE - INTERVAL 1 YEAR"
+      - name: nb_parametres
+        description: "Nombre de paramètres analysés"
+        type: INTEGER
+      - name: parametres_detectes
+        description: "JSON contenant les paramètres détectés (valtraduite > 0) avec leurs valeurs correspondantes."
+        type: JSON
+      - name: resultat
+        description: "Interprétation du résultat en fonction des seuils sanitaires et des valeurs mesurées."
+        type: VARCHAR
+        tests:
+          - accepted_values:
+              values:
+                - "non_quantifie"
+                - "somme_20pfas_inf_0_1_et_4pfas_inf_0_02"
+                - "somme_20pfas_inf_0_1_et_4pfas_sup_0_02"
+                - "somme_20pfas_sup_0_1"
+                - "sup_valeur_sanitaire"

@@ -1,20 +1,21 @@
 version: 2
 
 models:
-  - name: int__resultats_nitrate_udi_annuel
-    description: Résultats nitrates par UDI pour la temporalité 'bilan_annuel'
+  - name: int__resultats_nitrate_commune_annuel
+    description: Résultats nitrates par commune pour la temporalité 'bilan_annuel'
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - cdreseau
+            - inseecommune
             - annee
     columns:
-      - name: cdreseau
-        description: "Code de l'installation (unité de distribution)"
+      - name: inseecommune
+        description: "Code INSEE de la commune"
+        type: VARCHAR
         tests:
           - not_null
       - name: annee
-        description: "Annee du prevelvement"
+        description: "Année du prélèvement"
         type: SMALLINT
       - name: categorie
         description: "Catégorie du paramètre (pesticides, pfas, cvm, nitrates, etc.) selon la classification établie."
@@ -41,6 +42,101 @@ models:
           - dbt_expectations.expect_column_values_to_be_between:
               min_value: 0
               max_value: 1
+      - name: parametres_detectes
+        description: "JSON contenant des paramètres détectés"
+        type: JSON
+
+  - name: int__resultats_nitrate_commune_dernier
+    description: Résultats nitrates par commune pour la temporalité 'derniers prélèvements'
+    columns:
+      - name: inseecommune
+        description: "Code INSEE de la commune"
+        type: VARCHAR
+        tests:
+          - not_null
+          - unique
+      - name: categorie
+        description: "Catégorie du paramètre (pesticides, pfas, cvm, nitrates, etc.) selon la classification établie."
+        type: VARCHAR
+        tests:
+          - not_null
+          - accepted_values:
+              values: ["nitrate"]
+      - name: periode
+        description: "Période du résultat"
+        type: VARCHAR
+        tests:
+          - accepted_values:
+              values: ["dernier_prel"]
+      - name: date_dernier_prel
+        description: "Date du dernier prélèvement considéré"
+        type: TIMESTAMP
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: ">= CURRENT_DATE - INTERVAL 1 YEAR"
+      - name: nb_parametres
+        description: "Nombre de paramètres analysés"
+        type: INTEGER
+      - name: resultat
+        description: "Interprétation du résultat en fonction des seuils et des valeurs mesurées."
+        type: VARCHAR
+        tests:
+          - not_null
+          - accepted_values:
+              values:
+                - non_quantifie
+                - sup_valeur_sanitaire
+                - inf_valeur_sanitaire
+                - no3_inf_25
+                - no3_inf_40
+      - name: parametres_detectes
+        description: "JSON contenant les paramètres détectés (valtraduite > 0) avec leurs valeurs correspondantes."
+        type: JSON
+
+  - name: int__resultats_nitrate_udi_annuel
+    description: Résultats nitrates par UDI pour la temporalité 'bilan_annuel'
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - cdreseau
+            - annee
+    columns:
+      - name: cdreseau
+        description: "Code de l'installation (unité de distribution)"
+        tests:
+          - not_null
+      - name: annee
+        description: "Année du prélèvement"
+        type: SMALLINT
+      - name: categorie
+        description: "Catégorie du paramètre (pesticides, pfas, cvm, nitrates, etc.) selon la classification établie."
+        tests:
+          - accepted_values:
+              values: ["nitrate"]
+      - name: periode
+        description: "Période du résultat"
+        type: VARCHAR
+        tests:
+          - dbt_utils.expression_is_true:
+              expression: "LIKE 'bilan_annuel%'"
+      - name: nb_depassements
+        description: "Nombre de prélèvements qui dépassent la valeur de référence"
+        type: INTEGER
+      - name: nb_prelevements
+        description: "Nombre de prélèvements total"
+        type: INTEGER
+      - name: ratio
+        description: "Pourcentage de prélèvements qui dépassent la limite"
+        type: FLOAT
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              max_value: 1
+      - name: parametres_detectes
+        description: "JSON contenant des paramètres détectés"
+        type: JSON
 
   - name: int__resultats_nitrate_udi_dernier
     description: Resultats nitrate par UDI pour la temporalité 'derniers prélèvements'

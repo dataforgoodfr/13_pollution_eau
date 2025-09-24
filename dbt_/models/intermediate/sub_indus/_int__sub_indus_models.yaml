@@ -16,7 +16,7 @@ models:
         tests:
           - not_null
       - name: annee
-        description: "Annee du prevelvement"
+        description: "Année du prélèvement"
         type: SMALLINT
       - name: categorie
         description: "Catégorie du paramètre (pesticides, pfas, vcm, nitrates, etc.) selon la classification établie."
@@ -95,7 +95,7 @@ models:
         tests:
           - not_null
       - name: annee
-        description: "Annee du prevelvement"
+        description: "Année du prélèvement"
         type: SMALLINT
       - name: categorie
         description: "Catégorie du paramètre (pesticides, pfas, vcm, nitrates, etc.) selon la classification établie."

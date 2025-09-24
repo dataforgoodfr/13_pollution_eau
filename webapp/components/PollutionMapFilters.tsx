@@ -80,12 +80,12 @@ export default function PollutionMapFilters({
 }: PollutionMapFiltersProps) {
   const availablePeriods = [
     { value: "dernier_prel", label: "Dernière analyse" },
-    { value: "bilan_annuel_2025", label: "Bilan 2025" },
-    { value: "bilan_annuel_2024", label: "Bilan 2024" },
-    { value: "bilan_annuel_2023", label: "Bilan 2023" },
-    { value: "bilan_annuel_2022", label: "Bilan 2022" },
-    { value: "bilan_annuel_2021", label: "Bilan 2021" },
-    { value: "bilan_annuel_2020", label: "Bilan 2020" },
+    { value: "bilan_annuel_2025", label: "Bilan des non-conformités en 2025" },
+    { value: "bilan_annuel_2024", label: "Bilan des non-conformités en 2024" },
+    { value: "bilan_annuel_2023", label: "Bilan des non-conformités en 2023" },
+    { value: "bilan_annuel_2022", label: "Bilan des non-conformités en 2022" },
+    { value: "bilan_annuel_2021", label: "Bilan des non-conformités en 2021" },
+    { value: "bilan_annuel_2020", label: "Bilan des non-conformités en 2020" },
   ];
 
   const availableDisplayModes = [

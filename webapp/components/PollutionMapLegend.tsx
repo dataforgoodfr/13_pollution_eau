@@ -269,7 +269,8 @@ export default function PollutionMapLegend({
               {getLastUpdateDate() && (
                 <p className="text-xs text-gray-500">
                   {getLastUpdateDate()}
-                  {displayMode === "communes" && " - Les tracés de la carte affichent les communes"}
+                  {displayMode === "communes" &&
+                    " - Les tracés de la carte affichent les communes"}
                 </p>
               )}
               <div className="flex items-center gap-3">

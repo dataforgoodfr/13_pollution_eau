@@ -1,5 +1,5 @@
 models:
-  - name: int__resultats_metabolite_specifique_udi_annuel
+  - name: int__resultats_metabolite_specifique_commune_annuel
     description: Résultats des métabolites de pesticides spécifiques par commune pour la temporalité 'bilan annuel'
     tests:
       - dbt_utils.unique_combination_of_columns:

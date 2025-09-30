@@ -33,6 +33,7 @@ interface ResultatsAnnuels {
   ratioLimites: RatioLimite[];
   ratioLabelSingular: string;
   ratioLabelPlural: string;
+  details?: string;
   valeurSanitaireLabel?: string;
 }
 
@@ -43,7 +44,7 @@ export interface ICategory {
   enfants: ICategory[];
   affichageBlocPageUDI: boolean;
   description: string;
-  detailsLegende?: string;
+  resultatsDetails?: string;
   sousCategories?: boolean;
   titreStatut?: string;
   descriptionStatut?: string;
@@ -67,6 +68,8 @@ export const availableCategories: ICategory[] = [
     affichageBlocPageUDI: true,
     description:
       "Ensemble des substances chimiques et biologiques pouvant contaminer l'eau, l'air et les sols.",
+    resultatsDetails:
+      "* D'après les recommandations du Ministère de la Santé ou du Haut Conseil de la Santé Publique",
     resultats: {
       non_recherche: {
         label: "Aucun polluants recherché dans les 12 derniers mois",
@@ -82,19 +85,21 @@ export const availableCategories: ICategory[] = [
       },
       quantifie: {
         label:
-          "Au moins un polluant quantifié sans dépassement des limites réglementaires",
+          "Au moins un polluant quantifié sans dépassement des limites de qualité",
         couleur: "#FFF33B",
         couleurAlt: "#FFF33B",
         picto: null,
       },
       sup_limite_qualite: {
-        label: "Au moins un dépassement des limites réglementaire",
+        label:
+          "Au moins un polluant dépasse les limites de qualité (eau non conforme)",
         couleur: "#fe9929",
         couleurAlt: "#fe9929",
         picto: "warning",
       },
       sup_limite_sanitaire: {
-        label: "Au moins un dépassement des limites sanitaires",
+        label:
+          "Eau devant être déconseillée à la consommation pour toute ou partie de la population*",
         couleur: "#f03b20",
         couleurAlt: "#bd0026",
         picto: "red cross",
@@ -147,11 +152,11 @@ export const availableCategories: ICategory[] = [
     description:
       "Polluants éternels, utilisés dans l'industrie pour leurs propriétés antiadhésives et imperméables.",
     unite: "µg/L",
-    detailsLegende:
-      "* Limite non réglementaire, recommandée par le Haut Conseil de la Santé Publique (HCSP) \n** Eau conforme à la limite réglementaire mais qui dépasse la limite recommandée par le HCSP",
+    resultatsDetails:
+      "* Somme des 20 PFAS = 0,1 µg/L\n** Somme des 4 PFAS (PFOA, PFOS, PFNA, PFHxS) = 0,02 µg/L\nHCSP: Haut Conseil de la Santé Publique",
     resultats: {
       non_recherche: {
-        label: "Non recherché dans les 12 derniers mois",
+        label: "Aucun PFAS recherché dans les 12 derniers mois",
         couleur: "#cccccc",
         couleurAlt: "#f7f7f7",
         picto: null,
@@ -164,21 +169,20 @@ export const availableCategories: ICategory[] = [
       },
       somme_20pfas_inf_0_1_et_4pfas_inf_0_02: {
         label:
-          "Au moins un PFAS quantifié mais les concentrations sont inférieures aux limites réglementaire et recommandée",
+          "Au moins un PFAS quantifié sans dépassement de la limite de qualité* et de la limite recommandée par le HCSP**",
         couleur: "#FFF33B",
         couleurAlt: "#FFF33B",
         picto: null,
       },
       somme_20pfas_inf_0_1_et_4pfas_sup_0_02: {
         label:
-          "La somme des 4 PFAS (PFOA, PFOS, PFNA, PFHxS) ≥ 0,02 µg/L* mais la somme des 20 PFAS < 0,1 µg/L**",
+          "Dépassement de la limite recommandée par le HCSP** sans dépassement de la limite de qualité*",
         couleur: "#FDC70C",
         couleurAlt: "#FDC70C",
         picto: null,
       },
       somme_20pfas_sup_0_1: {
-        label:
-          "Somme des 20 PFAS ≥ 0,1 µg/L (eau non conforme à la limite réglementaire)",
+        label: "Dépassement de la limite de qualité* (eau non conforme)",
         couleur: "#fe9929",
         couleurAlt: "#fe9929",
         picto: null,
@@ -221,8 +225,9 @@ export const availableCategories: ICategory[] = [
           couleurAlt: "#993404",
         },
       ],
-      ratioLabelSingular: "analyse non conforme",
-      ratioLabelPlural: "analyses non conformes",
+      ratioLabelSingular: "analyse non conforme*",
+      ratioLabelPlural: "analyses non conformes*",
+      details: "* Somme des 20 PFAS > 0,1 µg/L",
       valeurSanitaireLabel:
         "Au moins 1 dépassement de valeur sanitaire au cours de l'année",
     },
@@ -235,9 +240,11 @@ export const availableCategories: ICategory[] = [
     description:
       "Substances chimiques utilisées pour lutter contre les nuisibles agricoles.",
     unite: "µg/L",
+    resultatsDetails:
+      "* D'après les recommandations du Haut Conseil de la Santé Publique",
     resultats: {
       non_recherche: {
-        label: "Non recherché dans les 12 derniers mois",
+        label: "Aucun pesticide recherché dans les 12 derniers mois",
         couleur: "#cccccc",
         couleurAlt: "#f7f7f7",
         picto: null,
@@ -250,19 +257,21 @@ export const availableCategories: ICategory[] = [
       },
       inf_limite_qualite: {
         label:
-          "Au moins un pesticide quantifié mais sans dépassement de la limite réglementaire",
+          "Au moins un pesticide quantifié sans dépassement des limites de qualité ",
         couleur: "#FFF33B",
         couleurAlt: "#FFF33B",
         picto: null,
       },
       sup_limite_qualite: {
-        label: "Au moins un pesticide dépasse la limite réglementaire",
+        label:
+          "Au moins un pesticide dépasse la limite de qualité (eau non conforme)",
         couleur: "#fe9929",
         couleurAlt: "#fe9929",
         picto: "warning",
       },
       sup_valeur_sanitaire: {
-        label: "Au moins un pesticide dépasse la limite sanitaire",
+        label:
+          "Eau devant être déconseillée à la consommation en raison de la présence de pesticides*",
         couleur: "#f03b20",
         couleurAlt: "#bd0026",
         picto: "red cross",
@@ -299,8 +308,10 @@ export const availableCategories: ICategory[] = [
           couleurAlt: "#993404",
         },
       ],
-      ratioLabelSingular: "analyse non conforme",
-      ratioLabelPlural: "analyses non conformes",
+      ratioLabelSingular: "analyse non conforme*",
+      ratioLabelPlural: "analyses non conformes*",
+      details:
+        "* Au moins une substance active ou un métabolite pertinent > 0,1µg/L et/ou total pesticides réglementaire (somme des substances actives et métabolites pertinents) > 0,5 µg/L",
       valeurSanitaireLabel:
         "Au moins 1 dépassement de valeur sanitaire au cours de l'année",
     },
@@ -315,9 +326,12 @@ export const availableCategories: ICategory[] = [
           "Molécules ayant un effet biocide contre les organismes nuisibles.",
         sousCategories: true,
         unite: "µg/L",
+        resultatsDetails:
+          "* D'après les recommandations du Haut Conseil de la Santé Publique",
         resultats: {
           non_recherche: {
-            label: "Non recherché dans les 12 derniers mois",
+            label:
+              "Aucune substance active recherchée dans les 12 derniers mois",
             couleur: "#cccccc",
             couleurAlt: "#f7f7f7",
             picto: null,
@@ -330,20 +344,21 @@ export const availableCategories: ICategory[] = [
           },
           inf_limite_qualite: {
             label:
-              "Au moins une substance active quantifiée mais sans dépassement de la limite réglementaire",
+              "Au moins une substance active quantifiée sans dépassement de la limite de qualité",
             couleur: "#FFF33B",
             couleurAlt: "#FFF33B",
             picto: null,
           },
           sup_limite_qualite: {
             label:
-              "Au moins une substance active dépasse la limite réglementaire",
+              "Au moins une substance active dépasse la limite de qualité (eau non conforme)",
             couleur: "#fe9929",
             couleurAlt: "#fe9929",
             picto: "warning",
           },
           sup_valeur_sanitaire: {
-            label: "Au moins une substance active dépasse la limite sanitaire",
+            label:
+              "Eau devant être déconseillée à la consommation en raison de la présence de substances actives*",
             couleur: "#f03b20",
             couleurAlt: "#bd0026",
             picto: "red cross",
@@ -385,8 +400,9 @@ export const availableCategories: ICategory[] = [
               couleurAlt: "#993404",
             },
           ],
-          ratioLabelSingular: "analyse non conforme",
-          ratioLabelPlural: "analyses non conformes",
+          ratioLabelSingular: "analyse non conforme*",
+          ratioLabelPlural: "analyses non conformes*",
+          details: "* Au moins une substance active > 0,1 µg/L",
           valeurSanitaireLabel:
             "Au moins 1 dépassement de valeur sanitaire au cours de l'année",
         },
@@ -399,9 +415,11 @@ export const availableCategories: ICategory[] = [
         description: "Produits de dégradation des substances actives.",
         sousCategories: false,
         unite: "µg/L",
+        resultatsDetails:
+          "* D'après les recommandations du Haut Conseil de la Santé Publique",
         resultats: {
           non_recherche: {
-            label: "Non recherché dans les 12 derniers mois",
+            label: "Aucun métabolite recherché dans les 12 derniers mois",
             couleur: "#cccccc",
             couleurAlt: "#f7f7f7",
             picto: null,
@@ -414,7 +432,7 @@ export const availableCategories: ICategory[] = [
           },
           inf_limites: {
             label:
-              "Au moins un métabolite quantifié sans dépassement de la limite réglementaire ou indicative",
+              "Au moins un métabolite quantifié sans dépassement des limites de qualité ou indicatives",
             couleur: "#FFF33B",
             couleurAlt: "#FFF33B",
             picto: null,
@@ -434,7 +452,8 @@ export const availableCategories: ICategory[] = [
             picto: "warning",
           },
           sup_valeur_sanitaire: {
-            label: "Au moins un métabolite dépasse la limite sanitaire",
+            label:
+              "Eau devant être déconseillée à la consommation en raison de la présence de métabolites*",
             couleur: "#f03b20",
             couleurAlt: "#bd0026",
             picto: "red cross",
@@ -476,8 +495,9 @@ export const availableCategories: ICategory[] = [
               couleurAlt: "#993404",
             },
           ],
-          ratioLabelSingular: "analyse non conforme",
-          ratioLabelPlural: "analyses non conformes",
+          ratioLabelSingular: "analyse non conforme*",
+          ratioLabelPlural: "analyses non conformes*",
+          details: "* Au moins un métabolite pertinent > 0,1 µg/L",
           valeurSanitaireLabel:
             "Au moins 1 dépassement de valeur sanitaire au cours de l'année",
         },
@@ -489,8 +509,8 @@ export const availableCategories: ICategory[] = [
             enfants: [],
             affichageBlocPageUDI: false,
             description: "Métabolite du métolachlore, herbicide.",
-            detailsLegende:
-              "* Si l'ESA métolachlore était considéré comme un métabolite pertinent, l'eau serait déclarée \"non conforme\".",
+            resultatsDetails:
+              "* Si l'ESA métolachlore était considéré comme un métabolite pertinent, l'eau serait déclarée \"non conforme\" \n** D'après les recommandations du Haut Conseil de la Santé Publique",
             sousCategories: false,
             unite: "µg/L",
             resultats: {
@@ -520,14 +540,14 @@ export const availableCategories: ICategory[] = [
               },
               sup_limite_indicative: {
                 label:
-                  "Concentration > 0,9 µg/L (dépassement de la limite indicative)",
+                  "Concentration > 0,9 µg/L (dépassement de la limite indicative)*",
                 couleur: "#fe9929",
                 couleurAlt: "#fe9929",
                 picto: "warning",
               },
               sup_valeur_sanitaire: {
                 label:
-                  "Concentration > 3 µg/L (dépassement de la valeur sanitaire)",
+                  "Concentration > 3 µg/L* (dépassement de la valeur sanitaire transitoire (VST), eau devant être déconseillée à la consommation**)",
                 couleur: "#f03b20",
                 couleurAlt: "#bd0026",
                 picto: "warning",
@@ -569,8 +589,10 @@ export const availableCategories: ICategory[] = [
                   couleurAlt: "#993404",
                 },
               ],
-              ratioLabelSingular: "analyse non conforme",
-              ratioLabelPlural: "analyses non conformes",
+              ratioLabelSingular: "analyse non conforme*",
+              ratioLabelPlural: "analyses non conformes*",
+              details:
+                "* Concentration > 0,1 µg/L lorsque l'ESA métolachlore était considéré pertinent (jusqu'en 2022)",
               valeurSanitaireLabel:
                 "Au moins 1 dépassement de valeur sanitaire au cours de l'année",
             },
@@ -582,8 +604,8 @@ export const availableCategories: ICategory[] = [
             enfants: [],
             affichageBlocPageUDI: true,
             description: "Métabolite du fongicide chlorothalonil.",
-            detailsLegende:
-              '* Si le Chlorothalonil R471811 était considéré comme un métabolite pertinent, l\'eau serait déclarée "non conforme".',
+            resultatsDetails:
+              "* Si le chlorothalonil R471811 était considéré comme un métabolite pertinent, l'eau serait déclarée \"non conforme\" \n** D'après les recommandations du Haut Conseil de la Santé Publique",
             sousCategories: false,
             unite: "µg/L",
             resultats: {
@@ -613,14 +635,14 @@ export const availableCategories: ICategory[] = [
               },
               sup_limite_indicative: {
                 label:
-                  "Concentration > 0,9 µg/L (dépassement de la limite indicative)",
+                  "Concentration > 0,9 µg/L (dépassement de la limite indicative)*",
                 couleur: "#fe9929",
                 couleurAlt: "#fe9929",
                 picto: "warning",
               },
               sup_valeur_sanitaire: {
                 label:
-                  "Concentration > 3 µg/L (dépassement de la valeur sanitaire)",
+                  "Concentration > 3 µg/L* (dépassement de la valeur sanitaire transitoire (VST), eau devant être déconseillée à la consommation**)",
                 couleur: "#f03b20",
                 couleurAlt: "#bd0026",
                 picto: "warning",
@@ -662,8 +684,10 @@ export const availableCategories: ICategory[] = [
                   couleurAlt: "#993404",
                 },
               ],
-              ratioLabelSingular: "analyse non conforme",
-              ratioLabelPlural: "analyses non conformes",
+              ratioLabelSingular: "analyse non conforme*",
+              ratioLabelPlural: "analyses non conformes*",
+              details:
+                "* Concentration > 0,1 µg/L lorsque le chlorothalonil R471811 était considéré pertinent (jusqu'en 2024)",
               valeurSanitaireLabel:
                 "Au moins 1 dépassement de valeur sanitaire au cours de l'année",
             },
@@ -678,6 +702,8 @@ export const availableCategories: ICategory[] = [
               "Métabolite de la chloridazone, herbicide utilisé pour les betteraves.",
             sousCategories: false,
             unite: "µg/L",
+            resultatsDetails:
+              "* D'après les recommandations du Ministère de la Santé",
             resultats: {
               non_recherche: {
                 label: "Non recherché dans les 12 derniers mois",
@@ -706,7 +732,7 @@ export const availableCategories: ICategory[] = [
               },
               sup_valeur_sanitaire: {
                 label:
-                  "Concentration > 11 µg/L (dépassement de la valeur sanitaire)",
+                  "Concentration > 11 µg/L (dépassement de la valeur sanitaire maximale (Vmax), eau devant être déconseillée à la consommation*)",
                 couleur: "#f03b20",
                 couleurAlt: "#bd0026",
                 picto: "red cross",
@@ -748,8 +774,9 @@ export const availableCategories: ICategory[] = [
                   couleurAlt: "#993404",
                 },
               ],
-              ratioLabelSingular: "analyse non conforme",
-              ratioLabelPlural: "analyses non conformes",
+              ratioLabelSingular: "analyse non conforme*",
+              ratioLabelPlural: "analyses non conformes*",
+              details: "* Concentration > 0,1 µg/L",
               valeurSanitaireLabel:
                 "Au moins 1 dépassement de valeur sanitaire au cours de l'année",
             },
@@ -763,6 +790,8 @@ export const availableCategories: ICategory[] = [
             description: "Autre métabolite de la chloridazone.",
             sousCategories: false,
             unite: "µg/L",
+            resultatsDetails:
+              "* D'après les instructions du Ministère de la Santé",
             resultats: {
               non_recherche: {
                 label: "Non recherché dans les 12 derniers mois",
@@ -791,7 +820,7 @@ export const availableCategories: ICategory[] = [
               },
               sup_valeur_sanitaire: {
                 label:
-                  "Concentration > 110 µg/L (dépassement de la valeur sanitaire)",
+                  "Concentration > 110 µg/L (dépassement de la valeur sanitaire maximale (Vmax), eau devant être déconseillée à la consommation*)",
                 couleur: "#f03b20",
                 couleurAlt: "#bd0026",
                 picto: "red cross",
@@ -833,8 +862,9 @@ export const availableCategories: ICategory[] = [
                   couleurAlt: "#993404",
                 },
               ],
-              ratioLabelSingular: "analyse non conforme",
-              ratioLabelPlural: "analyses non conformes",
+              ratioLabelSingular: "analyse non conforme*",
+              ratioLabelPlural: "analyses non conformes*",
+              details: "* Concentration > 0,1 µg/L",
               valeurSanitaireLabel:
                 "Au moins 1 dépassement de valeur sanitaire au cours de l'année",
             },
@@ -849,6 +879,8 @@ export const availableCategories: ICategory[] = [
               "Métabolite de l'atrazine, herbicide interdit depuis 2003.",
             sousCategories: false,
             unite: "µg/L",
+            resultatsDetails:
+              "* D'après les instructions du Ministère de la Santé",
             resultats: {
               non_recherche: {
                 label: "Non recherché dans les 12 derniers mois",
@@ -877,7 +909,7 @@ export const availableCategories: ICategory[] = [
               },
               sup_valeur_sanitaire: {
                 label:
-                  "Concentration > 60 µg/L (dépassement de la valeur sanitaire)",
+                  "Concentration > 60 µg/L (dépassement de la valeur sanitaire maximale (Vmax), eau devant être déconseillée à la consommation*)",
                 couleur: "#f03b20",
                 couleurAlt: "#bd0026",
                 picto: "red cross",
@@ -919,8 +951,9 @@ export const availableCategories: ICategory[] = [
                   couleurAlt: "#993404",
                 },
               ],
-              ratioLabelSingular: "analyse non conforme",
-              ratioLabelPlural: "analyses non conformes",
+              ratioLabelSingular: "analyse non conforme*",
+              ratioLabelPlural: "analyses non conformes*",
+              details: "* Concentration > 0,1 µg/L",
               valeurSanitaireLabel:
                 "Au moins 1 dépassement de valeur sanitaire au cours de l'année",
             },
@@ -938,6 +971,7 @@ export const availableCategories: ICategory[] = [
     description:
       "Résidus azotés provenant des engrais et des déchets organiques.",
     unite: "mg/L",
+    resultatsDetails: "* D'après les instructions du Ministère de la Santé",
     resultats: {
       non_recherche: {
         label: "Non recherché dans les 12 derniers mois",
@@ -971,7 +1005,7 @@ export const availableCategories: ICategory[] = [
       },
       sup_valeur_sanitaire: {
         label:
-          "Concentration > 50 mg/L (eau non conforme devant être déconseillée à la consommation pour les femmes enceintes et les nourrissons)",
+          "Concentration > 50 mg/L (eau non conforme devant être déconseillée à la consommation pour les femmes enceintes et les nourrissons*)",
         couleur: "#f03b20",
         couleurAlt: "#bd0026",
         picto: "red cross",
@@ -1008,8 +1042,9 @@ export const availableCategories: ICategory[] = [
           couleurAlt: "#993404",
         },
       ],
-      ratioLabelSingular: "analyse non conforme",
-      ratioLabelPlural: "analyses non conformes",
+      ratioLabelSingular: "analyse non conforme*",
+      ratioLabelPlural: "analyses non conformes*",
+      details: "* Concentration > 50 mg/L",
     },
   },
   {
@@ -1020,6 +1055,7 @@ export const availableCategories: ICategory[] = [
     affichageBlocPageUDI: true,
     description: "Utilisé pour produire le PVC, polluant volatil.",
     unite: "µg/L",
+    resultatsDetails: "* D'après les instructions du Ministère de la Santé",
     resultats: {
       non_recherche: {
         label: "Non recherché dans les 12 derniers mois",
@@ -1034,15 +1070,14 @@ export const availableCategories: ICategory[] = [
         picto: null,
       },
       inf_limites: {
-        label:
-          "Concentration < 0,5 µg/L (eau conforme à la limite réglementaire et sanitaire)",
+        label: "Concentration < 0,5 µg/L",
         couleur: "#FFF33B",
         couleurAlt: "#FFF33B",
         picto: null,
       },
       cvm_sup_0_5: {
         label:
-          "Concentration > 0,5 µg/L (eau non conforme à la limite réglementaire et sanitaire)",
+          "Concentration ≥ 0,5 µg/L (dépassement de la limite de qualité, eau pouvant faire l'objet de restriction de la consommation*)",
         couleur: "#f03b20",
         couleurAlt: "#bd0026",
         picto: "red cross",
@@ -1079,8 +1114,9 @@ export const availableCategories: ICategory[] = [
           couleurAlt: "#993404",
         },
       ],
-      ratioLabelSingular: "analyse non conforme",
-      ratioLabelPlural: "analyses non conformes",
+      ratioLabelSingular: "analyse non conforme*",
+      ratioLabelPlural: "analyses non conformes*",
+      details: "* Concentration > 0,5 µg/L",
     },
   },
   /*{
@@ -1178,6 +1214,7 @@ export const availableCategories: ICategory[] = [
     description: "Produit chimique utilisé dans les explosifs et les engrais.",
     sousCategories: true,
     unite: "µg/L",
+    resultatsDetails: "* D'après les instructions du Ministère de la Santé",
     resultats: {
       non_recherche: {
         label: "Non recherché dans les 12 derniers mois",
@@ -1199,14 +1236,14 @@ export const availableCategories: ICategory[] = [
       },
       sup_valeur_sanitaire: {
         label:
-          "Concentration comprise entre 4 µg/L et 15 µg/L (l'eau ne doit pas être utilisée pour la préparation des biberons des nourrissons de moins de 6 mois)",
+          "Concentration comprise entre 4 µg/L et 15 µg/L (l'eau ne doit pas être utilisée pour la préparation des biberons des nourrissons de moins de 6 mois*)",
         couleur: "#FB726C",
         couleurAlt: "#FB726C",
         picto: "red cross",
       },
       sup_valeur_sanitaire_2: {
         label:
-          "Concentration > 15 µg/L (l'eau ne doit pas être utilisée pour la préparation des biberons des nourrissons de moins de 6 mois ni consommée par les femmes enceintes et allaitantes)",
+          "Concentration > 15 µg/L (l'eau ne doit pas être utilisée pour la préparation des biberons des nourrissons de moins de 6 mois ni consommée par les femmes enceintes et allaitantes*)",
         couleur: "#FC3127",
         couleurAlt: "#FC3127",
         picto: "red cross",
@@ -1243,8 +1280,10 @@ export const availableCategories: ICategory[] = [
           couleurAlt: "#993404",
         },
       ],
-      ratioLabelSingular: "analyse ≥ 4 µg/L",
-      ratioLabelPlural: "analyses ≥ 4 µg/L",
+      ratioLabelSingular: "analyse ≥ 4 µg/L*",
+      ratioLabelPlural: "analyses ≥ 4 µg/L*",
+      details:
+        "* Le dépassement de 4 µg/L, qui n'est pas une limite de qualité réglementaire, n'est pas considéré comme une \"non conformité\"",
     },
   },
   /*],

@@ -149,14 +149,16 @@ export default function PollutionMapLegend({
             />
           ))}
         </div>
-        {categoryDetails.detailsLegende && (
+        {categoryDetails.resultatsDetails && (
           <p className="text-gray-500 mt-4 text-xs">
-            {categoryDetails.detailsLegende?.split("\n").map((line, index) => (
-              <React.Fragment key={index}>
-                {index > 0 && <br />}
-                {line}
-              </React.Fragment>
-            ))}
+            {categoryDetails.resultatsDetails
+              ?.split("\n")
+              .map((line, index) => (
+                <React.Fragment key={index}>
+                  {index > 0 && <br />}
+                  {line}
+                </React.Fragment>
+              ))}
           </p>
         )}
       </>
@@ -224,6 +226,18 @@ export default function PollutionMapLegend({
             );
           })}
         </div>
+        {categoryDetails.resultatsAnnuels?.details && (
+          <p className="text-gray-500 mt-4 text-xs">
+            {categoryDetails.resultatsAnnuels.details
+              ?.split("\n")
+              .map((line, index) => (
+                <React.Fragment key={index}>
+                  {index > 0 && <br />}
+                  {line}
+                </React.Fragment>
+              ))}
+          </p>
+        )}
       </>
     );
   }

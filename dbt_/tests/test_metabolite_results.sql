@@ -9,8 +9,8 @@ FROM
     {{ ref('int__resultats_metabolite_udi_dernier') }}
 WHERE
     (
-        cdreseau = '079000210'
-        AND date_dernier_prel = TIMESTAMP '2025-06-17 08:15:00'
+        cdreseau = '002001370'
+        AND date_dernier_prel = TIMESTAMP '2025-04-30 09:00:00'
         AND resultat != 'sup_valeur_sanitaire'
     )
     OR
@@ -61,7 +61,7 @@ WHERE
         AND (
             nb_prelevements != 20
             OR nb_depassements != 14
-            OR nb_sup_valeur_sanitaire != 6
+            OR nb_sup_valeur_sanitaire != 5
             OR ratio_limite_qualite < 0.69
             OR ratio_limite_qualite > 0.7
         )
@@ -130,7 +130,7 @@ WHERE
         AND (
             nb_prelevements != 7
             OR nb_depassements != 6
-            OR nb_sup_valeur_sanitaire != 1
+            OR nb_sup_valeur_sanitaire != 0
             OR ratio_limite_qualite < 0.85
         )
     )

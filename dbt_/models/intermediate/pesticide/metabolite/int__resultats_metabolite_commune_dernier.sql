@@ -50,18 +50,18 @@ SELECT
     CASE
         WHEN BOOL_AND(valtraduite IS NULL OR valtraduite = 0) THEN 'non_quantifie'
         WHEN
-            BOOL_OR(valtraduite IS NOT NULL AND valtraduite >= valeur_sanitaire_1)
+            BOOL_OR(valtraduite IS NOT NULL AND valtraduite > valeur_sanitaire_1)
             THEN 'sup_valeur_sanitaire'
         WHEN
-            BOOL_OR(valtraduite IS NOT NULL AND valtraduite >= limite_qualite)
+            BOOL_OR(valtraduite IS NOT NULL AND valtraduite > limite_qualite)
             THEN 'sup_limite_qualite'
         WHEN
-            BOOL_OR(valtraduite IS NOT NULL AND valtraduite >= limite_indicative)
+            BOOL_OR(valtraduite IS NOT NULL AND valtraduite > limite_indicative)
             THEN 'sup_limite_indicative'
         WHEN
             BOOL_OR(
                 valtraduite IS NOT NULL
-                AND (limite_qualite IS NULL OR valtraduite < limite_qualite)
+                AND (limite_qualite IS NULL OR valtraduite <= limite_qualite)
                 AND (limite_indicative IS NULL OR valtraduite <= limite_indicative)
                 AND (limite_qualite IS NOT NULL OR limite_indicative IS NOT NULL)
             )

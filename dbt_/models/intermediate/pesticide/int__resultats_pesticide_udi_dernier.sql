@@ -90,16 +90,16 @@ SELECT
     CASE
         WHEN BOOL_AND(valtraduite IS NULL OR valtraduite = 0) THEN 'non_quantifie'
         WHEN
-            BOOL_OR(valtraduite >= valeur_sanitaire_1)
+            BOOL_OR(valtraduite > valeur_sanitaire_1)
             THEN 'sup_valeur_sanitaire'
         WHEN
-            BOOL_OR(valtraduite >= limite_qualite)
-            OR MAX(total_pesticide) >= 0.5
+            BOOL_OR(valtraduite > limite_qualite)
+            OR MAX(total_pesticide) > 0.5
             THEN 'sup_limite_qualite'
         WHEN
             BOOL_OR(
-                (limite_qualite IS NOT NULL AND valtraduite < limite_qualite)
-                OR (valeur_sanitaire_1 IS NOT NULL AND valtraduite < valeur_sanitaire_1)
+                (limite_qualite IS NOT NULL AND valtraduite <= limite_qualite)
+                OR (valeur_sanitaire_1 IS NOT NULL AND valtraduite <= valeur_sanitaire_1)
             )
             THEN 'inf_limite_qualite' -- TODO: rename to 'inf_limites' ?
         ELSE 'erreur'

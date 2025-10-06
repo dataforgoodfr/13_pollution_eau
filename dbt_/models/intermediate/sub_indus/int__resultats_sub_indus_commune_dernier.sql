@@ -41,16 +41,16 @@ SELECT
             valtraduite = 0 OR valtraduite IS NULL
             THEN 'non_quantifie'
         WHEN
-            valtraduite >= valeur_sanitaire_2
+            valtraduite > valeur_sanitaire_2
             THEN 'sup_valeur_sanitaire_2'
         WHEN
             -- by construction, valeur_sanitaire_2 > valeur_sanitaire_1
             -- so here the result is actually:
-            -- valeur_sanitaire_1 < valtraduite < valeur_sanitaire_2
-            valtraduite >= valeur_sanitaire_1
+            -- valeur_sanitaire_1 < valtraduite <= valeur_sanitaire_2
+            valtraduite > valeur_sanitaire_1
             THEN 'sup_valeur_sanitaire'
         WHEN
-            valtraduite < valeur_sanitaire_1
+            valtraduite <= valeur_sanitaire_1
             THEN 'inf_valeur_sanitaire'
         ELSE 'error'
     END AS resultat,

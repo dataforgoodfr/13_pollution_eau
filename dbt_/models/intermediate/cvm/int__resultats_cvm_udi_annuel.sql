@@ -26,7 +26,7 @@ SELECT
         DISTINCT
         CASE
             WHEN
-                valtraduite IS NOT NULL AND valtraduite >= limite_qualite
+                valtraduite IS NOT NULL AND valtraduite > limite_qualite
                 THEN referenceprel
         END
     ) AS nb_depassements,
@@ -36,7 +36,7 @@ SELECT
             DISTINCT
             CASE
                 WHEN
-                    valtraduite IS NOT NULL AND valtraduite >= limite_qualite
+                    valtraduite IS NOT NULL AND valtraduite > limite_qualite
                     THEN referenceprel
             END
         )::float

@@ -48,7 +48,7 @@ pfas_results_udi_agg AS (
                     cdparametresiseeaux = 'SPFAS'
                     AND limite_qualite IS NOT NULL
                     AND valtraduite IS NOT NULL
-                    AND valtraduite >= limite_qualite
+                    AND valtraduite > limite_qualite
                     THEN 1
                 ELSE 0
             END
@@ -58,7 +58,7 @@ pfas_results_udi_agg AS (
                 WHEN
                     valeur_sanitaire_1 IS NOT NULL
                     AND valtraduite IS NOT NULL
-                    AND valtraduite >= valeur_sanitaire_1
+                    AND valtraduite > valeur_sanitaire_1
                     THEN 1
                 ELSE 0
             END

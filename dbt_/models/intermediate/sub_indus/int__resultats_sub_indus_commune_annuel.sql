@@ -33,7 +33,7 @@ SELECT
         DISTINCT
         CASE
             WHEN
-                valtraduite IS NOT NULL AND valtraduite >= valeur_sanitaire_1
+                valtraduite IS NOT NULL AND valtraduite > valeur_sanitaire_1
                 THEN referenceprel
         END
     ) AS nb_depassements,
@@ -44,7 +44,7 @@ SELECT
             CASE
                 WHEN
                     valtraduite IS NOT NULL
-                    AND valtraduite >= valeur_sanitaire_1
+                    AND valtraduite > valeur_sanitaire_1
                     THEN referenceprel
             END
         )::float

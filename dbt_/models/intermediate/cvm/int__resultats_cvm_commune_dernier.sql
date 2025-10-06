@@ -34,10 +34,10 @@ SELECT
             OR last_pvl.valtraduite IS NULL
             THEN 'non_quantifie'
         WHEN
-            last_pvl.valtraduite >= last_pvl.limite_qualite
+            last_pvl.valtraduite > last_pvl.limite_qualite
             THEN 'cvm_sup_0_5'
         WHEN
-            last_pvl.valtraduite < last_pvl.limite_qualite
+            last_pvl.valtraduite <= last_pvl.limite_qualite
             THEN 'inf_limites'
         ELSE 'erreur'
     END AS resultat,

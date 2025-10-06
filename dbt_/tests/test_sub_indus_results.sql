@@ -119,7 +119,7 @@ WHERE
         AND annee = '2023'
         AND (
             nb_prelevements != 28
-            OR nb_depassements != 11
+            OR nb_depassements != 10
         )
     )
     OR
@@ -179,6 +179,6 @@ WHERE
         AND annee = '2023'
         AND (
             nb_prelevements != 28
-            OR nb_depassements != 11
+            OR nb_depassements != 10
         )
     )

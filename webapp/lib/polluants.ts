@@ -527,7 +527,7 @@ export const availableCategories: ICategory[] = [
                 picto: null,
               },
               inf_limites: {
-                label: "Concentration < 0,1 µg/L",
+                label: "Concentration ≤ 0,1 µg/L",
                 couleur: "#FFF33B",
                 couleurAlt: "#FFF33B",
                 picto: null,
@@ -622,7 +622,7 @@ export const availableCategories: ICategory[] = [
                 picto: null,
               },
               inf_limites: {
-                label: "Concentration < 0,1 µg/L",
+                label: "Concentration ≤ 0,1 µg/L",
                 couleur: "#FFF33B",
                 couleurAlt: "#FFF33B",
                 picto: null,
@@ -718,7 +718,7 @@ export const availableCategories: ICategory[] = [
                 picto: null,
               },
               inf_limites: {
-                label: "Concentration < 0,1 µg/L",
+                label: "Concentration ≤ 0,1 µg/L",
                 couleur: "#FFF33B",
                 couleurAlt: "#FFF33B",
                 picto: null,
@@ -806,14 +806,14 @@ export const availableCategories: ICategory[] = [
                 picto: null,
               },
               inf_limites: {
-                label: "Concentration < 0,1 µg/L",
+                label: "Concentration ≤ 0,1 µg/L",
                 couleur: "#FFF33B",
                 couleurAlt: "#FFF33B",
                 picto: null,
               },
               sup_limite_qualite: {
                 label:
-                  "Concentration > 0, 1 µg/L (dépassement de la limite de qualité, eau non conforme)",
+                  "Concentration > 0,1 µg/L (dépassement de la limite de qualité, eau non conforme)",
                 couleur: "#fe9929",
                 couleurAlt: "#fe9929",
                 picto: "warning",
@@ -895,7 +895,7 @@ export const availableCategories: ICategory[] = [
                 picto: null,
               },
               inf_limites: {
-                label: "Concentration < 0,1 µg/L",
+                label: "Concentration ≤ 0,1 µg/L",
                 couleur: "#FFF33B",
                 couleurAlt: "#FFF33B",
                 picto: null,
@@ -986,7 +986,7 @@ export const availableCategories: ICategory[] = [
         picto: null,
       },
       no3_inf_25: {
-        label: "Concentration < 25 mg/L",
+        label: "Concentration ≤ 25 mg/L",
         couleur: "#FFF33B",
         couleurAlt: "#FFF33B",
         picto: null,
@@ -1070,14 +1070,14 @@ export const availableCategories: ICategory[] = [
         picto: null,
       },
       inf_limites: {
-        label: "Concentration < 0,5 µg/L",
+        label: "Concentration ≤ 0,5 µg/L",
         couleur: "#FFF33B",
         couleurAlt: "#FFF33B",
         picto: null,
       },
       cvm_sup_0_5: {
         label:
-          "Concentration ≥ 0,5 µg/L (dépassement de la limite de qualité, eau pouvant faire l'objet de restriction de la consommation*)",
+          "Concentration > 0,5 µg/L (dépassement de la limite de qualité, eau pouvant faire l'objet de restriction de la consommation*)",
         couleur: "#f03b20",
         couleurAlt: "#bd0026",
         picto: "red cross",
@@ -1229,7 +1229,7 @@ export const availableCategories: ICategory[] = [
         picto: null,
       },
       inf_valeur_sanitaire: {
-        label: "Concentration < 4 µg/L",
+        label: "Concentration ≤ 4 µg/L",
         couleur: "#FFF33B",
         couleurAlt: "#FFF33B",
         picto: null,
@@ -1280,8 +1280,8 @@ export const availableCategories: ICategory[] = [
           couleurAlt: "#993404",
         },
       ],
-      ratioLabelSingular: "analyse ≥ 4 µg/L*",
-      ratioLabelPlural: "analyses ≥ 4 µg/L*",
+      ratioLabelSingular: "analyse > 4 µg/L*",
+      ratioLabelPlural: "analyses > 4 µg/L*",
       details:
         "* Le dépassement de 4 µg/L, qui n'est pas une limite de qualité réglementaire, n'est pas considéré comme une \"non conformité\"",
     },

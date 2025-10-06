@@ -65,6 +65,17 @@ WHERE
         AND (
             nb_prelevements != 12
             OR nb_depassements != 12
+            OR nb_sup_valeur_sanitaire != 0
+            OR ratio_limite_qualite != 1.0
+        )
+    )
+    OR
+    (
+        cdreseau = '002000401'
+        AND annee = 2024
+        AND (
+            nb_prelevements != 12
+            OR nb_depassements != 12
             OR nb_sup_valeur_sanitaire != 11
             OR ratio_limite_qualite != 1.0
         )

@@ -59,9 +59,9 @@ WHERE
     )
     OR
     (
-        cdreseau = '002000074'
+        cdreseau = '002000401'
         AND categorie = 'metabolite_chlorothalonil_r471811'
-        AND date_dernier_prel = TIMESTAMP '2025-04-09 09:02:00'
+        AND date_dernier_prel = TIMESTAMP '2025-05-05 14:23:00'
         AND resultat != 'sup_valeur_sanitaire'
     )
 -- annuel udi
@@ -125,19 +125,19 @@ WHERE
     )
     OR
     (
-        cdreseau = '002000074'
+        cdreseau = '002000401'
         AND categorie = 'metabolite_chlorothalonil_r471811'
         AND annee = 2024
         AND (
-            nb_prelevements != 4
-            OR nb_depassements != 4
-            OR nb_sup_valeur_sanitaire != 2
+            nb_prelevements != 12
+            OR nb_depassements != 12
+            OR nb_sup_valeur_sanitaire != 11
             OR ratio_limite_qualite != 1.0
         )
     )
     OR
     (
-        cdreseau = '002000074'
+        cdreseau = '002000401'
         AND categorie = 'metabolite_chlorothalonil_r471811'
         AND annee = 2025
         AND (

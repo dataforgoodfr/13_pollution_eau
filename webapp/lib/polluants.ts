@@ -510,7 +510,7 @@ export const availableCategories: ICategory[] = [
             affichageBlocPageUDI: false,
             description: "Métabolite du métolachlore, herbicide.",
             resultatsDetails:
-              "* Si l'ESA métolachlore était considéré comme un métabolite pertinent, l'eau serait déclarée \"non conforme\" \n** D'après les recommandations du Haut Conseil de la Santé Publique",
+              "* Si l'ESA métolachlore était considéré comme un métabolite pertinent, l'eau serait déclarée \"non conforme\". \n** D'après les recommandations du Haut Conseil de la Santé Publique. Une incertitude de 30 % a été appliquée à la valeur de la VST de 3 µg/L.",
             sousCategories: false,
             unite: "µg/L",
             resultats: {
@@ -540,14 +540,14 @@ export const availableCategories: ICategory[] = [
               },
               sup_limite_indicative: {
                 label:
-                  "Concentration > 0,9 µg/L (dépassement de la limite indicative)*",
+                  "Concentration > 0,9 µg/L* (dépassement de la limite indicative)",
                 couleur: "#fe9929",
                 couleurAlt: "#fe9929",
                 picto: "warning",
               },
               sup_valeur_sanitaire: {
                 label:
-                  "Concentration > 3 µg/L* (dépassement de la valeur sanitaire transitoire (VST), eau devant être déconseillée à la consommation**)",
+                  "Concentration > 4,29 µg/L* (dépassement de la valeur sanitaire transitoire (VST), eau devant être déconseillée à la consommation**)",
                 couleur: "#f03b20",
                 couleurAlt: "#bd0026",
                 picto: "warning",
@@ -592,7 +592,7 @@ export const availableCategories: ICategory[] = [
               ratioLabelSingular: "analyse non conforme*",
               ratioLabelPlural: "analyses non conformes*",
               details:
-                "* Concentration > 0,1 µg/L lorsque l'ESA métolachlore était considéré pertinent (jusqu'en 2022)",
+                "* Concentration > 0,1 µg/L lorsque l'ESA métolachlore était considéré pertinent (jusqu'en 2022). Le classement du S-métolachlore en non pertinent en 2022 explique pourquoi il n'y a plus de non conformité à partir de 2023.",
               valeurSanitaireLabel:
                 "Au moins 1 dépassement de valeur sanitaire au cours de l'année",
             },
@@ -605,7 +605,7 @@ export const availableCategories: ICategory[] = [
             affichageBlocPageUDI: true,
             description: "Métabolite du fongicide chlorothalonil.",
             resultatsDetails:
-              "* Si le chlorothalonil R471811 était considéré comme un métabolite pertinent, l'eau serait déclarée \"non conforme\" \n** D'après les recommandations du Haut Conseil de la Santé Publique",
+              "* Si le chlorothalonil R471811 était considéré comme un métabolite pertinent, l'eau serait déclarée \"non conforme\". \n** D'après les recommandations du Haut Conseil de la Santé Publique. Une incertitude de 30 % a été appliquée à la valeur de la VST de 3 µg/L.",
             sousCategories: false,
             unite: "µg/L",
             resultats: {
@@ -635,14 +635,14 @@ export const availableCategories: ICategory[] = [
               },
               sup_limite_indicative: {
                 label:
-                  "Concentration > 0,9 µg/L (dépassement de la limite indicative)*",
+                  "Concentration > 0,9 µg/L* (dépassement de la limite indicative)",
                 couleur: "#fe9929",
                 couleurAlt: "#fe9929",
                 picto: "warning",
               },
               sup_valeur_sanitaire: {
                 label:
-                  "Concentration > 3 µg/L* (dépassement de la valeur sanitaire transitoire (VST), eau devant être déconseillée à la consommation**)",
+                  "Concentration > 4,29 µg/L* (dépassement de la valeur sanitaire transitoire (VST), eau devant être déconseillée à la consommation**)",
                 couleur: "#f03b20",
                 couleurAlt: "#bd0026",
                 picto: "warning",
@@ -687,7 +687,7 @@ export const availableCategories: ICategory[] = [
               ratioLabelSingular: "analyse non conforme*",
               ratioLabelPlural: "analyses non conformes*",
               details:
-                "* Concentration > 0,1 µg/L lorsque le chlorothalonil R471811 était considéré pertinent (jusqu'en 2024)",
+                "* Concentration > 0,1 µg/L lorsque le chlorothalonil R471811 était considéré pertinent (jusqu'en 2024). Le classement du Chlorothalonil R471811 en non pertinent en 2024 explique pourquoi il n'y a plus de non conformité à partir de 2025.",
               valeurSanitaireLabel:
                 "Au moins 1 dépassement de valeur sanitaire au cours de l'année",
             },

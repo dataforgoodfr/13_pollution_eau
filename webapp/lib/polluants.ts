@@ -592,7 +592,7 @@ export const availableCategories: ICategory[] = [
               ratioLabelSingular: "analyse non conforme*",
               ratioLabelPlural: "analyses non conformes*",
               details:
-                "* Concentration > 0,1 µg/L lorsque l'ESA métolachlore était considéré pertinent (jusqu'en 2022). Le classement du S-métolachlore en non pertinent en 2022 explique pourquoi il n'y a plus de non conformité à partir de 2023.",
+                "* Concentration > 0,1 µg/L lorsque l'ESA métolachlore était considéré pertinent (jusqu'en 2022). Le classement de l'ESA-métolachlore en non pertinent en 2022 explique pourquoi il n'y a plus de non conformité à partir de 2023.",
               valeurSanitaireLabel:
                 "Au moins 1 dépassement de valeur sanitaire au cours de l'année",
             },

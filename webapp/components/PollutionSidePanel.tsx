@@ -501,6 +501,121 @@ const getCategoryExplanation = (
         </>
       ),
     },
+    metabolite_esa_metolachlore: {
+      title: "ESA-métolachlore",
+      content: (
+        <>
+          <Tag content="Quelles informations données par les cartes?" />
+          {!isBilanAnnuel ? (
+            <p>
+              La carte &quot;dernière analyse&quot; indique les concentrations
+              en ESA-métolachlore mesurées dans l&apos;eau au cours de la
+              dernière analyse dont les résultats sont disponibles.
+            </p>
+          ) : (
+            <p>
+              Les cartes &quot;bilan des non conformités&quot; indiquent le
+              pourcentage des analyses d&apos;ESA-métolachlore effectuées au
+              cours de chaque année pour lesquelles les concentrations sont non
+              conformes à la réglementation en vigueur chaque année.
+            </p>
+          )}
+
+          <Tag content="Qu'est-ce que l'ESA-métolachlore et pourquoi il y en a dans l'eau?" />
+          <p>
+            Le métabolite ESA-métolachlore est une substance issue de la
+            dégradation du S-métolachlore. Le S-métolachlore est un herbicide
+            qui a été très utilisé pendant des années, principalement sur des
+            cultures de maïs, soja ou tournesol. Il est interdit en France et en
+            Europe depuis 2024.
+          </p>
+          <p>
+            En 2022, plus de 4 millions de français ont été alimentés au moins
+            une fois par une eau non conforme à cause de la présence de
+            l&apos;ESA-métolachlore. Bien que les risques de contamination des
+            nappes phréatiques étaient connus depuis au moins 2004, le suivi de
+            l&apos;ESA-métolachlore dans l&apos;eau potable ne s&apos;est
+            véritablement généralisé qu&apos;à partir de 2021.
+          </p>
+
+          <Tag content="Quelles limites réglementaires pour l'ESA-métolachlore dans l'eau?" />
+          <p>
+            Les limites applicables aux métabolites sont différentes selon
+            qu&apos;ils sont classés comme pertinents ou non pertinents. Un
+            métabolite est pertinent{" "}
+            <i>
+              &quot;s&apos;il y a lieu de considérer qu&apos;il pourrait
+              engendrer un risque sanitaire inacceptable pour le
+              consommateur&quot;
+            </i>
+            .
+          </p>
+          <p>
+            L&apos;agence de sécurité sanitaire (Anses) est chargée de
+            l&apos;évaluation de la pertinence des métabolites. En 2019,
+            l&apos;Anses a réalisé une première évaluation dans laquelle elle
+            conclut à la pertinence de l&apos;ESA-métolachlore, par précaution,
+            car des données importantes sur sa toxicité étaient manquantes ou de
+            faible qualité.
+          </p>
+          <p>
+            Dans une nouvelle évaluation réalisée en 2022, l&apos;Anses conclut
+            cette fois que l&apos;ESA-métolachlore est non pertinent car les
+            incertitudes identifiées en 2019 sont levées par de nouvelles études
+            fournies par Syngenta.
+          </p>
+          <p>
+            Toutefois, que ce soit en 2019 et 2022, l&apos;Anses n&apos;a jamais
+            pu évaluer des aspects importants de la toxicité (cancérogénicité,
+            potentiel perturbateur endocrinien) faute de donnée disponible sur
+            l&apos;ESA-métolachlore. L&apos;ESA-métolachlore est donc considéré
+            non pertinent alors qu&apos;aucune évaluation de son potentiel
+            cancérigène n&apos;a été faite.
+          </p>
+          <p>Ainsi, les limites applicables ont évolué en 2023:</p>
+          <ul className="list-disc ml-6">
+            <li>
+              Jusqu&apos;en 2022, la limite de qualité réglementaire de 0,1 µg/L
+              s&apos;appliquait car l&apos;ESA-métolachlore était alors
+              considéré comme un métabolite &quot;pertinent&quot;. Si les
+              concentrations en ESA-métolachlore dépassaient 0,1 µg/L,
+              l&apos;eau était considérée &quot;non conforme&quot;.
+            </li>
+            <li>
+              Depuis 2023, la limite &quot;indicative&quot; de 0,9 µg/L
+              s&apos;applique, l&apos;ESA-métolachlore étant dorénavant jugé
+              &quot;non pertinent&quot;. Un dépassement de cette limite
+              indicative n&apos;est pas considéré comme une &quot;non
+              conformité&quot;, ce qui explique pourquoi les bilans depuis 2023
+              indiquent partout 0% de non conformité.
+            </li>
+          </ul>
+
+          <Tag content="Quels risques pour la santé en cas de dépassement des limites?" />
+          <p>
+            Très peu d&apos;études sont disponibles sur l&apos;ESA-métolachlore.
+          </p>
+          <p>
+            Le S-métolachlore, la substance dont est issue
+            l&apos;ESA-métolachlore, est classé cancérigène
+            &quot;suspecté&quot;. Mais, la toxicité chronique de son métabolite
+            ESA-métolachlore, et en particulier ses effets cancérigènes, ne sont
+            pas connus. L&apos;Anses n&apos;a pas encore déterminé de valeur
+            sanitaire pour l&apos;ESA-métolachlore.
+          </p>
+          <p>
+            Pour savoir si les concentrations d&apos;ESA-métolachlore posent un
+            risque pour la santé, les autorités se réfèrent à une valeur
+            sanitaire &quot;transitoire&quot; (VST) de 3 µg/L, établie par une
+            agence sanitaire allemande. Si les concentrations ne dépassent pas 3
+            µg/L, il est jugé qu&apos;il n&apos;y a pas de risque pour la santé.
+            Toutefois, cette approche d&apos;évaluation substance par substance,
+            n&apos;évalue pas, et donc ignore, l&apos;effet combiné de plusieurs
+            substances (effet cocktail).
+          </p>
+        </>
+      ),
+    },
     nitrate: {
       title: "Nitrates",
       content: (

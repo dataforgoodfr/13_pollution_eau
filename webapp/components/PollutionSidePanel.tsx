@@ -731,6 +731,238 @@ const getCategoryExplanation = (
         </>
       ),
     },
+    metabolite_chloridazone_desphenyl: {
+      title: "Chloridazone desphenyl",
+      content: (
+        <>
+          <Tag content="Quelles informations données par les cartes?" />
+          {!isBilanAnnuel ? (
+            <p>
+              La carte &quot;dernière analyse&quot; indique les concentrations
+              en chloridazone desphényl mesurées dans l&apos;eau au cours de la
+              dernière analyse dont les résultats sont disponibles.
+            </p>
+          ) : (
+            <p>
+              Les cartes &quot;bilans des non conformités&quot; indiquent le
+              pourcentage des analyses de chloridazone desphényl effectuées au
+              cours de chaque année pour lesquelles les concentrations sont non
+              conformes à la réglementation (supérieures à la limite de qualité
+              de 0,1 µg/L).
+            </p>
+          )}
+
+          <Tag content="Qu'est-ce que le chloridazone desphényl et pourquoi il y en a dans l'eau?" />
+          <p>
+            Le métabolite chloridazone desphényl est une substance issue de la
+            dégradation du chloridazone, un herbicide qui a été utilisé
+            principalement dans la culture des betteraves des années 1960
+            jusqu&apos;en 2020. Le chloridazone est interdit en France et en
+            Europe depuis fin 2020.
+          </p>
+          <p>
+            En 2023, plus de 5,5 millions de français ont été alimentés au moins
+            une fois par une eau non conforme à cause de la présence de
+            chloridazone desphényl.
+          </p>
+          <p>
+            Bien que les risques de contamination des nappes phréatiques étaient
+            connus depuis au moins 2007, le suivi du chloridazone desphényl dans
+            l&apos;eau potable ne s&apos;est véritablement généralisé qu&apos;à
+            partir de 2021.
+          </p>
+
+          <Tag content="Quelle limite réglementaire pour le chloridazone desphényl dans l'eau?" />
+          <p>
+            Le chloridazone desphényl est un métabolite considéré
+            &quot;pertinent&quot;. Par conséquent, la limite de qualité
+            réglementaire qui s&apos;applique est de 0,1 µg/L. Si cette limite
+            est dépassée, l&apos;eau est déclarée &quot;non conforme&quot;.
+          </p>
+          <p>
+            Un métabolite est pertinent{" "}
+            <i>
+              &quot;s&apos;il y a lieu de considérer qu&apos;il pourrait
+              engendrer un risque sanitaire inacceptable pour le
+              consommateur&quot;
+            </i>
+            . L&apos;agence de sécurité sanitaire (Anses) est chargée de
+            l&apos;évaluation de la pertinence des métabolites.
+          </p>
+          <p>
+            L&apos;Anses a réalisé une première évaluation en 2020, dans
+            laquelle elle conclut à la pertinence du chloridazone desphényl, par
+            précaution, des doutes subsistant sur son potentiel génotoxique
+            (capacité à altérer l&apos;ADN et causer des mutations). Dans une
+            nouvelle évaluation réalisée en 2023, l&apos;Anses conclut une
+            nouvelle fois à la pertinence du chloridazone desphényl, pour les
+            mêmes raisons qu&apos;en 2020 et ce, malgré de nouvelles études
+            fournies par la société BASF. De plus l&apos;Anses relève la
+            présence d&apos;atteintes rénales et vésicales dans les études de
+            toxicité répétée chez des rongeurs, associée à l&apos;absence
+            d&apos;étude de cancérogénèse.
+          </p>
+
+          <Tag content="Quels risques pour la santé en cas de dépassement de la limite réglementaire?" />
+          <p>
+            En 2024, l&apos;Anses a défini une valeur sanitaire maximale (Vmax)
+            pour le chloridazone desphényl à 11 µg/L. Il est estimé que tant que
+            cette valeur n&apos;est pas dépassée, il n&apos;y a pas de risque
+            pour la santé. Toutefois, cette approche d&apos;évaluation substance
+            par substance, ne permet pas d&apos;évaluer l&apos;effet combiné de
+            plusieurs substances (effet cocktail).
+          </p>
+        </>
+      ),
+    },
+    metabolite_chloridazone_methyl_desphenyl: {
+      title: "Chloridazone méthyl-desphényl",
+      content: (
+        <>
+          <Tag content="Quelles informations données par les cartes?" />
+          {!isBilanAnnuel ? (
+            <p>
+              La carte &quot;dernière analyse&quot; indique les concentrations
+              en chloridazone méthyl-desphényl mesurées dans l&apos;eau au cours
+              de la dernière analyse dont les résultats sont disponibles.
+            </p>
+          ) : (
+            <p>
+              Les cartes &quot;bilans des non conformités&quot; indiquent le
+              pourcentage des analyses de chloridazone méthyl-desphényl
+              effectuées au cours de chaque année pour lesquelles les
+              concentrations sont non conformes à la réglementation (supérieures
+              à la limite de qualité de 0,1 µg/L).
+            </p>
+          )}
+
+          <Tag content="Qu'est-ce que le chloridazone méthyl-desphényl et pourquoi il y en a dans l'eau?" />
+          <p>
+            Le métabolite chloridazone méthyl-desphényl est une substance issue
+            de la dégradation du chloridazone, un herbicide qui a été utilisé
+            principalement dans la culture des betteraves des années 1960
+            jusqu&apos;en 2020. Le chloridazone est interdit en France et en
+            Europe depuis fin 2020.
+          </p>
+          <p>
+            En 2023, plus de 2 millions de français ont été alimentés au moins
+            une fois par une eau non conforme à cause de la présence de
+            chloridazone méthyl-desphényl.
+          </p>
+          <p>
+            Bien que les risques de contamination des nappes phréatiques étaient
+            connus depuis au moins 2007, le suivi du chloridazone
+            méthyl-desphényl dans l&apos;eau potable ne s&apos;est véritablement
+            généralisé qu&apos;à partir de 2021.
+          </p>
+
+          <Tag content="Quelles limites pour le chloridazone desphényl dans l'eau?" />
+          <p>
+            Le chloridazone méthyl-desphényl est un métabolite considéré
+            &quot;pertinent&quot;. Par conséquent, la limite de qualité
+            réglementaire qui s&apos;applique est de 0,1 µg/L. Si cette limite
+            est dépassée, l&apos;eau est déclarée &quot;non conforme&quot;.
+          </p>
+          <p>
+            Un métabolite est pertinent{" "}
+            <i>
+              &quot;s&apos;il y a lieu de considérer qu&apos;il pourrait
+              engendrer un risque sanitaire inacceptable pour le
+              consommateur&quot;
+            </i>
+            . L&apos;agence de sécurité sanitaire (Anses) est chargée de
+            l&apos;évaluation de la pertinence des métabolites.
+          </p>
+          <p>
+            L&apos;Anses a réalisé une première évaluation en 2020, dans
+            laquelle elle conclut à la pertinence du chloridazone
+            méthyl-desphényl, par précaution, des doutes subsistant sur son
+            potentiel génotoxique (capacité à altérer l&apos;ADN et causer des
+            mutations). Dans une nouvelle évaluation réalisée en 2023,
+            l&apos;Anses conclut une nouvelle fois à la pertinence du
+            chloridazone méthyl-desphényl, pour les mêmes raisons qu&apos;en
+            2020 et ce, malgré de nouvelles études fournies par la société BASF.
+          </p>
+
+          <Tag content="Quels risques pour la santé en cas de dépassement des limites?" />
+          <p>
+            En 2024, l&apos;Anses a défini une valeur sanitaire maximale (Vmax)
+            pour le chloridazone méthyl-desphényl à 110 µg/L. Il est estimé que
+            tant que cette valeur n&apos;est pas dépassée, il n&apos;y a pas de
+            risque pour la santé. Toutefois, cette approche d&apos;évaluation
+            substance par substance, ne permet pas d&apos;évaluer l&apos;effet
+            combiné de plusieurs substances (effet cocktail).
+          </p>
+        </>
+      ),
+    },
+    metabolite_atrazine_desethyl: {
+      title: "Atrazine déséthyl",
+      content: (
+        <>
+          <Tag content="Quelles informations données par les cartes?" />
+          {!isBilanAnnuel ? (
+            <p>
+              La carte &quot;dernière analyse&quot; indique les concentrations
+              en atrazine déséthyl mesurées dans l&apos;eau au cours de la
+              dernière analyse dont les résultats sont disponibles.
+            </p>
+          ) : (
+            <p>
+              Les cartes &quot;bilans des non conformités&quot; indiquent le
+              pourcentage des analyses d&apos;atrazine déséthyl effectuées au
+              cours de chaque année pour lesquelles les concentrations en
+              atrazine déséthyl sont non conformes à la réglementation
+              (supérieures à la limite de qualité de 0,1 µg/L).
+            </p>
+          )}
+
+          <Tag content="Qu'est-ce que l'atrazine déséthyl et pourquoi il y en a dans l'eau?" />
+          <p>
+            Le métabolite atrazine déséthyl est une substance issue de la
+            dégradation de l&apos;atrazine, un herbicide qui a été très utilisé,
+            notamment sur des cultures de maïs et blé, des années 1960
+            jusqu&apos;en 2003. L&apos;atrazine est interdit en France et en
+            Europe depuis 2003.
+          </p>
+          <p>
+            En 2023, 20 ans après l&apos;interdiction de l&apos;atrazine, 152
+            000 français ont été alimentés au moins une fois par une eau non
+            conforme à cause de la présence d&apos;atrazine déséthyl.
+          </p>
+
+          <Tag content="Quelles limites pour l'atrazine déséthyl dans l'eau?" />
+          <p>
+            L&apos;atrazine déséthyl est un métabolite considéré &quot;pertinent
+            par défaut&quot;. Par conséquent, la limite de qualité réglementaire
+            qui s&apos;applique est de 0,1 µg/L. Si cette limite est dépassée,
+            l&apos;eau est déclarée &quot;non conforme&quot;.
+          </p>
+          <p>
+            Un métabolite est pertinent{" "}
+            <i>
+              &quot;s&apos;il y a lieu de considérer qu&apos;il pourrait
+              engendrer un risque sanitaire inacceptable pour le
+              consommateur&quot;
+            </i>
+            . L&apos;agence de sécurité sanitaire (Anses) est chargée de
+            l&apos;évaluation de la pertinence des métabolites. L&apos;atrazine
+            déséthyl est considéré &quot;pertinent par défaut&quot; car aucune
+            évaluation de sa pertinence n&apos;a été réalisée par l&apos;Anses.
+          </p>
+
+          <Tag content="Quels risques pour la santé en cas de dépassement des limites?" />
+          <p>
+            En 2016, l&apos;Anses a défini une valeur sanitaire maximale (Vmax)
+            pour l&apos;atrazine déséthyl à 60 µg/L. Il est estimé que tant que
+            cette valeur n&apos;est pas dépassée, il n&apos;y a pas de risque
+            pour la santé. Toutefois, cette approche d&apos;évaluation substance
+            par substance, ne permet pas d&apos;évaluer l&apos;effet combiné de
+            plusieurs substances (effet cocktail).
+          </p>
+        </>
+      ),
+    },
     nitrate: {
       title: "Nitrates",
       content: (

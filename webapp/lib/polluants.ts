@@ -188,7 +188,7 @@ export const availableCategories: ICategory[] = [
         picto: null,
       },
       sup_valeur_sanitaire: {
-        label: "Au moins un PFAS dépasse la limite sanitaire",
+        label: "Au moins un PFAS dépasse une limite sanitaire",
         couleur: "#f03b20",
         couleurAlt: "#bd0026",
         picto: "red cross",

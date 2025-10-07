@@ -416,7 +416,7 @@ export default function PollutionMapMarker({
                       <span className="font-light">
                         {getParameterName(param)}:
                       </span>
-                      <span className="ml-2 font-light whitespace-nowrap">
+                      <span className="ml-2 font-light whitespace-nowrap font-numbers">
                         {value} {categoryDetails?.unite || ""}
                       </span>
                     </li>
@@ -567,7 +567,7 @@ export default function PollutionMapMarker({
                       <span className="font-light">
                         {getParameterName(param)}:
                       </span>
-                      <span className="ml-2 font-light whitespace-nowrap">
+                      <span className="ml-2 font-light whitespace-nowrap font-numbers">
                         {value} {categoryDetails?.unite || ""}
                       </span>
                     </li>

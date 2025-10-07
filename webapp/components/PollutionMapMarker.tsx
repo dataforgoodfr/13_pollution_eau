@@ -545,7 +545,7 @@ export default function PollutionMapMarker({
                       {Number(selectedZoneData[nbSupValeurSanitaireProp]) > 1
                         ? " analyses dépassent "
                         : " analyse dépasse "}
-                      la limite sanitaire
+                      {categoryDetails.resultatsAnnuels.valeurSanitaireLabel}
                     </>
                   )}
               </p>

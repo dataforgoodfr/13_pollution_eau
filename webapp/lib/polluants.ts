@@ -139,7 +139,7 @@ export const availableCategories: ICategory[] = [
       ratioLabelSingular: "analyse non conforme",
       ratioLabelPlural: "analyses non conformes",
       valeurSanitaireLabel:
-        "Au moins 1 dépassement de valeur sanitaire au cours de l'année",
+        "la limite devant entraîner des restrictions de consommation",
     },
   },
   {
@@ -228,8 +228,7 @@ export const availableCategories: ICategory[] = [
       ratioLabelSingular: "analyse non conforme*",
       ratioLabelPlural: "analyses non conformes*",
       details: "* Somme des 20 PFAS > 0,1 µg/L",
-      valeurSanitaireLabel:
-        "Au moins 1 dépassement de valeur sanitaire au cours de l'année",
+      valeurSanitaireLabel: "une limite sanitaire",
     },
   },
   {
@@ -313,7 +312,7 @@ export const availableCategories: ICategory[] = [
       details:
         "* Au moins une substance active ou un métabolite pertinent > 0,1µg/L et/ou total pesticides réglementaire (somme des substances actives et métabolites pertinents) > 0,5 µg/L",
       valeurSanitaireLabel:
-        "Au moins 1 dépassement de valeur sanitaire au cours de l'année",
+        "la limite devant entraîner des restrictions de consommation",
     },
     enfants: [
       {
@@ -404,7 +403,7 @@ export const availableCategories: ICategory[] = [
           ratioLabelPlural: "analyses non conformes*",
           details: "* Au moins une substance active > 0,1 µg/L",
           valeurSanitaireLabel:
-            "Au moins 1 dépassement de valeur sanitaire au cours de l'année",
+            "la limite devant entraîner des restrictions de consommation",
         },
       },
       {
@@ -499,7 +498,7 @@ export const availableCategories: ICategory[] = [
           ratioLabelPlural: "analyses non conformes*",
           details: "* Au moins un métabolite pertinent > 0,1 µg/L",
           valeurSanitaireLabel:
-            "Au moins 1 dépassement de valeur sanitaire au cours de l'année",
+            "la limite devant entraîner des restrictions de consommation",
         },
         enfants: [
           {
@@ -593,8 +592,7 @@ export const availableCategories: ICategory[] = [
               ratioLabelPlural: "analyses non conformes*",
               details:
                 "* Concentration > 0,1 µg/L lorsque l'ESA métolachlore était considéré pertinent (jusqu'en 2022). Le classement de l'ESA-métolachlore en non pertinent en 2022 explique pourquoi il n'y a plus de non conformité à partir de 2023.",
-              valeurSanitaireLabel:
-                "Au moins 1 dépassement de valeur sanitaire au cours de l'année",
+              valeurSanitaireLabel: "la limite sanitaire",
             },
           },
           {
@@ -688,8 +686,7 @@ export const availableCategories: ICategory[] = [
               ratioLabelPlural: "analyses non conformes*",
               details:
                 "* Concentration > 0,1 µg/L lorsque le chlorothalonil R471811 était considéré pertinent (jusqu'en 2024). Le classement du Chlorothalonil R471811 en non pertinent en 2024 explique pourquoi il n'y a plus de non conformité à partir de 2025.",
-              valeurSanitaireLabel:
-                "Au moins 1 dépassement de valeur sanitaire au cours de l'année",
+              valeurSanitaireLabel: "la limite sanitaire",
             },
           },
           {
@@ -777,8 +774,7 @@ export const availableCategories: ICategory[] = [
               ratioLabelSingular: "analyse non conforme*",
               ratioLabelPlural: "analyses non conformes*",
               details: "* Concentration > 0,1 µg/L",
-              valeurSanitaireLabel:
-                "Au moins 1 dépassement de valeur sanitaire au cours de l'année",
+              valeurSanitaireLabel: "la limite sanitaire",
             },
           },
           {
@@ -865,8 +861,7 @@ export const availableCategories: ICategory[] = [
               ratioLabelSingular: "analyse non conforme*",
               ratioLabelPlural: "analyses non conformes*",
               details: "* Concentration > 0,1 µg/L",
-              valeurSanitaireLabel:
-                "Au moins 1 dépassement de valeur sanitaire au cours de l'année",
+              valeurSanitaireLabel: "la limite sanitaire",
             },
           },
           {
@@ -954,8 +949,7 @@ export const availableCategories: ICategory[] = [
               ratioLabelSingular: "analyse non conforme*",
               ratioLabelPlural: "analyses non conformes*",
               details: "* Concentration > 0,1 µg/L",
-              valeurSanitaireLabel:
-                "Au moins 1 dépassement de valeur sanitaire au cours de l'année",
+              valeurSanitaireLabel: "la limite sanitaire",
             },
           },
         ],

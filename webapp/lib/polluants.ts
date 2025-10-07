@@ -529,20 +529,20 @@ export const availableCategories: ICategory[] = [
               inf_limites: {
                 label: "Concentration ≤ 0,1 µg/L",
                 couleur: "#FFF33B",
-                couleurAlt: "#FFF33B",
+                couleurAlt: "#fec44f",
                 picto: null,
               },
               inf_limites_sup_0_1: {
                 label: "Concentration comprise entre 0,1 et 0,9 µg/L*",
-                couleur: "#FDC70C",
-                couleurAlt: "#FDC70C",
+                couleur: "#eedf00",
+                couleurAlt: "#fe9929",
                 picto: null,
               },
               sup_limite_indicative: {
                 label:
                   "Concentration > 0,9 µg/L* (dépassement de la limite indicative)",
-                couleur: "#fe9929",
-                couleurAlt: "#fe9929",
+                couleur: "#FDC70C",
+                couleurAlt: "#d95f0e",
                 picto: "warning",
               },
               sup_valeur_sanitaire: {
@@ -624,20 +624,20 @@ export const availableCategories: ICategory[] = [
               inf_limites: {
                 label: "Concentration ≤ 0,1 µg/L",
                 couleur: "#FFF33B",
-                couleurAlt: "#FFF33B",
+                couleurAlt: "#fec44f",
                 picto: null,
               },
               inf_limites_sup_0_1: {
                 label: "Concentration comprise entre 0,1 et 0,9 µg/L*",
-                couleur: "#FDC70C",
-                couleurAlt: "#FDC70C",
+                couleur: "#eedf00",
+                couleurAlt: "#fe9929",
                 picto: null,
               },
               sup_limite_indicative: {
                 label:
                   "Concentration > 0,9 µg/L* (dépassement de la limite indicative)",
-                couleur: "#fe9929",
-                couleurAlt: "#fe9929",
+                couleur: "#FDC70C",
+                couleurAlt: "#d95f0e",
                 picto: "warning",
               },
               sup_valeur_sanitaire: {

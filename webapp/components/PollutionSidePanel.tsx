@@ -616,6 +616,121 @@ const getCategoryExplanation = (
         </>
       ),
     },
+    metabolite_chlorothalonil_r471811: {
+      title: "Chlorothalonil R471811",
+      content: (
+        <>
+          <Tag content="Quelles informations données par les cartes?" />
+          {!isBilanAnnuel ? (
+            <p>
+              La carte &quot;dernière analyse&quot; indique les concentrations
+              en chlorothalonil R471811 mesurées dans l&apos;eau au cours de la
+              dernière analyse dont les résultats sont disponibles.
+            </p>
+          ) : (
+            <p>
+              Les cartes &quot;bilans des non conformités&quot; indiquent le
+              pourcentage des analyses de chlorothalonil R471811 effectuées au
+              cours de chaque année pour lesquelles les concentrations sont non
+              conformes à la réglementation en vigueur chaque année.
+            </p>
+          )}
+
+          <Tag content="Qu'est-ce que le chlorothalonil R471811 et pourquoi il y en a dans l'eau?" />
+          <p>
+            Le métabolite chlorothalonil R471811 est une substance issue de la
+            dégradation du chlorothalonil, un fongicide qui a été très utilisé
+            pendant des années, principalement sur des cultures de céréales. Il
+            est interdit en France et en Europe depuis 2020.
+          </p>
+          <p>
+            En 2023, plus de 9 millions de français ont été alimentés au moins
+            une fois par une eau non conforme à cause de la présence de
+            chlorothalonil R471811.
+          </p>
+          <p>
+            Bien que les risques de contamination des nappes phréatiques étaient
+            connus depuis au moins 2006, le suivi du chlorothalonil R471811 dans
+            l&apos;eau potable ne s&apos;est véritablement généralisé qu&apos;à
+            partir de 2023.
+          </p>
+
+          <Tag content="Quelles limites réglementaires pour le chlorothalonil R471811 dans l'eau?" />
+          <p>
+            Les limites applicables aux métabolites sont différentes selon
+            qu&apos;ils sont classés comme pertinents ou non pertinents. Un
+            métabolite est pertinent{" "}
+            <i>
+              &quot;s&apos;il y a lieu de considérer qu&apos;il pourrait
+              engendrer un risque sanitaire inacceptable pour le
+              consommateur&quot;
+            </i>
+            . L&apos;agence de sécurité sanitaire (Anses) est chargée de
+            l&apos;évaluation de la pertinence des métabolites.
+          </p>
+          <p>
+            En 2022, l&apos;Anses a réalisé une première évaluation dans
+            laquelle elle conclut à la pertinence du chlorothalonil R471811, par
+            précaution, car des données importantes sur sa toxicité étaient
+            manquantes, notamment sur son potentiel cancérigène.
+          </p>
+          <p>
+            Dans une nouvelle évaluation réalisée en 2024, l&apos;Anses conclut
+            cette fois que le chlorothalonil R471811 est non pertinent car les
+            incertitudes identifiées en 2022 sont levées par de nouvelles
+            données fournies par Syngenta. Générations Futures conteste cette
+            approche car les données de Syngenta sont très insuffisantes. Le
+            chlorothalonil R471811 est ainsi considéré non pertinent alors
+            qu&apos;aucune évaluation complète de son potentiel cancérigène
+            n&apos;a été faite.
+          </p>
+          <p>
+            Ainsi, les limites applicables au chlorothalonil R471811 ont évolué
+            en 2025:
+          </p>
+          <ul className="list-disc ml-6">
+            <li>
+              Jusqu&apos;en 2024, la limite de qualité réglementaire de 0,1 µg/L
+              s&apos;appliquait car le chlorothalonil R471811 était alors
+              considéré comme un métabolite &quot;pertinent&quot;. Si les
+              concentrations en chlorothalonil R471811 dépassaient 0,1 µg/L,
+              l&apos;eau était considérée &quot;non conforme&quot;.
+            </li>
+            <li>
+              Depuis début 2025, la limite &quot;indicative&quot; de 0,9 µg/L
+              s&apos;applique, le chlorothalonil R471811 étant dorénavant jugé
+              &quot;non pertinent&quot;. Un dépassement de cette limite
+              indicative n&apos;est pas considéré comme une &quot;non
+              conformité&quot;, ce qui explique pourquoi le bilan 2025 indique
+              partout 0% de non conformité.
+            </li>
+          </ul>
+
+          <Tag content="Quels risques pour la santé en cas de dépassement des limites?" />
+          <p>
+            Très peu d&apos;études sont disponibles sur le chlorothalonil
+            R471811.
+          </p>
+          <p>
+            Le chlorothalonil, la substance dont est issue le chlorothalonil
+            R471811 est classé cancérigène &quot;probable&quot;. Mais, la
+            toxicité chronique de son métabolite R471811, et en particulier ses
+            effets cancérigènes, ne sont pas connus. L&apos;Anses n&apos;a pas
+            encore déterminé de valeur sanitaire pour le chlorothalonil R471811.
+          </p>
+          <p>
+            Pour savoir si les concentrations de chlorothalonil R471811 posent
+            un risque pour la santé, les autorités se réfèrent à une valeur
+            sanitaire &quot;transitoire&quot; (VST) de 3 µg/L, établie par une
+            agence sanitaire allemande. Si les concentrations ne dépassent pas 3
+            µg/L, il est jugé qu&apos;il n&apos;y a pas de risque pour la santé.
+            Toutefois, cette approche d&apos;évaluation substance par substance,
+            n&apos;évalue pas, et donc ignore, l&apos;effet combiné de plusieurs
+            substances (effet cocktail).
+          </p>
+        </>
+      ),
+    },
     nitrate: {
       title: "Nitrates",
       content: (

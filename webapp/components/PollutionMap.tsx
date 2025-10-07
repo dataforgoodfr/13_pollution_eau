@@ -151,6 +151,7 @@ export default function PollutionMap({
           <div className="h-full overflow-y-auto p-1 md:p-0">
             <PollutionSidePanel
               category={category}
+              period={period}
               onClose={() => setSidePanelOpen(false)}
             />
           </div>

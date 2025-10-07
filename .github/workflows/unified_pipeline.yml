@@ -155,9 +155,10 @@ jobs:
 
       # Deploy to Clever Cloud
       - name: Deploy to Clever Cloud
-        uses: 47ng/actions-clever-cloud@v2.0.0
+        uses: 47ng/actions-clever-cloud@v2.1.0
         with:
           appID: ${{ secrets.CLEVER_APP_ID }}
+          sameCommitPolicy: rebuild
           setEnv: | # <- keep the pipe here
             CC_DOCKERFILE=Dockerfile.clevercloud
         env:

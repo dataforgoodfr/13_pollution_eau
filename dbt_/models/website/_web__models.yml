@@ -165,3 +165,16 @@ models:
       - name: stat_texte
         description: "Valeur textuelle de la statistique (null si non applicable)"
         type: VARCHAR
+
+  - name: web__franceinfo
+    description: "Données agrégées pour France Info - résultats pivotés par catégorie de polluant pour le bilan annuel 2025"
+    columns:
+      - name: cdreseau
+        description: "Code de l'unité de distribution"
+        type: VARCHAR
+        tests:
+          - not_null
+          - unique
+      - name: result
+        description: "Objet JSON contenant cdreseau, nomreseaux et les résultats pour chaque catégorie (nitrate, pfas, pesticide, cvm, sub_indus_perchlorate) avec leurs ratios, nombres de dépassements et valeurs supérieures à la limite sanitaire"
+        type: JSON

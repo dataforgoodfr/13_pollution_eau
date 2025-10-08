@@ -1,0 +1,5 @@
+node_modules/
+*.log
+results/
+*.json
+tests/generated-from-har.js

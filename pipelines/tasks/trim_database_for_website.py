@@ -28,6 +28,7 @@ DEFAULT_WEBSITE_TABLES = [
     "web__resultats_communes",
     "web__resultats_udi",
     "web__stats_udi",
+    "web__franceinfo",
     "cog_communes",
     "atlasante_udi",
     "int__lien_commune_cdreseau",

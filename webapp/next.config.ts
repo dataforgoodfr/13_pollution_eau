@@ -15,15 +15,29 @@ const nextConfig: NextConfig = {
         headers: [
           {
             key: "Cache-Control",
-            value: "public, max-age=31536000, immutable",
+            value: "public, max-age=120, s-maxage=60",
           },
           {
             key: "Accept-Ranges",
             value: "bytes",
           },
+        ],
+      },
+      // {
+      //   source: "/_next/static/:path*",
+      //   headers: [
+      //     {
+      //       key: "Cache-Control",
+      //       value: "public, max-age=31536000, immutable",
+      //     },
+      //   ],
+      // },
+      {
+        source: "/embed",
+        headers: [
           {
-            key: "ETag",
-            value: "v1",
+            key: "Cache-Control",
+            value: "public, max-age=120, s-maxage=60",
           },
         ],
       },

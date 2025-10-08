@@ -8,6 +8,27 @@ const nextConfig: NextConfig = {
     ignoreDuringBuilds: true,
   },
   output: "standalone",
+  headers: async () => {
+    return [
+      {
+        source: "/pmtiles/:path*.pmtiles",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable",
+          },
+          {
+            key: "Accept-Ranges",
+            value: "bytes",
+          },
+          {
+            key: "ETag",
+            value: "v1",
+          },
+        ],
+      },
+    ];
+  },
   rewrites: async () => {
     return [
       {

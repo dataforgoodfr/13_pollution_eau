@@ -128,6 +128,7 @@ const getGlobalLastPrelevementResults = (
 
   const nonConforme: string[] = [];
   const deconseille: string[] = [];
+  const quantifie: string[] = [];
 
   displayCategories.forEach((catId) => {
     const resultProperty = getPropertyName("dernier_prel", catId, "resultat");
@@ -177,9 +178,23 @@ const getGlobalLastPrelevementResults = (
     ) {
       deconseille.push(displayText);
     }
+
+    // Add to quantifie list if applicable
+    if (
+      resultValue === "inf_valeur_sanitaire" ||
+      resultValue === "inf_limite_qualite" ||
+      resultValue === "inf_limites" ||
+      resultValue === "somme_20pfas_inf_0_1_et_4pfas_sup_0_02" ||
+      resultValue === "somme_20pfas_inf_0_1_et_4pfas_inf_0_02" ||
+      resultValue === "sup_limite_qualite_2036" ||
+      resultValue === "no3_inf_25" ||
+      resultValue === "no3_inf_40"
+    ) {
+      quantifie.push(displayText);
+    }
   });
 
-  return { nonConforme, deconseille };
+  return { nonConforme, deconseille, quantifie };
 };
 
 const getGlobalAnnualResults = (
@@ -387,7 +402,7 @@ export default function PollutionMapMarker({
             ?.label || errorLabel;
 
         // Get detailed breakdown
-        const { nonConforme, deconseille } =
+        const { nonConforme, deconseille, quantifie } =
           getGlobalLastPrelevementResults(selectedZoneData);
 
         return (
@@ -404,8 +419,28 @@ export default function PollutionMapMarker({
             </div>
 
             {/* Detailed breakdown */}
-            {(nonConforme.length > 0 || deconseille.length > 0) && (
+            {(nonConforme.length > 0 ||
+              deconseille.length > 0 ||
+              quantifie.length > 0) && (
               <div className="mt-3 space-y-3 text-xs">
+                {/* Déconseillé section */}
+                {deconseille.length > 0 && (
+                  <div>
+                    <p className="font-medium mb-2">
+                      Eau déconseillée à la consommation pour toute ou partie de
+                      la population en raison de la présence de:
+                    </p>
+                    <ul className="space-y-1 pl-2">
+                      {deconseille.map((item, index) => (
+                        <li key={index} className="flex items-start">
+                          <span className="mr-2">-</span>
+                          <span>{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
                 {/* Non conforme section */}
                 {nonConforme.length > 0 && (
                   <div>
@@ -423,15 +458,14 @@ export default function PollutionMapMarker({
                   </div>
                 )}
 
-                {/* Déconseillé section */}
-                {deconseille.length > 0 && (
+                {/* Quantifié section */}
+                {quantifie.length > 0 && (
                   <div>
                     <p className="font-medium mb-2">
-                      Eau déconseillée à la consommation pour toute ou partie de
-                      la population en raison de la présence de:
+                      Substances quantifiés sans dépassement des limites:
                     </p>
                     <ul className="space-y-1 pl-2">
-                      {deconseille.map((item, index) => (
+                      {quantifie.map((item, index) => (
                         <li key={index} className="flex items-start">
                           <span className="mr-2">-</span>
                           <span>{item}</span>

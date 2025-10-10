@@ -3,9 +3,9 @@
 import { useEffect, useState, JSX } from "react";
 import { getPropertyName } from "@/lib/property";
 import { getCategoryById } from "@/lib/polluants";
-import { getParameterName } from "@/lib/parameters";
 import { useMap, Marker, Popup } from "react-map-gl/maplibre";
 import { MapPin, X } from "lucide-react";
+import type { ParameterValues } from "@/app/lib/data";
 
 type PollutionMapMarkerProps = {
   period: string;
@@ -19,6 +19,42 @@ type PollutionMapMarkerProps = {
   selectedZoneCode: string | null;
   setSelectedZoneCode: (code: string | null) => void;
   colorblindMode?: boolean;
+  parameterValues: ParameterValues;
+};
+
+const getParameterName = (
+  paramCode: string,
+  parameterValues: ParameterValues,
+): string => {
+  return parameterValues[paramCode]?.web_label || paramCode;
+};
+
+const getParameterColor = (
+  paramCode: string,
+  value: number,
+  parameterValues: ParameterValues,
+): string | null => {
+  const paramRef = parameterValues[paramCode];
+  if (!paramRef) return null;
+
+  // Check in order of severity (most severe first)
+  if (
+    paramRef.valeur_sanitaire_1 !== null &&
+    value > paramRef.valeur_sanitaire_1
+  ) {
+    return "#f03b20"; // Red
+  }
+  if (paramRef.limite_qualite !== null && value > paramRef.limite_qualite) {
+    return "#fe9929"; // Orange
+  }
+  if (
+    paramRef.limite_indicative !== null &&
+    value > paramRef.limite_indicative
+  ) {
+    return "#FDC70C"; // Yellow
+  }
+
+  return null; // No color if below all limits
 };
 
 const getGlobalLastPrelevementResults = (
@@ -153,6 +189,7 @@ export default function PollutionMapMarker({
   marker,
   setSelectedZoneCode,
   colorblindMode = false,
+  parameterValues,
 }: PollutionMapMarkerProps) {
   const { map } = useMap();
   const [selectedZoneData, setSelectedZoneData] = useState<Record<
@@ -408,19 +445,32 @@ export default function PollutionMapMarker({
                   .sort(
                     ([, valueA], [, valueB]) => Number(valueB) - Number(valueA),
                   )
-                  .map(([param, value]) => (
-                    <li
-                      key={param}
-                      className="flex justify-between items-center"
-                    >
-                      <span className="font-light">
-                        {getParameterName(param)}:
-                      </span>
-                      <span className="ml-2 font-light whitespace-nowrap font-numbers">
-                        {value} {categoryDetails?.unite || ""}
-                      </span>
-                    </li>
-                  ))}
+                  .map(([param, value]) => {
+                    const color = getParameterColor(
+                      param,
+                      Number(value),
+                      parameterValues,
+                    );
+                    return (
+                      <li
+                        key={param}
+                        className="flex justify-between items-center"
+                      >
+                        <span
+                          className="font-light"
+                          style={color ? { color } : undefined}
+                        >
+                          {getParameterName(param, parameterValues)}:
+                        </span>
+                        <span
+                          className="ml-2 font-light whitespace-nowrap font-numbers"
+                          style={color ? { color } : undefined}
+                        >
+                          {value} {categoryDetails?.unite || ""}
+                        </span>
+                      </li>
+                    );
+                  })}
               </ul>
             </div>
           )}
@@ -559,19 +609,32 @@ export default function PollutionMapMarker({
                   Concentration maximale retrouvée en {annee} :
                 </p>
                 <ul className="space-y-1">
-                  {Object.entries(parsedMaxValues).map(([param, value]) => (
-                    <li
-                      key={param}
-                      className="flex justify-between items-center"
-                    >
-                      <span className="font-light">
-                        {getParameterName(param)}:
-                      </span>
-                      <span className="ml-2 font-light whitespace-nowrap font-numbers">
-                        {value} {categoryDetails?.unite || ""}
-                      </span>
-                    </li>
-                  ))}
+                  {Object.entries(parsedMaxValues).map(([param, value]) => {
+                    const color = getParameterColor(
+                      param,
+                      Number(value),
+                      parameterValues,
+                    );
+                    return (
+                      <li
+                        key={param}
+                        className="flex justify-between items-center"
+                      >
+                        <span
+                          className="font-light"
+                          style={color ? { color } : undefined}
+                        >
+                          {getParameterName(param, parameterValues)}:
+                        </span>
+                        <span
+                          className="ml-2 font-light whitespace-nowrap font-numbers"
+                          style={color ? { color } : undefined}
+                        >
+                          {value} {categoryDetails?.unite || ""}
+                        </span>
+                      </li>
+                    );
+                  })}
                 </ul>
               </div>
             )}

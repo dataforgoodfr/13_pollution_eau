@@ -74,3 +74,5 @@ seeds:
         description: "Unité de la valeur sanitaire 2"
       - name: valeur_sanitaire_2_commentaire
         description: "Commentaire sur la valeur sanitaire 2"
+      - name: web_label
+        description: "Libellé utilisé dans le site web"

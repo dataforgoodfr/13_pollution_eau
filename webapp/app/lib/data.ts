@@ -69,3 +69,57 @@ export async function fetchPollutionStats(): Promise<PollutionStat[]> {
     throw new Error("Failed to fetch pollution statistics.");
   }
 }
+
+interface ParameterValue {
+  cdparametresiseeaux: string;
+  categorie_2: string | null;
+  categorie_3: string | null;
+  limite_qualite: number | null;
+  limite_indicative: number | null;
+  valeur_sanitaire_1: number | null;
+  web_label: string | null;
+}
+
+export type ParameterValues = Record<string, ParameterValue>;
+
+export async function fetchParameterValues(): Promise<ParameterValues> {
+  try {
+    const connection = await db.connect();
+
+    const result = await connection.runAndReadUntil(
+      "SELECT cdparametresiseeaux, categorie_2, categorie_3, limite_qualite, limite_indicative, valeur_sanitaire_1, web_label FROM int__valeurs_de_reference",
+      ROW_TARGET_COUNT,
+    );
+
+    const parameterValues: ParameterValues = {};
+    const rows = result.getRowObjects();
+
+    rows.forEach((row) => {
+      const code = String(row.cdparametresiseeaux);
+      parameterValues[code] = {
+        cdparametresiseeaux: code,
+        categorie_2: row.categorie_2 ? String(row.categorie_2) : null,
+        categorie_3: row.categorie_3 ? String(row.categorie_3) : null,
+        limite_qualite: row.limite_qualite ? Number(row.limite_qualite) : null,
+        limite_indicative: row.limite_indicative
+          ? Number(row.limite_indicative)
+          : null,
+        valeur_sanitaire_1: row.valeur_sanitaire_1
+          ? Number(row.valeur_sanitaire_1)
+          : null,
+        web_label: row.web_label ? String(row.web_label) : null,
+      };
+    });
+
+    console.log(
+      "Fetched parameter values:",
+      Object.keys(parameterValues).length,
+      "parameters",
+    );
+
+    return parameterValues;
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw new Error("Failed to fetch parameter values.");
+  }
+}

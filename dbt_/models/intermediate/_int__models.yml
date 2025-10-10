@@ -327,6 +327,10 @@ models:
         description: "Unité de mesure pour la deuxième valeur sanitaire"
         type: VARCHAR
 
+      - name: web_label
+        description: "Libellé utilisé dans le site web"
+        type: VARCHAR
+
       - name: nb_rows
         description: "Nombre de lignes pour un même cdparametresiseeaux - DOIT être égal à 1"
         type: INTEGER

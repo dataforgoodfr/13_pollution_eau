@@ -11,12 +11,14 @@ import { MapProvider } from "react-map-gl/maplibre";
 import MapZoneSelector from "./MapZoneSelector";
 import PollutionMapLegend from "./PollutionMapLegend";
 import { clsx } from "clsx";
-import type { PollutionStats } from "@/app/lib/data";
+import type { PollutionStats, ParameterValues } from "@/app/lib/data";
 
 export default function PollutionMap({
   pollutionStats,
+  parameterValues,
 }: {
   pollutionStats: PollutionStats;
+  parameterValues: ParameterValues;
 }) {
   const [period, setPeriod] = useState("dernier_prel");
   const [category, setCategory] = useState("tous");
@@ -84,6 +86,7 @@ export default function PollutionMap({
             setMarker={setMarker}
             colorblindMode={colorblindMode}
             isMobile={isMobile}
+            parameterValues={parameterValues}
           />
 
           <div className="absolute top-4 left-4 z-10 flex gap-1 md:gap-6 flex-col md:flex-row">

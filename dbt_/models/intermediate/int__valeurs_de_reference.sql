@@ -11,6 +11,7 @@ SELECT
     MAX(valeur_sanitaire_1_unite) AS valeur_sanitaire_1_unite,
     MAX(valeur_sanitaire_2) AS valeur_sanitaire_2,
     MAX(valeur_sanitaire_2_unite) AS valeur_sanitaire_2_unite,
+    MAX(web_label) AS web_label,
     COUNT(*) AS nb_rows -- we enforce this to be 1 in a dbt test
 FROM
     {{ ref('references_generations_futures') }}

@@ -13,6 +13,7 @@ import "maplibre-gl/dist/maplibre-gl.css";
 import { Protocol } from "pmtiles";
 import { generateColorExpression } from "@/lib/colorMapping";
 import PollutionMapMarker from "@/components/PollutionMapMarker";
+import type { ParameterValues } from "@/app/lib/data";
 
 import { DEFAULT_MAP_STYLE, getDefaultLayers } from "@/app/config";
 
@@ -42,6 +43,7 @@ type PollutionMapBaseLayerProps = {
   ) => void;
   colorblindMode?: boolean;
   isMobile?: boolean;
+  parameterValues: ParameterValues;
 };
 
 export default function PollutionMapBaseLayer({
@@ -56,6 +58,7 @@ export default function PollutionMapBaseLayer({
   setMarker,
   colorblindMode = false,
   isMobile = false,
+  parameterValues,
 }: PollutionMapBaseLayerProps) {
   useEffect(() => {
     // adds the support for PMTiles
@@ -176,6 +179,7 @@ export default function PollutionMapBaseLayer({
           selectedZoneCode={selectedZoneCode}
           setSelectedZoneCode={setSelectedZoneCode}
           colorblindMode={colorblindMode}
+          parameterValues={parameterValues}
         />
       ) : null}
       <AttributionControl compact={true} />

@@ -505,11 +505,11 @@ export default function PollutionMapMarker({
                   ).map(([groupKey, group]) => {
                     if (group.params.length === 0) return null;
 
-                    const isCollapsed = collapsedSections[groupKey];
+                    const isCollapsed = collapsedSections[groupKey] !== false;
                     const toggleCollapse = () => {
                       setCollapsedSections((prev) => ({
                         ...prev,
-                        [groupKey]: !prev[groupKey],
+                        [groupKey]: prev[groupKey] === false ? true : false,
                       }));
                     };
 

@@ -157,6 +157,9 @@ export default function PollutionMapBaseLayer({
     } as maplibregl.StyleSpecification;
   }, [selectedZoneCode, displayMode, category, period, colorblindMode]);
 
+  const isInIframe =
+    typeof window !== "undefined" && window.self !== window.top;
+
   return (
     <ReactMapGl
       id="map"
@@ -168,7 +171,7 @@ export default function PollutionMapBaseLayer({
       onMove={handleMapStateChange}
       interactiveLayerIds={["color-layer"]}
       attributionControl={false}
-      cooperativeGestures={isMobile}
+      cooperativeGestures={isMobile || isInIframe}
     >
       {marker ? (
         <PollutionMapMarker

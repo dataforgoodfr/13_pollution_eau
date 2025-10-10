@@ -225,20 +225,19 @@ const getGlobalAnnualResults = (
     const nbPrelevements = selectedZoneData[nbPrelevementsProp];
     const ratio = selectedZoneData[ratioProp];
 
-    // Skip if no data or no samples
-    if (!nbPrelevements || Number(nbPrelevements) === 0) {
-      return;
-    }
-
     const categoryDetails = getCategoryById(catId);
     if (!categoryDetails) return;
 
     const categoryName = categoryDetails.nomAffichage;
+
+    if (!nbPrelevements || Number(nbPrelevements) === 0) {
+      nonConformeDetails.push(`${categoryName}: aucune recherche`);
+      return;
+    }
     const label =
-      categoryDetails.resultatsAnnuels?.ratioLabelPlural.replace(
-        "analyses ",
-        "",
-      ) || "non conformes";
+      categoryDetails.resultatsAnnuels?.ratioLabelPlural
+        .replace("analyses ", "")
+        .replace("*", "") || "non conformes";
 
     if (ratio !== null && ratio !== undefined) {
       const percentageNonConforme = Math.round(Number(ratio) * 100);
@@ -836,23 +835,21 @@ export default function PollutionMapMarker({
               </div>
             )}
 
-          {category === "tous" &&
-            ratioValue !== 0 &&
-            nonConformeDetails.length > 0 && (
-              <div className="mt-3 space-y-3 text-xs">
-                <div>
-                  <p className="font-medium mb-2">Détail par catégorie :</p>
-                  <ul className="space-y-1 pl-2">
-                    {nonConformeDetails.map((item, index) => (
-                      <li key={index} className="flex items-start">
-                        <span className="mr-2">-</span>
-                        <span>{item}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+          {category === "tous" && nonConformeDetails.length > 0 && (
+            <div className="mt-3 space-y-3 text-xs">
+              <div>
+                <p className="font-medium mb-2">Détail par catégorie :</p>
+                <ul className="space-y-1 pl-2">
+                  {nonConformeDetails.map((item, index) => (
+                    <li key={index} className="flex items-start">
+                      <span className="mr-2">-</span>
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
               </div>
-            )}
+            </div>
+          )}
         </>
       );
     }

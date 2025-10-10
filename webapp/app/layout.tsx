@@ -10,9 +10,9 @@ export const metadata: Metadata = {
     follow: false,
   },
   icons: {
-    icon: "/dfg.png",
-    shortcut: "/dfg.png",
-    apple: "/dfg.png",
+    icon: "/images/dfg.png",
+    shortcut: "/images/dfg.png",
+    apple: "/images/dfg.png",
   },
 };
 

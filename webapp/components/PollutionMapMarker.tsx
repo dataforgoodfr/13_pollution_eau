@@ -33,9 +33,15 @@ const getParameterColor = (
   paramCode: string,
   value: number,
   parameterValues: ParameterValues,
+  category: string,
 ): string | null => {
   const paramRef = parameterValues[paramCode];
   if (!paramRef) return null;
+
+  // Special case for non-pertinent pesticides to by pass limite_indicative in "pesticide" category
+  if (category === "pesticide" && paramRef.categorie_3 === "non_pertinent") {
+    return null;
+  }
 
   // Check in order of severity (most severe first)
   if (
@@ -559,6 +565,7 @@ export default function PollutionMapMarker({
                         code,
                         value,
                         parameterValues,
+                        category,
                       );
                       if (color) {
                         const currentPriority =
@@ -603,6 +610,7 @@ export default function PollutionMapMarker({
                                 code,
                                 value,
                                 parameterValues,
+                                category,
                               );
                               const baseName =
                                 parameterValues[code]?.web_label || code;
@@ -645,6 +653,7 @@ export default function PollutionMapMarker({
                         param,
                         Number(value),
                         parameterValues,
+                        category,
                       );
                       return (
                         <li
@@ -810,6 +819,7 @@ export default function PollutionMapMarker({
                       param,
                       Number(value),
                       parameterValues,
+                      category,
                     );
                     return (
                       <li

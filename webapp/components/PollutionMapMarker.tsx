@@ -4,7 +4,7 @@ import { useEffect, useState, JSX } from "react";
 import { getPropertyName } from "@/lib/property";
 import { getCategoryById } from "@/lib/polluants";
 import { useMap, Marker, Popup } from "react-map-gl/maplibre";
-import { MapPin, X } from "lucide-react";
+import { MapPin, X, ChevronDown, ChevronUp } from "lucide-react";
 import type { ParameterValues } from "@/app/lib/data";
 
 type PollutionMapMarkerProps = {
@@ -55,6 +55,60 @@ const getParameterColor = (
   }
 
   return null; // No color if below all limits
+};
+
+// Group parameters by category for pesticides
+const groupParametersByCategory = (
+  parsedValues: Record<string, number>,
+  parameterValues: ParameterValues,
+): Record<
+  string,
+  { label: string; params: Array<{ code: string; value: number }> }
+> => {
+  const groups: Record<
+    string,
+    { label: string; params: Array<{ code: string; value: number }> }
+  > = {
+    other: { label: "Totaux", params: [] },
+    sub_active: { label: "Substances actives", params: [] },
+    metabolite_pertinent: { label: "Métabolites pertinents", params: [] },
+    metabolite_non_pertinent: {
+      label: "Métabolites non pertinents",
+      params: [],
+    },
+  };
+
+  Object.entries(parsedValues).forEach(([code, value]) => {
+    const param = parameterValues[code];
+    if (!param) {
+      groups.other.params.push({ code, value });
+      return;
+    }
+
+    if (param.categorie_2 === "sub_active") {
+      groups.sub_active.params.push({ code, value });
+    } else if (param.categorie_2 === "metabolite") {
+      if (
+        param.categorie_3 === "pertinent" ||
+        param.categorie_3 === "pertinent_par_defaut"
+      ) {
+        groups.metabolite_pertinent.params.push({ code, value });
+      } else if (param.categorie_3 === "non_pertinent") {
+        groups.metabolite_non_pertinent.params.push({ code, value });
+      } else {
+        groups.other.params.push({ code, value });
+      }
+    } else {
+      groups.other.params.push({ code, value });
+    }
+  });
+
+  // Sort params within each group by value (descending)
+  Object.values(groups).forEach((group) => {
+    group.params.sort((a, b) => b.value - a.value);
+  });
+
+  return groups;
 };
 
 const getGlobalLastPrelevementResults = (
@@ -197,6 +251,9 @@ export default function PollutionMapMarker({
     string | number | null
   > | null>(null);
   const [showPopup, setShowPopup] = useState<boolean>(true);
+  const [collapsedSections, setCollapsedSections] = useState<
+    Record<string, boolean>
+  >({});
 
   // Show popup when marker changes and center map on marker
   useEffect(() => {
@@ -440,38 +497,138 @@ export default function PollutionMapMarker({
           {parsedValues && Object.keys(parsedValues).length > 0 && (
             <div className="mt-3 text-xs">
               <p className="font-medium mb-2">Substances quantifiées:</p>
-              <ul className="space-y-1 max-h-60 overflow-y-scroll">
-                {Object.entries(parsedValues)
-                  .sort(
-                    ([, valueA], [, valueB]) => Number(valueB) - Number(valueA),
-                  )
-                  .map(([param, value]) => {
-                    const color = getParameterColor(
-                      param,
-                      Number(value),
-                      parameterValues,
-                    );
+              {category === "pesticide" || category == "metabolite" ? (
+                // Grouped display for pesticides
+                <div className="space-y-3 max-h-60 overflow-y-scroll">
+                  {Object.entries(
+                    groupParametersByCategory(parsedValues, parameterValues),
+                  ).map(([groupKey, group]) => {
+                    if (group.params.length === 0) return null;
+
+                    const isCollapsed = collapsedSections[groupKey];
+                    const toggleCollapse = () => {
+                      setCollapsedSections((prev) => ({
+                        ...prev,
+                        [groupKey]: !prev[groupKey],
+                      }));
+                    };
+
+                    // Find the worst (most severe) color among substances in this group
+                    let worstColor: string | null = null;
+                    const colorPriority = {
+                      "#f03b20": 3, // Red - highest priority
+                      "#fe9929": 2, // Orange
+                      "#FDC70C": 1, // Yellow
+                    };
+
+                    group.params.forEach(({ code, value }) => {
+                      const color = getParameterColor(
+                        code,
+                        value,
+                        parameterValues,
+                      );
+                      if (color) {
+                        const currentPriority = colorPriority[color as keyof typeof colorPriority] || 0;
+                        const worstPriority = worstColor ? (colorPriority[worstColor as keyof typeof colorPriority] || 0) : 0;
+                        if (currentPriority > worstPriority) {
+                          worstColor = color;
+                        }
+                      }
+                    });
+
                     return (
-                      <li
-                        key={param}
-                        className="flex justify-between items-center"
+                      <div
+                        key={groupKey}
+                        className="border-l-2 border-gray-200 pl-2"
                       >
-                        <span
-                          className="font-light"
-                          style={color ? { color } : undefined}
+                        <button
+                          onClick={toggleCollapse}
+                          className="flex items-center justify-between w-full mb-2 text-left hover:bg-gray-50 -ml-2 pl-2 py-1 rounded"
                         >
-                          {getParameterName(param, parameterValues)}:
-                        </span>
-                        <span
-                          className="ml-2 font-light whitespace-nowrap font-numbers"
-                          style={color ? { color } : undefined}
-                        >
-                          {value} {categoryDetails?.unite || ""}
-                        </span>
-                      </li>
+                          <span
+                            className="text-[10px] uppercase tracking-wide font-semibold"
+                            style={{ color: worstColor || "#6b7280" }}
+                          >
+                            {group.label} ({group.params.length})
+                          </span>
+                          {isCollapsed ? (
+                            <ChevronDown size={14} className="text-gray-400" />
+                          ) : (
+                            <ChevronUp size={14} className="text-gray-400" />
+                          )}
+                        </button>
+                        {!isCollapsed && (
+                          <ul className="space-y-2 mt-1">
+                            {group.params.map(({ code, value }) => {
+                              const color = getParameterColor(
+                                code,
+                                value,
+                                parameterValues,
+                              );
+                              const baseName =
+                                parameterValues[code]?.web_label || code;
+                              return (
+                                <li
+                                  key={code}
+                                  className="flex justify-between items-start gap-2"
+                                >
+                                  <span
+                                    className="font-light text-xs flex-1"
+                                    style={color ? { color } : undefined}
+                                  >
+                                    {baseName}:
+                                  </span>
+                                  <span
+                                    className="font-light whitespace-nowrap font-numbers text-xs"
+                                    style={color ? { color } : undefined}
+                                  >
+                                    {value} {categoryDetails?.unite || ""}
+                                  </span>
+                                </li>
+                              );
+                            })}
+                          </ul>
+                        )}
+                      </div>
                     );
                   })}
-              </ul>
+                </div>
+              ) : (
+                // Simple list for non-pesticide categories
+                <ul className="space-y-1 max-h-60 overflow-y-scroll border-l-2 border-gray-200 pl-2">
+                  {Object.entries(parsedValues)
+                    .sort(
+                      ([, valueA], [, valueB]) =>
+                        Number(valueB) - Number(valueA),
+                    )
+                    .map(([param, value]) => {
+                      const color = getParameterColor(
+                        param,
+                        Number(value),
+                        parameterValues,
+                      );
+                      return (
+                        <li
+                          key={param}
+                          className="flex justify-between items-center gap-2"
+                        >
+                          <span
+                            className="font-light"
+                            style={color ? { color } : undefined}
+                          >
+                            {getParameterName(param, parameterValues)}:
+                          </span>
+                          <span
+                            className="font-light whitespace-nowrap font-numbers"
+                            style={color ? { color } : undefined}
+                          >
+                            {value} {categoryDetails?.unite || ""}
+                          </span>
+                        </li>
+                      );
+                    })}
+                </ul>
+              )}
             </div>
           )}
         </>
@@ -608,7 +765,7 @@ export default function PollutionMapMarker({
                 <p className="font-medium mb-2">
                   Concentration maximale retrouvée en {annee} :
                 </p>
-                <ul className="space-y-1">
+                <ul className="space-y-1 border-l-2 border-gray-200 pl-2">
                   {Object.entries(parsedMaxValues).map(([param, value]) => {
                     const color = getParameterColor(
                       param,
@@ -618,7 +775,7 @@ export default function PollutionMapMarker({
                     return (
                       <li
                         key={param}
-                        className="flex justify-between items-center"
+                        className="flex justify-between items-center gap-2"
                       >
                         <span
                           className="font-light"
@@ -627,7 +784,7 @@ export default function PollutionMapMarker({
                           {getParameterName(param, parameterValues)}:
                         </span>
                         <span
-                          className="ml-2 font-light whitespace-nowrap font-numbers"
+                          className="font-light whitespace-nowrap font-numbers"
                           style={color ? { color } : undefined}
                         >
                           {value} {categoryDetails?.unite || ""}

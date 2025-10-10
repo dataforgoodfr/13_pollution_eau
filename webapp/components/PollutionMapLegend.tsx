@@ -277,7 +277,7 @@ export default function PollutionMapLegend({
           }}
         >
           <div className="px-5 pb-5">
-            <div className="mb-4">{legendContent}</div>
+            <div className="mb-2">{legendContent}</div>
 
             <div className="space-y-2">
               {getLastUpdateDate() && (

@@ -528,8 +528,14 @@ export default function PollutionMapMarker({
                         parameterValues,
                       );
                       if (color) {
-                        const currentPriority = colorPriority[color as keyof typeof colorPriority] || 0;
-                        const worstPriority = worstColor ? (colorPriority[worstColor as keyof typeof colorPriority] || 0) : 0;
+                        const currentPriority =
+                          colorPriority[color as keyof typeof colorPriority] ||
+                          0;
+                        const worstPriority = worstColor
+                          ? colorPriority[
+                              worstColor as keyof typeof colorPriority
+                            ] || 0
+                          : 0;
                         if (currentPriority > worstPriority) {
                           worstColor = color;
                         }

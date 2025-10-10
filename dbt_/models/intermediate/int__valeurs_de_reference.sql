@@ -1,3 +1,9 @@
+{{
+  config(
+    materialized='table'
+  )
+}}
+
 SELECT
     cdparametresiseeaux,
     MAX(categorie_1) AS categorie_1,

@@ -101,6 +101,7 @@ models:
               values:
                 - "non_quantifie"
                 - "sup_valeur_sanitaire"
+                - "metabolite_sup_3"
                 - "sup_limite_qualite"
                 - "sup_limite_indicative"
                 - "inf_limites_sup_0_1"
@@ -211,6 +212,7 @@ models:
               values:
                 - "non_quantifie"
                 - "sup_valeur_sanitaire"
+                - "metabolite_sup_3"
                 - "sup_limite_qualite"
                 - "sup_limite_indicative"
                 - "inf_limites_sup_0_1"

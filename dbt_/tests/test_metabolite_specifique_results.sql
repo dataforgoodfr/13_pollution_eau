@@ -62,7 +62,7 @@ WHERE
         cdreseau = '002000401'
         AND categorie = 'metabolite_chlorothalonil_r471811'
         AND date_dernier_prel = TIMESTAMP '2025-05-05 14:23:00'
-        AND resultat != 'sup_valeur_sanitaire'
+        AND resultat != 'metabolite_sup_3'
     )
 -- annuel udi
 UNION ALL
@@ -131,7 +131,7 @@ WHERE
         AND (
             nb_prelevements != 12
             OR nb_depassements != 12
-            OR nb_sup_valeur_sanitaire != 11
+            OR nb_sup_valeur_sanitaire != 0
             OR ratio_limite_qualite != 1.0
         )
     )

@@ -11,7 +11,7 @@ WHERE
     (
         cdreseau = '002001370'
         AND date_dernier_prel = TIMESTAMP '2025-04-30 09:00:00'
-        AND resultat != 'sup_valeur_sanitaire'
+        AND resultat != 'sup_limite_qualite'
     )
     OR
     (

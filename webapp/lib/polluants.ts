@@ -509,7 +509,7 @@ export const availableCategories: ICategory[] = [
             affichageBlocPageUDI: false,
             description: "Métabolite du métolachlore, herbicide.",
             resultatsDetails:
-              "* Si l'ESA métolachlore était considéré comme un métabolite pertinent, l'eau serait déclarée \"non conforme\". \n** D'après les recommandations du Haut Conseil de la Santé Publique. Une incertitude de 30 % a été appliquée à la valeur de la VST de 3 µg/L.",
+              "* Si l'ESA métolachlore était considéré comme un métabolite pertinent, l'eau serait déclarée \"non conforme\" à partir de 0,1 µg/L. \n** La valeur de 3 µg/L, utilisée en Allemagne comme valeur de gestion, indique une contamination élevée.",
             sousCategories: false,
             unite: "µg/L",
             resultats: {
@@ -539,16 +539,15 @@ export const availableCategories: ICategory[] = [
               },
               sup_limite_indicative: {
                 label:
-                  "Concentration > 0,9 µg/L* (dépassement de la limite indicative)",
+                  "Concentration > 0,9 µg/L (dépassement de la limite indicative)",
                 couleur: "#FDC70C",
                 couleurAlt: "#d95f0e",
                 picto: "warning",
               },
-              sup_valeur_sanitaire: {
-                label:
-                  "Concentration > 4,29 µg/L* (dépassement de la valeur sanitaire transitoire (VST), eau devant être déconseillée à la consommation**)",
-                couleur: "#f03b20",
-                couleurAlt: "#bd0026",
+              metabolite_sup_3: {
+                label: "Concentration > 3 µg/L**",
+                couleur: "#d95f0e",
+                couleurAlt: "#993404",
                 picto: "warning",
               },
             },
@@ -603,7 +602,7 @@ export const availableCategories: ICategory[] = [
             affichageBlocPageUDI: true,
             description: "Métabolite du fongicide chlorothalonil.",
             resultatsDetails:
-              "* Si le chlorothalonil R471811 était considéré comme un métabolite pertinent, l'eau serait déclarée \"non conforme\". \n** D'après les recommandations du Haut Conseil de la Santé Publique. Une incertitude de 30 % a été appliquée à la valeur de la VST de 3 µg/L.",
+              '* Si le chlorothalonil R471811 était considéré comme un métabolite pertinent, l\'eau serait déclarée "non conforme" à partir de 0,1 µg/L. \n** La valeur de 3 µg/L, utilisée en Allemagne comme valeur de gestion, indique une contamination élevée.',
             sousCategories: false,
             unite: "µg/L",
             resultats: {
@@ -633,16 +632,15 @@ export const availableCategories: ICategory[] = [
               },
               sup_limite_indicative: {
                 label:
-                  "Concentration > 0,9 µg/L* (dépassement de la limite indicative)",
+                  "Concentration > 0,9 µg/L (dépassement de la limite indicative)",
                 couleur: "#FDC70C",
                 couleurAlt: "#d95f0e",
                 picto: "warning",
               },
-              sup_valeur_sanitaire: {
-                label:
-                  "Concentration > 4,29 µg/L* (dépassement de la valeur sanitaire transitoire (VST), eau devant être déconseillée à la consommation**)",
-                couleur: "#f03b20",
-                couleurAlt: "#bd0026",
+              metabolite_sup_3: {
+                label: "Concentration > 3 µg/L**",
+                couleur: "#d95f0e",
+                couleurAlt: "#993404",
                 picto: "warning",
               },
             },

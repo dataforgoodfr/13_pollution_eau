@@ -31,6 +31,7 @@ last_pvl AS (
         -- (au lieu de le recalculer) car il a changé dans le temps et on veut pas gérer
         -- l'historique des règles de calcul.
         cdparametresiseeaux != 'PESTOT'
+        AND valtraduite IS NOT NULL
 ),
 
 aggregated AS (
@@ -88,7 +89,7 @@ SELECT
     MAX(datetimeprel) AS date_dernier_prel,
     COUNT(DISTINCT cdparametresiseeaux) AS nb_parametres,
     CASE
-        WHEN BOOL_AND(valtraduite IS NULL OR valtraduite = 0) THEN 'non_quantifie'
+        WHEN BOOL_AND(valtraduite = 0) THEN 'non_quantifie'
         WHEN
             BOOL_OR(valtraduite > valeur_sanitaire_1)
             THEN 'sup_valeur_sanitaire'
@@ -97,9 +98,10 @@ SELECT
             OR MAX(total_pesticide) > 0.5
             THEN 'sup_limite_qualite'
         WHEN
-            BOOL_OR(
+            BOOL_AND(
                 (limite_qualite IS NOT NULL AND valtraduite <= limite_qualite)
                 OR (valeur_sanitaire_1 IS NOT NULL AND valtraduite <= valeur_sanitaire_1)
+                OR (limite_qualite IS NULL AND valeur_sanitaire_1 IS NULL)
             )
             THEN 'inf_limite_qualite' -- TODO: rename to 'inf_limites' ?
         ELSE 'erreur'

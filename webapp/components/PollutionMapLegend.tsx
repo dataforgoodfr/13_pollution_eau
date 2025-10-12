@@ -104,7 +104,7 @@ export default function PollutionMapLegend({
     const dateValue = getStatisticValue("derniere_mise_a_jour");
     if (dateValue) {
       const date = new Date(dateValue);
-      return `Dernière mise à jour le ${date.toLocaleDateString("fr-FR")}`;
+      return `Dernière analyse disponible: ${date.toLocaleDateString("fr-FR")}`;
     }
     return "";
   };

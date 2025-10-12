@@ -21,9 +21,11 @@ WITH metaux_lourds_dernier_prel AS (
     WHERE
         cdparametresiseeaux IN ('PB', 'AS')
         AND
-        -- On garde les prélèvements de moins d'un an
-        CURRENT_DATE - datetimeprel
-        < INTERVAL 1 YEAR
+        -- On garde les prélèvements de moins d'un an à partir du dernier prélèvement
+        datetimeprel >= DATE_TRUNC('day', (
+            SELECT MAX(sub.datetimeprel)
+            FROM {{ ref('int__resultats_udi_communes') }} AS sub
+        ) - INTERVAL 1 YEAR) + INTERVAL 1 DAY
 )
 
 -- Ici on ne prend que le prélèvement le plus récent (avec row_number = 1)

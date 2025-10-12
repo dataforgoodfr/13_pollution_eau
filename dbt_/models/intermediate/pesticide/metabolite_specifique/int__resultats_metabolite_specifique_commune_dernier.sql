@@ -41,8 +41,11 @@ WITH latest_metabolite_results AS (
             'ESAMTC', 'MTCESA', '471811R', 'R471811', 'CLDZ_D', 'CLDZ_MD', 'ADET'
         )
         AND
-        -- On garde les prélèvements de moins d'un an
-        CURRENT_DATE - datetimeprel < INTERVAL 1 YEAR
+        -- On garde les prélèvements de moins d'un an à partir du dernier prélèvement
+        datetimeprel >= DATE_TRUNC('day', (
+            SELECT MAX(sub.datetimeprel)
+            FROM {{ ref('int__resultats_udi_communes') }} AS sub
+        ) - INTERVAL 1 YEAR) + INTERVAL 1 DAY
 )
 
 

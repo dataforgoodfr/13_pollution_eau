@@ -20,8 +20,11 @@ last_pvl AS (
         AND
         cdparametresiseeaux = 'NO3'
         AND
-        -- On garde les prélèvements de moins d'un an
-        CURRENT_DATE - datetimeprel < INTERVAL 1 YEAR
+        -- On garde les prélèvements de moins d'un an à partir du dernier prélèvement
+        datetimeprel >= DATE_TRUNC('day', (
+            SELECT MAX(sub.datetimeprel)
+            FROM {{ ref('int__resultats_udi_communes') }} AS sub
+        ) - INTERVAL 1 YEAR) + INTERVAL 1 DAY
         AND
         -- Cf cas cdreseau IN( '034005906') , referenceprel= 03400327764
         valtraduite IS NOT NULL

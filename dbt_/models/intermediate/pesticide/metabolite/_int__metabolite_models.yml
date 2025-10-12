@@ -77,8 +77,6 @@ models:
         type: TIMESTAMP
         tests:
           - not_null
-          - dbt_utils.expression_is_true:
-              expression: ">= CURRENT_DATE - INTERVAL 1 YEAR"
       - name: nb_parametres
         type: INTEGER
       - name: resultat
@@ -174,8 +172,6 @@ models:
         type: TIMESTAMP
         tests:
           - not_null
-          - dbt_utils.expression_is_true:
-              expression: ">= CURRENT_DATE - INTERVAL 1 YEAR"
       - name: nb_parametres
         type: INTEGER
       - name: resultat

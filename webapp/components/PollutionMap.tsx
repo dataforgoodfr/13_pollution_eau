@@ -12,6 +12,7 @@ import MapZoneSelector from "./MapZoneSelector";
 import PollutionMapLegend from "./PollutionMapLegend";
 import { clsx } from "clsx";
 import type { PollutionStats, ParameterValues } from "@/app/lib/data";
+import { scrollIframeToFullscreen } from "@/lib/iframe-scroll";
 
 export default function PollutionMap({
   pollutionStats,
@@ -54,6 +55,10 @@ export default function PollutionMap({
       }
     }
   }, [category]);
+
+  useEffect(() => {
+    scrollIframeToFullscreen();
+  }, [category, period, selectedZoneCode]);
 
   const handleAddressSelect = async (result: FilterResult | null) => {
     if (result) {

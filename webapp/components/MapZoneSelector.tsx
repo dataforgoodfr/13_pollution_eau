@@ -5,6 +5,7 @@ import { TooltipContent, TooltipProvider, TooltipTrigger } from "./ui/tooltip";
 import { Tooltip } from "@radix-ui/react-tooltip";
 import { useMap } from "react-map-gl/maplibre";
 import { cn } from "@/lib/utils";
+import { scrollIframeToFullscreen } from "@/lib/iframe-scroll";
 
 const ZONE_NOZONE = 0;
 const ZONE_METROPOLE = 1;
@@ -53,6 +54,7 @@ export default function MapZoneSelector({
 }) {
   const { map } = useMap();
   const handleClick = (e: MouseEvent<HTMLButtonElement>) => {
+    scrollIframeToFullscreen();
     const numZone: number = parseInt(
       e.currentTarget.getAttribute("value") || "0",
     );

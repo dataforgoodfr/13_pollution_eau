@@ -6,6 +6,6 @@ export function scrollIframeToFullscreen() {
   // Check if we're in an iframe
   if (window.self !== window.top) {
     // Send message to parent window to scroll this iframe into view
-    window.parent.postMessage({ type: 'scrollToIframe' }, '*');
+    window.parent.postMessage({ type: "scrollToIframe" }, "*");
   }
 }

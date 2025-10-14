@@ -120,34 +120,11 @@ SELECT
         /
         COUNT(DISTINCT referenceprel)::float
     ) AS ratio_limite_qualite,
-    (
-        SELECT
-            TO_JSON(
-                MAP(
-                    LIST(
-                        cdparametresiseeaux -- noqa: RF02
-                        ORDER BY cdparametresiseeaux -- noqa: RF02
-                    ),
-                    LIST(
-                        max_val -- noqa: RF02
-                        ORDER BY cdparametresiseeaux -- noqa: RF02
-                    )
-                )
-            )
-        FROM (
-            SELECT
-                sub.cdparametresiseeaux,
-                MAX(sub.valtraduite) AS max_val
-            FROM pesticide_prels AS sub
-            WHERE
-                sub.cdreseau = pesticide_prels.cdreseau
-                AND sub.annee = pesticide_prels.annee
-                AND sub.valtraduite IS NOT NULL
-                AND sub.valtraduite > 0
-                AND (sub.valtraduite > sub.limite_qualite OR sub.cdparametresiseeaux = 'PESTOT')
-            GROUP BY sub.cdparametresiseeaux
+    TO_JSON({
+        'PESTOT': MAX(
+            CASE WHEN cdparametresiseeaux = 'PESTOT' THEN valtraduite ELSE 0 END
         )
-    ) AS parametres_detectes
+    }) AS parametres_detectes
 
 FROM pesticide_prels
 

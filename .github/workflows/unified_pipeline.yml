@@ -108,7 +108,7 @@ jobs:
         if: steps.check.outputs.needs_pipeline_rebuild == 'true'
         run: |
           cd dbt_
-          uv run dbt build
+          uv run dbt build --fail-fast
 
       - name: Upload updated database to S3
         if: steps.check.outputs.needs_pipeline_rebuild == 'true'

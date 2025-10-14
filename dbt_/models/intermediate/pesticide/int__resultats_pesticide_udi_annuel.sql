@@ -144,6 +144,7 @@ SELECT
                 AND sub.annee = pesticide_prels.annee
                 AND sub.valtraduite IS NOT NULL
                 AND sub.valtraduite > 0
+                AND (sub.valtraduite > sub.limite_qualite OR sub.cdparametresiseeaux = 'PESTOT')
             GROUP BY sub.cdparametresiseeaux
         )
     ) AS parametres_detectes

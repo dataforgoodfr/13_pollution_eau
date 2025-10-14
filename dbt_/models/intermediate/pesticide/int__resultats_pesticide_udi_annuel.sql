@@ -125,12 +125,12 @@ SELECT
             TO_JSON(
                 MAP(
                     LIST(
-                        sub.cdparametresiseeaux
-                        ORDER BY sub.cdparametresiseeaux
+                        cdparametresiseeaux -- noqa: RF02
+                        ORDER BY cdparametresiseeaux -- noqa: RF02
                     ),
                     LIST(
-                        sub.max_val
-                        ORDER BY sub.cdparametresiseeaux
+                        max_val -- noqa: RF02
+                        ORDER BY cdparametresiseeaux -- noqa: RF02
                     )
                 )
             )

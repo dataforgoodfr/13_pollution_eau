@@ -62,7 +62,8 @@ pfas_results_udi_agg AS (
                     THEN 1
                 ELSE 0
             END
-        ) AS has_pfas_above_vs
+        ) AS has_pfas_above_vs,
+        MAX(datetimeprel) AS max_datetimeprel
     FROM pfas_prels
     GROUP BY referenceprel, inseecommune, annee
     -- On drop les très rares cas où il n'y a pas la somme des 20 PFAS
@@ -84,7 +85,8 @@ SELECT
     TO_JSON({
         'SPFAS': MAX(sum_20_pfas),
         'SUM_4_PFAS': MAX(sum_4_pfas)
-    }) AS parametres_detectes
+    }) AS parametres_detectes,
+    MAX(max_datetimeprel) AS date_dernier_prel
 
 FROM pfas_results_udi_agg
 GROUP BY inseecommune, annee

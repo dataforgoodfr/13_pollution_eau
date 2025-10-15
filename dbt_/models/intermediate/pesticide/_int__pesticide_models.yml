@@ -48,6 +48,9 @@ models:
       - name: parametres_detectes
         description: "JSON contenant des paramètres détectés"
         type: JSON
+      - name: date_dernier_prel
+        description: "Date du dernier prélèvement de l'année"
+        type: TIMESTAMP
 
   - name: int__resultats_pesticide_commune_dernier
     description: Résultats des pesticides par commune pour la temporalité 'derniers prélèvements'
@@ -145,6 +148,9 @@ models:
       - name: parametres_detectes
         description: "JSON contenant des paramètres détectés"
         type: JSON
+      - name: date_dernier_prel
+        description: "Date du dernier prélèvement de l'année"
+        type: TIMESTAMP
 
   - name: int__resultats_pesticide_udi_dernier
     description: Résultats des pesticides par UDI pour la temporalité 'derniers prélèvements'

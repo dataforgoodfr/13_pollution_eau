@@ -124,7 +124,8 @@ SELECT
         'PESTOT': MAX(
             CASE WHEN cdparametresiseeaux = 'PESTOT' THEN valtraduite ELSE 0 END
         )
-    }) AS parametres_detectes
+    }) AS parametres_detectes,
+    MAX(datetimeprel) AS date_dernier_prel
 
 FROM pesticide_prels
 

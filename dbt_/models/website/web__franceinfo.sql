@@ -4,6 +4,7 @@ WITH base_data AS (
         nomreseaux,
         categorie,
         nb_sup_valeur_sanitaire,
+        DATE_TRUNC('day', date_dernier_prel) AS date_dernier_prel,
         COALESCE(nb_prelevements, 0) AS nb_prelevements,
         COALESCE(ROUND(ratio * nb_prelevements), 0) AS nb_depassements
     FROM {{ ref('web__resultats_udi') }}
@@ -23,6 +24,8 @@ pivoted_data AS (
             AS pfas_nb_depassements,
         MAX(CASE WHEN categorie = 'pfas' THEN nb_sup_valeur_sanitaire END)
             AS pfas_nb_sup_valeur_sanitaire,
+        MAX(CASE WHEN categorie = 'pfas' THEN date_dernier_prel END)
+            AS pfas_date_dernier_prel,
 
         MAX(CASE WHEN categorie = 'pesticide' THEN nb_prelevements END)
             AS pesticide_nb,
@@ -30,21 +33,29 @@ pivoted_data AS (
             AS pesticide_nb_depassements,
         MAX(CASE WHEN categorie = 'pesticide' THEN nb_sup_valeur_sanitaire END)
             AS pesticide_nb_sup_valeur_sanitaire,
+        MAX(CASE WHEN categorie = 'pesticide' THEN date_dernier_prel END)
+            AS pesticide_date_dernier_prel,
 
         MAX(CASE WHEN categorie = 'cvm' THEN nb_prelevements END)
             AS cvm_nb,
         MAX(CASE WHEN categorie = 'cvm' THEN nb_depassements END)
             AS cvm_nb_depassements,
+        MAX(CASE WHEN categorie = 'cvm' THEN date_dernier_prel END)
+            AS cvm_date_dernier_prel,
 
         MAX(CASE WHEN categorie = 'nitrate' THEN nb_prelevements END)
             AS nitrate_nb,
         MAX(CASE WHEN categorie = 'nitrate' THEN nb_depassements END)
             AS nitrate_nb_depassements,
+        MAX(CASE WHEN categorie = 'nitrate' THEN date_dernier_prel END)
+            AS nitrate_date_dernier_prel,
 
         MAX(CASE WHEN categorie = 'sub_indus_perchlorate' THEN nb_prelevements END)
             AS sub_indus_perchlorate_nb,
         MAX(CASE WHEN categorie = 'sub_indus_perchlorate' THEN nb_depassements END)
-            AS sub_indus_perchlorate_nb_depassements
+            AS sub_indus_perchlorate_nb_depassements,
+        MAX(CASE WHEN categorie = 'sub_indus_perchlorate' THEN date_dernier_prel END)
+            AS sub_indus_perchlorate_date_dernier_prel
 
     FROM base_data
     GROUP BY cdreseau, nomreseaux
@@ -57,24 +68,29 @@ SELECT
         'pfas', JSON_OBJECT(
             'nb', pfas_nb,
             'nb_depassements', pfas_nb_depassements,
-            'nb_sup_valeur_sanitaire', pfas_nb_sup_valeur_sanitaire
+            'nb_sup_valeur_sanitaire', pfas_nb_sup_valeur_sanitaire,
+            'date_dernier_prel', pfas_date_dernier_prel
         ),
         'pesticide', JSON_OBJECT(
             'nb', pesticide_nb,
             'nb_depassements', pesticide_nb_depassements,
-            'nb_sup_valeur_sanitaire', pesticide_nb_sup_valeur_sanitaire
+            'nb_sup_valeur_sanitaire', pesticide_nb_sup_valeur_sanitaire,
+            'date_dernier_prel', pesticide_date_dernier_prel
         ),
         'cvm', JSON_OBJECT(
             'nb', cvm_nb,
-            'nb_depassements', cvm_nb_depassements
+            'nb_depassements', cvm_nb_depassements,
+            'date_dernier_prel', cvm_date_dernier_prel
         ),
         'nitrate', JSON_OBJECT(
             'nb', nitrate_nb,
-            'nb_depassements', nitrate_nb_depassements
+            'nb_depassements', nitrate_nb_depassements,
+            'date_dernier_prel', nitrate_date_dernier_prel
         ),
         'sub_indus_perchlorate', JSON_OBJECT(
             'nb', sub_indus_perchlorate_nb,
-            'nb_depassements', sub_indus_perchlorate_nb_depassements
+            'nb_depassements', sub_indus_perchlorate_nb_depassements,
+            'date_dernier_prel', sub_indus_perchlorate_date_dernier_prel
         )
     ) AS result
 FROM pivoted_data

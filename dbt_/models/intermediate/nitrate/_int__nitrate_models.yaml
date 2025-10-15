@@ -45,6 +45,9 @@ models:
       - name: parametres_detectes
         description: "JSON contenant des paramètres détectés"
         type: JSON
+      - name: date_dernier_prel
+        description: "Date du dernier prélèvement de l'année"
+        type: TIMESTAMP
 
   - name: int__resultats_nitrate_commune_dernier
     description: Résultats nitrates par commune pour la temporalité 'derniers prélèvements'
@@ -135,6 +138,9 @@ models:
       - name: parametres_detectes
         description: "JSON contenant des paramètres détectés"
         type: JSON
+      - name: date_dernier_prel
+        description: "Date du dernier prélèvement de l'année"
+        type: TIMESTAMP
 
   - name: int__resultats_nitrate_udi_dernier
     description: Resultats nitrate par UDI pour la temporalité 'derniers prélèvements'

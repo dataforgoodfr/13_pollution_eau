@@ -41,6 +41,9 @@ models:
           - dbt_expectations.expect_column_values_to_be_between:
               min_value: 0
               max_value: 1
+      - name: date_dernier_prel
+        description: "Date du dernier prélèvement de l'année"
+        type: TIMESTAMP
 
   - name: int__resultats_cvm_commune_dernier
     description: Résultats CVM par commune pour la temporalité 'derniers prélèvements'
@@ -126,6 +129,9 @@ models:
           - dbt_expectations.expect_column_values_to_be_between:
               min_value: 0
               max_value: 1
+      - name: date_dernier_prel
+        description: "Date du dernier prélèvement de l'année"
+        type: TIMESTAMP
 
   - name: int__resultats_cvm_udi_dernier
     description: Resultats CVM par UDI pour la temporalité 'derniers prélèvements'

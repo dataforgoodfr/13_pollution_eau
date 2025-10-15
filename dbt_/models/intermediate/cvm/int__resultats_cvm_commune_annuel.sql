@@ -45,7 +45,8 @@ SELECT
     ) AS ratio_limite_qualite,
     to_json({
         'CLVYL': max(valtraduite)
-    }) AS parametres_detectes
+    }) AS parametres_detectes,
+    max(datetimeprel) AS date_dernier_prel
 
 FROM cvm_prels
 

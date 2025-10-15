@@ -53,7 +53,8 @@ SELECT
     ) AS ratio_limite_sanitaire,
     json_object(
         max(cdparametresiseeaux), max(valtraduite)
-    ) AS parametres_detectes
+    ) AS parametres_detectes,
+    date_trunc('day', max(datetimeprel)) AS date_dernier_prel
 
 FROM prels
 

@@ -245,7 +245,9 @@ const getCategoryExplanation = (
             avéré. Une dérogation prefectorale doit être accordée pour autoriser
             la distribution d&apos;une eau non conforme aux limites de qualité
             et des mesures doivent être prises pour rétablir la qualité de
-            l&apos;eau au plus vite.
+            l&apos;eau au plus vite. Cette dérogation, d&apos;une durée maximale
+            de 3 ans renouvelable une fois maximum, est possible uniquement si
+            aucune valeur sanitaire n&apos;est dépassée.
           </p>
           <p>
             Pour savoir si les concentrations représentent un risque pour la
@@ -265,14 +267,16 @@ const getCategoryExplanation = (
           </p>
           <ul className="list-disc ml-6">
             <li>
-              en cas de dépassement de valeur sanitaire, si elles existent
+              en cas de dépassement de valeur sanitaire, si elles existent pour
+              une substance active ou un métabolite pertinent
             </li>
             <li>
-              en cas de dépassement de la limite de qualité, en l&apos;absence
-              de valeur sanitaire
+              en cas de dépassement de la limite de qualité pour une substance
+              active ou un métabolite pertinent, en l&apos;absence de valeur
+              sanitaire
             </li>
           </ul>
-          <p>
+          <p className="text-[#8dbe5a] font-bold">
             L&apos;eau potable contaminée contribue à l&apos;exposition de la
             population générale aux pesticides mais l&apos;alimentation solide
             reste la principale source d&apos;exposition. La part de l&apos;eau
@@ -491,13 +495,19 @@ const getCategoryExplanation = (
           </p>
           <ul className="list-disc ml-6">
             <li>
-              en cas de dépassement de valeur sanitaire, si elles existent
+              en cas de dépassement de valeur sanitaire pour un métabolite
+              pertinent, si elles existent
             </li>
             <li>
-              en cas de dépassement de la limite de qualité, en l&apos;absence
-              de valeur sanitaire
+              en cas de dépassement de la limite de qualité pour un métabolite
+              pertinent, en l&apos;absence de valeur sanitaire
             </li>
           </ul>
+          <p>
+            Aucune recommandation de restriction de la consommation n&apos;est
+            émise en cas de dépassement de la limite indicative pour un
+            métabolite non pertinent.
+          </p>
         </>
       ),
     },
@@ -603,16 +613,6 @@ const getCategoryExplanation = (
             pas connus. L&apos;Anses n&apos;a pas encore déterminé de valeur
             sanitaire pour l&apos;ESA-métolachlore.
           </p>
-          <p>
-            Pour savoir si les concentrations d&apos;ESA-métolachlore posent un
-            risque pour la santé, les autorités se réfèrent à une valeur
-            sanitaire &quot;transitoire&quot; (VST) de 3 µg/L, établie par une
-            agence sanitaire allemande. Si les concentrations ne dépassent pas 3
-            µg/L, il est jugé qu&apos;il n&apos;y a pas de risque pour la santé.
-            Toutefois, cette approche d&apos;évaluation substance par substance,
-            n&apos;évalue pas, et donc ignore, l&apos;effet combiné de plusieurs
-            substances (effet cocktail).
-          </p>
         </>
       ),
     },
@@ -717,16 +717,6 @@ const getCategoryExplanation = (
             toxicité chronique de son métabolite R471811, et en particulier ses
             effets cancérigènes, ne sont pas connus. L&apos;Anses n&apos;a pas
             encore déterminé de valeur sanitaire pour le chlorothalonil R471811.
-          </p>
-          <p>
-            Pour savoir si les concentrations de chlorothalonil R471811 posent
-            un risque pour la santé, les autorités se réfèrent à une valeur
-            sanitaire &quot;transitoire&quot; (VST) de 3 µg/L, établie par une
-            agence sanitaire allemande. Si les concentrations ne dépassent pas 3
-            µg/L, il est jugé qu&apos;il n&apos;y a pas de risque pour la santé.
-            Toutefois, cette approche d&apos;évaluation substance par substance,
-            n&apos;évalue pas, et donc ignore, l&apos;effet combiné de plusieurs
-            substances (effet cocktail).
           </p>
         </>
       ),
@@ -1123,7 +1113,7 @@ const getCategoryExplanation = (
             naissance ou à une augmentation du risque de certains cancers (rein,
             sein). Les enfants sont les plus sensibles.
           </p>
-          <p>
+          <p className="text-[#8dbe5a] font-bold">
             Les principales sources d&apos;exposition pour l&apos;homme sont
             l&apos;alimentation (produits de la mer, viande, œuf) incluant
             l&apos;eau potable si celle-ci est contaminée au-delà des limites.
@@ -1179,7 +1169,7 @@ const getCategoryExplanation = (
             souvent uniquement quelques tronçons du réseau (ceux alimentés par
             des canalisations en PVC datant d&apos;avant 1980), voire une seule
             rue dans certains cas.{" "}
-            <b>
+            <b className="text-[#8dbe5a]">
               Si une situation de non conformité est identifiée pour le réseau
               qui alimente votre logement, ce dernier n&apos;est peut-être pas
               pour autant concerné. Pour le savoir, veuillez contacter votre

@@ -228,6 +228,23 @@ Les analyses se font via jupyter notebook
 uv run jupyter notebook
 ```
 
+### Metabase
+[Metabase](https://www.metabase.com/) est un outil de data visualisation utilisé pour créer un ensemble de graphiques à partir des données de la base DuckDB. L'outil peut être lancé directement via docker en procédant de la manière suivante :
+
+1. Génération de l'image docker
+```bash
+docker compose build
+```
+
+2. Lancement du conteneur
+```bash
+docker compose up -d
+```
+
+3. Accès à l'interface web de Metabase
+
+Ouvrir la page http://localhost:3000 . Une fois cette page ouverte, renseigné directement votre identifiant et votre mot de passe. Il faudra ensuite créer la connexion à la base de données duckDB en sélectionnant la source **duckDB** et en renseignant le chemin vers le fichier `/database/data.duckdb`. Une fois cela effectué, vous pourrez accéder à l'interface Metabase et vous pourrez normalement utiliser les données de la base pour construire vos graphiques. 
+
 ## Tests
 
 Pour lancer les tests, il suffit de lancer la commande suivante à la racine du projet:

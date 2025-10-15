@@ -1,276 +1,66 @@
-# Rendre Visible la Pollution de l'Eau Potable 💧
+# Dans Mon Eau
 
-## Contexte du Projet
+**Un outil inédit pour connaître les polluants chimiques présents dans votre eau du robinet**
 
-Ce projet, développé par des bénévoles de [Data For Good](https://www.dataforgood.fr/) lors de la saison 13, vise à créer une carte interactive pour [Générations Futures](https://www.generations-futures.fr/).
+**🔗 Accéder au site : Lancement prévu le 16 octobre 2025**
 
-L'objectif est de consolider, analyser et cartographier les données sur la qualité de l'eau potable en France à partir de sources de données ouvertes.
+## À propos
 
-## Structure du Projet
+**Dans Mon Eau** est une carte interactive qui vous permet de savoir, où que vous habitiez en France, si vous êtes exposés via l'eau du robinet à des pesticides et leurs métabolites, des PFAS, des nitrates, du chlorure de vinyle monomère (CVM) ou du perchlorate.
 
-- `pipelines/` : Consolidation et préparation des données
-- `analytics/` : Analyse des données
-- `webapp/` : Développement du site web interactif
+Grâce à un moteur de recherche par adresse, vous pouvez consulter :
 
-## Installation
+- Les **résultats des dernières analyses** effectuées sur chaque catégorie de polluants
+- Des **bilans annuels** (depuis 2020) indiquant les pourcentages d'analyses non-conformes retrouvées chaque année
+- Un **code couleur clair** distinguant les limites de qualité réglementaires et les limites sanitaires recommandées par les autorités de santé
 
-### Data Pipelines
+## Pourquoi cet outil ?
 
-Installer [uv](https://docs.astral.sh/uv/getting-started/installation/#installing-uv). Ce projet utilise uv pour la gestion des dépendances Python.
+À mesure que la surveillance des polluants se renforce, de nouvelles situations problématiques sont révélées. Mais il est très difficile d'avoir une vision claire de la qualité de son eau. **Les données existent, mais elles sont difficilement accessibles, complexes, et surtout illisibles pour le grand public.**
 
-  Installation sur Windows
+Dans Mon Eau rend ces informations enfin accessibles à tous.
 
-  ```bash
-  powershell -c "irm https://astral.sh/uv/install.ps1 | iex"
-  ```
+## Un projet unique
 
-  Installation sur Mac ou linux
+C'est la première fois, à notre connaissance, que les données du contrôle sanitaire de l'eau potable sont exploitées à cette échelle et rendues accessibles au grand public sur un site avec mise à jour automatique mensuelle.
 
-  ```bash
-  curl -LsSf https://astral.sh/uv/install.sh | sh
-  ```
+### Cinq catégories de polluants sur une seule carte
 
-- Lancez la commande suivante pour installer la version de Python adéquate, créer un environnement virtuel et installer les dépendances du projet.
+Parce qu'il est important de caractériser au mieux le cocktail de molécules auquel nous pouvons être exposés, Dans Mon Eau présente les données pour 5 catégories de polluants :
 
-```bash
-uv sync
-```
+1. **Pesticides et métabolites** de pesticides
+2. **PFAS** (substances per- et polyfluoroalkylées)
+3. **Nitrates**
+4. **Chlorure de vinyle monomère** (CVM)
+5. **Perchlorate**
 
-#### VSCode
+### Des données fiables et actualisées
 
-A l'usage, si vous utilisez VSCode, l'environnement virtuel sera automatiquement activé lorsque vous ouvrirez le projet. Sinon, il suffit de l'activer manuellement avec la commande suivante :
+Les données proviennent du contrôle sanitaire effectué par les Agences Régionales de Santé (ARS) pour chaque unité de distribution d'eau potable (UDI). Elles sont actualisées tous les mois, permettant ainsi d'identifier au plus tôt de nouvelles situations problématiques. Elles sont disponibles en open data sur le site data.gouv.fr : [Résultats du contrôle sanitaire de l'eau distribuée commune par commune](https://www.data.gouv.fr/datasets/resultats-du-controle-sanitaire-de-leau-distribuee-commune-par-commune/)
 
-```bash
-source .venv/bin/activate
-```
+## Le projet
 
-Ou alors, utilisez la commande `uv run ...` (au lieu de `python ...`) pour lancer un script Python. Par exemple:
+### Une collaboration inédite
 
-```bash
-uv run pipelines/run.py run build_database
-```
+Dans Mon Eau est le fruit d'une collaboration entre :
 
-#### Pycharm
+- **[Générations Futures](https://www.generations-futures.fr/)** : une association de défense de l’environnement et de la santé, reconnue d’intérêt général, fondée en 1996
+- **[Data For Good](https://dataforgood.fr/)** : une association loi 1901 de bénévoles qui mettent leurs compétences tech au de l’intérêt général, créée en 2014
 
-Allez dans settings, python interpreter, add interpreter, puis selectionnez existing venv et allez chercher le path du python executable dans .venv (.venv/Scripts/Python.exe pour windows)
+### Réalisation
 
-#### Terminal
+Le projet a été réalisé lors de la **saison 13 de Data For Good**, de janvier à avril 2025, avec un lancement public du site en octobre 2025.
 
-utilisez les commandes `uv run` pour lancer un script Python depuis votre terminal
+**43 bénévoles** ont contribué au projet : data engineers, data analysts, développeurs web, designers et communicants. Après 9 mois de développement, le site est aujourd'hui opérationnel et se met à jour automatiquement chaque mois.
 
-### Site web
+## Remerciements
 
-- Installez [Node.js](https://nodejs.org/) ou [NVM](https://github.com/nvm-sh/nvm?tab=readme-ov-file#install--update-script)
+Un immense merci à tous les bénévoles qui ont contribué à ce projet avec passion et détermination. Votre engagement permet aujourd'hui à des millions de Français d'accéder à une information claire sur la qualité de leur eau du robinet.
 
-  ```bash
-  curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
-  nvm install 22
-  ```
+Merci également à Générations Futures pour leur confiance et leur expertise précieuse tout au long du projet.
 
-- Installez les dépendances du site web:
+---
 
-  ```bash
-  cd webapp
-  npm install
-  ```
+## Pour les développeurs
 
-- Lancer `npm run dev` et ouvrir le navigateur sur http://localhost:3000 pour voir la carte.
-
-## Data Processing
-
-### Package installation
-
-Tout le code dans pipelines sera installé en tant que package python automatiquement à chaque uv_sync
-
-### Comment construire la database
-
-Une fois l'environnement python setup avec uv, vous pouvez lancer data_pipeline/run.py pour remplir la database
-
-Le téléchargement des données peut se faire de plusieurs manières :
-1. Téléchargement des données de la dernière année (par défaut)
-```bash
-uv run pipelines/run.py run build_database --refresh-type last
-```
-
-2. Téléchargement de toutes les données
-
-```bash
-uv run pipelines/run.py run build_database --refresh-type all
-```
-
-3. Téléchargement de données d'années spécifiques
-```bash
-uv run pipelines/run.py run build_database --refresh-type custom --custom-years 2018,2024,...
-```
-
-4. Suppression des tables, puis téléchargement des données de la dernière année
-```bash
-uv run pipelines/run.py run build_database --refresh-type last --drop-tables
-```
-
-5. Chosisez une table specifique to refresh 
-```bash
-uv run pipelines/run.py run build_database --refresh-table edc
-```
-
-### Création du modèles de données avec dbt
-#### 1. Commandes a exécuter
-La librarie dbt est celle choisie pour une construction rapide et simple de modèles de données optimisé pour l'analytics.
-
-🚩**Remarque** : Pour lancer chaque commande individuellement, veillez à bien vous placer dans le dossier dbt_ (`cd dbt_`) avant de lancer les commandes.
-
-La commande `uv run dbt deps` permet de télécharger les dépendances du projet dbt.
-Exécutée lors de la création de la base de données, la commande `uv run dbt build` est une commande qui permet de réaliser l'ensemble des actions suivantes :
-* Lancer la création des tables issues des données brutes (`uv run dbt run`)
-* Réaliser les test de qualité des données (`uv run dbt test`)
-* Mettre sous forme de table les fichiers csv ajoutés dans le dossiers seeds (`uv run dbt seed`)
-
-Une autre commande `uv run dbt docs generate` permet de générer la documentation des modèles de données renseignée dans les fichiers `_xxx__models.yml` au format html. L'utilisation de la commande `uv run dbt docs serve` permet de lancer un serveur local pour visualiser la documentation.
-
-Pour plus d'informations concernant la manière d'organiser un projet dbt, se référer à la [documentation officielle](https://docs.getdbt.com/docs/introduction) et notamment à la section .
-
-#### 2. Structure des données
-
-Les modèles de données sont organisés dans le dossier `dbt_/models`. La structure suit les recommandations de la [documentation officielle](https://docs.getdbt.com/best-practices/how-we-structure/1-guide-overview). Il est conseillé prendre le temps la lire afin de bien comprendre la structure du projet:
-
-* **models/staging/** : Modèles de données avec des transformation basiques (TRIM, REPLACE, typage, ...). Cette couche est surtout utilisée pour faire un état des données existantes, les documenter et tester la qualité.
-* **models/intermediate/** : Modèles de données avec des transformation plus complexes (GROUP BY, JOIN, WHERE, ...). Cette couche est surtout utile pour faire une jointure entre les différentes tables et faire un premier filtrage des données. Celle-ci est très utile pour de l'analyse de données
-* **models/analytics/** : Modèles de données final, qui est requêter par le site web pour construire les visualisations. Cette donnée est propre et la schématisation des données est optimisée pour le chargement des visualisations.
-
-#### Documentation
-La documentation du projet dbt est disponible sur le lien suivant: [documentation dbt](https://dataforgood.fr/13_pollution_eau/#!/overview)
-
-### Création des pmtiles
-La génération des fichiers PMTiles nécessite une dépendance optionnelle. Pour l'installer, utilisez la commande suivante :
-```bash
-uv pip install .[pmtiles]
-```
-
-Une fois cette dépendance installée, vous pouvez générer les PMTiles et les uploader sur S3 en exécutant la commande suivante :
-```bash
-uv run ./pipelines/run.py run generate_pmtiles 
-```
-#### Le fichier PMTiles sera accessible à l'URL suivante :
-
-Communes
-
-➡️ dev: https://pollution-eau-s3.s3.fr-par.scw.cloud/dev/pmtiles/georef-france-communes-prelevement.pmtiles
-
-➡️ prod: https://pollution-eau-s3.s3.fr-par.scw.cloud/dev/pmtiles/georef-france-communes-prelevement.pmtiles
-
-UDI
-
-➡️ dev: https://pollution-eau-s3.s3.fr-par.scw.cloud/dev/pmtiles/georef-france-udi-prelevement.pmtiles
-
-➡️ prod: https://pollution-eau-s3.s3.fr-par.scw.cloud/dev/pmtiles/georef-france-udi-prelevement.pmtiles
-
-#### Le fichier Geojson sera accessible à l'URL suivante:
-
-Le fichier est mis à jours manuellement et que pour dev. Demandez aux DE si vous avez besoin d'une mise à jour.
-
-Communes
-
-➡️ dev:  https://pollution-eau-s3.s3.fr-par.scw.cloud/dev/geojson/georef-france-communes-prelevement.geojson
-
-UDI
-
-➡️ dev:  https://pollution-eau-s3.s3.fr-par.scw.cloud/dev/geojson/georef-france-udi-prelevement.geojson
-
-
-Si vous souhaitez télécharger ce fichier PMTiles via la commande CLI, utilisez :
-```bash
-uv run ./pipelines/run.py run download_pmtiles 
-```
-
-
-### Comment télécharger la base de données
-
-#### Via HTTPS
-
-Vous pouvez simplement télécharger la base de données en cliquant sur le lien de téléchargement suivant:  https://pollution-eau-s3.s3.fr-par.scw.cloud/prod/database/data.duckdb
-
-Vous pouvez également lancer la commande suivante :
-```bash
-uv run pipelines/run.py run download_database
-```
-Elle téléchargera la base, et la placera à l'emplacement utilisé par tout le monde (à savoir, `database/data.duckdb`). Un raccourci pour cette commande est accessible en un clic dans la barre des tâches de VS Code (ligne tout en bas) : "Download Dabatase".
-
-### Depuis Scaleway via [boto3](https://github.com/boto/boto3) pour stockage objet S3
-
-Des versions de développement et de production de la base de données sont à disposition sur le stockage object.
-
-Un module a été créé dans [storage_client.py](pipelines%2Futils%2Fstorage_client.py) pour faciliter la connection au S3 hébergé sur Scaleway. Il faut bien configurer ses *credentials* Scaleway et son environnement. Pour cela, il faut créer un fichier `.env` dans le dossier [pipelines/config](pipelines%2Fconfig), avec les secrets ci-dessous dedans pour que la connexion fonctionne :
-
-```text
-SCW_ACCESS_KEY={ACCESS_KEY}
-SCW_SECRET_KEY={SECRET_KEY}
-```
-où `{ACCESS_KEY}` et `{SECRET_KEY}` sont les *credentials* obtenus via le coffre-fort vaultwarden mis en place (pour cela, il suffit de demander à un chef de projet sur Slack).
-
-Vous trouverez un exemple avec le fichier [.env.example](pipelines%2Fconfig%2F.env.example)
-
-> ⚠ **Attention:** Ne jamais faire de *commit* des *access key* et *secret key*.
-
-Une fois les credentials obtenus et mis dans le fichier `pipelines/config/.env`, vous pouvez alors lancer la commande suivante :
-
-```bash
-uv run pipelines/run.py run download_database --use-boto3
-```
-Vous pouvez également spécifier l'option `--env {dev|prod}`.
-
-Le notebook [test_storage_utils.ipynb](pipelines%2Fnotebooks%2Ftest_storage_utils.ipynb) montre un exemple d'utilisation de l'utils pour charger et lire des csv sur le bucket S3 du projet.
-
-### Data analysis
-
-Les analyses se font via jupyter notebook
-
-```bash
-uv run jupyter notebook
-```
-
-## Tests
-
-Pour lancer les tests, il suffit de lancer la commande suivante à la racine du projet:
-
-```bash
-uv run pytest -s
-```
-
-L'option `-s` permet d'afficher les prints dans le terminal.
-
-## Pre Commit
-
-Lancer la commande suivante pour s'assurer que le code satisfait bien tous les pre commit avant de créer votre pull request
-
-```bash
-uv run pre-commit run --all-files
-```
-
-## Déploiement du site avec Docker
-
-Un fichier `Dockerfile` est disponible pour déployer le site web avec Docker.
-
-Pour créer et exécuter l'image Docker en local (à la racine du projet) :
-
-```bash
-docker build --build-arg NEXT_PUBLIC_PROTOMAPS_API_KEY="your-api-key-here" -t pollution-eau-app .
-
-docker run -p 8080:8080 --rm pollution-eau-app
-```
-
-Le site sera alors accessible à l'adresse http://localhost:8080.
-
-## How to contribute
-Pour contribuer, il est recommandé d'utiliser un fork du projet. Cela permet d'éviter la gestion des demandes d'accès au dépôt principal.
-
-* Dans un premier temps, cliquez sur Fork pour récupérer le projet dans votre espace GitHub.
-* Créez votre branche de travail à partir de la branche main, en respectant la nomenclature suivante :
-  * feature/nom_de_la_feature pour une nouvelle fonctionnalité
-  * hotfix/nom_du_hotfix pour une correction rapide
-* Poussez votre code vers votre dépôt distant.
-* Créez une pull request en spécifiant :
-  * Base repository : dataforgood/13_pollution_eau/main
-  * Head repository : YourGithubAccount/13_pollution_eau/your_branch
-* Pour faciliter la revue de la pull request :
-  * Liez la pull request à un ticket NocoDB en ajoutant le lien du ticket dans la description.
-  * Rédigez une description détaillée de la pull request afin de fournir un maximum d’informations sur les modifications apportées.
+Si vous souhaitez contribuer au projet ou le faire tourner en local, consultez la [documentation technique](TECHNICAL.md).

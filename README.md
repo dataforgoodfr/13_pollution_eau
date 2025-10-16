@@ -2,7 +2,7 @@
 
 **Un outil inédit pour connaître les polluants chimiques présents dans votre eau du robinet**
 
-**🔗 Accéder au site : Lancement prévu le 16 octobre 2025**
+**🔗 Accéder au site : [dansmoneau.fr](https://dansmoneau.fr)**
 
 ## À propos
 

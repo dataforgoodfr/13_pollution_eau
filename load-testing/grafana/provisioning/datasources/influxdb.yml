@@ -1,0 +1,10 @@
+apiVersion: 1
+
+datasources:
+  - name: InfluxDB_k6
+    type: influxdb
+    access: proxy
+    url: http://influxdb:8086
+    database: k6
+    isDefault: true
+    editable: false

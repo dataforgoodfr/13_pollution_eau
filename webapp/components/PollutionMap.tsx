@@ -60,6 +60,35 @@ export default function PollutionMap({
     scrollIframeToFullscreen();
   }, [category, period, selectedZoneCode]);
 
+  // Detect iframe embedding on mount
+  useEffect(() => {
+    function getEmbeddingInfo() {
+      const isInIframe = window !== window.parent;
+
+      if (!isInIframe) {
+        return { embedded: false, origin: "direct" };
+      }
+
+      try {
+        const parentUrl = window.parent.location.href;
+        return {
+          embedded: true,
+          origin: "same-origin",
+          parentUrl: parentUrl,
+        };
+      } catch {
+        // Cross-origin - can't access parent details directly
+        return {
+          embedded: true,
+          origin: "cross-origin",
+        };
+      }
+    }
+
+    const embeddingInfo = getEmbeddingInfo();
+    console.log("Embedding Info:", embeddingInfo);
+  }, []);
+
   const handleAddressSelect = async (result: FilterResult | null) => {
     if (result) {
       const { center, zoom, address } = result;

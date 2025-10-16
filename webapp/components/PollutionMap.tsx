@@ -65,13 +65,18 @@ export default function PollutionMap({
 
   const handleAddressSelect = async (result: FilterResult | null) => {
     if (result) {
-      const { center, zoom, address } = result;
+      const { center, zoom, address, postcode } = result;
       setMapState({ longitude: center[0], latitude: center[1], zoom });
       setMarker({
         longitude: center[0],
         latitude: center[1],
         content: <>{address}</>,
       });
+
+      // Detect if we're in a DROM or Metropole based on postcode, and set display mode
+      // DROM postcodes: 971 (Guadeloupe), 972 (Martinique), 973 (Guyane), 974 (Réunion), 976 (Mayotte)
+      const isInDROM = postcode ? /^97[1234678]/.test(postcode) : false;
+      setDisplayMode(isInDROM ? "communes" : "udis");
     } else {
       setMarker(null);
       setSelectedZoneCode(null);

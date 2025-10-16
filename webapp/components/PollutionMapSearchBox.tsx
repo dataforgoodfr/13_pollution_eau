@@ -35,6 +35,7 @@ export type FilterResult = {
   zoom: number;
   communeInseeCode: string;
   address: string;
+  postcode: string;
 };
 
 interface PollutionMapsSearchBoxProps {
@@ -114,6 +115,7 @@ export default function PollutionMapSearchBox({
       zoom: 10,
       communeInseeCode: feature.properties.citycode,
       address: displayText,
+      postcode: feature.properties.postcode,
     });
   }
 

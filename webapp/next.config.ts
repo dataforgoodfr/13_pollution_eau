@@ -39,6 +39,20 @@ const nextConfig: NextConfig = {
             key: "Cache-Control",
             value: "public, max-age=120, s-maxage=60",
           },
+          {
+            key: "Content-Security-Policy",
+            value:
+              "frame-ancestors 'self' https://dansmoneau.fr https://*.dansmoneau.fr",
+          },
+        ],
+      },
+      {
+        source: "/embed-external",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=120, s-maxage=60",
+          },
         ],
       },
     ];

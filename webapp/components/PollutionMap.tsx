@@ -13,13 +13,16 @@ import PollutionMapLegend from "./PollutionMapLegend";
 import { clsx } from "clsx";
 import type { PollutionStats, ParameterValues } from "@/app/lib/data";
 import { scrollIframeToFullscreen } from "@/lib/iframe-scroll";
+import EmbedBanner from "./EmbedBanner";
 
 export default function PollutionMap({
   pollutionStats,
   parameterValues,
+  showBanner = false,
 }: {
   pollutionStats: PollutionStats;
   parameterValues: ParameterValues;
+  showBanner?: boolean;
 }) {
   const [period, setPeriod] = useState("dernier_prel");
   const [category, setCategory] = useState("tous");
@@ -60,35 +63,6 @@ export default function PollutionMap({
     scrollIframeToFullscreen();
   }, [category, period, selectedZoneCode]);
 
-  // Detect iframe embedding on mount
-  useEffect(() => {
-    function getEmbeddingInfo() {
-      const isInIframe = window !== window.parent;
-
-      if (!isInIframe) {
-        return { embedded: false, origin: "direct" };
-      }
-
-      try {
-        const parentUrl = window.parent.location.href;
-        return {
-          embedded: true,
-          origin: "same-origin",
-          parentUrl: parentUrl,
-        };
-      } catch {
-        // Cross-origin - can't access parent details directly
-        return {
-          embedded: true,
-          origin: "cross-origin",
-        };
-      }
-    }
-
-    const embeddingInfo = getEmbeddingInfo();
-    console.log("Embedding Info:", embeddingInfo);
-  }, []);
-
   const handleAddressSelect = async (result: FilterResult | null) => {
     if (result) {
       const { center, zoom, address } = result;
@@ -105,97 +79,100 @@ export default function PollutionMap({
   };
 
   return (
-    <div className="w-full h-full flex">
-      <MapProvider>
-        <div className="relative flex-1 transition-all duration-300 flex flex-col">
-          <PollutionMapBaseLayer
-            period={period}
-            category={category}
-            displayMode={displayMode}
-            selectedZoneCode={selectedZoneCode}
-            setSelectedZoneCode={setSelectedZoneCode}
-            mapState={mapState}
-            onMapStateChange={setMapState}
-            marker={marker}
-            setMarker={setMarker}
-            colorblindMode={colorblindMode}
-            isMobile={isMobile}
-            parameterValues={parameterValues}
-          />
-
-          <div className="absolute top-4 left-4 z-10 flex gap-1 md:gap-6 flex-col md:flex-row">
-            <PollutionMapFilters
+    <div className="w-full h-full flex flex-col overflow-hidden">
+      {showBanner && <EmbedBanner />}
+      <div className="flex flex-1 min-h-0">
+        <MapProvider>
+          <div className="relative flex-1 transition-all duration-300 flex flex-col">
+            <PollutionMapBaseLayer
               period={period}
-              setPeriod={setPeriod}
               category={category}
-              setCategory={setCategory}
+              displayMode={displayMode}
+              selectedZoneCode={selectedZoneCode}
+              setSelectedZoneCode={setSelectedZoneCode}
+              mapState={mapState}
+              onMapStateChange={setMapState}
+              marker={marker}
+              setMarker={setMarker}
+              colorblindMode={colorblindMode}
+              isMobile={isMobile}
+              parameterValues={parameterValues}
             />
-            <div className="md:hidden">
+
+            <div className="absolute top-4 left-4 z-10 flex gap-1 md:gap-6 flex-col md:flex-row">
+              <PollutionMapFilters
+                period={period}
+                setPeriod={setPeriod}
+                category={category}
+                setCategory={setCategory}
+              />
+              <div className="md:hidden">
+                <PollutionMapSearchBox
+                  communeInseeCode={selectedZoneCode}
+                  onAddressFilter={handleAddressSelect}
+                />
+              </div>
+            </div>
+
+            <div className="absolute top-4 right-20 z-9 hidden md:block">
               <PollutionMapSearchBox
                 communeInseeCode={selectedZoneCode}
                 onAddressFilter={handleAddressSelect}
               />
             </div>
-          </div>
 
-          <div className="absolute top-4 right-20 z-9 hidden md:block">
-            <PollutionMapSearchBox
-              communeInseeCode={selectedZoneCode}
-              onAddressFilter={handleAddressSelect}
-            />
-          </div>
+            <div className="absolute top-4 right-4 z-8">
+              <MapZoneSelector setDisplayMode={setDisplayMode} />
+            </div>
 
-          <div className="absolute top-4 right-4 z-8">
-            <MapZoneSelector setDisplayMode={setDisplayMode} />
-          </div>
+            <div className="absolute left-0 md:left-4 bottom-4 pl-4 pr-12 md:px-0 w-full md:w-auto">
+              <PollutionMapLegend
+                period={period}
+                category={category}
+                pollutionStats={pollutionStats}
+                colorblindMode={colorblindMode}
+                setColorblindMode={setColorblindMode}
+                displayMode={displayMode}
+                isMobile={isMobile}
+              />
+            </div>
 
-          <div className="absolute left-0 md:left-4 bottom-4 pl-4 pr-12 md:px-0 w-full md:w-auto">
-            <PollutionMapLegend
-              period={period}
-              category={category}
-              pollutionStats={pollutionStats}
-              colorblindMode={colorblindMode}
-              setColorblindMode={setColorblindMode}
-              displayMode={displayMode}
-              isMobile={isMobile}
-            />
-          </div>
-
-          {/* Side Panel toggle button  */}
-          <div
-            className="absolute right-0 top-1/2 transform -translate-y-1/2 cursor-pointer z-[21]"
-            onClick={() => setSidePanelOpen(!sidePanelOpen)}
-          >
-            <div className="bg-custom-drom text-white shadow-md rounded-l-md flex items-center justify-center h-16 w-6">
-              <div className="text-lg">{sidePanelOpen ? "›" : "‹"}</div>
+            {/* Side Panel toggle button  */}
+            <div
+              className="absolute right-0 top-1/2 transform -translate-y-1/2 cursor-pointer z-[21]"
+              onClick={() => setSidePanelOpen(!sidePanelOpen)}
+            >
+              <div className="bg-custom-drom text-white shadow-md rounded-l-md flex items-center justify-center h-16 w-6">
+                <div className="text-lg">{sidePanelOpen ? "›" : "‹"}</div>
+              </div>
             </div>
           </div>
-        </div>
 
-        {/* Side panel - responsive: hidden on mobile, visible on desktop */}
-        <div
-          className={clsx(
-            "bg-[#E2E8F0] transition-all duration-300 z-20",
-            // Mobile: full screen overlay when open, hidden when closed
-            "fixed inset-0 md:relative md:inset-auto",
+          {/* Side panel - responsive: hidden on mobile, visible on desktop */}
+          <div
+            className={clsx(
+              "bg-[#E2E8F0] transition-all duration-300 z-[60]",
+              // Mobile: full screen overlay when open, hidden when closed
+              "fixed inset-0 md:relative md:inset-auto",
 
-            sidePanelOpen
-              ? "block md:block md:w-[400px]"
-              : "hidden md:block md:w-0",
-          )}
-        >
-          {/* Panel content */}
-          <div className="h-full overflow-y-auto p-1 md:p-0">
-            <PollutionSidePanel
-              category={category}
-              period={period}
-              onClose={() => setSidePanelOpen(false)}
-            />
+              sidePanelOpen
+                ? "block md:block md:w-[400px]"
+                : "hidden md:block md:w-0",
+            )}
+          >
+            {/* Panel content */}
+            <div className="h-full overflow-y-auto p-1 md:p-0">
+              <PollutionSidePanel
+                category={category}
+                period={period}
+                onClose={() => setSidePanelOpen(false)}
+              />
+            </div>
           </div>
-        </div>
 
-        <CVMInfoModal open={showCVMModal} onOpenChange={setShowCVMModal} />
-      </MapProvider>
+          <CVMInfoModal open={showCVMModal} onOpenChange={setShowCVMModal} />
+        </MapProvider>
+      </div>
     </div>
   );
 }

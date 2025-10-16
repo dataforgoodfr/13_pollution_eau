@@ -4,7 +4,7 @@ import { fetchPollutionStats, fetchParameterValues } from "../lib/data";
 // Mise en cache de la page pour 24 heures
 export const revalidate = 86400;
 
-export default async function Embed() {
+export default async function EmbedExternal() {
   const stats = await fetchPollutionStats();
   const parameterValues = await fetchParameterValues();
 
@@ -14,7 +14,7 @@ export default async function Embed() {
         <PollutionMap
           pollutionStats={stats}
           parameterValues={parameterValues}
-          showBanner={false}
+          showBanner={true}
         />
       </main>
     </div>

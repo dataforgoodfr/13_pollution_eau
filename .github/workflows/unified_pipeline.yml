@@ -42,8 +42,6 @@ jobs:
     permissions:
       contents: read
       packages: write
-      pages: write
-      id-token: write
     steps:
       # Step 1: Setup and analyze what needs to run
       - name: Checkout code
@@ -164,28 +162,6 @@ jobs:
         env:
           CLEVER_TOKEN: ${{ secrets.CLEVER_TOKEN }}
           CLEVER_SECRET: ${{ secrets.CLEVER_SECRET }}
-
-      # Update dbt docs (if pipeline was rebuilt)
-      - name: Generate dbt docs
-        if: steps.check.outputs.needs_pipeline_rebuild == 'true'
-        run: |
-          cd dbt_
-          uv run dbt docs generate
-
-      - name: Setup Pages
-        if: steps.check.outputs.needs_pipeline_rebuild == 'true'
-        uses: actions/configure-pages@v5
-
-      - name: Upload artifact
-        if: steps.check.outputs.needs_pipeline_rebuild == 'true'
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: "dbt_/target"
-
-      - name: Deploy to GitHub Pages
-        if: steps.check.outputs.needs_pipeline_rebuild == 'true'
-        id: deployment
-        uses: actions/deploy-pages@v4
 
       # Summary
       - name: Output summary

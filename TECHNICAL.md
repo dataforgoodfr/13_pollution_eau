@@ -4,24 +4,24 @@ Ce document contient toutes les informations techniques nécessaires pour dével
 
 ## Stack Technique
 
-Le projet utilise deux technologies principales :
+Le projet utilise ces technologies :
 
 - **Python** (avec uv pour la gestion des dépendances) : pour le traitement des données (pipelines et dbt)
+- **DuckDB** : pour la base de données
+- **Pmtiles** : pour la diffusion des tuiles cartographiques (contenant les données)
 - **Next.js** (React) : pour le site web interactif
 
-## Prérequis
+La structure du projet est la suivante :
 
-### Fichier de base de données
-
-Le projet nécessite un fichier DuckDB (`database/data.duckdb`) qui contient toutes les données. Vous pouvez le télécharger via :
-
-```bash
-uv run pipelines/run.py run download_database
-```
+- `pipelines/` : Consolidation et préparation des données
+- `dbt_/` : Modèles de données et transformations
+- `analytics/` : Analyses et notebooks (n'est plus utilisé depuis la fin de la saison càd avril 2025)
+- `webapp/` : Site web Next.js interactif
+- `database/` : Base de données DuckDB et fichiers de cache
 
 ## Installation
 
-### 1. Data Pipelines (Python)
+### 1. Data Pipelines (Python) et database (DuckDB)
 
 Installer [uv](https://docs.astral.sh/uv/getting-started/installation/#installing-uv). Ce projet utilise uv pour la gestion des dépendances Python.
 
@@ -29,6 +29,12 @@ Lancez la commande suivante pour installer la version de Python adéquate, crée
 
 ```bash
 uv sync
+```
+
+L'ensemble des données du projet est stocké dans une database DuckDB: `database/data.duckdb`. Vous pouvez le télécharger en utilisant la commande suivante :
+
+```bash
+uv run pipelines/run.py run download_database
 ```
 
 ### 2. Site Web (Next.js)
@@ -59,6 +65,8 @@ Pour reconstruire complètement la base de données et générer les fichiers po
 ```bash
 # 1. Télécharger toutes les données sources
 uv run pipelines/run.py run build_database --refresh-type all
+# Ou, travailler avec la base de données existante :
+# uv run pipelines/run.py run download_database
 
 # 2. Construire les modèles de données avec dbt
 cd dbt_
@@ -192,7 +200,7 @@ Les modèles de données sont organisés dans le dossier `dbt_/models`. La struc
 
 - **models/staging/** : Transformations basiques (TRIM, REPLACE, typage, ...). Cette couche documente et teste la qualité des données brutes.
 - **models/intermediate/** : Transformations complexes (GROUP BY, JOIN, WHERE, ...). Utile pour joindre les tables et filtrer les données pour l'analyse.
-- **models/analytics/** : Modèles finaux requêtés par le site web. Données propres et schéma optimisé pour les visualisations.
+- **models/website/** : Modèles finaux requêtés par le site web. Données propres et schéma optimisé pour les visualisations.
 
 ## Configuration Scaleway (S3)
 
@@ -233,10 +241,70 @@ Assurez-vous que le code satisfait tous les pre-commit avant de créer votre pul
 uv run pre-commit run --all-files
 ```
 
-## Structure du projet
+## Architecture technique du frontend
 
-- `pipelines/` : Consolidation et préparation des données
-- `dbt_/` : Modèles de données et transformations
-- `analytics/` : Analyses et notebooks
-- `webapp/` : Site web Next.js interactif
-- `database/` : Base de données DuckDB et fichiers de cache
+Cette section explique comment le site web Next.js reçoit et affiche les données de pollution de l'eau.
+
+### Sources de données
+
+Le frontend consomme les données de trois sources principales :
+
+#### 1. Fichiers PMTiles (données cartographiques et résultats par zone)
+
+Les fichiers PMTiles sont générés par le pipeline Python (commande `generate_pmtiles`) et stockés dans `webapp/public/pmtiles/` :
+
+- `udi_data.pmtiles` : Données des réseaux d'eau (UDI)
+- `commune_data.pmtiles` : Données des communes
+
+**Contenu des PMTiles :**
+
+- Géométries vectorielles de chaque zone (tracés des UDI/communes)
+- Données de pollution pour chaque zone (résultats d'analyses, concentrations, dates, etc.)
+
+**Utilisation dans le code :**
+
+- **Affichage des popups** (`webapp/components/PollutionMapMarker.tsx`) : Lorsqu'un utilisateur clique sur une zone, le composant `PollutionMapMarker` récupère les données de la zone cliquée via la variable `selectedZoneData` et les utilise pour afficher les résultats de pollution dans une popup.
+- **Coloration de la carte** (`webapp/lib/colorMapping.ts`) : La fonction `generateColorExpression()` génère des expressions MapLibre GL qui définissent la couleur de chaque zone en fonction de ses résultats de pollution.
+
+#### 2. Configuration des polluants (fichier statique)
+
+Le fichier `webapp/lib/polluants.ts` contient la configuration statique de toutes les catégories de polluants :
+
+- Liste complète des polluants suivis (PFAS, pesticides, nitrates, CVM, perchlorate, etc.)
+- Labels d'affichage en français
+- Palettes de couleurs pour chaque seuil de pollution
+- etc.
+
+Cette configuration est utilisée partout dans le frontend pour l'affichage des résultats.
+
+#### 3. Base de données DuckDB (données agrégées)
+
+Le fichier `database/data.duckdb` (réduit en production via `trim_database_for_website`) est utilisé pour :
+
+**Données du site web Next.js** (`webapp/app/lib/data.ts`) :
+
+- `fetchPollutionStats()` : Statistiques globales affichées sur la page d'accueil (nombre d'UDI polluées, etc.)
+- `fetchParameterValues()` : Valeurs de référence des paramètres (limites réglementaires, labels) depuis la table `int__valeurs_de_reference`
+
+**Routes API** (`webapp/app/api/`) :
+Ces routes exposent des données en JSON pour des usages externes au site.
+
+### Flux de données
+
+```
+Pipeline Python (generate_pmtiles)
+    ↓
+PMTiles (udi_data.pmtiles, commune_data.pmtiles)
+    ↓
+MapLibre GL (carte interactive)
+    ↓
+PollutionMapMarker (affichage des résultats)
+```
+
+```
+Base DuckDB (data.duckdb)
+    ↓
+Fonctions fetchPollutionStats / fetchParameterValues
+    ↓
+Page d'accueil + Composants frontend
+```

@@ -72,7 +72,7 @@ export const availableCategories: ICategory[] = [
       "* D'après les recommandations du Ministère de la Santé ou du Haut Conseil de la Santé Publique",
     resultats: {
       non_recherche: {
-        label: "Aucun polluants recherché dans les 12 derniers mois",
+        label: "Aucun polluant recherché dans les 12 derniers mois",
         couleur: "#cccccc",
         couleurAlt: "#f7f7f7",
         picto: null,

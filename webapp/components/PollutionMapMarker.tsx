@@ -432,8 +432,8 @@ export default function PollutionMapMarker({
                 {deconseille.length > 0 && (
                   <div>
                     <p className="font-medium mb-2">
-                      Eau déconseillée à la consommation pour toute ou partie de
-                      la population en raison de la présence de:
+                      Eau devant être déconseillée à la consommation pour toute
+                      ou partie de la population en raison de la présence de:
                     </p>
                     <ul className="space-y-1 pl-2">
                       {deconseille.map((item, index) => (

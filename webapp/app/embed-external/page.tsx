@@ -4,9 +4,14 @@ import { fetchPollutionStats, fetchParameterValues } from "../lib/data";
 // Mise en cache de la page pour 24 heures
 export const revalidate = 86400;
 
-export default async function EmbedExternal() {
+export default async function EmbedExternal({
+  searchParams,
+}: {
+  searchParams: Promise<{ category?: string }>;
+}) {
   const stats = await fetchPollutionStats();
   const parameterValues = await fetchParameterValues();
+  const { category } = await searchParams;
 
   return (
     <div className="flex flex-col min-h-screen w-screen h-screen">
@@ -15,6 +20,7 @@ export default async function EmbedExternal() {
           pollutionStats={stats}
           parameterValues={parameterValues}
           showBanner={true}
+          initialCategory={category}
         />
       </main>
     </div>

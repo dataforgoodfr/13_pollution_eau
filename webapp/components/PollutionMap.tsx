@@ -19,13 +19,15 @@ export default function PollutionMap({
   pollutionStats,
   parameterValues,
   showBanner = false,
+  initialCategory,
 }: {
   pollutionStats: PollutionStats;
   parameterValues: ParameterValues;
   showBanner?: boolean;
+  initialCategory?: string;
 }) {
   const [period, setPeriod] = useState("dernier_prel");
-  const [category, setCategory] = useState("tous");
+  const [category, setCategory] = useState(initialCategory || "tous");
   const [displayMode, setDisplayMode] = useState<"communes" | "udis">("udis");
   const [mapState, setMapState] = useState<{
     longitude: number;

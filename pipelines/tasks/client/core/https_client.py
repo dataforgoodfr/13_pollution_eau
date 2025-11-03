@@ -30,7 +30,7 @@ class HTTPSClient:
         try:
             response = requests.head(url, timeout=5)
             response.raise_for_status()
-            return response.headers
+            return dict(response.headers)
         except requests.exceptions.RequestException as ex:
             logger.error(f"Exception raised: {ex}")
             return {}

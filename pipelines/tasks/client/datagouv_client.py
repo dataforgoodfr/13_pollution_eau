@@ -1,4 +1,5 @@
 import os
+import re
 from datetime import datetime
 from pathlib import Path
 from typing import List, Literal, Union
@@ -25,21 +26,57 @@ class DataGouvClient(HTTPSClient):
     def __init__(self, duckdb_client, base_url: str = "https://www.data.gouv.fr/"):
         super().__init__(base_url)
         self.base_url = base_url
-        self.datasets_path = "fr/datasets/r/"
+        self.datasets_path = "api/1/datasets/r/"
         self.duckdb_client = duckdb_client
         self.config_edc = get_edc_config()
 
     def _extract_dataset_datetime(self, dataset_id: str) -> str:
         """
-        Extract the dataset datetime from dataset location url
-        which can be found in the static dataset url headers
-        :param url: static dataset url
+        Extract the dataset datetime by reading the HTTP headers of the dataset URL
+        and parsing the 'location' header to find the timestamp.
+
+        The function makes a request to get the URL headers, extracts the 'location' header
+        (which contains the redirect URL), and searches for the datetime pattern in the URL path.
+
+        Example location header value:
+        https://static.data.gouv.fr/resources/resultats-du-controle-sanitaire-de-leau-distribuee-commune-par-commune/20230811-150005/dis-2020.zip
+
+        :param dataset_id: dataset id to fetch
         :return: dataset datetime under format "YYYYMMDD-HHMMSS"
         """
         metadata = self.get_url_headers(self.base_url + self.datasets_path + dataset_id)
-        parsed_url = urlparse(metadata.get("location"))
-        path_parts = parsed_url.path.strip("/").split("/")
-        return path_parts[-2]
+        location = metadata.get("location", "")
+
+        # Ensure location is a string
+        if isinstance(location, bytes):
+            location = location.decode("utf-8")
+
+        parsed_url = urlparse(location)
+        # Ensure path is a string
+        path = parsed_url.path
+        if isinstance(path, bytes):
+            path = path.decode("utf-8")
+
+        path_parts = path.strip("/").split("/")
+
+        # Log debug information to help diagnose the issue
+        logger.debug(f"Location URL: {location}")
+        logger.debug(f"Path parts: {path_parts}")
+
+        # Try to find the datetime pattern in the path parts
+        # Expected format: YYYYMMDD-HHMMSS
+        datetime_pattern = re.compile(r"^\d{8}-\d{6}$")
+
+        for part in path_parts:
+            if datetime_pattern.match(part):
+                return part
+
+        # If no datetime found, raise an error with diagnostic info
+        raise ValueError(
+            f"Could not extract dataset datetime from URL: {location}\n"
+            f"Path parts: {path_parts}\n"
+            f"Expected datetime format YYYYMMDD-HHMMSS not found in any path segment"
+        )
 
     def download_dataset_to_file(self, dataset_id: str, filepath: Union[str, Path]):
         self.download_file_from_https(

@@ -38,11 +38,11 @@ SELECT
     categorie,
     CASE
         WHEN
-            valtraduite = 0
-            THEN 'non_quantifie'
-        WHEN
             valtraduite > valeur_sanitaire_1
             THEN 'sup_valeur_sanitaire'
+        WHEN
+            valtraduite <= 10
+            THEN 'non_quantifie'
         WHEN
             valtraduite <= 25
             THEN 'no3_inf_25'

@@ -69,7 +69,7 @@ export const availableCategories: ICategory[] = [
     description:
       "Ensemble des substances chimiques et biologiques pouvant contaminer l'eau, l'air et les sols.",
     resultatsDetails:
-      "* D'après les recommandations du Ministère de la Santé ou du Haut Conseil de la Santé Publique",
+      "* Pesticides, PFAS, CVM, et Perchlorate non quantifiés ; Nitrates non quantifiés ou  <=10 mg/L\n** D'après les recommandations du Ministère de la Santé ou du Haut Conseil de la Santé Publique",
     resultats: {
       non_recherche: {
         label: "Aucun polluant recherché dans les 12 derniers mois",
@@ -78,7 +78,7 @@ export const availableCategories: ICategory[] = [
         picto: null,
       },
       non_quantifie: {
-        label: "Aucun polluant quantifié",
+        label: "Aucun polluant quantifié*",
         couleur: "#74c476",
         couleurAlt: "#c7e9c0",
         picto: null,
@@ -99,7 +99,7 @@ export const availableCategories: ICategory[] = [
       },
       sup_limite_sanitaire: {
         label:
-          "Eau devant être déconseillée à la consommation pour toute ou partie de la population*",
+          "Eau devant être déconseillée à la consommation pour toute ou partie de la population**",
         couleur: "#f03b20",
         couleurAlt: "#bd0026",
         picto: "red cross",
@@ -972,13 +972,13 @@ export const availableCategories: ICategory[] = [
         picto: null,
       },
       non_quantifie: {
-        label: "Non quantifié",
+        label: "Non quantifié ou concentration ≤ 10 mg/L",
         couleur: "#74c476",
         couleurAlt: "#c7e9c0",
         picto: null,
       },
       no3_inf_25: {
-        label: "Concentration ≤ 25 mg/L",
+        label: "Concentration comprise entre 10 et 25 mg/L",
         couleur: "#FFF33B",
         couleurAlt: "#FFF33B",
         picto: null,

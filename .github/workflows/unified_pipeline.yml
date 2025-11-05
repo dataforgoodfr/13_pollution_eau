@@ -13,6 +13,14 @@ on:
     - cron: "0 10 * * 0"
   workflow_dispatch:
     inputs:
+      environment:
+        description: "Environment to deploy to"
+        required: true
+        type: choice
+        options:
+          - dev
+          - prod
+        default: "dev"
       force_refresh:
         description: "Force data refresh from sources"
         required: false
@@ -30,7 +38,11 @@ on:
         default: "Manual pipeline execution"
 
 env:
-  ENV: prod
+  # Determine environment:
+  # - Manual workflow_dispatch: use selected environment (dev or prod)
+  # - Scheduled runs: deploy to dev (change 'dev' to 'prod' below to deploy scheduled runs to prod)
+  # - Push to main: deploy to dev
+  ENV: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.environment || 'dev' }}
   SCW_ACCESS_KEY: ${{ secrets.SCW_ACCESS_KEY }}
   SCW_SECRET_KEY: ${{ secrets.SCW_SECRET_KEY }}
   REGISTRY: ghcr.io
@@ -152,10 +164,10 @@ jobs:
             NEXT_PUBLIC_PROTOMAPS_API_KEY=${{ secrets.NEXT_PUBLIC_PROTOMAPS_API_KEY }}
 
       # Deploy to Clever Cloud
-      - name: Deploy to Clever Cloud
+      - name: Deploy to Clever Cloud (${{ env.ENV }})
         uses: 47ng/actions-clever-cloud@v2.1.0
         with:
-          appID: ${{ secrets.CLEVER_APP_ID }}
+          appID: ${{ env.ENV == 'prod' && secrets.CLEVER_APP_ID_PROD || secrets.CLEVER_APP_ID_DEV }}
           sameCommitPolicy: rebuild
           setEnv: | # <- keep the pipe here
             CC_DOCKERFILE=Dockerfile.clevercloud
@@ -167,11 +179,13 @@ jobs:
       - name: Output summary
         run: |
           echo "🎉 Data Pipeline and Website Deployment done!"
+          echo "🌍 Environment: ${{ env.ENV }}"
           echo "📊 Data refresh: ${{ steps.check.outputs.needs_data_refresh }}"
           echo "🔧 Pipeline rebuild: ${{ steps.check.outputs.needs_pipeline_rebuild }}"
           echo "🚀 Deployment: always"
 
           echo "## 🚀 Pipeline Summary" >> $GITHUB_STEP_SUMMARY
+          echo "- **Environment**: ${{ env.ENV }}" >> $GITHUB_STEP_SUMMARY
           echo "- **Data refresh**: ${{ steps.check.outputs.needs_data_refresh }}" >> $GITHUB_STEP_SUMMARY
           echo "- **Pipeline rebuild**: ${{ steps.check.outputs.needs_pipeline_rebuild }}" >> $GITHUB_STEP_SUMMARY
           echo "- **Deployment**: ✅ always" >> $GITHUB_STEP_SUMMARY

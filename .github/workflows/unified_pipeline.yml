@@ -147,10 +147,11 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
-            type=ref,event=branch
+            type=ref,event=branch,suffix=-${{ env.ENV }}
             type=ref,event=pr
-            type=sha,prefix={{branch}}-
-            type=raw,value=latest,enable={{is_default_branch}}
+            type=sha,prefix={{branch}}-${{ env.ENV }}-
+            type=raw,value=latest-${{ env.ENV }}
+            type=raw,value=latest,enable=${{ env.ENV == 'prod' && is_default_branch }}
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
@@ -171,6 +172,7 @@ jobs:
           sameCommitPolicy: rebuild
           setEnv: | # <- keep the pipe here
             CC_DOCKERFILE=Dockerfile.clevercloud
+            IMAGE_TAG=latest-${{ env.ENV }}
         env:
           CLEVER_TOKEN: ${{ secrets.CLEVER_TOKEN }}
           CLEVER_SECRET: ${{ secrets.CLEVER_SECRET }}
@@ -189,7 +191,7 @@ jobs:
           echo "- **Data refresh**: ${{ steps.check.outputs.needs_data_refresh }}" >> $GITHUB_STEP_SUMMARY
           echo "- **Pipeline rebuild**: ${{ steps.check.outputs.needs_pipeline_rebuild }}" >> $GITHUB_STEP_SUMMARY
           echo "- **Deployment**: ✅ always" >> $GITHUB_STEP_SUMMARY
-          echo "- **Docker image**: \`${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest\`" >> $GITHUB_STEP_SUMMARY
+          echo "- **Docker image**: \`${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest-${{ env.ENV }}\`" >> $GITHUB_STEP_SUMMARY
 
       # Error handling
       - name: Create Issue on Failure

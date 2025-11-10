@@ -1,6 +1,7 @@
 # Dockerfile for Clever Cloud - pulls pre-built unified image
 
-FROM ghcr.io/dataforgoodfr/13_pollution_eau/pollution-eau-unified:latest
+ARG IMAGE_TAG=latest
+FROM ghcr.io/dataforgoodfr/13_pollution_eau/pollution-eau-unified:${IMAGE_TAG}
 
 # Expose the port
 EXPOSE 8080

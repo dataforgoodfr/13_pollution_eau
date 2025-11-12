@@ -16,6 +16,7 @@ import PollutionMapMarker from "@/components/PollutionMapMarker";
 import type { ParameterValues } from "@/app/lib/data";
 
 import { DEFAULT_MAP_STYLE, getDefaultLayers } from "@/app/config";
+import { frenchLocale } from "@/lib/mapLocale";
 
 type PollutionMapBaseLayerProps = {
   period: string;
@@ -172,6 +173,7 @@ export default function PollutionMapBaseLayer({
       interactiveLayerIds={["color-layer"]}
       attributionControl={false}
       cooperativeGestures={isMobile || isInIframe}
+      locale={frenchLocale}
     >
       {marker ? (
         <PollutionMapMarker

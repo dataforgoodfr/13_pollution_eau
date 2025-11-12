@@ -19,7 +19,7 @@ if (!fs.existsSync(dbFilePath)) {
 // Create DB instance
 const db = await DuckDBInstance.create(dbFilePath, {
   access_mode: "READ_ONLY",
-  max_memory: "2GB",
+  max_memory: "1GB",
   threads: "4",
 });
 

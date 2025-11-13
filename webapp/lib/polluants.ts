@@ -1070,9 +1070,9 @@ export const availableCategories: ICategory[] = [
       cvm_sup_0_5: {
         label:
           "Concentration > 0,5 µg/L (dépassement de la limite de qualité, eau pouvant faire l'objet de restriction de la consommation*)",
-        couleur: "#f03b20",
-        couleurAlt: "#bd0026",
-        picto: "red cross",
+        couleur: "#fe9929",
+        couleurAlt: "#fe9929",
+        picto: null,
       },
     },
     resultatsAnnuels: {

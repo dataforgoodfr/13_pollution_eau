@@ -179,8 +179,7 @@ const getGlobalLastPrelevementResults = (
     // Add to deconseille list if applicable
     if (
       resultValue === "sup_valeur_sanitaire" ||
-      resultValue === "sup_valeur_sanitaire_2" ||
-      resultValue === "cvm_sup_0_5"
+      resultValue === "sup_valeur_sanitaire_2"
     ) {
       deconseille.push(displayText);
     }

@@ -6,12 +6,12 @@ SELECT
     SUM(nb_parametres) AS nb_parametres,
     CASE
         WHEN BOOL_OR(resultat IN (
-            'cvm_sup_0_5',
             'sup_valeur_sanitaire',
             'sup_valeur_sanitaire_2'
         )) THEN 'sup_limite_sanitaire'
 
         WHEN BOOL_OR(resultat IN (
+            'cvm_sup_0_5',
             'somme_20pfas_sup_0_1',
             'sup_limite_qualite'
         )) THEN 'sup_limite_qualite'

@@ -1179,8 +1179,9 @@ const getCategoryExplanation = (
 
           <Tag content="Quels risques pour la santé en cas de dépassement de la limite réglementaire?" />
           <p>
-            Par précaution, l&apos;eau doit être interdite à la consommation en
-            cas de dépassement de la limite de qualité de 0,5 µg/L
+            Si le dépassement de la limite de 0.5 µg/L est confirmé par au moins
+            2 analyses et les mesures correctives inopérables ou inefficaces,
+            l&apos;eau doit être interdite à la consommation.
           </p>
           <p>
             Le CVM est classé cancérogène certain pour l&apos;homme par le

@@ -31,3 +31,20 @@ models:
         type: GEOMETRY
       - name: ingestion_date
         type: DATE
+  - name: stg_atlasante_udi_2024
+    description: "Unités de distribution (UDI) de la France métropolitaine"
+    columns:
+      - name: gid
+        type: INTEGER
+      - name: code_udi
+        type: VARCHAR
+      - name: ins_nom
+        type: VARCHAR
+      - name: uge_nom
+        type: VARCHAR
+      - name: udi_pop
+        type: VARCHAR
+      - name: geom
+        type: GEOMETRY
+      - name: ingestion_date
+        type: DATE

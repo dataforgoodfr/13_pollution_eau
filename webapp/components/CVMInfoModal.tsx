@@ -32,7 +32,7 @@ export default function CVMInfoModal({
 
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
-      <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
+      <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto z-[70]">
         <DialogHeader>
           <DialogTitle>Information importante sur les données CVM</DialogTitle>
         </DialogHeader>

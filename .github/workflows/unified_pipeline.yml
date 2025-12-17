@@ -1,16 +1,16 @@
 name: Data Pipeline and Website Deployment
 
 on:
-  push:
-    branches: ["main"]
-    paths:
-      - "dbt_/**"
-      - "pipelines/**"
-      - "webapp/**"
-      - "Dockerfile.unified"
-  schedule:
-    # Execute pipeline every Sunday at 10:00 AM
-    - cron: "0 10 * * 0"
+  # push:
+  #   branches: ["main"]
+  #   paths:
+  #     - "dbt_/**"
+  #     - "pipelines/**"
+  #     - "webapp/**"
+  #     - "Dockerfile.unified"
+  # schedule:
+  #   # Execute pipeline every Sunday at 10:00 AM
+  #   - cron: "0 10 * * 0"
   workflow_dispatch:
     inputs:
       environment:

@@ -412,6 +412,13 @@ export default function PollutionMapMarker({
         return (
           <>
             <p className=" font-bold">{title}</p>
+            {displayMode === "udis" && selectedZoneData["population"] && (
+              <div className="mt-3 text-xs text-gray-500">
+                Ce réseau alimente{" "}
+                {Number(selectedZoneData["population"]).toLocaleString("fr-FR")}{" "}
+                personnes.
+              </div>
+            )}
 
             {/* Global status */}
             <div className="flex items-center gap-3 mb-3">
@@ -480,13 +487,6 @@ export default function PollutionMapMarker({
                 )}
               </div>
             )}
-            {displayMode === "udis" && selectedZoneData["population"] && (
-              <div className="mt-3 space-y-3 text-xs">
-                Ce réseau alimente{" "}
-                {Number(selectedZoneData["population"]).toLocaleString("fr-FR")}{" "}
-                personnes.
-              </div>
-            )}
           </>
         );
       }
@@ -526,6 +526,13 @@ export default function PollutionMapMarker({
       return (
         <>
           <p className="font-bold">{title}</p>
+          {displayMode === "udis" && selectedZoneData["population"] && (
+            <div className="mt-3 text-xs text-gray-500">
+              Ce réseau alimente{" "}
+              {Number(selectedZoneData["population"]).toLocaleString("fr-FR")}{" "}
+              personnes.
+            </div>
+          )}
           <div className="flex items-center gap-3">
             <div
               className="w-3 h-3 rounded-full flex-shrink-0"
@@ -538,13 +545,6 @@ export default function PollutionMapMarker({
               Dernière analyse le{" "}
               {new Date(date.toString()).toLocaleDateString("fr-FR")}
             </p>
-          )}
-          {displayMode === "udis" && selectedZoneData["population"] && (
-            <div className="mt-3 space-y-3 text-xs">
-              Ce réseau alimente{" "}
-              {Number(selectedZoneData["population"]).toLocaleString("fr-FR")}{" "}
-              personnes.
-            </div>
           )}
           {parsedValues && Object.keys(parsedValues).length > 0 && (
             <div className="mt-3 text-xs">
@@ -771,6 +771,15 @@ export default function PollutionMapMarker({
       return (
         <>
           <p className="font-bold">{title}</p>
+          {displayMode === "udis" &&
+            selectedZoneData["population"] &&
+            annee >= "2024" && (
+              <div className="mt-3 text-xs text-gray-500">
+                Ce réseau alimente{" "}
+                {Number(selectedZoneData["population"]).toLocaleString("fr-FR")}{" "}
+                personnes.
+              </div>
+            )}
           <div className="flex items-center gap-3">
             <div
               className="w-3 h-3 rounded-full flex-shrink-0"

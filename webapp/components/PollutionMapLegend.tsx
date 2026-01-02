@@ -26,11 +26,13 @@ function LegendItem({
   label,
   count,
   percentage,
+  population,
 }: {
   color?: string;
   label: string;
   count?: number | null;
   percentage?: number | null;
+  population?: number | null;
 }) {
   return (
     <div className="flex items-center gap-3">
@@ -54,10 +56,17 @@ function LegendItem({
               {count < 2
                 ? "réseau de distribution (UDI) est"
                 : "réseaux de distribution (UDI) sont"}{" "}
-              dans cette situation en France, soit environ{" "}
+              dans cette situation en France
               {percentage !== null &&
                 percentage !== undefined &&
-                `${percentage.toFixed(1)}%`}
+                ` (~${percentage.toFixed(1)}%)`}
+              {population !== null && population !== undefined && (
+                <>
+                  , ce qui représente {population.toLocaleString("fr-FR")}{" "}
+                  personnes
+                </>
+              )}
+              .
             </p>
           </TooltipContent>
         </Tooltip>
@@ -111,9 +120,10 @@ export default function PollutionMapLegend({
 
   const legendItems = Object.entries(categoryDetails.resultats).map(
     ([resultKey, value]) => {
-      // Calculate count and percentage for this legend item
+      // Calculate count, percentage, and population for this legend item
       let count = null;
       let percentage = null;
+      let population = null;
 
       if (period === "dernier_prel") {
         const statName = getPropertyName(period, category, resultKey);
@@ -121,6 +131,9 @@ export default function PollutionMapLegend({
         if (count !== null && totalUdis) {
           percentage = (count / totalUdis) * 100;
         }
+        // Get population statistic
+        const populationStatName = `${statName}_population`;
+        population = getStatistic(populationStatName);
       }
 
       return {
@@ -128,6 +141,7 @@ export default function PollutionMapLegend({
         color: colorblindMode ? value.couleurAlt : value.couleur,
         count,
         percentage,
+        population,
       };
     },
   );
@@ -146,6 +160,7 @@ export default function PollutionMapLegend({
               label={item.label}
               count={item.count}
               percentage={item.percentage}
+              population={item.population}
             />
           ))}
         </div>
@@ -173,21 +188,23 @@ export default function PollutionMapLegend({
     const getAnnualStats = (ratioKey: string) => {
       const statName = `${period}_${category}_ratio_${ratioKey}`;
       const count = getStatistic(statName);
+      const population = getStatistic(`${statName}_population`);
       if (count !== null && totalUdis) {
         const percentage = (count / totalUdis) * 100;
-        return { count, percentage };
+        return { count, percentage, population };
       }
-      return { count: null, percentage: null };
+      return { count: null, percentage: null, population };
     };
 
     const nonRechercheStats = (() => {
       const statName = `${period}_${category}_non_recherche`;
       const count = getStatistic(statName);
+      const population = getStatistic(`${statName}_population`);
       if (count !== null && totalUdis) {
         const percentage = (count / totalUdis) * 100;
-        return { count, percentage };
+        return { count, percentage, population };
       }
-      return { count: null, percentage: null };
+      return { count: null, percentage: null, population };
     })();
 
     legendContent = (
@@ -202,6 +219,7 @@ export default function PollutionMapLegend({
             label={categoryDetails.resultatsAnnuels.nonRechercheLabel || ""}
             count={nonRechercheStats.count}
             percentage={nonRechercheStats.percentage}
+            population={nonRechercheStats.population}
           />
           {categoryDetails.resultatsAnnuels.ratioLimites.map((item) => {
             // Map the ratio limits to the corresponding database keys based on actual limit values
@@ -222,6 +240,7 @@ export default function PollutionMapLegend({
                 label={`${item.label} des ${categoryDetails.resultatsAnnuels?.ratioLabelPlural}`}
                 count={stats.count}
                 percentage={stats.percentage}
+                population={stats.population}
               />
             );
           })}

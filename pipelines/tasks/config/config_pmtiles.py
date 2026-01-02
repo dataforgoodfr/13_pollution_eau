@@ -26,7 +26,7 @@ config_pmtiles: dict[str, dict[str, str | list[str] | None]] = {
     "udi": {
         "result_table": "web__resultats_udi",
         "geom_table": "int__udi_geom",
-        "id_columns": ["cdreseau", "nomreseaux"],
+        "id_columns": ["cdreseau", "nomreseaux", "population"],
         "result_id_column": "cdreseau",
         "geom_id_column": "code_udi",
         "geom_name_column": None,  # UDI geom table doesn't have a name column

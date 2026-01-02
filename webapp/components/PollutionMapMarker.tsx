@@ -480,6 +480,13 @@ export default function PollutionMapMarker({
                 )}
               </div>
             )}
+            {displayMode === "udis" && selectedZoneData["population"] && (
+              <div className="mt-3 space-y-3 text-xs">
+                Ce réseau alimente{" "}
+                {Number(selectedZoneData["population"]).toLocaleString("fr-FR")}{" "}
+                personnes.
+              </div>
+            )}
           </>
         );
       }
@@ -531,6 +538,13 @@ export default function PollutionMapMarker({
               Dernière analyse le{" "}
               {new Date(date.toString()).toLocaleDateString("fr-FR")}
             </p>
+          )}
+          {displayMode === "udis" && selectedZoneData["population"] && (
+            <div className="mt-3 space-y-3 text-xs">
+              Ce réseau alimente{" "}
+              {Number(selectedZoneData["population"]).toLocaleString("fr-FR")}{" "}
+              personnes.
+            </div>
           )}
           {parsedValues && Object.keys(parsedValues).length > 0 && (
             <div className="mt-3 text-xs">

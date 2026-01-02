@@ -32,6 +32,7 @@ logs/
 
 !database/.gitkeep
 cache/
+database/infos_factures/
 
 # OS
 .DS_Store

@@ -93,6 +93,9 @@ models:
       - name: nomreseaux
         description: "Nom de l'unité de distribution"
         type: VARCHAR
+      - name: population
+        description: "Nombre de personnes alimentées par le réseau"
+        type: BIGINT
       - name: periode
         description: "Période de l'analyse (bilan annuel ou dernier prélèvement)"
         type: VARCHAR

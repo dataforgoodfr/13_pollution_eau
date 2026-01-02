@@ -76,3 +76,29 @@ seeds:
         description: "Commentaire sur la valeur sanitaire 2"
       - name: web_label
         description: "Libellé utilisé dans le site web"
+
+  - name: udi_population_from_infofactures
+    config:
+      full_refresh: true
+      column_types:
+        population: bigint
+    description: "Population par UDI extraite depuis les InfoFactures"
+    columns:
+      - name: code_udi
+        description: "Code de l'Unité de Distribution (UDI)"
+        tests:
+          - not_null
+          - unique
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: VARCHAR
+      - name: sentence
+        description: "Phrase descriptive de la population alimentée"
+        tests:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: VARCHAR
+      - name: population
+        description: "Nombre de personnes alimentées par le réseau"
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: bigint

@@ -35,10 +35,14 @@ categories AS (
 
 udi AS (
     SELECT
-        cdreseau,
-        nomreseaux
+        u.cdreseau,
+        u.nomreseaux,
+        p.population
     FROM
-        {{ ref('int__udi') }}
+        {{ ref('int__udi') }} AS u
+    LEFT JOIN
+        {{ ref('udi_population_from_infofactures') }} AS p
+        ON u.cdreseau = p.code_udi
 ),
 
 -- Cross join to ensure all combinations exist
@@ -46,6 +50,7 @@ udi_periodes_categories AS (
     SELECT
         u.cdreseau,
         u.nomreseaux,
+        u.population,
         p.periode,
         categories.categorie
     FROM
@@ -102,6 +107,7 @@ results AS (
 SELECT
     upc.cdreseau,
     upc.nomreseaux,
+    upc.population,
     upc.periode,
     upc.categorie,
     r.resultat,

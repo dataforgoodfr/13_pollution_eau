@@ -27,8 +27,8 @@ WHERE
     )
     OR
     (
-        cdreseau = '060001302'
-        AND date_dernier_prel = TIMESTAMP '2024-12-19 08:29:00'
+        cdreseau = '077000064'
+        AND date_dernier_prel = TIMESTAMP '2025-11-06 09:39:00'
         AND resultat != 'sup_valeur_sanitaire'
     )
 -- annuel udi
@@ -65,12 +65,12 @@ WHERE
     )
     OR
     (
-        cdreseau = '060001302'
-        AND annee = 2024
+        cdreseau = '021000861'
+        AND annee = 2025
         AND (
-            nb_prelevements != 4
+            nb_prelevements != 5
             OR nb_depassements != 1
             OR nb_sup_valeur_sanitaire != 1
-            OR ratio_limite_qualite != 0.25
+            OR ratio_limite_qualite != 0.20
         )
     )

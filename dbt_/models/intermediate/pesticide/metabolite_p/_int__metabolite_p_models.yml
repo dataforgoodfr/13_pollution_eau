@@ -1,6 +1,6 @@
 models:
-  - name: int__resultats_metabolite_commune_annuel
-    description: Résultats des métabolites de pesticides par commune pour la temporalité 'bilan_annuel'
+  - name: int__resultats_metabolite_p_commune_annuel
+    description: Résultats des métabolites pertinents par commune pour la temporalité 'bilan_annuel'
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -16,12 +16,12 @@ models:
         description: "Année du prélèvement"
         type: SMALLINT
       - name: categorie
-        description: "Catégorie du paramètre analysé (ici, toujours 'metabolite')."
+        description: "Catégorie du paramètre analysé (ici, toujours 'metabolite_p')."
         type: VARCHAR
         tests:
           - accepted_values:
               values:
-                - "metabolite"
+                - "metabolite_p"
       - name: periode
         description: "Période du résultat"
         type: VARCHAR
@@ -46,8 +46,8 @@ models:
               min_value: 0
               max_value: 1
 
-  - name: int__resultats_metabolite_commune_dernier
-    description: Résultats des métabolites de pesticides par commune pour la temporalité 'derniers prélèvements'
+  - name: int__resultats_metabolite_p_commune_dernier
+    description: Résultats des métabolites pertinents par commune pour la temporalité 'derniers prélèvements'
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -60,12 +60,12 @@ models:
         tests:
           - not_null
       - name: categorie
-        description: "Catégorie du paramètre analysé (ici, toujours 'metabolite')."
+        description: "Catégorie du paramètre analysé (ici, toujours 'metabolite_p')."
         type: VARCHAR
         tests:
           - accepted_values:
               values:
-                - "metabolite"
+                - "metabolite_p"
       - name: periode
         description: "Période d'analyse des prélèvements (ici, toujours 'dernier_prel')."
         type: VARCHAR
@@ -94,8 +94,8 @@ models:
         description: "JSON contenant les paramètres détectés (valtraduite > 0) avec leurs valeurs correspondantes."
         type: JSON
 
-  - name: int__resultats_metabolite_udi_annuel
-    description: Résultats des métabolites de pesticides par UDI pour la temporalité 'bilan_annuel'
+  - name: int__resultats_metabolite_p_udi_annuel
+    description: Résultats des métabolites pertinents par UDI pour la temporalité 'bilan_annuel'
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -111,12 +111,12 @@ models:
         description: "Année du prélèvement"
         type: SMALLINT
       - name: categorie
-        description: "Catégorie du paramètre analysé (ici, toujours 'metabolite')."
+        description: "Catégorie du paramètre analysé (ici, toujours 'metabolite_p')."
         type: VARCHAR
         tests:
           - accepted_values:
               values:
-                - "metabolite"
+                - "metabolite_p"
       - name: periode
         description: "Période du résultat"
         type: VARCHAR
@@ -141,8 +141,8 @@ models:
               min_value: 0
               max_value: 1
 
-  - name: int__resultats_metabolite_udi_dernier
-    description: Résultats des métabolites de pesticides par UDI pour la temporalité 'derniers prélèvements'
+  - name: int__resultats_metabolite_p_udi_dernier
+    description: Résultats des métabolites pertinents par UDI pour la temporalité 'derniers prélèvements'
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -155,12 +155,12 @@ models:
         tests:
           - not_null
       - name: categorie
-        description: "Catégorie du paramètre analysé (ici, toujours 'metabolite')."
+        description: "Catégorie du paramètre analysé (ici, toujours 'metabolite_p')."
         type: VARCHAR
         tests:
           - accepted_values:
               values:
-                - "metabolite"
+                - "metabolite_p"
       - name: periode
         description: "Période d'analyse des prélèvements (ici, toujours 'dernier_prel')."
         type: VARCHAR

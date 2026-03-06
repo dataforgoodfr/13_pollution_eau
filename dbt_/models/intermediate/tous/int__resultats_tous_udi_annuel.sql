@@ -12,7 +12,8 @@ WHERE
     AND
     categorie NOT IN (
         'sub_active',
-        'metabolite',
+        'metabolite_np',
+        'metabolite_p',
         'metabolite_esa_metolachlore',
         'metabolite_chlorothalonil_r471811',
         'metabolite_chloridazone_desphenyl',

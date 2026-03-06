@@ -93,7 +93,7 @@ SELECT
 FROM
     {{ ref('int__resultats_nitrate_commune_dernier') }}
 UNION ALL
--- pesticide/metabolite
+-- pesticide/metabolite_np
 SELECT
     inseecommune,
     periode,
@@ -106,7 +106,7 @@ SELECT
     nb_sup_valeur_sanitaire,
     null AS parametres_detectes
 FROM
-    {{ ref('int__resultats_metabolite_commune_annuel') }}
+    {{ ref('int__resultats_metabolite_np_commune_annuel') }}
 UNION ALL
 SELECT
     inseecommune,
@@ -120,7 +120,36 @@ SELECT
     null AS nb_sup_valeur_sanitaire,
     parametres_detectes
 FROM
-    {{ ref('int__resultats_metabolite_commune_dernier') }}
+    {{ ref('int__resultats_metabolite_np_commune_dernier') }}
+UNION ALL
+-- pesticide/metabolite_p
+SELECT
+    inseecommune,
+    periode,
+    categorie,
+    null AS resultat,
+    ratio_limite_qualite AS ratio,
+    null AS date_dernier_prel,
+    null AS nb_parametres,
+    nb_prelevements,
+    nb_sup_valeur_sanitaire,
+    null AS parametres_detectes
+FROM
+    {{ ref('int__resultats_metabolite_p_commune_annuel') }}
+UNION ALL
+SELECT
+    inseecommune,
+    periode,
+    categorie,
+    resultat,
+    null AS ratio,
+    date_dernier_prel,
+    nb_parametres,
+    null AS nb_prelevements,
+    null AS nb_sup_valeur_sanitaire,
+    parametres_detectes
+FROM
+    {{ ref('int__resultats_metabolite_p_commune_dernier') }}
 UNION ALL
 -- pesticide/metabolite_specifique
 SELECT

@@ -87,7 +87,6 @@ models:
               values:
                 - "non_quantifie"
                 - "inf_limites"
-                - "sup_limite_indicative"
                 - "sup_limite_qualite"
                 - "sup_valeur_sanitaire"
       - name: parametres_detectes
@@ -182,7 +181,6 @@ models:
               values:
                 - "non_quantifie"
                 - "inf_limites"
-                - "sup_limite_indicative"
                 - "sup_limite_qualite"
                 - "sup_valeur_sanitaire"
       - name: parametres_detectes

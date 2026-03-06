@@ -61,14 +61,9 @@ SELECT
             BOOL_OR(valtraduite IS NOT NULL AND valtraduite > limite_qualite)
             THEN 'sup_limite_qualite'
         WHEN
-            BOOL_OR(valtraduite IS NOT NULL AND valtraduite > limite_indicative)
-            THEN 'sup_limite_indicative'
-        WHEN
             BOOL_OR(
                 valtraduite IS NOT NULL
                 AND (limite_qualite IS NULL OR valtraduite <= limite_qualite)
-                AND (limite_indicative IS NULL OR valtraduite <= limite_indicative)
-                AND (limite_qualite IS NOT NULL OR limite_indicative IS NOT NULL)
             )
             THEN 'inf_limites'
         ELSE 'erreur'

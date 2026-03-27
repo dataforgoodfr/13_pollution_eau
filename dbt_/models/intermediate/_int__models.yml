@@ -196,6 +196,13 @@ models:
           signifiant.
         tests:
           - not_null
+
+      - name: cdparametre
+        description: >
+          Le code SANDRE du paramètre est l'identifiant numérique attribué par le Service d’administration nationale des
+          données et référentiels sur l’eau (SANDRE) à chaque paramètre enregistré par le SANDRE
+        type: INTEGER
+
       - name: valtraduite
         description: >
           A noter qu'une correction a été appliquée par rapport au valtraduite de la source de donnée.
@@ -280,6 +287,12 @@ models:
         tests:
           - unique
           - not_null
+
+      - name: cdparametre
+        description: >
+          Le code SANDRE du paramètre est l'identifiant numérique attribué par le Service d’administration nationale des
+          données et référentiels sur l’eau (SANDRE) à chaque paramètre enregistré par le SANDRE
+        type: INTEGER
 
       - name: categorie_1
         description: "Catégorie principale du paramètre"

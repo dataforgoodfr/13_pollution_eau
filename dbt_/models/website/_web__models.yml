@@ -43,6 +43,7 @@ models:
                 - sub_indus_perchlorate
                 - sub_indus_14dioxane
                 - pesticide
+                - pesticide_total
                 - sub_active
                 - metabolite_np
                 - metabolite_p
@@ -122,6 +123,7 @@ models:
                 - sub_indus_perchlorate
                 - sub_indus_14dioxane
                 - pesticide
+                - pesticide_total
                 - sub_active
                 - metabolite_np
                 - metabolite_p

@@ -1029,6 +1029,79 @@ export const availableCategories: ICategory[] = [
           valeurSanitaireLabel: "la limite sanitaire",
         },
       },
+      {
+        id: "pesticide_total",
+        nomAffichage: "Total pesticides",
+        disable: false,
+        enfants: [],
+        affichageBlocPageUDI: true,
+        description:
+          "Somme des concentrations de toutes les substances actives et métabolites pertinents quantifiés.",
+        unite: "µg/L",
+        resultatsDetails:
+          "* Somme recalculée des substances actives et des métabolites pertinents quantifiés lors de chaque prélèvement.",
+        resultats: {
+          non_recherche: {
+            label: "Aucune recherche de pesticides dans les 12 derniers mois",
+            couleur: "#cccccc",
+            couleurAlt: "#f7f7f7",
+            picto: null,
+          },
+          inf_limites: {
+            label: "Total pesticides ≤ 0,5 µg/L (eau conforme)",
+            couleur: "#74c476",
+            couleurAlt: "#c7e9c0",
+            picto: null,
+          },
+          sup_limite_qualite: {
+            label: "Total pesticides > 0,5 µg/L (eau non conforme)",
+            couleur: "#fe9929",
+            couleurAlt: "#fe9929",
+            picto: "warning",
+          },
+        },
+        resultatsAnnuels: {
+          nonRechercheLabel: "Aucune recherche dans l'année",
+          nonRechercheCouleur: "#d9d9d9",
+          nonRechercheCouleurAlt: "#f7f7f7",
+          ratioLimites: [
+            {
+              limite: 0,
+              label: "0%",
+              couleur: "#ffffd4",
+              couleurAlt: "#ffffd4",
+            },
+            {
+              limite: 0.25,
+              label: "≤ 25%",
+              couleur: "#fed98e",
+              couleurAlt: "#fed98e",
+            },
+            {
+              limite: 0.5,
+              label: "25 - 50%",
+              couleur: "#fe9929",
+              couleurAlt: "#fe9929",
+            },
+            {
+              limite: 0.75,
+              label: "50 - 75%",
+              couleur: "#d95f0e",
+              couleurAlt: "#d95f0e",
+            },
+            {
+              limite: 1,
+              label: "75 - 100%",
+              couleur: "#993404",
+              couleurAlt: "#993404",
+            },
+          ],
+          ratioLabelSingular: "analyse non conforme*",
+          ratioLabelPlural: "analyses non conformes*",
+          details:
+            "* Total pesticides réglementaire (paramètre PESTOT) > 0,5 µg/L",
+        },
+      },
     ],
   },
   {

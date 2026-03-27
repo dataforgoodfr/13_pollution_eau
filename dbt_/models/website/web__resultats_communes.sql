@@ -19,6 +19,7 @@ categories AS (
         -- Les résultats pour le 1,4 dioxane sont ignorés pour l'instant
         --'sub_indus_14dioxane',
         'pesticide',
+        'pesticide_total',
         'sub_active',
         'metabolite_np',
         'metabolite_p',

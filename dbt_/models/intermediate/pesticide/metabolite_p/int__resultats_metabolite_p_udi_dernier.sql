@@ -23,6 +23,8 @@ last_pvl AS (
         AND
         categorie_2 = 'metabolite'
         AND
+        categorie_3 IN ('pertinent', 'pertinent_par_defaut')
+        AND
         -- On garde les prélèvements de moins d'un an à partir du dernier prélèvement
         datetimeprel >= DATE_TRUNC('day', (
             SELECT MAX(sub.datetimeprel)
@@ -46,7 +48,7 @@ aggregated AS (
 
 SELECT
     cdreseau,
-    'metabolite' AS categorie,
+    'metabolite_p' AS categorie,
     'dernier_prel' AS periode,
     MAX(datetimeprel) AS date_dernier_prel,
     COUNT(DISTINCT cdparametresiseeaux) AS nb_parametres,
@@ -59,14 +61,9 @@ SELECT
             BOOL_OR(valtraduite IS NOT NULL AND valtraduite > limite_qualite)
             THEN 'sup_limite_qualite'
         WHEN
-            BOOL_OR(valtraduite IS NOT NULL AND valtraduite > limite_indicative)
-            THEN 'sup_limite_indicative'
-        WHEN
             BOOL_OR(
                 valtraduite IS NOT NULL
                 AND (limite_qualite IS NULL OR valtraduite <= limite_qualite)
-                AND (limite_indicative IS NULL OR valtraduite <= limite_indicative)
-                AND (limite_qualite IS NOT NULL OR limite_indicative IS NOT NULL)
             )
             THEN 'inf_limites'
         ELSE 'erreur'

@@ -42,8 +42,10 @@ WHERE
     periode = 'dernier_prel'
     AND
     categorie NOT IN (
+        'pesticide_total',
         'sub_active',
-        'metabolite',
+        'metabolite_np',
+        'metabolite_p',
         'metabolite_esa_metolachlore',
         'metabolite_chlorothalonil_r471811',
         'metabolite_chloridazone_desphenyl',

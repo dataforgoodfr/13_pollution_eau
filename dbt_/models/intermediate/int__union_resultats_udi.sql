@@ -93,7 +93,7 @@ SELECT
 FROM
     {{ ref('int__resultats_nitrate_udi_dernier') }}
 UNION ALL
--- pesticide/metabolite
+-- pesticide/metabolite_np
 SELECT
     cdreseau,
     periode,
@@ -106,7 +106,7 @@ SELECT
     nb_sup_valeur_sanitaire,
     null AS parametres_detectes
 FROM
-    {{ ref('int__resultats_metabolite_udi_annuel') }}
+    {{ ref('int__resultats_metabolite_np_udi_annuel') }}
 UNION ALL
 SELECT
     cdreseau,
@@ -120,7 +120,36 @@ SELECT
     null AS nb_sup_valeur_sanitaire,
     parametres_detectes
 FROM
-    {{ ref('int__resultats_metabolite_udi_dernier') }}
+    {{ ref('int__resultats_metabolite_np_udi_dernier') }}
+UNION ALL
+-- pesticide/metabolite_p
+SELECT
+    cdreseau,
+    periode,
+    categorie,
+    null AS resultat,
+    ratio_limite_qualite AS ratio,
+    null AS date_dernier_prel,
+    null AS nb_parametres,
+    nb_prelevements,
+    nb_sup_valeur_sanitaire,
+    null AS parametres_detectes
+FROM
+    {{ ref('int__resultats_metabolite_p_udi_annuel') }}
+UNION ALL
+SELECT
+    cdreseau,
+    periode,
+    categorie,
+    resultat,
+    null AS ratio,
+    date_dernier_prel,
+    nb_parametres,
+    null AS nb_prelevements,
+    null AS nb_sup_valeur_sanitaire,
+    parametres_detectes
+FROM
+    {{ ref('int__resultats_metabolite_p_udi_dernier') }}
 UNION ALL
 -- pesticide/metabolite_specifique
 SELECT
@@ -179,6 +208,35 @@ SELECT
     parametres_detectes
 FROM
     {{ ref('int__resultats_sub_active_udi_dernier') }}
+UNION ALL
+-- pesticide_total
+SELECT
+    cdreseau,
+    periode,
+    categorie,
+    null AS resultat,
+    ratio,
+    date_dernier_prel,
+    null AS nb_parametres,
+    nb_prelevements,
+    null AS nb_sup_valeur_sanitaire,
+    parametres_detectes
+FROM
+    {{ ref('int__resultats_pesticide_total_udi_annuel') }}
+UNION ALL
+SELECT
+    cdreseau,
+    periode,
+    categorie,
+    resultat,
+    null AS ratio,
+    date_dernier_prel,
+    null AS nb_parametres,
+    null AS nb_prelevements,
+    null AS nb_sup_valeur_sanitaire,
+    parametres_detectes
+FROM
+    {{ ref('int__resultats_pesticide_total_udi_dernier') }}
 UNION ALL
 -- pesticide
 SELECT

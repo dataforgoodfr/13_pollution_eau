@@ -6,6 +6,7 @@
 
 SELECT
     cdparametresiseeaux,
+    MAX(cdparametre) AS cdparametre,
     MAX(categorie_1) AS categorie_1,
     MAX(categorie_2) AS categorie_2,
     MAX(categorie_3) AS categorie_3,

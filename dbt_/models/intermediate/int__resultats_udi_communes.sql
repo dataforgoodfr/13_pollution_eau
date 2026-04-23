@@ -2,6 +2,7 @@ WITH resultats AS (
     SELECT
         referenceprel,
         cdparametresiseeaux,
+        cdparametre,
         de_partition,
 
         -- Correction de la colonne valtraduite qui contient les valeurs

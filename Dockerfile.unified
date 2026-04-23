@@ -40,6 +40,7 @@ COPY database/cache/*.pmtiles /app/public/pmtiles/
 
 # Create trimmed database for website
 RUN uv run pipelines/run.py run trim_database_for_website --output-file=database/data_for_website.duckdb
+RUN uv run python -c "import duckdb; con = duckdb.connect('/app/database/data_for_website.duckdb'); con.execute('INSTALL spatial; LOAD spatial;'); con.close()"
 
 # Copy next.js app and build it
 WORKDIR /app/webapp

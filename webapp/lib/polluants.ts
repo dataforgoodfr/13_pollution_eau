@@ -407,8 +407,8 @@ export const availableCategories: ICategory[] = [
         },
       },
       {
-        id: "metabolite",
-        nomAffichage: "Métabolites",
+        id: "metabolite_p",
+        nomAffichage: "Métabolites pertinents",
         disable: false,
         affichageBlocPageUDI: false,
         description: "Produits de dégradation des substances actives.",
@@ -418,29 +418,23 @@ export const availableCategories: ICategory[] = [
           "* D'après les recommandations du Haut Conseil de la Santé Publique",
         resultats: {
           non_recherche: {
-            label: "Aucun métabolite recherché dans les 12 derniers mois",
+            label:
+              "Aucun métabolite pertinent recherché dans les 12 derniers mois",
             couleur: "#cccccc",
             couleurAlt: "#f7f7f7",
             picto: null,
           },
           non_quantifie: {
-            label: "Aucun métabolite quantifié",
+            label: "Aucun métabolite pertinent quantifié",
             couleur: "#74c476",
             couleurAlt: "#c7e9c0",
             picto: null,
           },
           inf_limites: {
             label:
-              "Au moins un métabolite quantifié sans dépassement des limites de qualité ou indicatives",
+              "Au moins un métabolite pertinent quantifié sans dépassement de la limite de qualité",
             couleur: "#FFF33B",
             couleurAlt: "#FFF33B",
-            picto: null,
-          },
-          sup_limite_indicative: {
-            label:
-              "Au moins un métabolite non-pertinent dépasse la limite indicative de 0,9 µg/L",
-            couleur: "#FDC70C",
-            couleurAlt: "#FDC70C",
             picto: null,
           },
           sup_limite_qualite: {
@@ -452,7 +446,7 @@ export const availableCategories: ICategory[] = [
           },
           sup_valeur_sanitaire: {
             label:
-              "Eau devant être déconseillée à la consommation en raison de la présence de métabolites*",
+              "Eau devant être déconseillée à la consommation en raison de la présence de métabolites pertinents*",
             couleur: "#f03b20",
             couleurAlt: "#bd0026",
             picto: "red cross",
@@ -500,457 +494,613 @@ export const availableCategories: ICategory[] = [
           valeurSanitaireLabel:
             "la limite devant entraîner des restrictions de consommation",
         },
-        enfants: [
-          {
-            id: "metabolite_esa_metolachlore",
-            nomAffichage: "ESA-métolachlore",
-            disable: false,
-            enfants: [],
-            affichageBlocPageUDI: false,
-            description: "Métabolite du métolachlore, herbicide.",
-            resultatsDetails:
-              "* Si l'ESA métolachlore était considéré comme un métabolite pertinent, l'eau serait déclarée \"non conforme\" à partir de 0,1 µg/L. \n** La valeur de 3 µg/L, utilisée en Allemagne comme valeur de gestion, indique une contamination élevée.",
-            sousCategories: false,
-            unite: "µg/L",
-            resultats: {
-              non_recherche: {
-                label: "Non recherché dans les 12 derniers mois",
-                couleur: "#cccccc",
-                couleurAlt: "#f7f7f7",
-                picto: null,
-              },
-              non_quantifie: {
-                label: "Non quantifié",
-                couleur: "#74c476",
-                couleurAlt: "#c7e9c0",
-                picto: null,
-              },
-              inf_limites: {
-                label: "Concentration ≤ 0,1 µg/L",
-                couleur: "#FFF33B",
-                couleurAlt: "#fec44f",
-                picto: null,
-              },
-              inf_limites_sup_0_1: {
-                label: "Concentration comprise entre 0,1 et 0,9 µg/L*",
-                couleur: "#eedf00",
-                couleurAlt: "#fe9929",
-                picto: null,
-              },
-              sup_limite_indicative: {
-                label:
-                  "Concentration > 0,9 µg/L (dépassement de la limite indicative)",
-                couleur: "#FDC70C",
-                couleurAlt: "#d95f0e",
-                picto: "warning",
-              },
-              metabolite_sup_3: {
-                label: "Concentration > 3 µg/L**",
-                couleur: "#d95f0e",
-                couleurAlt: "#993404",
-                picto: "warning",
-              },
-            },
-            resultatsAnnuels: {
-              nonRechercheLabel: "Aucune recherche dans l'année",
-              nonRechercheCouleur: "#d9d9d9",
-              nonRechercheCouleurAlt: "#f7f7f7",
-              ratioLimites: [
-                {
-                  limite: 0,
-                  label: "0%",
-                  couleur: "#ffffd4",
-                  couleurAlt: "#ffffd4",
-                },
-                {
-                  limite: 0.25,
-                  label: "≤ 25%",
-                  couleur: "#fed98e",
-                  couleurAlt: "#fed98e",
-                },
-                {
-                  limite: 0.5,
-                  label: "25 - 50%",
-                  couleur: "#fe9929",
-                  couleurAlt: "#fe9929",
-                },
-                {
-                  limite: 0.75,
-                  label: "50 - 75%",
-                  couleur: "#d95f0e",
-                  couleurAlt: "#d95f0e",
-                },
-                {
-                  limite: 1,
-                  label: "75 - 100%",
-                  couleur: "#993404",
-                  couleurAlt: "#993404",
-                },
-              ],
-              ratioLabelSingular: "analyse non conforme*",
-              ratioLabelPlural: "analyses non conformes*",
-              details:
-                "* Concentration > 0,1 µg/L lorsque l'ESA métolachlore était considéré pertinent (jusqu'en 2022). Le classement de l'ESA-métolachlore en non pertinent en 2022 explique pourquoi il n'y a plus de non conformité à partir de 2023.",
-              valeurSanitaireLabel: "la limite sanitaire",
-            },
+        enfants: [],
+      },
+
+      {
+        id: "metabolite_np",
+        nomAffichage: "Métabolites non pertinents",
+        disable: false,
+        affichageBlocPageUDI: false,
+        description: "Produits de dégradation des substances actives.",
+        sousCategories: false,
+        unite: "µg/L",
+        resultats: {
+          non_recherche: {
+            label:
+              "Aucun métabolite non pertinent recherché dans les 12 derniers mois",
+            couleur: "#cccccc",
+            couleurAlt: "#f7f7f7",
+            picto: null,
           },
-          {
-            id: "metabolite_chlorothalonil_r471811",
-            nomAffichage: "Chlorothalonil R471811",
-            disable: false,
-            enfants: [],
-            affichageBlocPageUDI: true,
-            description: "Métabolite du fongicide chlorothalonil.",
-            resultatsDetails:
-              '* Si le chlorothalonil R471811 était considéré comme un métabolite pertinent, l\'eau serait déclarée "non conforme" à partir de 0,1 µg/L. \n** La valeur de 3 µg/L, utilisée en Allemagne comme valeur de gestion, indique une contamination élevée.',
-            sousCategories: false,
-            unite: "µg/L",
-            resultats: {
-              non_recherche: {
-                label: "Non recherché dans les 12 derniers mois",
-                couleur: "#cccccc",
-                couleurAlt: "#f7f7f7",
-                picto: null,
-              },
-              non_quantifie: {
-                label: "Non quantifié",
-                couleur: "#74c476",
-                couleurAlt: "#c7e9c0",
-                picto: null,
-              },
-              inf_limites: {
-                label: "Concentration ≤ 0,1 µg/L",
-                couleur: "#FFF33B",
-                couleurAlt: "#fec44f",
-                picto: null,
-              },
-              inf_limites_sup_0_1: {
-                label: "Concentration comprise entre 0,1 et 0,9 µg/L*",
-                couleur: "#eedf00",
-                couleurAlt: "#fe9929",
-                picto: null,
-              },
-              sup_limite_indicative: {
-                label:
-                  "Concentration > 0,9 µg/L (dépassement de la limite indicative)",
-                couleur: "#FDC70C",
-                couleurAlt: "#d95f0e",
-                picto: "warning",
-              },
-              metabolite_sup_3: {
-                label: "Concentration > 3 µg/L**",
-                couleur: "#d95f0e",
-                couleurAlt: "#993404",
-                picto: "warning",
-              },
-            },
-            resultatsAnnuels: {
-              nonRechercheLabel: "Aucune recherche dans l'année",
-              nonRechercheCouleur: "#d9d9d9",
-              nonRechercheCouleurAlt: "#f7f7f7",
-              ratioLimites: [
-                {
-                  limite: 0,
-                  label: "0%",
-                  couleur: "#ffffd4",
-                  couleurAlt: "#ffffd4",
-                },
-                {
-                  limite: 0.25,
-                  label: "≤ 25%",
-                  couleur: "#fed98e",
-                  couleurAlt: "#fed98e",
-                },
-                {
-                  limite: 0.5,
-                  label: "25 - 50%",
-                  couleur: "#fe9929",
-                  couleurAlt: "#fe9929",
-                },
-                {
-                  limite: 0.75,
-                  label: "50 - 75%",
-                  couleur: "#d95f0e",
-                  couleurAlt: "#d95f0e",
-                },
-                {
-                  limite: 1,
-                  label: "75 - 100%",
-                  couleur: "#993404",
-                  couleurAlt: "#993404",
-                },
-              ],
-              ratioLabelSingular: "analyse non conforme*",
-              ratioLabelPlural: "analyses non conformes*",
-              details:
-                "* Concentration > 0,1 µg/L lorsque le chlorothalonil R471811 était considéré pertinent (jusqu'en 2024). Le classement du Chlorothalonil R471811 en non pertinent en 2024 explique pourquoi il n'y a plus de non conformité à partir de 2025.",
-              valeurSanitaireLabel: "la limite sanitaire",
-            },
+          non_quantifie: {
+            label: "Aucun métabolite non pertinent quantifié",
+            couleur: "#74c476",
+            couleurAlt: "#c7e9c0",
+            picto: null,
           },
-          {
-            id: "metabolite_chloridazone_desphenyl",
-            nomAffichage: "Chloridazone desphényl",
-            disable: false,
-            enfants: [],
-            affichageBlocPageUDI: true,
-            description:
-              "Métabolite de la chloridazone, herbicide utilisé pour les betteraves.",
-            sousCategories: false,
-            unite: "µg/L",
-            resultatsDetails:
-              "* D'après les recommandations du Ministère de la Santé",
-            resultats: {
-              non_recherche: {
-                label: "Non recherché dans les 12 derniers mois",
-                couleur: "#cccccc",
-                couleurAlt: "#f7f7f7",
-                picto: null,
-              },
-              non_quantifie: {
-                label: "Non quantifié",
-                couleur: "#74c476",
-                couleurAlt: "#c7e9c0",
-                picto: null,
-              },
-              inf_limites: {
-                label: "Concentration ≤ 0,1 µg/L",
-                couleur: "#FFF33B",
-                couleurAlt: "#FFF33B",
-                picto: null,
-              },
-              sup_limite_qualite: {
-                label:
-                  "Concentration > 0,1 µg/L (dépassement de la limite de qualité, eau non conforme)",
-                couleur: "#fe9929",
-                couleurAlt: "#fe9929",
-                picto: "warning",
-              },
-              sup_valeur_sanitaire: {
-                label:
-                  "Concentration > 11 µg/L (dépassement de la valeur sanitaire maximale (Vmax), eau devant être déconseillée à la consommation*)",
-                couleur: "#f03b20",
-                couleurAlt: "#bd0026",
-                picto: "red cross",
-              },
-            },
-            resultatsAnnuels: {
-              nonRechercheLabel: "Aucune recherche dans l'année",
-              nonRechercheCouleur: "#d9d9d9",
-              nonRechercheCouleurAlt: "#f7f7f7",
-              ratioLimites: [
-                {
-                  limite: 0,
-                  label: "0%",
-                  couleur: "#ffffd4",
-                  couleurAlt: "#ffffd4",
-                },
-                {
-                  limite: 0.25,
-                  label: "≤ 25%",
-                  couleur: "#fed98e",
-                  couleurAlt: "#fed98e",
-                },
-                {
-                  limite: 0.5,
-                  label: "25 - 50%",
-                  couleur: "#fe9929",
-                  couleurAlt: "#fe9929",
-                },
-                {
-                  limite: 0.75,
-                  label: "50 - 75%",
-                  couleur: "#d95f0e",
-                  couleurAlt: "#d95f0e",
-                },
-                {
-                  limite: 1,
-                  label: "75 - 100%",
-                  couleur: "#993404",
-                  couleurAlt: "#993404",
-                },
-              ],
-              ratioLabelSingular: "analyse non conforme*",
-              ratioLabelPlural: "analyses non conformes*",
-              details: "* Concentration > 0,1 µg/L",
-              valeurSanitaireLabel: "la limite sanitaire",
-            },
+          inf_limites: {
+            label:
+              "Au moins un métabolite non pertinent quantifié sans dépasser 0,1 µg/L",
+            couleur: "#FFF33B",
+            couleurAlt: "#fec44f",
+            picto: null,
           },
-          {
-            id: "metabolite_chloridazone_methyl_desphenyl",
-            nomAffichage: "Chloridazone methyl desphényl",
-            disable: false,
-            enfants: [],
-            affichageBlocPageUDI: true,
-            description: "Autre métabolite de la chloridazone.",
-            sousCategories: false,
-            unite: "µg/L",
-            resultatsDetails:
-              "* D'après les instructions du Ministère de la Santé",
-            resultats: {
-              non_recherche: {
-                label: "Non recherché dans les 12 derniers mois",
-                couleur: "#cccccc",
-                couleurAlt: "#f7f7f7",
-                picto: null,
-              },
-              non_quantifie: {
-                label: "Non quantifié",
-                couleur: "#74c476",
-                couleurAlt: "#c7e9c0",
-                picto: null,
-              },
-              inf_limites: {
-                label: "Concentration ≤ 0,1 µg/L",
-                couleur: "#FFF33B",
-                couleurAlt: "#FFF33B",
-                picto: null,
-              },
-              sup_limite_qualite: {
-                label:
-                  "Concentration > 0,1 µg/L (dépassement de la limite de qualité, eau non conforme)",
-                couleur: "#fe9929",
-                couleurAlt: "#fe9929",
-                picto: "warning",
-              },
-              sup_valeur_sanitaire: {
-                label:
-                  "Concentration > 110 µg/L (dépassement de la valeur sanitaire maximale (Vmax), eau devant être déconseillée à la consommation*)",
-                couleur: "#f03b20",
-                couleurAlt: "#bd0026",
-                picto: "red cross",
-              },
-            },
-            resultatsAnnuels: {
-              nonRechercheLabel: "Aucune recherche dans l'année",
-              nonRechercheCouleur: "#d9d9d9",
-              nonRechercheCouleurAlt: "#f7f7f7",
-              ratioLimites: [
-                {
-                  limite: 0,
-                  label: "0%",
-                  couleur: "#ffffd4",
-                  couleurAlt: "#ffffd4",
-                },
-                {
-                  limite: 0.25,
-                  label: "≤ 25%",
-                  couleur: "#fed98e",
-                  couleurAlt: "#fed98e",
-                },
-                {
-                  limite: 0.5,
-                  label: "25 - 50%",
-                  couleur: "#fe9929",
-                  couleurAlt: "#fe9929",
-                },
-                {
-                  limite: 0.75,
-                  label: "50 - 75%",
-                  couleur: "#d95f0e",
-                  couleurAlt: "#d95f0e",
-                },
-                {
-                  limite: 1,
-                  label: "75 - 100%",
-                  couleur: "#993404",
-                  couleurAlt: "#993404",
-                },
-              ],
-              ratioLabelSingular: "analyse non conforme*",
-              ratioLabelPlural: "analyses non conformes*",
-              details: "* Concentration > 0,1 µg/L",
-              valeurSanitaireLabel: "la limite sanitaire",
-            },
+          inf_limites_sup_0_1: {
+            label:
+              "Au moins un métabolite non pertinent a une concentration comprise en 0,1 et 0,9 µg/L",
+            couleur: "#eedf00",
+            couleurAlt: "#fe9929",
+            picto: null,
           },
-          {
-            id: "metabolite_atrazine_desethyl",
-            nomAffichage: "Atrazine déséthyl",
-            disable: false,
-            enfants: [],
-            affichageBlocPageUDI: true,
-            description:
-              "Métabolite de l'atrazine, herbicide interdit depuis 2003.",
-            sousCategories: false,
-            unite: "µg/L",
-            resultatsDetails:
-              "* D'après les instructions du Ministère de la Santé",
-            resultats: {
-              non_recherche: {
-                label: "Non recherché dans les 12 derniers mois",
-                couleur: "#cccccc",
-                couleurAlt: "#f7f7f7",
-                picto: null,
-              },
-              non_quantifie: {
-                label: "Non quantifié",
-                couleur: "#74c476",
-                couleurAlt: "#c7e9c0",
-                picto: null,
-              },
-              inf_limites: {
-                label: "Concentration ≤ 0,1 µg/L",
-                couleur: "#FFF33B",
-                couleurAlt: "#FFF33B",
-                picto: null,
-              },
-              sup_limite_qualite: {
-                label:
-                  "Concentration > 0,1 µg/L (dépassement de la limite de qualité, eau non conforme)",
-                couleur: "#fe9929",
-                couleurAlt: "#fe9929",
-                picto: "warning",
-              },
-              sup_valeur_sanitaire: {
-                label:
-                  "Concentration > 60 µg/L (dépassement de la valeur sanitaire maximale (Vmax), eau devant être déconseillée à la consommation*)",
-                couleur: "#f03b20",
-                couleurAlt: "#bd0026",
-                picto: "red cross",
-              },
-            },
-            resultatsAnnuels: {
-              nonRechercheLabel: "Aucune recherche dans l'année",
-              nonRechercheCouleur: "#d9d9d9",
-              nonRechercheCouleurAlt: "#f7f7f7",
-              ratioLimites: [
-                {
-                  limite: 0,
-                  label: "0%",
-                  couleur: "#ffffd4",
-                  couleurAlt: "#ffffd4",
-                },
-                {
-                  limite: 0.25,
-                  label: "≤ 25%",
-                  couleur: "#fed98e",
-                  couleurAlt: "#fed98e",
-                },
-                {
-                  limite: 0.5,
-                  label: "25 - 50%",
-                  couleur: "#fe9929",
-                  couleurAlt: "#fe9929",
-                },
-                {
-                  limite: 0.75,
-                  label: "50 - 75%",
-                  couleur: "#d95f0e",
-                  couleurAlt: "#d95f0e",
-                },
-                {
-                  limite: 1,
-                  label: "75 - 100%",
-                  couleur: "#993404",
-                  couleurAlt: "#993404",
-                },
-              ],
-              ratioLabelSingular: "analyse non conforme*",
-              ratioLabelPlural: "analyses non conformes*",
-              details: "* Concentration > 0,1 µg/L",
-              valeurSanitaireLabel: "la limite sanitaire",
-            },
+          sup_limite_indicative: {
+            label:
+              "Au moins un métabolite non pertinent dépasse la limite indicative de 0,9 µg/L",
+            couleur: "#FDC70C",
+            couleurAlt: "#d95f0e",
+            picto: null,
           },
-        ],
+        },
+        resultatsAnnuels: {
+          nonRechercheLabel: "Aucune recherche dans l'année",
+          nonRechercheCouleur: "#d9d9d9",
+          nonRechercheCouleurAlt: "#f7f7f7",
+          ratioLimites: [
+            {
+              limite: 0,
+              label: "0%",
+              couleur: "#ffffd4",
+              couleurAlt: "#ffffd4",
+            },
+            {
+              limite: 0.25,
+              label: "≤ 25%",
+              couleur: "#fed98e",
+              couleurAlt: "#fed98e",
+            },
+            {
+              limite: 0.5,
+              label: "25 - 50%",
+              couleur: "#fe9929",
+              couleurAlt: "#fe9929",
+            },
+            {
+              limite: 0.75,
+              label: "50 - 75%",
+              couleur: "#d95f0e",
+              couleurAlt: "#d95f0e",
+            },
+            {
+              limite: 1,
+              label: "75 - 100%",
+              couleur: "#993404",
+              couleurAlt: "#993404",
+            },
+          ],
+          ratioLabelSingular: "analyse > 0.9 µg/L",
+          ratioLabelPlural: "analyses > 0.9 µg/L",
+        },
+        enfants: [],
+      },
+      {
+        id: "metabolite_esa_metolachlore",
+        nomAffichage: "ESA-métolachlore",
+        disable: false,
+        enfants: [],
+        affichageBlocPageUDI: false,
+        description: "Métabolite du métolachlore, herbicide.",
+        resultatsDetails:
+          "* Si l'ESA métolachlore était considéré comme un métabolite pertinent, l'eau serait déclarée \"non conforme\" à partir de 0,1 µg/L. \n** La valeur de 3 µg/L, utilisée en Allemagne comme valeur de gestion, indique une contamination élevée.",
+        sousCategories: false,
+        unite: "µg/L",
+        resultats: {
+          non_recherche: {
+            label: "Non recherché dans les 12 derniers mois",
+            couleur: "#cccccc",
+            couleurAlt: "#f7f7f7",
+            picto: null,
+          },
+          non_quantifie: {
+            label: "Non quantifié",
+            couleur: "#74c476",
+            couleurAlt: "#c7e9c0",
+            picto: null,
+          },
+          inf_limites: {
+            label: "Concentration ≤ 0,1 µg/L",
+            couleur: "#FFF33B",
+            couleurAlt: "#fec44f",
+            picto: null,
+          },
+          inf_limites_sup_0_1: {
+            label: "Concentration comprise entre 0,1 et 0,9 µg/L*",
+            couleur: "#eedf00",
+            couleurAlt: "#fe9929",
+            picto: null,
+          },
+          sup_limite_indicative: {
+            label:
+              "Concentration > 0,9 µg/L (dépassement de la limite indicative)",
+            couleur: "#FDC70C",
+            couleurAlt: "#d95f0e",
+            picto: "warning",
+          },
+          metabolite_sup_3: {
+            label: "Concentration > 3 µg/L**",
+            couleur: "#d95f0e",
+            couleurAlt: "#993404",
+            picto: "warning",
+          },
+        },
+        resultatsAnnuels: {
+          nonRechercheLabel: "Aucune recherche dans l'année",
+          nonRechercheCouleur: "#d9d9d9",
+          nonRechercheCouleurAlt: "#f7f7f7",
+          ratioLimites: [
+            {
+              limite: 0,
+              label: "0%",
+              couleur: "#ffffd4",
+              couleurAlt: "#ffffd4",
+            },
+            {
+              limite: 0.25,
+              label: "≤ 25%",
+              couleur: "#fed98e",
+              couleurAlt: "#fed98e",
+            },
+            {
+              limite: 0.5,
+              label: "25 - 50%",
+              couleur: "#fe9929",
+              couleurAlt: "#fe9929",
+            },
+            {
+              limite: 0.75,
+              label: "50 - 75%",
+              couleur: "#d95f0e",
+              couleurAlt: "#d95f0e",
+            },
+            {
+              limite: 1,
+              label: "75 - 100%",
+              couleur: "#993404",
+              couleurAlt: "#993404",
+            },
+          ],
+          ratioLabelSingular: "analyse non conforme*",
+          ratioLabelPlural: "analyses non conformes*",
+          details:
+            "* Concentration > 0,1 µg/L lorsque l'ESA métolachlore était considéré pertinent (jusqu'en 2022). Le classement de l'ESA-métolachlore en non pertinent en 2022 explique pourquoi il n'y a plus de non conformité à partir de 2023.",
+          valeurSanitaireLabel: "la limite sanitaire",
+        },
+      },
+      {
+        id: "metabolite_chlorothalonil_r471811",
+        nomAffichage: "Chlorothalonil R471811",
+        disable: false,
+        enfants: [],
+        affichageBlocPageUDI: true,
+        description: "Métabolite du fongicide chlorothalonil.",
+        resultatsDetails:
+          '* Si le chlorothalonil R471811 était considéré comme un métabolite pertinent, l\'eau serait déclarée "non conforme" à partir de 0,1 µg/L. \n** La valeur de 3 µg/L, utilisée en Allemagne comme valeur de gestion, indique une contamination élevée.',
+        sousCategories: false,
+        unite: "µg/L",
+        resultats: {
+          non_recherche: {
+            label: "Non recherché dans les 12 derniers mois",
+            couleur: "#cccccc",
+            couleurAlt: "#f7f7f7",
+            picto: null,
+          },
+          non_quantifie: {
+            label: "Non quantifié",
+            couleur: "#74c476",
+            couleurAlt: "#c7e9c0",
+            picto: null,
+          },
+          inf_limites: {
+            label: "Concentration ≤ 0,1 µg/L",
+            couleur: "#FFF33B",
+            couleurAlt: "#fec44f",
+            picto: null,
+          },
+          inf_limites_sup_0_1: {
+            label: "Concentration comprise entre 0,1 et 0,9 µg/L*",
+            couleur: "#eedf00",
+            couleurAlt: "#fe9929",
+            picto: null,
+          },
+          sup_limite_indicative: {
+            label:
+              "Concentration > 0,9 µg/L (dépassement de la limite indicative)",
+            couleur: "#FDC70C",
+            couleurAlt: "#d95f0e",
+            picto: "warning",
+          },
+          metabolite_sup_3: {
+            label: "Concentration > 3 µg/L**",
+            couleur: "#d95f0e",
+            couleurAlt: "#993404",
+            picto: "warning",
+          },
+        },
+        resultatsAnnuels: {
+          nonRechercheLabel: "Aucune recherche dans l'année",
+          nonRechercheCouleur: "#d9d9d9",
+          nonRechercheCouleurAlt: "#f7f7f7",
+          ratioLimites: [
+            {
+              limite: 0,
+              label: "0%",
+              couleur: "#ffffd4",
+              couleurAlt: "#ffffd4",
+            },
+            {
+              limite: 0.25,
+              label: "≤ 25%",
+              couleur: "#fed98e",
+              couleurAlt: "#fed98e",
+            },
+            {
+              limite: 0.5,
+              label: "25 - 50%",
+              couleur: "#fe9929",
+              couleurAlt: "#fe9929",
+            },
+            {
+              limite: 0.75,
+              label: "50 - 75%",
+              couleur: "#d95f0e",
+              couleurAlt: "#d95f0e",
+            },
+            {
+              limite: 1,
+              label: "75 - 100%",
+              couleur: "#993404",
+              couleurAlt: "#993404",
+            },
+          ],
+          ratioLabelSingular: "analyse non conforme*",
+          ratioLabelPlural: "analyses non conformes*",
+          details:
+            "* Concentration > 0,1 µg/L lorsque le chlorothalonil R471811 était considéré pertinent (jusqu'en 2024). Le classement du Chlorothalonil R471811 en non pertinent en 2024 explique pourquoi il n'y a plus de non conformité à partir de 2025.",
+          valeurSanitaireLabel: "la limite sanitaire",
+        },
+      },
+      {
+        id: "metabolite_chloridazone_desphenyl",
+        nomAffichage: "Chloridazone desphényl",
+        disable: false,
+        enfants: [],
+        affichageBlocPageUDI: true,
+        description:
+          "Métabolite de la chloridazone, herbicide utilisé pour les betteraves.",
+        sousCategories: false,
+        unite: "µg/L",
+        resultatsDetails:
+          "* D'après les recommandations du Ministère de la Santé",
+        resultats: {
+          non_recherche: {
+            label: "Non recherché dans les 12 derniers mois",
+            couleur: "#cccccc",
+            couleurAlt: "#f7f7f7",
+            picto: null,
+          },
+          non_quantifie: {
+            label: "Non quantifié",
+            couleur: "#74c476",
+            couleurAlt: "#c7e9c0",
+            picto: null,
+          },
+          inf_limites: {
+            label: "Concentration ≤ 0,1 µg/L",
+            couleur: "#FFF33B",
+            couleurAlt: "#FFF33B",
+            picto: null,
+          },
+          sup_limite_qualite: {
+            label:
+              "Concentration > 0,1 µg/L (dépassement de la limite de qualité, eau non conforme)",
+            couleur: "#fe9929",
+            couleurAlt: "#fe9929",
+            picto: "warning",
+          },
+          sup_valeur_sanitaire: {
+            label:
+              "Concentration > 11 µg/L (dépassement de la valeur sanitaire maximale (Vmax), eau devant être déconseillée à la consommation*)",
+            couleur: "#f03b20",
+            couleurAlt: "#bd0026",
+            picto: "red cross",
+          },
+        },
+        resultatsAnnuels: {
+          nonRechercheLabel: "Aucune recherche dans l'année",
+          nonRechercheCouleur: "#d9d9d9",
+          nonRechercheCouleurAlt: "#f7f7f7",
+          ratioLimites: [
+            {
+              limite: 0,
+              label: "0%",
+              couleur: "#ffffd4",
+              couleurAlt: "#ffffd4",
+            },
+            {
+              limite: 0.25,
+              label: "≤ 25%",
+              couleur: "#fed98e",
+              couleurAlt: "#fed98e",
+            },
+            {
+              limite: 0.5,
+              label: "25 - 50%",
+              couleur: "#fe9929",
+              couleurAlt: "#fe9929",
+            },
+            {
+              limite: 0.75,
+              label: "50 - 75%",
+              couleur: "#d95f0e",
+              couleurAlt: "#d95f0e",
+            },
+            {
+              limite: 1,
+              label: "75 - 100%",
+              couleur: "#993404",
+              couleurAlt: "#993404",
+            },
+          ],
+          ratioLabelSingular: "analyse non conforme*",
+          ratioLabelPlural: "analyses non conformes*",
+          details: "* Concentration > 0,1 µg/L",
+          valeurSanitaireLabel: "la limite sanitaire",
+        },
+      },
+      {
+        id: "metabolite_chloridazone_methyl_desphenyl",
+        nomAffichage: "Chloridazone methyl desphényl",
+        disable: false,
+        enfants: [],
+        affichageBlocPageUDI: true,
+        description: "Autre métabolite de la chloridazone.",
+        sousCategories: false,
+        unite: "µg/L",
+        resultatsDetails: "* D'après les instructions du Ministère de la Santé",
+        resultats: {
+          non_recherche: {
+            label: "Non recherché dans les 12 derniers mois",
+            couleur: "#cccccc",
+            couleurAlt: "#f7f7f7",
+            picto: null,
+          },
+          non_quantifie: {
+            label: "Non quantifié",
+            couleur: "#74c476",
+            couleurAlt: "#c7e9c0",
+            picto: null,
+          },
+          inf_limites: {
+            label: "Concentration ≤ 0,1 µg/L",
+            couleur: "#FFF33B",
+            couleurAlt: "#FFF33B",
+            picto: null,
+          },
+          sup_limite_qualite: {
+            label:
+              "Concentration > 0,1 µg/L (dépassement de la limite de qualité, eau non conforme)",
+            couleur: "#fe9929",
+            couleurAlt: "#fe9929",
+            picto: "warning",
+          },
+          sup_valeur_sanitaire: {
+            label:
+              "Concentration > 110 µg/L (dépassement de la valeur sanitaire maximale (Vmax), eau devant être déconseillée à la consommation*)",
+            couleur: "#f03b20",
+            couleurAlt: "#bd0026",
+            picto: "red cross",
+          },
+        },
+        resultatsAnnuels: {
+          nonRechercheLabel: "Aucune recherche dans l'année",
+          nonRechercheCouleur: "#d9d9d9",
+          nonRechercheCouleurAlt: "#f7f7f7",
+          ratioLimites: [
+            {
+              limite: 0,
+              label: "0%",
+              couleur: "#ffffd4",
+              couleurAlt: "#ffffd4",
+            },
+            {
+              limite: 0.25,
+              label: "≤ 25%",
+              couleur: "#fed98e",
+              couleurAlt: "#fed98e",
+            },
+            {
+              limite: 0.5,
+              label: "25 - 50%",
+              couleur: "#fe9929",
+              couleurAlt: "#fe9929",
+            },
+            {
+              limite: 0.75,
+              label: "50 - 75%",
+              couleur: "#d95f0e",
+              couleurAlt: "#d95f0e",
+            },
+            {
+              limite: 1,
+              label: "75 - 100%",
+              couleur: "#993404",
+              couleurAlt: "#993404",
+            },
+          ],
+          ratioLabelSingular: "analyse non conforme*",
+          ratioLabelPlural: "analyses non conformes*",
+          details: "* Concentration > 0,1 µg/L",
+          valeurSanitaireLabel: "la limite sanitaire",
+        },
+      },
+      {
+        id: "metabolite_atrazine_desethyl",
+        nomAffichage: "Atrazine déséthyl",
+        disable: false,
+        enfants: [],
+        affichageBlocPageUDI: true,
+        description:
+          "Métabolite de l'atrazine, herbicide interdit depuis 2003.",
+        sousCategories: false,
+        unite: "µg/L",
+        resultatsDetails: "* D'après les instructions du Ministère de la Santé",
+        resultats: {
+          non_recherche: {
+            label: "Non recherché dans les 12 derniers mois",
+            couleur: "#cccccc",
+            couleurAlt: "#f7f7f7",
+            picto: null,
+          },
+          non_quantifie: {
+            label: "Non quantifié",
+            couleur: "#74c476",
+            couleurAlt: "#c7e9c0",
+            picto: null,
+          },
+          inf_limites: {
+            label: "Concentration ≤ 0,1 µg/L",
+            couleur: "#FFF33B",
+            couleurAlt: "#FFF33B",
+            picto: null,
+          },
+          sup_limite_qualite: {
+            label:
+              "Concentration > 0,1 µg/L (dépassement de la limite de qualité, eau non conforme)",
+            couleur: "#fe9929",
+            couleurAlt: "#fe9929",
+            picto: "warning",
+          },
+          sup_valeur_sanitaire: {
+            label:
+              "Concentration > 60 µg/L (dépassement de la valeur sanitaire maximale (Vmax), eau devant être déconseillée à la consommation*)",
+            couleur: "#f03b20",
+            couleurAlt: "#bd0026",
+            picto: "red cross",
+          },
+        },
+        resultatsAnnuels: {
+          nonRechercheLabel: "Aucune recherche dans l'année",
+          nonRechercheCouleur: "#d9d9d9",
+          nonRechercheCouleurAlt: "#f7f7f7",
+          ratioLimites: [
+            {
+              limite: 0,
+              label: "0%",
+              couleur: "#ffffd4",
+              couleurAlt: "#ffffd4",
+            },
+            {
+              limite: 0.25,
+              label: "≤ 25%",
+              couleur: "#fed98e",
+              couleurAlt: "#fed98e",
+            },
+            {
+              limite: 0.5,
+              label: "25 - 50%",
+              couleur: "#fe9929",
+              couleurAlt: "#fe9929",
+            },
+            {
+              limite: 0.75,
+              label: "50 - 75%",
+              couleur: "#d95f0e",
+              couleurAlt: "#d95f0e",
+            },
+            {
+              limite: 1,
+              label: "75 - 100%",
+              couleur: "#993404",
+              couleurAlt: "#993404",
+            },
+          ],
+          ratioLabelSingular: "analyse non conforme*",
+          ratioLabelPlural: "analyses non conformes*",
+          details: "* Concentration > 0,1 µg/L",
+          valeurSanitaireLabel: "la limite sanitaire",
+        },
+      },
+      {
+        id: "pesticide_total",
+        nomAffichage: "Total pesticides",
+        disable: false,
+        enfants: [],
+        affichageBlocPageUDI: true,
+        description:
+          "Somme des concentrations de toutes les substances actives et métabolites pertinents quantifiés.",
+        unite: "µg/L",
+        resultatsDetails:
+          "* Somme recalculée des substances actives et des métabolites pertinents quantifiés lors de chaque prélèvement.",
+        resultats: {
+          non_recherche: {
+            label: "Aucune recherche de pesticides dans les 12 derniers mois",
+            couleur: "#cccccc",
+            couleurAlt: "#f7f7f7",
+            picto: null,
+          },
+          inf_limites: {
+            label: "Total pesticides ≤ 0,5 µg/L (eau conforme)",
+            couleur: "#74c476",
+            couleurAlt: "#c7e9c0",
+            picto: null,
+          },
+          sup_limite_qualite: {
+            label: "Total pesticides > 0,5 µg/L (eau non conforme)",
+            couleur: "#fe9929",
+            couleurAlt: "#fe9929",
+            picto: "warning",
+          },
+        },
+        resultatsAnnuels: {
+          nonRechercheLabel: "Aucune recherche dans l'année",
+          nonRechercheCouleur: "#d9d9d9",
+          nonRechercheCouleurAlt: "#f7f7f7",
+          ratioLimites: [
+            {
+              limite: 0,
+              label: "0%",
+              couleur: "#ffffd4",
+              couleurAlt: "#ffffd4",
+            },
+            {
+              limite: 0.25,
+              label: "≤ 25%",
+              couleur: "#fed98e",
+              couleurAlt: "#fed98e",
+            },
+            {
+              limite: 0.5,
+              label: "25 - 50%",
+              couleur: "#fe9929",
+              couleurAlt: "#fe9929",
+            },
+            {
+              limite: 0.75,
+              label: "50 - 75%",
+              couleur: "#d95f0e",
+              couleurAlt: "#d95f0e",
+            },
+            {
+              limite: 1,
+              label: "75 - 100%",
+              couleur: "#993404",
+              couleurAlt: "#993404",
+            },
+          ],
+          ratioLabelSingular: "analyse non conforme*",
+          ratioLabelPlural: "analyses non conformes*",
+          details:
+            "* Total pesticides réglementaire (paramètre PESTOT) > 0,5 µg/L",
+        },
       },
     ],
   },

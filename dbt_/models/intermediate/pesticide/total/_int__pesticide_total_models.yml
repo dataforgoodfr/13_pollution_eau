@@ -1,0 +1,172 @@
+models:
+  - name: int__resultats_pesticide_total_commune_annuel
+    description: Total pesticide (PESTOT) par commune pour la temporalité 'bilan_annuel'.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - inseecommune
+            - annee
+    columns:
+      - name: inseecommune
+        description: "Code INSEE de la commune"
+        type: VARCHAR
+        tests:
+          - not_null
+      - name: annee
+        description: "Année du prélèvement"
+        type: SMALLINT
+      - name: categorie
+        description: "Catégorie du paramètre analysé (ici, toujours 'pesticide_total')."
+        type: VARCHAR
+        tests:
+          - accepted_values:
+              values:
+                - "pesticide_total"
+      - name: periode
+        description: "Période du résultat"
+        type: VARCHAR
+        tests:
+          - dbt_utils.expression_is_true:
+              expression: "LIKE 'bilan_annuel%'"
+      - name: nb_prelevements
+        description: "Nombre de prélèvements total avec PESTOT mesuré"
+        type: INTEGER
+      - name: ratio
+        description: "Proportion de prélèvements où PESTOT > 0.5 µg/L"
+        type: FLOAT
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              max_value: 1
+      - name: parametres_detectes
+        description: "JSON contenant la valeur maximale de PESTOT sur l'année."
+        type: JSON
+      - name: date_dernier_prel
+        description: "Date du dernier prélèvement de l'année"
+        type: TIMESTAMP
+
+  - name: int__resultats_pesticide_total_commune_dernier
+    description: Total pesticide recalculé par commune pour la temporalité 'derniers prélèvements'.
+    columns:
+      - name: inseecommune
+        description: "Code INSEE de la commune"
+        type: VARCHAR
+        tests:
+          - not_null
+          - unique
+      - name: categorie
+        description: "Catégorie du paramètre analysé (ici, toujours 'pesticide_total')."
+        type: VARCHAR
+        tests:
+          - accepted_values:
+              values:
+                - "pesticide_total"
+      - name: periode
+        description: "Période d'analyse des prélèvements (ici, toujours 'dernier_prel')."
+        type: VARCHAR
+        tests:
+          - accepted_values:
+              values: ["dernier_prel"]
+      - name: date_dernier_prel
+        description: "Date et heure du dernier prélèvement pris en compte dans l'analyse."
+        type: TIMESTAMP
+        tests:
+          - not_null
+      - name: resultat
+        description: "Interprétation du résultat."
+        type: VARCHAR
+        tests:
+          - accepted_values:
+              values:
+                - "inf_limites"
+                - "sup_limite_qualite"
+      - name: parametres_detectes
+        description: "JSON contenant le total pesticide recalculé (TOTALPESTICIDE)."
+        type: JSON
+
+  - name: int__resultats_pesticide_total_udi_annuel
+    description: Total pesticide (PESTOT) par UDI pour la temporalité 'bilan_annuel'.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - cdreseau
+            - annee
+    columns:
+      - name: cdreseau
+        description: "Code de l'installation (UDI)."
+        type: VARCHAR
+        tests:
+          - not_null
+      - name: annee
+        description: "Année du prélèvement"
+        type: SMALLINT
+      - name: categorie
+        description: "Catégorie du paramètre analysé (ici, toujours 'pesticide_total')."
+        type: VARCHAR
+        tests:
+          - accepted_values:
+              values:
+                - "pesticide_total"
+      - name: periode
+        description: "Période du résultat"
+        type: VARCHAR
+        tests:
+          - dbt_utils.expression_is_true:
+              expression: "LIKE 'bilan_annuel%'"
+      - name: nb_prelevements
+        description: "Nombre de prélèvements total avec PESTOT mesuré"
+        type: INTEGER
+      - name: ratio
+        description: "Proportion de prélèvements où PESTOT > 0.5 µg/L"
+        type: FLOAT
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              max_value: 1
+      - name: parametres_detectes
+        description: "JSON contenant la valeur maximale de PESTOT sur l'année."
+        type: JSON
+      - name: date_dernier_prel
+        description: "Date du dernier prélèvement de l'année"
+        type: TIMESTAMP
+
+  - name: int__resultats_pesticide_total_udi_dernier
+    description: Total pesticide recalculé par UDI pour la temporalité 'derniers prélèvements'.
+    columns:
+      - name: cdreseau
+        description: "Code de l'installation (UDI)."
+        type: VARCHAR
+        tests:
+          - not_null
+          - unique
+      - name: categorie
+        description: "Catégorie du paramètre analysé (ici, toujours 'pesticide_total')."
+        type: VARCHAR
+        tests:
+          - accepted_values:
+              values:
+                - "pesticide_total"
+      - name: periode
+        description: "Période d'analyse des prélèvements (ici, toujours 'dernier_prel')."
+        type: VARCHAR
+        tests:
+          - accepted_values:
+              values: ["dernier_prel"]
+      - name: date_dernier_prel
+        description: "Date et heure du dernier prélèvement pris en compte dans l'analyse."
+        type: TIMESTAMP
+        tests:
+          - not_null
+      - name: resultat
+        description: "Interprétation du résultat."
+        type: VARCHAR
+        tests:
+          - accepted_values:
+              values:
+                - "inf_limites"
+                - "sup_limite_qualite"
+      - name: parametres_detectes
+        description: "JSON contenant le total pesticide recalculé (TOTALPESTICIDE)."
+        type: JSON

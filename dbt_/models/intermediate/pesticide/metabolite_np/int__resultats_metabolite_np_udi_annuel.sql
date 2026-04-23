@@ -2,7 +2,7 @@ WITH
 metabolite_prels AS (
     SELECT DISTINCT
         de_partition AS annee,
-        inseecommune,
+        cdreseau,
         referenceprel,
         datetimeprel,
         cdparametresiseeaux,
@@ -15,12 +15,14 @@ metabolite_prels AS (
         categorie = 'pesticide'
         AND
         categorie_2 = 'metabolite'
+        AND
+        categorie_3 = 'non_pertinent'
 )
 
 SELECT
-    inseecommune,
+    cdreseau,
     annee,
-    'metabolite' AS categorie,
+    'metabolite_np' AS categorie,
     'bilan_annuel_' || annee AS periode,
     COUNT(
         DISTINCT
@@ -118,4 +120,4 @@ SELECT
 
 FROM metabolite_prels
 
-GROUP BY inseecommune, annee
+GROUP BY cdreseau, annee

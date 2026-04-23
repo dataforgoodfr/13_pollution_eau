@@ -31,6 +31,11 @@ on:
         required: false
         type: boolean
         default: false
+      force_deploy:
+        description: "Force push to Clever Cloud (use if deployment history diverged)"
+        required: false
+        type: boolean
+        default: false
       reason:
         description: "Reason for manual execution"
         required: true
@@ -169,6 +174,7 @@ jobs:
         uses: 47ng/actions-clever-cloud@v2.1.0
         with:
           appID: ${{ env.ENV == 'prod' && secrets.CLEVER_APP_ID_PROD || secrets.CLEVER_APP_ID_DEV }}
+          force: ${{ github.event.inputs.force_deploy == 'true' }}
           sameCommitPolicy: rebuild
           setEnv: | # <- keep the pipe here
             CC_DOCKERFILE=Dockerfile.clevercloud

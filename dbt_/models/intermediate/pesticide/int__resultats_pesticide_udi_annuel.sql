@@ -1,13 +1,6 @@
-{{
-  config(
-    materialized='table'
-  )
-}}
--- takes too long to run, so we materialize it as a table
-
 WITH
 pesticide_prels AS (
-    SELECT DISTINCT
+    SELECT
         de_partition AS annee,
         cdreseau,
         referenceprel,
@@ -17,7 +10,7 @@ pesticide_prels AS (
         limite_qualite,
         valeur_sanitaire_1
     FROM
-        {{ ref('int__resultats_udi_communes') }}
+        {{ ref('int__resultats_udi') }}
     WHERE
         categorie = 'pesticide'
 )

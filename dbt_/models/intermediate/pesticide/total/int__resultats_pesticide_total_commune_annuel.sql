@@ -1,13 +1,13 @@
 WITH
 pestot_prels AS (
-    SELECT DISTINCT
+    SELECT
         de_partition AS annee,
         inseecommune,
         referenceprel,
         datetimeprel,
         valtraduite
     FROM
-        {{ ref('int__resultats_udi_communes') }}
+        {{ ref('int__resultats_communes') }}
     WHERE
         categorie = 'pesticide'
         AND cdparametresiseeaux = 'PESTOT'

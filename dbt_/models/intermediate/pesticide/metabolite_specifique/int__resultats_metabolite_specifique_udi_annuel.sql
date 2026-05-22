@@ -1,6 +1,6 @@
 WITH
 metabolite_specifique_prels AS (
-    SELECT DISTINCT
+    SELECT
         de_partition AS annee,
         cdreseau,
         referenceprel,
@@ -19,7 +19,7 @@ metabolite_specifique_prels AS (
             WHEN cdparametresiseeaux = 'ADET' THEN 'metabolite_atrazine_desethyl'
         END AS type_metabolite
     FROM
-        {{ ref('int__resultats_udi_communes') }}
+        {{ ref('int__resultats_udi') }}
     WHERE
         categorie = 'pesticide'
         AND

@@ -1,6 +1,6 @@
 WITH
 metabolite_prels AS (
-    SELECT DISTINCT
+    SELECT
         de_partition AS annee,
         inseecommune,
         referenceprel,
@@ -10,7 +10,7 @@ metabolite_prels AS (
         limite_qualite,
         valeur_sanitaire_1
     FROM
-        {{ ref('int__resultats_udi_communes') }}
+        {{ ref('int__resultats_communes') }}
     WHERE
         categorie = 'pesticide'
         AND

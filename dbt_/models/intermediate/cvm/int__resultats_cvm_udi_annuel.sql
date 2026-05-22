@@ -1,10 +1,9 @@
 WITH
 cvm_prels AS (
-    -- Certains prélèvements ont plusieurs analyses pour la même substance
-    -- C'est très rare pour les CVM (de l'ordre d'une dizaine de cas)
-    -- Le SELECT DISTINCT ne dédoublonne pas ces cas là
-    -- Donc il n'y a pas d'unicité sur referenceprel dans cetre requête
-    SELECT DISTINCT
+    -- Certains prélèvements ont plusieurs analyses pour la même substance.
+    -- Il n'y a donc pas d'unicité sur referenceprel dans cette requête,
+    -- mais COUNT(DISTINCT referenceprel) dans le SELECT final gère ce cas.
+    SELECT
         de_partition AS annee,
         cdreseau,
         referenceprel,
@@ -12,7 +11,7 @@ cvm_prels AS (
         limite_qualite,
         valtraduite
     FROM
-        {{ ref('int__resultats_udi_communes') }}
+        {{ ref('int__resultats_udi') }}
     WHERE
         categorie = 'cvm'
 )

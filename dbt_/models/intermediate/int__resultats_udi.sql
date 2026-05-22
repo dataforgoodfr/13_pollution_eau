@@ -1,8 +1,15 @@
+{{
+  config(
+    materialized='table'
+  )
+}}
+
 WITH resultats AS (
     SELECT
         referenceprel,
         cdparametresiseeaux,
         cdparametre,
+        referenceanl,
         de_partition,
 
         -- Correction de la colonne valtraduite qui contient les valeurs
@@ -23,15 +30,6 @@ WITH resultats AS (
             ELSE valtraduite
         END AS valtraduite
 
-        --  On n'utilise plus limitequal des données d'origine
-        -- car on se base sur des valeurs fournies par Générations Futures
-        --
-        -- CAST(
-        --     REGEXP_EXTRACT(
-        --         REPLACE(limitequal, ',', '.'), '-?\d+(\.\d+)?'
-        --     ) AS FLOAT
-        -- ) AS limitequal_float,
-        -- REGEXP_EXTRACT(limitequal, '[a-zA-Zµg]+/?[a-zA-Z/L]+$') AS unite
     FROM
         {{ ref("stg_edc__resultats") }}
 ),
@@ -54,11 +52,11 @@ resultats_with_ref AS (
             resultats.cdparametresiseeaux = r.cdparametresiseeaux
 )
 
-
+-- Grain : (referenceprel, cdparametresiseeaux, referenceanl, de_partition, cdreseau)
+-- Pas de jointure commune — pas de duplication par inseecommune.
 SELECT
     resultats_with_ref.*,
-    udi.cdreseau,
-    udi.inseecommune,
+    plv.cdreseau,
     plv.datetimeprel
 FROM
     resultats_with_ref
@@ -68,9 +66,3 @@ INNER JOIN
         resultats_with_ref.referenceprel = plv.referenceprel
         AND
         resultats_with_ref.de_partition = plv.de_partition
-
-LEFT JOIN
-    {{ ref("int__lien_commune_cdreseau") }} AS udi
-    ON
-        plv.cdreseau = udi.cdreseau
-        AND plv.de_partition = udi.de_partition

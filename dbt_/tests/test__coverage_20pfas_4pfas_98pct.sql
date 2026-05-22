@@ -22,7 +22,7 @@ WITH yearly_pfas_results AS (
                     THEN cdparametresiseeaux
             END
         ) AS count_4_pfas
-    FROM {{ ref('int__resultats_udi_communes') }}
+    FROM {{ ref('int__resultats_udi') }}
     WHERE
         categorie = 'pfas'
         AND CURRENT_DATE - datetimeprel < INTERVAL 1 YEAR

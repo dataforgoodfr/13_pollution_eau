@@ -3,6 +3,7 @@ import os
 
 import boto3
 import pandas as pd
+from boto3.s3.transfer import TransferConfig
 from botocore.client import Config
 from botocore.exceptions import ClientError
 from tqdm import tqdm
@@ -11,6 +12,13 @@ from pipelines.utils.logger import get_logger
 
 logger = get_logger(__name__)
 """Client class to interact with Scaleway Object Storage."""
+
+
+_UPLOAD_TRANSFER_CONFIG = TransferConfig(
+    multipart_chunksize=64 * 1024 * 1024,
+    max_concurrency=10,
+    use_threads=True,
+)
 
 
 class ObjectStorageClient:
@@ -89,6 +97,7 @@ class ObjectStorageClient:
                 self.bucket_name,
                 file_key,
                 ExtraArgs={"ACL": "public-read"} if public_read else None,
+                Config=_UPLOAD_TRANSFER_CONFIG,
             )
             url = f"https://{self.bucket_name}.{self.endpoint_url.split('https://')[1]}/{file_key}"
             return url

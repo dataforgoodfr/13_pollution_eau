@@ -18,6 +18,6 @@ sources:
     database: data
     schema: main
     tables:
-      - name: atlasante_udi_2023
-      - name: atlasante_udi_corse
+      # - name: atlasante_udi_2023
+      # - name: atlasante_udi_corse
       - name: atlasante_udi_2024

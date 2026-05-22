@@ -8,12 +8,12 @@ WITH combined_data AS (
     -- SELECT
     --     code_udi,
     --     geom
-    -- FROM {{ ref("stg_atlasante_udi_2023") }}
+    -- FROM { ref("stg_atlasante_udi_2023") }
     -- UNION ALL
     -- SELECT
     --     cn_udi AS code_udi,
     --     geom
-    -- FROM {{ ref("stg_atlasante_udi_corse") }}
+    -- FROM { ref("stg_atlasante_udi_corse") }
 
     SELECT
         code_udi,

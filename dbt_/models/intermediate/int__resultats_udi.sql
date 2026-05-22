@@ -50,19 +50,67 @@ resultats_with_ref AS (
         {{ ref("int__valeurs_de_reference") }} AS r
         ON
             resultats.cdparametresiseeaux = r.cdparametresiseeaux
+),
+
+-- Reclassements "pertinent → non_pertinent" intervenus au fil des années. Le seed
+-- references_generations_futures porte l'état actuel (non_pertinent : limite_qualite
+-- NULL, limite_indicative = 0.9 µg/L). Pour les années antérieures au reclassement,
+-- on ré-écrit ici categorie_3 = 'pertinent', limite_qualite = 0.1 µg/L et
+-- limite_indicative = NULL, afin que tous les modèles aval voient l'état historique.
+--
+-- Liste des reclassements :
+-- - Chlorothalonil R471811 (471811R, R471811) : changement en 2025.
+-- - ESA métolachlore (ESAMTC, MTCESA) : changement en 2023.
+-- - Metolachlor NOA 413173 (MTCNOA, NOAMTC) : changement en 2023.
+-- - OXA métolachlore (OXAMTC, MTCOXA) : changement en 2022.
+
+resultats_with_overrides AS (
+    SELECT
+        * EXCLUDE (categorie_3, limite_qualite, limite_indicative),
+        CASE
+            WHEN
+                cdparametresiseeaux IN ('471811R', 'R471811') AND de_partition < 2025
+                THEN 'pertinent'
+            WHEN
+                cdparametresiseeaux IN ('ESAMTC', 'MTCESA') AND de_partition < 2023
+                THEN 'pertinent'
+            WHEN
+                cdparametresiseeaux IN ('MTCNOA', 'NOAMTC') AND de_partition < 2023
+                THEN 'pertinent'
+            WHEN
+                cdparametresiseeaux IN ('OXAMTC', 'MTCOXA') AND de_partition < 2022
+                THEN 'pertinent'
+            ELSE categorie_3
+        END AS categorie_3,
+        CASE
+            WHEN cdparametresiseeaux IN ('471811R', 'R471811') AND de_partition < 2025 THEN 0.1
+            WHEN cdparametresiseeaux IN ('ESAMTC', 'MTCESA') AND de_partition < 2023 THEN 0.1
+            WHEN cdparametresiseeaux IN ('MTCNOA', 'NOAMTC') AND de_partition < 2023 THEN 0.1
+            WHEN cdparametresiseeaux IN ('OXAMTC', 'MTCOXA') AND de_partition < 2022 THEN 0.1
+            ELSE limite_qualite
+        END AS limite_qualite,
+        CASE
+            WHEN cdparametresiseeaux IN ('471811R', 'R471811') AND de_partition < 2025 THEN NULL
+            WHEN cdparametresiseeaux IN ('ESAMTC', 'MTCESA') AND de_partition < 2023 THEN NULL
+            WHEN cdparametresiseeaux IN ('MTCNOA', 'NOAMTC') AND de_partition < 2023 THEN NULL
+            WHEN cdparametresiseeaux IN ('OXAMTC', 'MTCOXA') AND de_partition < 2022 THEN NULL
+            ELSE limite_indicative
+        END AS limite_indicative
+    FROM resultats_with_ref
 )
 
--- Grain : (referenceprel, cdparametresiseeaux, referenceanl, de_partition, cdreseau)
--- Pas de jointure commune — pas de duplication par inseecommune.
+-- Granularité : (referenceprel, cdparametresiseeaux, referenceanl, cdreseau)
+-- Un prélèvement (referenceprel) peut être associé à plusieurs UDI (cdreseau) via
+-- la table int__lien_cdreseau_refreneceprel
 SELECT
-    resultats_with_ref.*,
+    resultats_with_overrides.*,
     plv.cdreseau,
     plv.datetimeprel
 FROM
-    resultats_with_ref
+    resultats_with_overrides
 INNER JOIN
     {{ ref("int__lien_cdreseau_refreneceprel") }} AS plv
     ON
-        resultats_with_ref.referenceprel = plv.referenceprel
+        resultats_with_overrides.referenceprel = plv.referenceprel
         AND
-        resultats_with_ref.de_partition = plv.de_partition
+        resultats_with_overrides.de_partition = plv.de_partition

@@ -40,32 +40,42 @@ prel_dans_communes AS (
 )
 
 -- La source doit avoir exactement 1 ligne
-SELECT 'stg_edc__resultats' AS modele, 'nb_lignes attendu = 1, obtenu = ' || nb_lignes AS message
+SELECT
+    'stg_edc__resultats' AS modele,
+    'nb_lignes attendu = 1, obtenu = ' || nb_lignes AS message
 FROM prel_dans_source
 WHERE nb_lignes != 1
 
 UNION ALL
 
 -- int__resultats_udi : 2 lignes (1 par UDI, sans duplication par commune)
-SELECT 'int__resultats_udi' AS modele, 'nb_lignes attendu = 2, obtenu = ' || nb_lignes AS message
+SELECT
+    'int__resultats_udi' AS modele,
+    'nb_lignes attendu = 2, obtenu = ' || nb_lignes AS message
 FROM prel_dans_udi
 WHERE nb_lignes != 2
 
 UNION ALL
 
-SELECT 'int__resultats_udi' AS modele, 'nb_udis attendu = 2, obtenu = ' || nb_udis AS message
+SELECT
+    'int__resultats_udi' AS modele,
+    'nb_udis attendu = 2, obtenu = ' || nb_udis AS message
 FROM prel_dans_udi
 WHERE nb_udis != 2
 
 UNION ALL
 
 -- int__resultats_communes : 4 lignes (1 par commune, sans duplication par UDI)
-SELECT 'int__resultats_communes' AS modele, 'nb_lignes attendu = 4, obtenu = ' || nb_lignes AS message
+SELECT
+    'int__resultats_communes' AS modele,
+    'nb_lignes attendu = 4, obtenu = ' || nb_lignes AS message
 FROM prel_dans_communes
 WHERE nb_lignes != 4
 
 UNION ALL
 
-SELECT 'int__resultats_communes' AS modele, 'nb_communes attendu = 4, obtenu = ' || nb_communes AS message
+SELECT
+    'int__resultats_communes' AS modele,
+    'nb_communes attendu = 4, obtenu = ' || nb_communes AS message
 FROM prel_dans_communes
 WHERE nb_communes != 4

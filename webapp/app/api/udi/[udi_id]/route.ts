@@ -34,10 +34,9 @@ async function GetUDIAdministrativeData(udi_id: string): Promise<UDI | null> {
     };
 
     const prepared1 = await connection.prepare(`
-      SELECT distinct ins_nom, uge_nom , inseecommune, nomcommune
-      FROM atlasante_udi 
-      join int__lien_commune_cdreseau on cdreseau = code_udi
-      WHERE code_udi = $1::VARCHAR      
+      SELECT distinct nomreseaux , inseecommune, nomcommune
+      FROM int__lien_commune_cdreseau 
+      WHERE cdreseau = $1::VARCHAR      
     `);
 
     const prepared2 = await connection.prepare(`
@@ -54,8 +53,8 @@ async function GetUDIAdministrativeData(udi_id: string): Promise<UDI | null> {
     if (result.currentRowCount > 0) {
       const rows = result.getRowObjects();
 
-      if (rows[0].uge_nom) {
-        retUDI.nom = rows[0].uge_nom.toString();
+      if (rows[0].nomreseaux) {
+        retUDI.nom = rows[0].nomreseaux.toString();
       } else {
         throw new Error("UDI doit avoir un nom !");
       }

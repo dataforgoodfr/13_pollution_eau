@@ -1,3 +1,9 @@
+{{
+  config(
+    materialized='table'
+  )
+}}
+
 WITH combined_data AS (
     -- SELECT
     --     code_udi,
@@ -29,6 +35,7 @@ ranked_data AS (
 
 SELECT
     code_udi,
+    geom AS geom_original,
     ST_ASGEOJSON(geom) AS geom
 FROM ranked_data
 WHERE row_num = 1

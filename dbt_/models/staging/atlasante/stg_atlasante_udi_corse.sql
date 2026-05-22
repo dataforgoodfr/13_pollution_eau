@@ -1,3 +1,5 @@
+{{ config(enabled=false) }}
+
 SELECT
     gid::INTEGER AS gid,
     cn_udi::VARCHAR AS cn_udi,

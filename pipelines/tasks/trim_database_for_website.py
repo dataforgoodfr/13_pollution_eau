@@ -30,7 +30,7 @@ DEFAULT_WEBSITE_TABLES = [
     "web__stats_udi",
     "web__franceinfo",
     "cog_communes",
-    "atlasante_udi",
+    "int__udi_geom",
     "int__lien_commune_cdreseau",
     "int__valeurs_de_reference",
 ]

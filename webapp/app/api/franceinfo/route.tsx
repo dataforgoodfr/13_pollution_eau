@@ -69,9 +69,8 @@ export async function GET(req: NextRequest) {
     // Find the UDI for the given coordinates
     const udiPrepared = await connection.prepare(`
       SELECT code_udi
-      FROM atlasante_udi
-      WHERE ST_Contains(geom, ST_GeomFromText($1::VARCHAR))
-      ORDER BY udi_pop DESC
+      FROM int__udi_geom
+      WHERE ST_Contains(geom_original, ST_GeomFromText($1::VARCHAR))
       LIMIT 1
     `);
 

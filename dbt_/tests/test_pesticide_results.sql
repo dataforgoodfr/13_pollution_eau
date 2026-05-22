@@ -10,32 +10,40 @@ FROM
 WHERE
     (
         cdreseau = '001000277'
-        AND date_dernier_prel = TIMESTAMP '2025-01-22 11:24:00'
+        AND date_dernier_prel = TIMESTAMP '2025-10-24 10:20:00'
         AND resultat != 'inf_limite_qualite'
     )
     OR
     (
+        -- total_pesticide > 0.5 sur le dernier prel
         cdreseau = '061000423'
-        AND date_dernier_prel = TIMESTAMP '2025-06-16 12:30:00'
-        AND resultat != 'sup_valeur_sanitaire'
+        AND date_dernier_prel = TIMESTAMP '2026-03-10 11:05:00'
+        AND resultat != 'sup_limite_qualite'
     )
     OR
     (
-        cdreseau = '063001557'
-        AND date_dernier_prel = TIMESTAMP '2025-03-28 09:32:00'
+        cdreseau = '043001415'
+        AND date_dernier_prel = TIMESTAMP '2026-03-31 09:54:00'
         AND resultat != 'non_quantifie'
     )
     OR
     (
         cdreseau = '089000445'
-        AND date_dernier_prel = TIMESTAMP '2025-03-28 09:19:00'
+        AND date_dernier_prel = TIMESTAMP '2025-12-19 10:13:00'
         AND resultat != 'inf_limite_qualite'
     )
     OR
     (
         cdreseau = '034000996'
-        AND date_dernier_prel = TIMESTAMP '2025-06-20 09:27:00'
+        AND date_dernier_prel = TIMESTAMP '2026-01-23 10:03:00'
         AND resultat != 'sup_limite_qualite'
+    )
+    OR
+    (
+        -- DTERB = 0.158 > valeur_sanitaire_1 = 0.142
+        cdreseau = '007006251'
+        AND date_dernier_prel = TIMESTAMP '2026-03-20 12:10:00'
+        AND resultat != 'sup_valeur_sanitaire'
     )
 -- annuel udi
 UNION ALL

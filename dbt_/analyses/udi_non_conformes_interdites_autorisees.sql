@@ -60,7 +60,7 @@ autorisations AS (
         READ_CSV(
             '/Users/jgreze/Downloads/Fichier ref temporaire.csv'
         )
-    WHERE "Statut d'autorisation" IS NOT NULL
+    WHERE "Statut d'autorisation" IS NOT NULL -- noqa: RF05
 ),
 
 last_pvl_with_aut AS (

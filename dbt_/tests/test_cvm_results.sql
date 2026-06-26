@@ -89,7 +89,7 @@ WHERE
         cdreseau = '095004048'
         AND categorie = 'cvm'
         AND annee = '2024'
-        AND nb_prelevements != 21
+        AND nb_prelevements != 20
     )
     OR
     (

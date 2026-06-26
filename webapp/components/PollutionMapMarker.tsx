@@ -549,7 +549,7 @@ export default function PollutionMapMarker({
           {parsedValues && Object.keys(parsedValues).length > 0 && (
             <div className="mt-3 text-xs">
               <p className="font-medium mb-2">Substances quantifiées:</p>
-              {category === "pesticide" || category == "metabolite" ? (
+              {category === "pesticide" ? (
                 // Grouped display for pesticides
                 <div className="space-y-3 max-h-60 overflow-y-scroll">
                   {Object.entries(

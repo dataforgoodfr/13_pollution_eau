@@ -1,6 +1,6 @@
 WITH
 last_pvl AS (
-    SELECT DISTINCT
+    SELECT
         cdreseau,
         categorie,
         cdparametresiseeaux,
@@ -17,16 +17,18 @@ last_pvl AS (
             AS row_number
 
     FROM
-        {{ ref('int__resultats_udi_communes') }}
+        {{ ref('int__resultats_udi') }}
     WHERE
         categorie = 'pesticide'
         AND
         categorie_2 = 'metabolite'
         AND
+        categorie_3 = 'non_pertinent'
+        AND
         -- On garde les prélèvements de moins d'un an à partir du dernier prélèvement
         datetimeprel >= DATE_TRUNC('day', (
             SELECT MAX(sub.datetimeprel)
-            FROM {{ ref('int__resultats_udi_communes') }} AS sub
+            FROM {{ ref('int__resultats_udi') }} AS sub
         ) - INTERVAL 1 YEAR) + INTERVAL 1 DAY
 ),
 
@@ -35,9 +37,7 @@ aggregated AS (
         cdreseau,
         cdparametresiseeaux,
         MAX(valtraduite) AS valtraduite,
-        MAX(limite_qualite) AS limite_qualite,
         MAX(limite_indicative) AS limite_indicative,
-        MAX(valeur_sanitaire_1) AS valeur_sanitaire_1,
         MAX(datetimeprel) AS datetimeprel
     FROM last_pvl
     WHERE row_number = 1
@@ -46,28 +46,20 @@ aggregated AS (
 
 SELECT
     cdreseau,
-    'metabolite' AS categorie,
+    'metabolite_np' AS categorie,
     'dernier_prel' AS periode,
     MAX(datetimeprel) AS date_dernier_prel,
     COUNT(DISTINCT cdparametresiseeaux) AS nb_parametres,
     CASE
         WHEN BOOL_AND(valtraduite IS NULL OR valtraduite = 0) THEN 'non_quantifie'
         WHEN
-            BOOL_OR(valtraduite IS NOT NULL AND valtraduite > valeur_sanitaire_1)
-            THEN 'sup_valeur_sanitaire'
-        WHEN
-            BOOL_OR(valtraduite IS NOT NULL AND valtraduite > limite_qualite)
-            THEN 'sup_limite_qualite'
-        WHEN
             BOOL_OR(valtraduite IS NOT NULL AND valtraduite > limite_indicative)
             THEN 'sup_limite_indicative'
         WHEN
-            BOOL_OR(
-                valtraduite IS NOT NULL
-                AND (limite_qualite IS NULL OR valtraduite <= limite_qualite)
-                AND (limite_indicative IS NULL OR valtraduite <= limite_indicative)
-                AND (limite_qualite IS NOT NULL OR limite_indicative IS NOT NULL)
-            )
+            BOOL_OR(valtraduite IS NOT NULL AND valtraduite > 0.1)
+            THEN 'inf_limites_sup_0_1'
+        WHEN
+            BOOL_OR(valtraduite IS NOT NULL AND valtraduite <= 0.1)
             THEN 'inf_limites'
         ELSE 'erreur'
     END AS resultat,

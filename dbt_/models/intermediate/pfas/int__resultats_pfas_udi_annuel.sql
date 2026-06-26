@@ -10,7 +10,7 @@ pfas_prels AS (
         valeur_sanitaire_1,
         valtraduite
     FROM
-        {{ ref('int__resultats_udi_communes') }}
+        {{ ref('int__resultats_udi') }}
     WHERE
         categorie = 'pfas'
 ),

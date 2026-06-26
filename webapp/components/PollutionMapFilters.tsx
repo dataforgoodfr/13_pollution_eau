@@ -76,6 +76,7 @@ export default function PollutionMapFilters({
 }: PollutionMapFiltersProps) {
   const availablePeriods = [
     { value: "dernier_prel", label: "Dernière analyse" },
+    { value: "bilan_annuel_2026", label: "Bilan des non-conformités en 2026" },
     { value: "bilan_annuel_2025", label: "Bilan des non-conformités en 2025" },
     { value: "bilan_annuel_2024", label: "Bilan des non-conformités en 2024" },
     { value: "bilan_annuel_2023", label: "Bilan des non-conformités en 2023" },

@@ -10,16 +10,16 @@ WITH latest_pfas_results AS (
         valtraduite,
         ROW_NUMBER() OVER (
             PARTITION BY cdreseau, cdparametresiseeaux
-            ORDER BY datetimeprel DESC
+            ORDER BY datetimeprel DESC, valtraduite DESC NULLS LAST
         ) AS row_number
-    FROM {{ ref('int__resultats_udi_communes') }}
+    FROM {{ ref('int__resultats_udi') }}
     WHERE
         categorie = 'pfas'
         AND
         -- On garde les prélèvements de moins d'un an à partir du dernier prélèvement
         datetimeprel >= DATE_TRUNC('day', (
             SELECT MAX(sub.datetimeprel)
-            FROM {{ ref('int__resultats_udi_communes') }} AS sub
+            FROM {{ ref('int__resultats_udi') }} AS sub
         ) - INTERVAL 1 YEAR) + INTERVAL 1 DAY
 ),
 

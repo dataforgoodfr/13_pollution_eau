@@ -30,6 +30,7 @@ models:
                 - bilan_annuel_2023
                 - bilan_annuel_2024
                 - bilan_annuel_2025
+                - bilan_annuel_2026
                 - dernier_prel
       - name: categorie
         description: "Catégorie du polluant analysé"
@@ -43,8 +44,11 @@ models:
                 - sub_indus_perchlorate
                 - sub_indus_14dioxane
                 - pesticide
+                - pes_total_reg
+                - pes_total_ts
                 - sub_active
-                - metabolite
+                - metabolite_np
+                - metabolite_p
                 - metabolite_esa_metolachlore
                 - metabolite_chlorothalonil_r471811
                 - metabolite_chloridazone_desphenyl
@@ -108,6 +112,7 @@ models:
                 - bilan_annuel_2023
                 - bilan_annuel_2024
                 - bilan_annuel_2025
+                - bilan_annuel_2026
                 - dernier_prel
       - name: categorie
         description: "Catégorie du polluant analysé"
@@ -121,8 +126,11 @@ models:
                 - sub_indus_perchlorate
                 - sub_indus_14dioxane
                 - pesticide
+                - pes_total_reg
+                - pes_total_ts
                 - sub_active
-                - metabolite
+                - metabolite_np
+                - metabolite_p
                 - metabolite_esa_metolachlore
                 - metabolite_chlorothalonil_r471811
                 - metabolite_chloridazone_desphenyl

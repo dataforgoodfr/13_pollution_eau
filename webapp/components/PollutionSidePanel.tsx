@@ -373,7 +373,7 @@ const getCategoryExplanation = (
         </>
       ),
     },
-    metabolite: {
+    metabolite_p: {
       title: "Métabolites",
       content: (
         <>

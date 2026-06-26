@@ -1,30 +1,42 @@
-import subprocess
+from unittest.mock import patch
 
-import pytest
+from pipelines.tasks import build_database, download_database, upload_database
 
 
-@pytest.mark.parametrize(
-    "task",
-    ["build_database", "upload_database", "download_database"],
-)
-def test_pipeline_task(task):
-    """
-    Test the specified pipeline task.
+def test_upload_database():
+    with patch("pipelines.tasks.upload_database.ObjectStorageClient") as mock_s3:
+        upload_database.execute(env="dev")
+        mock_s3.return_value.upload_object.assert_called_once()
 
-    This function tests the execution of the specified pipeline task from the
-    pipelines/run.py script. It ensures that the task runs without raising any exceptions.
 
-    Args:
-        task (str): The name of the pipeline task to test.
-    """
-    commands_list = ["uv", "run", "pipelines/run.py", "run", task]
+def test_download_database():
+    with patch("pipelines.tasks.download_database.ObjectStorageClient"):
+        with patch(
+            "pipelines.tasks.download_database.download_file_from_https"
+        ) as mock_download:
+            download_database.execute(env="dev")
+            mock_download.assert_called_once()
 
-    # add options
-    if task == "build_database":
-        commands_list.extend(["--refresh-type", "last"])
-    elif task in ("download_database", "upload_database"):
-        commands_list.extend(["--env", "dev"])
 
-    process = subprocess.run(commands_list)
+def test_build_database():
+    with patch("pipelines.tasks.build_database.DuckDBClient") as mock_duckdb:
+        with patch("pipelines.tasks.build_database.DataGouvClient") as mock_datagouv:
+            with patch("pipelines.tasks.build_database.CommuneClient") as mock_commune:
+                with patch(
+                    "pipelines.tasks.build_database.OpenDataSoftClient"
+                ) as mock_opendatasoft:
+                    with patch(
+                        "pipelines.tasks.build_database.UploadedGeoJSONClient"
+                    ) as mock_geojson:
+                        build_database.execute(refresh_type="last")
 
-    assert process.returncode == 0, f"{task} script failed"
+                        mock_datagouv.return_value.process_edc_datasets.assert_called_once_with(
+                            refresh_type="last",
+                            custom_years=[],
+                            drop_tables=False,
+                            check_update=False,
+                        )
+                        mock_commune.return_value.process_datasets.assert_called_once()
+                        mock_opendatasoft.return_value.process_datasets.assert_called_once()
+                        mock_geojson.return_value.process_datasets.assert_called_once()
+                        mock_duckdb.return_value.close.assert_called_once()

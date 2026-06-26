@@ -7,6 +7,7 @@ periodes AS (
         'bilan_annuel_2023',
         'bilan_annuel_2024',
         'bilan_annuel_2025',
+        'bilan_annuel_2026',
         'dernier_prel'
     ]) AS periode
 ),
@@ -19,8 +20,11 @@ categories AS (
         -- Les résultats pour le 1,4 dioxane sont ignorés pour l'instant
         --'sub_indus_14dioxane',
         'pesticide',
+        'pes_total_reg',
+        'pes_total_ts',
         'sub_active',
-        'metabolite',
+        'metabolite_np',
+        'metabolite_p',
         'metabolite_esa_metolachlore',
         'metabolite_chlorothalonil_r471811',
         'metabolite_chloridazone_desphenyl',

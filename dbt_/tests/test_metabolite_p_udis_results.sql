@@ -1,59 +1,63 @@
--- dernier udi
+-- dernier prélèvement
 SELECT
     'dernier_prel' AS periode,
     cdreseau,
     resultat,
-    0 AS ratio_limite_qualite,
-    0 AS nb_sup_valeur_sanitaire
+    0 AS nb_prelevements,
+    0 AS nb_depassements,
+    0 AS nb_sup_valeur_sanitaire,
+    0 AS ratio_limite_qualite
 FROM
-    {{ ref('int__resultats_metabolite_udi_dernier') }}
+    {{ ref('int__resultats_metabolite_p_udi_dernier') }}
 WHERE
     (
         cdreseau = '002001370'
-        AND date_dernier_prel = TIMESTAMP '2025-04-30 09:00:00'
+        AND date_dernier_prel = TIMESTAMP '2025-10-20 14:16:00'
         AND resultat != 'sup_limite_qualite'
     )
     OR
     (
         cdreseau = '051000766'
-        AND date_dernier_prel = TIMESTAMP '2025-04-29 12:07:00'
+        AND date_dernier_prel = TIMESTAMP '2026-03-23 12:03:00'
         AND resultat != 'sup_limite_qualite'
     )
     OR
     (
         cdreseau = '010000150'
-        AND date_dernier_prel = TIMESTAMP '2025-06-20 10:46:00'
-        AND resultat != 'sup_limite_indicative'
+        AND date_dernier_prel = TIMESTAMP '2026-03-23 10:04:00'
+        AND resultat != 'sup_limite_qualite'
     )
     OR
     (
         cdreseau = '051000773'
-        AND date_dernier_prel = TIMESTAMP '2025-03-28 10:28:00'
+        AND date_dernier_prel = TIMESTAMP '2026-01-23 13:26:00'
         AND resultat != 'inf_limites'
     )
     OR
     (
-        cdreseau = '088001327'
-        AND date_dernier_prel = TIMESTAMP '2025-03-31 13:42:00'
-        AND resultat != 'non_quantifie'
+        cdreseau = '067001860'
+        AND date_dernier_prel = TIMESTAMP '2026-03-03 09:21:00'
+        AND resultat != 'inf_limites'
     )
     OR
     (
         -- cet exemple contient des val_traduite null
         cdreseau = '023000170'
-        AND date_dernier_prel = TIMESTAMP '2025-03-24 10:33:00'
+        AND date_dernier_prel = TIMESTAMP '2025-09-23 13:10:00'
         AND resultat != 'non_quantifie'
     )
--- annuel udi
 UNION ALL
+-- bilan annuel
 SELECT
     periode,
     cdreseau,
     '' AS resultat,
-    ratio_limite_qualite,
-    nb_sup_valeur_sanitaire
+    nb_prelevements,
+    nb_depassements,
+    nb_sup_valeur_sanitaire,
+    ratio_limite_qualite
 FROM
-    {{ ref('int__resultats_metabolite_udi_annuel') }}
+    {{ ref('int__resultats_metabolite_p_udi_annuel') }}
 WHERE
     (
         cdreseau = '079000210'
@@ -63,7 +67,7 @@ WHERE
             OR nb_depassements != 14
             OR nb_sup_valeur_sanitaire != 0
             OR ratio_limite_qualite < 0.69
-            OR ratio_limite_qualite > 0.7
+            OR ratio_limite_qualite > 0.71
         )
     )
     OR
@@ -107,7 +111,7 @@ WHERE
             nb_prelevements != 5
             OR nb_depassements != 2
             OR nb_sup_valeur_sanitaire != 0
-            OR ratio_limite_qualite < 0.4
+            OR ratio_limite_qualite < 0.39
             OR ratio_limite_qualite > 0.41
         )
     )

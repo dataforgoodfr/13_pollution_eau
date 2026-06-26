@@ -1,7 +1,7 @@
 WITH
 last_pvl AS (
-    SELECT DISTINCT
-        inseecommune,
+    SELECT
+        cdreseau,
         categorie,
         cdparametresiseeaux,
         valtraduite,
@@ -11,28 +11,30 @@ last_pvl AS (
         datetimeprel,
         DENSE_RANK()
             OVER (
-                PARTITION BY inseecommune
+                PARTITION BY cdreseau
                 ORDER BY datetimeprel DESC
             )
             AS row_number
 
     FROM
-        {{ ref('int__resultats_udi_communes') }}
+        {{ ref('int__resultats_udi') }}
     WHERE
         categorie = 'pesticide'
         AND
         categorie_2 = 'metabolite'
         AND
+        categorie_3 IN ('pertinent', 'pertinent_par_defaut')
+        AND
         -- On garde les prélèvements de moins d'un an à partir du dernier prélèvement
         datetimeprel >= DATE_TRUNC('day', (
             SELECT MAX(sub.datetimeprel)
-            FROM {{ ref('int__resultats_udi_communes') }} AS sub
+            FROM {{ ref('int__resultats_udi') }} AS sub
         ) - INTERVAL 1 YEAR) + INTERVAL 1 DAY
 ),
 
 aggregated AS (
     SELECT
-        inseecommune,
+        cdreseau,
         cdparametresiseeaux,
         MAX(valtraduite) AS valtraduite,
         MAX(limite_qualite) AS limite_qualite,
@@ -41,12 +43,12 @@ aggregated AS (
         MAX(datetimeprel) AS datetimeprel
     FROM last_pvl
     WHERE row_number = 1
-    GROUP BY inseecommune, cdparametresiseeaux
+    GROUP BY cdreseau, cdparametresiseeaux
 )
 
 SELECT
-    inseecommune,
-    'metabolite' AS categorie,
+    cdreseau,
+    'metabolite_p' AS categorie,
     'dernier_prel' AS periode,
     MAX(datetimeprel) AS date_dernier_prel,
     COUNT(DISTINCT cdparametresiseeaux) AS nb_parametres,
@@ -59,14 +61,9 @@ SELECT
             BOOL_OR(valtraduite IS NOT NULL AND valtraduite > limite_qualite)
             THEN 'sup_limite_qualite'
         WHEN
-            BOOL_OR(valtraduite IS NOT NULL AND valtraduite > limite_indicative)
-            THEN 'sup_limite_indicative'
-        WHEN
             BOOL_OR(
                 valtraduite IS NOT NULL
                 AND (limite_qualite IS NULL OR valtraduite <= limite_qualite)
-                AND (limite_indicative IS NULL OR valtraduite <= limite_indicative)
-                AND (limite_qualite IS NOT NULL OR limite_indicative IS NOT NULL)
             )
             THEN 'inf_limites'
         ELSE 'erreur'
@@ -87,4 +84,4 @@ SELECT
     ) AS parametres_detectes
 
 FROM aggregated
-GROUP BY inseecommune
+GROUP BY cdreseau

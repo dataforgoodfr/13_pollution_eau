@@ -111,3 +111,23 @@ WHERE
             -- il y a 1 prélèvement = à 50 (= valeur_sanitaire_1)
         )
     )
+    OR
+    -- Cas multi-UDI/multi-commune : UDI 060000060 couvre 3 communes,
+    -- ses 52 prels et 11 dépassements ne doivent pas être multipliés par le nombre de communes.
+    (
+        cdreseau = '060000060'
+        AND annee = '2025'
+        AND (
+            nb_prelevements != 52
+            OR nb_depassements != 11
+        )
+    )
+    OR
+    (
+        cdreseau = '060000805'
+        AND annee = '2025'
+        AND (
+            nb_prelevements != 37
+            OR nb_depassements != 14
+        )
+    )

@@ -1,103 +1,6 @@
 version: 2
 
 models:
-  - name: int__prelevements_uniques
-    description: "Liste des prélèvements unique"
-    columns:
-      - name: referenceprel
-        description: Identifiant du prélèvement ; il s’agit d’un numéro attribué par le système garantissant son unicité.
-        type: VARCHAR(11)
-        tests:
-          - unique
-
-      - name: cdfirstreseauamont
-        description: Code SISE-Eaux de la première installation (unité de distribution) du prélèvement, celle  où a été fait le prélèvement.
-        type: VARCHAR(9)
-
-      - name: dateprel
-        description: >
-          Date du prélèvement correspondant la date à laquelle le prélèvement d’échantillon a été réalisé. 
-          Dans le cas où il n’y a pas constitution d’échantillon (mesures in situ), il s’agit de la date de la visite.
-        type: DATE
-
-      - name: heureprel
-        description: Heure et minute à laquelle le prélèvement a été effectué
-        type: VARCHAR
-
-      - name: datetimeprel
-        description: Datetime à laquelle le prélèvement a été effectué
-        type: DATETIME
-
-      - name: conclusionprel
-        description: >
-          Conclusion sanitaire du prélèvement regroupant l’ensemble des recommandations et conclusions sanitaires de l’ARS
-          sur l'ensemble des observations, mesures de terrain et résultats d'analyses de laboratoire associés à un prélèvement.
-        type: VARCHAR
-
-      - name: plvconformitebacterio
-        description: >
-          Indicateur de la conformité des paramètres microbiologiques aux limites de qualité en vigueur au moment du
-          prélèvement pour le type d’eau considéré.
-          Valeurs possibles : 
-            - blanc 
-            - C : conforme
-            - N : non conforme
-            - S : sans objet lorsqu'aucun paramètre microbio n'a été mesuré.
-        type: VARCHAR(1)
-        tests:
-          - accepted_values:
-              values: ["blanc", "C", "N", "S"]
-
-      - name: plvconformitechimique
-        description: >
-          Indicateur de la conformité des paramètres chimiques aux limites de qualité en vigueur au moment du prélèvement
-          pour le type d’eau considéré (et en prenant en compte les dérogations éventuelles en cours pour l'installation
-          concernée).
-          Valeurs possibles : 
-            - blanc 
-            - C : conforme
-            - N : non conforme
-            - D : conforme dans le cadre d’une dérogation
-            - S : sans objet lorsqu'aucun paramètre microbio n'a été mesuré.
-        type: VARCHAR(1)
-        tests:
-          - accepted_values:
-              values: ["blanc", "C", "N", "D", "S"]
-
-      - name: plvconformitereferencebact
-        description: >
-          Indicateur de la conformité des paramètres microbiologiques aux références de qualité en vigueur au moment du
-          prélèvement pour le type d’eau considéré.
-
-          Valeurs possibles : 
-            - blanc 
-            - C : conforme
-            - N : non conforme
-            - S : sans objet lorsqu'aucun paramètre microbio n'a été mesuré.
-        type: VARCHAR(1)
-        tests:
-          - accepted_values:
-              values: ["blanc", "C", "N", "S"]
-
-      - name: plvconformitereferencechim
-        description: >
-          Indicateur de la conformité des paramètres chimiques aux références de qualité en vigueur au moment du prélèvement
-          pour le type d’eau considéré.
-
-          Valeurs possibles : 
-            - blanc 
-            - C : conforme
-            - N : non conforme
-            - S : sans objet lorsqu'aucun paramètre microbio n'a été mesuré.
-            - D : conforme dans le cadre d’une dérogation
-
-          N.B. cette dernière valeur n'est pas possible selon la documentation officielle d'EDC, mais on trouve des prélèvements
-          avec cette valeur. A discuter.
-        type: VARCHAR(1)
-        tests:
-          - accepted_values:
-              values: ["blanc", "C", "N", "S", "D"]
-
   - name: int__lien_commune_cdreseau
     description: >
       Table intermédiaire établissant la relation entre communes (inseecommune) et UDI (cdreseau).
@@ -178,10 +81,19 @@ models:
         tests:
           - not_null
 
-  - name: int__resultats_udi_communes
+  - name: int__resultats_udi
     description: >
-      Table des résultats de prélèvements ventilés par UDI et commune, 
-      pour les catégories d'intérêt (pesticides, pfas, vcm, etc.).
+      Table des résultats de prélèvements par UDI (cdreseau),
+      pour les paramètres référencés dans le fichier de référence de Générations Futures.
+      Granularité : (referenceprel, referenceanl, cdparametresiseeaux, cdreseau).
+      Un prélèvement/analyse rattaché à N UDIs produit N lignes.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - referenceprel
+            - referenceanl
+            - cdparametresiseeaux
+            - cdreseau
     columns:
       - name: referenceprel
         description: "Code SISE-Eaux du prélèvement"
@@ -192,10 +104,24 @@ models:
       - name: cdparametresiseeaux
         description: >
           Le code SISE-Eaux du paramètre est un identifiant alphanumérique sur 7 positions maximum, associé à chaque
-          paramètre. Lorsque c'est possible, le symbole chimique est retenu comme identifiant (NO3, AS...) pour le rendre
-          signifiant.
+          paramètre.
         tests:
           - not_null
+
+      - name: cdparametre
+        description: >
+          Le code SANDRE du paramètre. Peut être NULL.
+        type: INTEGER
+
+      - name: referenceanl
+        description: >
+          Identifiant de l'analyse réalisée en laboratoire. Un même prélèvement (referenceprel) peut être associé à plusieurs analyses (referenceanl), par exemple réalisées par des laboratoires différents. Peut être NULL.
+
+      - name: de_partition
+        description: 'Année de récupération des données. "de" signifie "data engineering". Ce champ est ajouté automatiquement lors de l''ingestion des données.'
+        tests:
+          - not_null
+
       - name: valtraduite
         description: >
           A noter qu'une correction a été appliquée par rapport au valtraduite de la source de donnée.
@@ -213,11 +139,6 @@ models:
           ---
 
           {{ doc("val_traduite_docs") }}
-
-      - name: de_partition
-        description: 'Année de récupération des données. "de" signifie "data engineering". Ce champ est ajouté automatiquement lors de l''ingestion des données.'
-        tests:
-          - not_null
 
       - name: categorie
         description: "Catégorie du paramètre (pesticide, pfas, cvm, nitrate, etc.) selon le fichier de référence de Générations Futures."
@@ -255,6 +176,102 @@ models:
         tests:
           - not_null
 
+      - name: datetimeprel
+        type: DATETIME
+        tests:
+          - not_null
+
+  - name: int__resultats_communes
+    description: >
+      Table des résultats de prélèvements par commune (inseecommune),
+      pour les paramètres référencés dans le fichier de référence de Générations Futures.
+      Granularité : (referenceprel, referenceanl, cdparametresiseeaux, inseecommune).
+      Un prélèvement/analyse rattaché à N UDIs partageant la même commune ne compte qu'une fois
+      pour cette commune (cdreseau absent du SELECT, dédoublonné par SELECT DISTINCT).
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - referenceprel
+            - referenceanl
+            - cdparametresiseeaux
+            - inseecommune
+    columns:
+      - name: referenceprel
+        description: "Code SISE-Eaux du prélèvement"
+        type: VARCHAR(11)
+        tests:
+          - not_null
+
+      - name: cdparametresiseeaux
+        description: >
+          Le code SISE-Eaux du paramètre est un identifiant alphanumérique sur 7 positions maximum, associé à chaque
+          paramètre.
+        tests:
+          - not_null
+
+      - name: cdparametre
+        description: >
+          Le code SANDRE du paramètre. Peut être NULL.
+        type: INTEGER
+
+      - name: referenceanl
+        description: >
+          Identifiant de l'analyse réalisée en laboratoire. Un même prélèvement (referenceprel) peut être associé à plusieurs analyses (referenceanl), par exemple réalisées par des laboratoires différents. Peut être NULL.
+        type: VARCHAR
+
+      - name: de_partition
+        description: 'Année de récupération des données. "de" signifie "data engineering". Ce champ est ajouté automatiquement lors de l''ingestion des données.'
+        tests:
+          - not_null
+
+      - name: valtraduite
+        description: >
+          A noter qu'une correction a été appliquée par rapport au valtraduite de la source de donnée.
+          Les valeurs textuelles telles que "Changement anormal", "OUI", "PRESENCE" ont été converties en 0 car considérées comme non quantifiées.
+          Les valeurs purement numériques restent inchangées.
+          Exemples:
+            - 'Changement anormal' → 0
+            - 'OUI' → 0
+            - 'PRESENCE' → 0
+            - '1,0' → 1
+            - '>1' → 1
+
+          Ci-dessous, la documentation de la source de donnée :
+
+          ---
+
+          {{ doc("val_traduite_docs") }}
+
+      - name: categorie
+        description: "Catégorie du paramètre (pesticide, pfas, cvm, nitrate, etc.) selon le fichier de référence de Générations Futures."
+        type: VARCHAR
+        tests:
+          - not_null
+
+      - name: categorie_2
+        description: "Sous-catégorie du paramètre selon le fichier de référence de Générations Futures."
+        type: VARCHAR
+
+      - name: categorie_3
+        description: "Détail de la sous-catégorie selon le fichier de référence de Générations Futures."
+        type: VARCHAR
+
+      - name: limite_qualite
+        description: "Limite de qualité selon le fichier de référence de Générations Futures."
+        type: FLOAT
+
+      - name: limite_indicative
+        description: "Limite indicative selon le fichier de référence de Générations Futures."
+        type: FLOAT
+
+      - name: valeur_sanitaire_1
+        description: "Valeur sanitaire de référence selon le fichier de référence de Générations Futures."
+        type: FLOAT
+
+      - name: valeur_sanitaire_2
+        description: "Deuxième valeur sanitaire de référence"
+        type: FLOAT
+
       - name: inseecommune
         description: "Code INSEE de la commune"
         tests:
@@ -262,8 +279,7 @@ models:
 
       - name: datetimeprel
         description: >
-          Date et heure du prélèvement correspondant la date à laquelle le prélèvement d'échantillon a été réalisé. 
-          Dans le cas où il n'y a pas constitution d'échantillon (mesures in situ), il s'agit de la date de la visite.
+          Date et heure du prélèvement correspondant la date à laquelle le prélèvement d'échantillon a été réalisé.
         type: DATETIME
         tests:
           - not_null
@@ -280,6 +296,11 @@ models:
         tests:
           - unique
           - not_null
+
+      - name: cdparametre
+        description: >
+          Le code SANDRE du paramètre. Peut être NULL.
+        type: INTEGER
 
       - name: categorie_1
         description: "Catégorie principale du paramètre"
@@ -329,6 +350,10 @@ models:
 
       - name: web_label
         description: "Libellé utilisé dans le site web"
+        type: VARCHAR
+
+      - name: statut_autorisation
+        description: "Statut d'autorisation de la substance (Autorisé, Interdit)"
         type: VARCHAR
 
       - name: nb_rows

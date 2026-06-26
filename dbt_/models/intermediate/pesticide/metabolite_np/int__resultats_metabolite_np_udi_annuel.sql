@@ -1,0 +1,59 @@
+WITH
+metabolite_prels AS (
+    SELECT
+        de_partition AS annee,
+        cdreseau,
+        referenceprel,
+        datetimeprel,
+        cdparametresiseeaux,
+        valtraduite,
+        limite_qualite,
+        valeur_sanitaire_1
+    FROM
+        {{ ref('int__resultats_udi') }}
+    WHERE
+        categorie = 'pesticide'
+        AND
+        categorie_2 = 'metabolite'
+        AND
+        categorie_3 = 'non_pertinent'
+)
+
+SELECT
+    cdreseau,
+    annee,
+    'metabolite_np' AS categorie,
+    'bilan_annuel_' || annee AS periode,
+    COUNT(
+        DISTINCT
+        CASE
+            WHEN
+                valtraduite IS NOT NULL AND valtraduite > 0.9
+                THEN referenceprel
+        END
+    ) AS nb_depassements,
+    COUNT(
+        DISTINCT
+        CASE
+            WHEN
+                valtraduite IS NOT NULL AND valtraduite > valeur_sanitaire_1
+                THEN referenceprel
+        END
+    ) AS nb_sup_valeur_sanitaire,
+    COUNT(DISTINCT referenceprel) AS nb_prelevements,
+    (
+        COUNT(
+            DISTINCT
+            CASE
+                WHEN
+                    valtraduite IS NOT NULL AND valtraduite > 0.9
+                    THEN referenceprel
+            END
+        )::float
+        /
+        COUNT(DISTINCT referenceprel)::float
+    ) AS ratio_limite_qualite
+
+FROM metabolite_prels
+
+GROUP BY cdreseau, annee

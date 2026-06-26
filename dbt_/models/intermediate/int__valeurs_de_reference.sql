@@ -6,6 +6,7 @@
 
 SELECT
     cdparametresiseeaux,
+    MAX(cdparametre) AS cdparametre,
     MAX(categorie_1) AS categorie_1,
     MAX(categorie_2) AS categorie_2,
     MAX(categorie_3) AS categorie_3,
@@ -18,6 +19,7 @@ SELECT
     MAX(valeur_sanitaire_2) AS valeur_sanitaire_2,
     MAX(valeur_sanitaire_2_unite) AS valeur_sanitaire_2_unite,
     MAX(web_label) AS web_label,
+    MAX(statut_autorisation) AS statut_autorisation,
     COUNT(*) AS nb_rows -- we enforce this to be 1 in a dbt test
 FROM
     {{ ref('references_generations_futures') }}

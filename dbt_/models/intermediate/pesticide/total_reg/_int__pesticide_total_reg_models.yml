@@ -1,5 +1,5 @@
 models:
-  - name: int__resultats_pesticide_total_commune_annuel
+  - name: int__resultats_pes_total_reg_commune_annuel
     description: Total pesticide (PESTOT) par commune pour la temporalité 'bilan_annuel'.
     tests:
       - dbt_utils.unique_combination_of_columns:
@@ -16,12 +16,12 @@ models:
         description: "Année du prélèvement"
         type: SMALLINT
       - name: categorie
-        description: "Catégorie du paramètre analysé (ici, toujours 'pesticide_total')."
+        description: "Catégorie du paramètre analysé (ici, toujours 'pes_total_reg')."
         type: VARCHAR
         tests:
           - accepted_values:
               values:
-                - "pesticide_total"
+                - "pes_total_reg"
       - name: periode
         description: "Période du résultat"
         type: VARCHAR
@@ -46,7 +46,7 @@ models:
         description: "Date du dernier prélèvement de l'année"
         type: TIMESTAMP
 
-  - name: int__resultats_pesticide_total_commune_dernier
+  - name: int__resultats_pes_total_reg_commune_dernier
     description: Total pesticide recalculé par commune pour la temporalité 'derniers prélèvements'.
     columns:
       - name: inseecommune
@@ -56,12 +56,12 @@ models:
           - not_null
           - unique
       - name: categorie
-        description: "Catégorie du paramètre analysé (ici, toujours 'pesticide_total')."
+        description: "Catégorie du paramètre analysé (ici, toujours 'pes_total_reg')."
         type: VARCHAR
         tests:
           - accepted_values:
               values:
-                - "pesticide_total"
+                - "pes_total_reg"
       - name: periode
         description: "Période d'analyse des prélèvements (ici, toujours 'dernier_prel')."
         type: VARCHAR
@@ -87,7 +87,7 @@ models:
         description: "JSON contenant le total pesticide recalculé (TOTALPESTICIDE)."
         type: JSON
 
-  - name: int__resultats_pesticide_total_udi_annuel
+  - name: int__resultats_pes_total_reg_udi_annuel
     description: Total pesticide (PESTOT) par UDI pour la temporalité 'bilan_annuel'.
     tests:
       - dbt_utils.unique_combination_of_columns:
@@ -104,12 +104,12 @@ models:
         description: "Année du prélèvement"
         type: SMALLINT
       - name: categorie
-        description: "Catégorie du paramètre analysé (ici, toujours 'pesticide_total')."
+        description: "Catégorie du paramètre analysé (ici, toujours 'pes_total_reg')."
         type: VARCHAR
         tests:
           - accepted_values:
               values:
-                - "pesticide_total"
+                - "pes_total_reg"
       - name: periode
         description: "Période du résultat"
         type: VARCHAR
@@ -134,7 +134,7 @@ models:
         description: "Date du dernier prélèvement de l'année"
         type: TIMESTAMP
 
-  - name: int__resultats_pesticide_total_udi_dernier
+  - name: int__resultats_pes_total_reg_udi_dernier
     description: Total pesticide recalculé par UDI pour la temporalité 'derniers prélèvements'.
     columns:
       - name: cdreseau
@@ -144,12 +144,12 @@ models:
           - not_null
           - unique
       - name: categorie
-        description: "Catégorie du paramètre analysé (ici, toujours 'pesticide_total')."
+        description: "Catégorie du paramètre analysé (ici, toujours 'pes_total_reg')."
         type: VARCHAR
         tests:
           - accepted_values:
               values:
-                - "pesticide_total"
+                - "pes_total_reg"
       - name: periode
         description: "Période d'analyse des prélèvements (ici, toujours 'dernier_prel')."
         type: VARCHAR

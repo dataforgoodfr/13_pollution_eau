@@ -209,7 +209,7 @@ SELECT
 FROM
     {{ ref('int__resultats_sub_active_commune_dernier') }}
 UNION ALL
--- pesticide_total
+-- pes_total_reg
 SELECT
     inseecommune,
     periode,
@@ -222,7 +222,7 @@ SELECT
     null AS nb_sup_valeur_sanitaire,
     parametres_detectes
 FROM
-    {{ ref('int__resultats_pesticide_total_commune_annuel') }}
+    {{ ref('int__resultats_pes_total_reg_commune_annuel') }}
 UNION ALL
 SELECT
     inseecommune,
@@ -236,7 +236,7 @@ SELECT
     null AS nb_sup_valeur_sanitaire,
     parametres_detectes
 FROM
-    {{ ref('int__resultats_pesticide_total_commune_dernier') }}
+    {{ ref('int__resultats_pes_total_reg_commune_dernier') }}
 UNION ALL
 -- pesticide
 SELECT

@@ -16,7 +16,7 @@ pestot_prels AS (
 SELECT
     inseecommune,
     annee,
-    'pesticide_total' AS categorie,
+    'pes_total_reg' AS categorie,
     'bilan_annuel_' || annee AS periode,
     COUNT(DISTINCT referenceprel) AS nb_prelevements,
     (

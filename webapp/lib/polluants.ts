@@ -1030,7 +1030,7 @@ export const availableCategories: ICategory[] = [
         },
       },
       {
-        id: "pesticide_total",
+        id: "pes_total_reg",
         nomAffichage: "Total pesticides",
         disable: false,
         enfants: [],

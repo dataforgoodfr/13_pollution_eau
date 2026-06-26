@@ -42,7 +42,7 @@ WHERE
     periode = 'dernier_prel'
     AND
     categorie NOT IN (
-        'pesticide_total',
+        'pes_total_reg',
         'sub_active',
         'metabolite_np',
         'metabolite_p',

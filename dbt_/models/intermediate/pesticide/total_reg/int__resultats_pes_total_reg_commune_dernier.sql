@@ -67,7 +67,7 @@ total AS (
 
 SELECT
     inseecommune,
-    'pesticide_total' AS categorie,
+    'pes_total_reg' AS categorie,
     'dernier_prel' AS periode,
     date_dernier_prel,
     CASE

@@ -209,7 +209,7 @@ SELECT
 FROM
     {{ ref('int__resultats_sub_active_udi_dernier') }}
 UNION ALL
--- pesticide_total
+-- pes_total_reg
 SELECT
     cdreseau,
     periode,
@@ -222,7 +222,7 @@ SELECT
     null AS nb_sup_valeur_sanitaire,
     parametres_detectes
 FROM
-    {{ ref('int__resultats_pesticide_total_udi_annuel') }}
+    {{ ref('int__resultats_pes_total_reg_udi_annuel') }}
 UNION ALL
 SELECT
     cdreseau,
@@ -236,7 +236,7 @@ SELECT
     null AS nb_sup_valeur_sanitaire,
     parametres_detectes
 FROM
-    {{ ref('int__resultats_pesticide_total_udi_dernier') }}
+    {{ ref('int__resultats_pes_total_reg_udi_dernier') }}
 UNION ALL
 -- pesticide
 SELECT

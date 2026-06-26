@@ -1031,7 +1031,7 @@ export const availableCategories: ICategory[] = [
       },
       {
         id: "pes_total_reg",
-        nomAffichage: "Total pesticides",
+        nomAffichage: "Total pesticides “réglementaire”",
         disable: false,
         enfants: [],
         affichageBlocPageUDI: true,
@@ -1112,6 +1112,97 @@ export const availableCategories: ICategory[] = [
           ratioLabelPlural: "analyses non conformes*",
           details:
             "* Total pesticides réglementaire (paramètre PESTOT) > 0,5 µg/L",
+        },
+      },
+      {
+        id: "pes_total_ts",
+        nomAffichage: "Total pesticides",
+        disable: false,
+        enfants: [],
+        affichageBlocPageUDI: true,
+        description:
+          "Somme des concentrations de tous les pesticides quantifiés, y compris les substances actives et les métabolites pertinents et non pertinents.",
+        unite: "µg/L",
+        resultatsDetails:
+          "* Somme des concentrations de tous les pesticides quantifiés (les substances actives, les métabolites pertinents et non pertinents).",
+        resultats: {
+          non_recherche: {
+            label: "Aucune recherche de pesticides dans les 12 derniers mois",
+            couleur: "#cccccc",
+            couleurAlt: "#f7f7f7",
+            picto: null,
+          },
+          inf_limites: {
+            label: "Somme des pesticides < 0,5 µg/L",
+            couleur: "#ffffd4",
+            couleurAlt: "#ffffd4",
+            picto: null,
+          },
+          sup_limite_qualite: {
+            label: "Somme des pesticides > 0,5 µg/L et ≤ 1 µg/L",
+            couleur: "#fe9929",
+            couleurAlt: "#fe9929",
+            picto: "warning",
+          },
+          sup_1: {
+            label: "Somme des pesticides > 1 µg/L et ≤ 3 µg/L",
+            couleur: "#d95f0e",
+            couleurAlt: "#d95f0e",
+            picto: "warning",
+          },
+          sup_3: {
+            label: "Somme des pesticides > 3 µg/L et ≤ 5 µg/L",
+            couleur: "#993404",
+            couleurAlt: "#993404",
+            picto: "warning",
+          },
+          sup_5: {
+            label: "Somme des pesticides > 5 µg/L",
+            couleur: "#4d1a00",
+            couleurAlt: "#4d1a00",
+            picto: "warning",
+          },
+        },
+        resultatsAnnuels: {
+          nonRechercheLabel: "Aucune recherche dans l'année",
+          nonRechercheCouleur: "#d9d9d9",
+          nonRechercheCouleurAlt: "#f7f7f7",
+          ratioLimites: [
+            {
+              limite: 0,
+              label: "0%",
+              couleur: "#ffffd4",
+              couleurAlt: "#ffffd4",
+            },
+            {
+              limite: 0.25,
+              label: "≤ 25%",
+              couleur: "#fed98e",
+              couleurAlt: "#fed98e",
+            },
+            {
+              limite: 0.5,
+              label: "25 - 50%",
+              couleur: "#fe9929",
+              couleurAlt: "#fe9929",
+            },
+            {
+              limite: 0.75,
+              label: "50 - 75%",
+              couleur: "#d95f0e",
+              couleurAlt: "#d95f0e",
+            },
+            {
+              limite: 1,
+              label: "75 - 100%",
+              couleur: "#993404",
+              couleurAlt: "#993404",
+            },
+          ],
+          ratioLabelSingular: "analyse > 0,5 µg/L*",
+          ratioLabelPlural: "analyses > 0,5 µg/L*",
+          details:
+            "* Somme des pesticides (substances actives, métabolites pertinents et non pertinents) > 0,5 µg/L",
         },
       },
     ],

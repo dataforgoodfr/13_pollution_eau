@@ -12,6 +12,7 @@ WHERE
     AND
     categorie NOT IN (
         'pes_total_reg',
+        'pes_total_ts',
         'sub_active',
         'metabolite_np',
         'metabolite_p',

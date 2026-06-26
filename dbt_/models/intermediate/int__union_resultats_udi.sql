@@ -238,6 +238,35 @@ SELECT
 FROM
     {{ ref('int__resultats_pes_total_reg_udi_dernier') }}
 UNION ALL
+-- pes_total_ts
+SELECT
+    cdreseau,
+    periode,
+    categorie,
+    null AS resultat,
+    ratio,
+    date_dernier_prel,
+    null AS nb_parametres,
+    nb_prelevements,
+    null AS nb_sup_valeur_sanitaire,
+    parametres_detectes
+FROM
+    {{ ref('int__resultats_pes_total_ts_udi_annuel') }}
+UNION ALL
+SELECT
+    cdreseau,
+    periode,
+    categorie,
+    resultat,
+    null AS ratio,
+    date_dernier_prel,
+    null AS nb_parametres,
+    null AS nb_prelevements,
+    null AS nb_sup_valeur_sanitaire,
+    parametres_detectes
+FROM
+    {{ ref('int__resultats_pes_total_ts_udi_dernier') }}
+UNION ALL
 -- pesticide
 SELECT
     cdreseau,

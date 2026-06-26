@@ -1,6 +1,15 @@
 -- Analyse : classer les UDI non conformes (limite de qualité pesticides)
 -- selon qu'elles le sont à cause de molécules interdites, autorisées, ou un mélange.
--- Seuils : 0.1 µg/L par molécule, 0.5 µg/L pour le total pesticide recalculé.
+--
+-- VARIATION : périmètre complet, tous les pesticides y compris les métabolites
+-- non pertinents. Voir la variation
+-- udi_non_conformes_interdites_autorisees__sa_et_pertinents.sql pour le périmètre restreint.
+--
+-- Seuils individuels :
+--   - 0.1 µg/L pour les substances actives et les métabolites pertinents
+--   - 0.9 µg/L pour les métabolites non pertinents
+-- Seuil du total pesticide recalculé : 0.5 µg/L.
+-- Les métabolites non pertinents N'ENTRENT PAS dans le total pesticide recalculé.
 -- Statut d'autorisation : 'Interdit' / 'Autorisé' / NULL (non renseigné, gardé pour les totaux).
 
 WITH
@@ -40,15 +49,7 @@ last_pvl AS (
         -- l'historique des règles de calcul.
         cdparametresiseeaux != 'PESTOT'
         AND valtraduite IS NOT NULL
-        -- si on veut se concentrer seulement sur les substances actives et métabolites pertinents
-        -- décommenter les lignes suivantes 
-        AND (
-            categorie_2 = 'sub_active'
-            OR (
-                categorie_2 = 'metabolite'
-                AND categorie_3 IN ('pertinent', 'pertinent_par_defaut')
-            )
-        )
+        -- Périmètre de cette variation : tous les pesticides (aucune restriction sur categorie_2/3)
 ),
 
 
@@ -92,8 +93,16 @@ flagged AS (
     SELECT
         *,
         -- molécule qui dépasse son seuil individuel
-        (valtraduite > 0.1) AS above_individuel,
+        -- 0.9 µg/L pour les métabolites non pertinents, 0.1 µg/L sinon
+        (
+            CASE
+                WHEN categorie_2 = 'metabolite' AND categorie_3 = 'non_pertinent'
+                    THEN valtraduite > 0.9
+                ELSE valtraduite > 0.1
+            END
+        ) AS above_individuel,
         -- molécule qui entre dans le calcul du total pesticide (et y contribue)
+        -- (les métabolites non pertinents n'y entrent pas)
         (
             (
                 categorie_2 = 'sub_active'
@@ -117,7 +126,7 @@ par_udi AS (
         SUM(CASE WHEN in_total THEN valtraduite ELSE 0 END) AS total_pesticide,
         (SUM(CASE WHEN in_total THEN valtraduite ELSE 0 END) > 0.5) AS total_depasse,
 
-        -- dépassements individuels
+        -- dépassements individuels (seuil 0.1 ou 0.9 selon la molécule, cf. above_individuel)
         BOOL_OR(statut = 'Interdit' AND above_individuel) AS interdit_above,
         BOOL_OR(statut = 'Autorisé' AND above_individuel) AS autorise_above,
 
@@ -139,7 +148,7 @@ par_udi AS (
             )
         )) AS parametres_detectes,
 
-        -- JSON parametre -> valeur, molécules interdites qui dépassent 0.1 µg/L
+        -- JSON parametre -> valeur, molécules interdites qui dépassent leur seuil individuel
         TO_JSON(MAP(
             LIST(
                 cdparametresiseeaux
@@ -153,7 +162,7 @@ par_udi AS (
             )
         )) AS interdits_sup,
 
-        -- JSON parametre -> valeur, molécules autorisées qui dépassent 0.1 µg/L
+        -- JSON parametre -> valeur, molécules autorisées qui dépassent leur seuil individuel
         TO_JSON(MAP(
             LIST(
                 cdparametresiseeaux
@@ -176,27 +185,28 @@ classement AS (
         CASE
             -- INTERDITES UNIQUEMENT
             WHEN
-            -- au moins une molécule interdite > 0.1
+            -- au moins une molécule interdite au-dessus de son seuil (0.1 ou 0.9)
                 interdit_above
-                -- et aucune molécule autorisée > 0.1
-                AND NOT autorise_above                           -- aucune molécule autorisée > 0.1
+                -- et aucune molécule autorisée au-dessus de son seuil
+                AND NOT autorise_above
                 -- si total > 0.5, aucune autorisée ne rentre dans le calcul
                 AND NOT (total_depasse AND autorise_in_total)
                 THEN 'interdites_uniquement'
 
             -- AUTORISÉES UNIQUEMENT
             WHEN
-            -- au moins une molécule autorisée > 0.1
+            -- au moins une molécule autorisée au-dessus de son seuil (0.1 ou 0.9)
                 autorise_above
-                -- et aucune molécule interdite > 0.1
-                AND NOT interdit_above                            -- aucune molécule interdite > 0.1
+                -- et aucune molécule interdite au-dessus de son seuil
+                AND NOT interdit_above
                 -- si total > 0.5, aucune interdite ne rentre dans le calcul
                 AND NOT (total_depasse AND interdit_in_total)
                 THEN 'autorisees_uniquement'
 
             -- MÉLANGE
             WHEN
-                (interdit_above AND autorise_above)              -- au moins une de chaque > 0.1
+                -- au moins une de chaque au-dessus de son seuil
+                (interdit_above AND autorise_above)
                 -- et/ou les deux rentrent dans le calcul du total > 0.5
                 OR (total_depasse AND interdit_in_total AND autorise_in_total)
                 THEN 'melange'
@@ -213,6 +223,5 @@ SELECT
     classification,
     COUNT(*) AS nb_udi
 FROM classement
-WHERE classification IN ('interdites_uniquement', 'autorisees_uniquement', 'melange')
 GROUP BY classification
 ORDER BY nb_udi DESC

@@ -7,6 +7,7 @@ periodes AS (
         'bilan_annuel_2023',
         'bilan_annuel_2024',
         'bilan_annuel_2025',
+        'bilan_annuel_2026',
         'dernier_prel'
     ]) AS periode
 ),

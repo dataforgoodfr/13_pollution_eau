@@ -579,6 +579,8 @@ export const availableCategories: ICategory[] = [
           ],
           ratioLabelSingular: "analyse > 0.9 µg/L",
           ratioLabelPlural: "analyses > 0.9 µg/L",
+          details:
+            '* Le dépassement de 0.9 µg/L n\'est pas considéré comme une "non conformité"',
         },
         enfants: [],
       },

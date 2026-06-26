@@ -60,12 +60,10 @@ last_pvl AS (
 autorisations AS (
     SELECT
         cdparametresiseeaux,
-        "Statut d'autorisation" AS statut
+        statut_autorisation AS statut
     FROM
-        READ_CSV(
-            '/Users/jgreze/Downloads/Fichier ref temporaire.csv'
-        )
-    WHERE "Statut d'autorisation" IS NOT NULL -- noqa: RF05
+        {{ ref('int__valeurs_de_reference') }}
+    WHERE statut_autorisation IS NOT NULL
 ),
 
 population AS (

@@ -76,6 +76,10 @@ seeds:
         description: "Commentaire sur la valeur sanitaire 2"
       - name: web_label
         description: "Libellé utilisé dans le site web"
+      - name: statut_autorisation
+        description: "Statut d'autorisation de la substance (Autorisé, Interdit)"
+      - name: commentaire
+        description: "Commentaire libre sur la substance"
 
   - name: udi_population_from_infofactures
     config:

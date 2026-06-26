@@ -1116,7 +1116,7 @@ export const availableCategories: ICategory[] = [
       },
       {
         id: "pes_total_ts",
-        nomAffichage: "Total pesticides",
+        nomAffichage: "Total tous pesticides",
         disable: false,
         enfants: [],
         affichageBlocPageUDI: true,

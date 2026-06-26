@@ -68,6 +68,13 @@ autorisations AS (
     WHERE "Statut d'autorisation" IS NOT NULL -- noqa: RF05
 ),
 
+population AS (
+    SELECT
+        code_udi,
+        population
+    FROM {{ ref('udi_population_from_infofactures') }}
+),
+
 last_pvl_with_aut AS (
     SELECT
         last_pvl.*,
@@ -177,47 +184,54 @@ par_udi AS (
 
 classement AS (
     SELECT
-        *,
+        par_udi.*,
+        pop.population,
         CASE
             -- INTERDITES UNIQUEMENT
             WHEN
             -- au moins une molécule interdite > 0.1
-                interdit_above
+                par_udi.interdit_above
                 -- et aucune molécule autorisée > 0.1
-                AND NOT autorise_above
+                AND NOT par_udi.autorise_above
                 -- si total > 0.5, aucune autorisée ne rentre dans le calcul
-                AND NOT (total_depasse AND autorise_in_total)
+                AND NOT (par_udi.total_depasse AND par_udi.autorise_in_total)
                 THEN 'interdites_uniquement'
 
             -- AUTORISÉES UNIQUEMENT
             WHEN
             -- au moins une molécule autorisée > 0.1
-                autorise_above
+                par_udi.autorise_above
                 -- et aucune molécule interdite > 0.1
-                AND NOT interdit_above
+                AND NOT par_udi.interdit_above
                 -- si total > 0.5, aucune interdite ne rentre dans le calcul
-                AND NOT (total_depasse AND interdit_in_total)
+                AND NOT (par_udi.total_depasse AND par_udi.interdit_in_total)
                 THEN 'autorisees_uniquement'
 
             -- MÉLANGE
             WHEN
                 -- au moins une de chaque > 0.1
-                (interdit_above AND autorise_above)
+                (par_udi.interdit_above AND par_udi.autorise_above)
                 -- et/ou les deux rentrent dans le calcul du total > 0.5
-                OR (total_depasse AND interdit_in_total AND autorise_in_total)
+                OR (
+                    par_udi.total_depasse
+                    AND par_udi.interdit_in_total
+                    AND par_udi.autorise_in_total
+                )
                 THEN 'melange'
 
             -- pas de cause limite qualité (peut rester conforme ou non-conf via valeur sanitaire)
             ELSE 'conforme_ou_autre'
         END AS classification
     FROM par_udi
+    LEFT JOIN population AS pop ON par_udi.cdreseau = pop.code_udi
 )
 
 -- Décompte final des 3 situations.
 -- (Pour inspecter le détail par UDI, remplacer ce SELECT par : SELECT * FROM classement)
 SELECT
     classification,
-    COUNT(*) AS nb_udi
+    COUNT(*) AS nb_udi,
+    SUM(population) AS population_totale
 FROM classement
 GROUP BY classification
 ORDER BY nb_udi DESC

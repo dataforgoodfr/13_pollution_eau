@@ -56,15 +56,12 @@ function LegendItem({
               {count < 2
                 ? "réseau de distribution (UDI) est"
                 : "réseaux de distribution (UDI) sont"}{" "}
-              dans cette situation en France
+              dans cette situation
               {percentage !== null &&
                 percentage !== undefined &&
                 ` (~${percentage.toFixed(1)}%)`}
               {population !== null && population !== undefined && (
-                <>
-                  , ce qui représente {population.toLocaleString("fr-FR")}{" "}
-                  personnes
-                </>
+                <>, alimentant {population.toLocaleString("fr-FR")} personnes</>
               )}
               .
             </p>

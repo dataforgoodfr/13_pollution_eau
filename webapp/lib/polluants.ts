@@ -1,15 +1,3 @@
-interface Polluant {
-  nomPolluant: string;
-  valeurPolluant?: string | null;
-}
-
-interface BlocStatut {
-  nomBloc: string;
-  couleurBloc: string;
-  pictoBloc: string | null;
-  polluants: Polluant[];
-}
-
 interface DetailResultat {
   label: string;
   couleur: string;
@@ -45,15 +33,11 @@ export interface ICategory {
   affichageBlocPageUDI: boolean;
   description: string;
   resultatsDetails?: string;
-  sousCategories?: boolean;
   titreStatut?: string;
   descriptionStatut?: string;
   couleurStatut?: string;
   couleurAltStatut?: string;
   picto?: string | null;
-  dateDernierPrelèvement?: string;
-  nombrePolluantsDernierPrelèvement?: number;
-  blocsStatut?: BlocStatut[];
   resultats: { [key: string]: DetailResultat };
   resultatsAnnuels?: ResultatsAnnuels;
   unite?: string;
@@ -145,7 +129,6 @@ export const availableCategories: ICategory[] = [
   {
     id: "pfas",
     nomAffichage: "PFAS",
-    sousCategories: false,
     disable: false,
     enfants: [],
     affichageBlocPageUDI: true,
@@ -323,7 +306,6 @@ export const availableCategories: ICategory[] = [
         enfants: [],
         description:
           "Molécules ayant un effet biocide contre les organismes nuisibles.",
-        sousCategories: true,
         unite: "µg/L",
         resultatsDetails:
           "* D'après les recommandations du Haut Conseil de la Santé Publique",
@@ -412,7 +394,6 @@ export const availableCategories: ICategory[] = [
         disable: false,
         affichageBlocPageUDI: false,
         description: "Produits de dégradation des substances actives.",
-        sousCategories: false,
         unite: "µg/L",
         resultatsDetails:
           "* D'après les recommandations du Haut Conseil de la Santé Publique",
@@ -503,7 +484,6 @@ export const availableCategories: ICategory[] = [
         disable: false,
         affichageBlocPageUDI: false,
         description: "Produits de dégradation des substances actives.",
-        sousCategories: false,
         unite: "µg/L",
         resultats: {
           non_recherche: {
@@ -593,7 +573,6 @@ export const availableCategories: ICategory[] = [
         description: "Métabolite du métolachlore, herbicide.",
         resultatsDetails:
           "* Si l'ESA métolachlore était considéré comme un métabolite pertinent, l'eau serait déclarée \"non conforme\" à partir de 0,1 µg/L. \n** La valeur de 3 µg/L, utilisée en Allemagne comme valeur de gestion, indique une contamination élevée.",
-        sousCategories: false,
         unite: "µg/L",
         resultats: {
           non_recherche: {
@@ -686,7 +665,6 @@ export const availableCategories: ICategory[] = [
         description: "Métabolite du fongicide chlorothalonil.",
         resultatsDetails:
           '* Si le chlorothalonil R471811 était considéré comme un métabolite pertinent, l\'eau serait déclarée "non conforme" à partir de 0,1 µg/L. \n** La valeur de 3 µg/L, utilisée en Allemagne comme valeur de gestion, indique une contamination élevée.',
-        sousCategories: false,
         unite: "µg/L",
         resultats: {
           non_recherche: {
@@ -778,7 +756,6 @@ export const availableCategories: ICategory[] = [
         affichageBlocPageUDI: true,
         description:
           "Métabolite de la chloridazone, herbicide utilisé pour les betteraves.",
-        sousCategories: false,
         unite: "µg/L",
         resultatsDetails:
           "* D'après les recommandations du Ministère de la Santé",
@@ -865,7 +842,6 @@ export const availableCategories: ICategory[] = [
         enfants: [],
         affichageBlocPageUDI: true,
         description: "Autre métabolite de la chloridazone.",
-        sousCategories: false,
         unite: "µg/L",
         resultatsDetails: "* D'après les instructions du Ministère de la Santé",
         resultats: {
@@ -952,7 +928,6 @@ export const availableCategories: ICategory[] = [
         affichageBlocPageUDI: true,
         description:
           "Métabolite de l'atrazine, herbicide interdit depuis 2003.",
-        sousCategories: false,
         unite: "µg/L",
         resultatsDetails: "* D'après les instructions du Ministère de la Santé",
         resultats: {
@@ -1050,27 +1025,33 @@ export const availableCategories: ICategory[] = [
             picto: null,
           },
           inf_limites: {
-            label: "Total pesticides ≤ 0,5 µg/L (eau conforme)",
+            label: "Somme pesticides ≤ 0,5 µg/L (eau conforme)",
             couleur: "#ffffd4",
             couleurAlt: "#ffffd4",
             picto: null,
           },
           sup_limite_qualite: {
-            label: "Total pesticides > 0,5 µg/L et ≤ 1 µg/L (eau non conforme)",
+            label: "Somme pesticides > 0,5 µg/L et ≤ 1 µg/L (eau non conforme)",
             couleur: "#fe9929",
             couleurAlt: "#fe9929",
             picto: "warning",
           },
           sup_1: {
-            label: "Total pesticides > 1 µg/L et ≤ 3 µg/L (eau non conforme)",
+            label: "Somme pesticides > 1 µg/L et ≤ 3 µg/L (eau non conforme)",
             couleur: "#d95f0e",
             couleurAlt: "#d95f0e",
             picto: "warning",
           },
           sup_3: {
-            label: "Total pesticides > 3 µg/L (eau non conforme)",
+            label: "Somme pesticides > 3 µg/L et ≤ 5 µg/L (eau non conforme)",
             couleur: "#993404",
             couleurAlt: "#993404",
+            picto: "warning",
+          },
+          sup_5: {
+            label: "Somme pesticides > 5 µg/L (eau non conforme)",
+            couleur: "#4d1a00",
+            couleurAlt: "#4d1a00",
             picto: "warning",
           },
         },
@@ -1126,7 +1107,7 @@ export const availableCategories: ICategory[] = [
           "Somme des concentrations de tous les pesticides quantifiés, y compris les substances actives et les métabolites pertinents et non pertinents.",
         unite: "µg/L",
         resultatsDetails:
-          "* Somme des concentrations de tous les pesticides quantifiés (les substances actives, les métabolites pertinents et non pertinents).",
+          "* Somme de tous les pesticides quantifiés (les substances actives, les métabolites pertinents et non pertinents).",
         resultats: {
           non_recherche: {
             label: "Aucune recherche de pesticides dans les 12 derniers mois",
@@ -1135,31 +1116,31 @@ export const availableCategories: ICategory[] = [
             picto: null,
           },
           inf_limites: {
-            label: "Somme des pesticides < 0,5 µg/L",
+            label: "Somme pesticides ≤ 0,5 µg/L",
             couleur: "#ffffd4",
             couleurAlt: "#ffffd4",
             picto: null,
           },
           sup_limite_qualite: {
-            label: "Somme des pesticides > 0,5 µg/L et ≤ 1 µg/L",
+            label: "Somme pesticides > 0,5 µg/L et ≤ 1 µg/L",
             couleur: "#fe9929",
             couleurAlt: "#fe9929",
             picto: "warning",
           },
           sup_1: {
-            label: "Somme des pesticides > 1 µg/L et ≤ 3 µg/L",
+            label: "Somme pesticides > 1 µg/L et ≤ 3 µg/L",
             couleur: "#d95f0e",
             couleurAlt: "#d95f0e",
             picto: "warning",
           },
           sup_3: {
-            label: "Somme des pesticides > 3 µg/L et ≤ 5 µg/L",
+            label: "Somme pesticides > 3 µg/L et ≤ 5 µg/L",
             couleur: "#993404",
             couleurAlt: "#993404",
             picto: "warning",
           },
           sup_5: {
-            label: "Somme des pesticides > 5 µg/L",
+            label: "Somme pesticides > 5 µg/L",
             couleur: "#4d1a00",
             couleurAlt: "#4d1a00",
             picto: "warning",
@@ -1383,7 +1364,6 @@ export const availableCategories: ICategory[] = [
         enfants: [],
         affichageBlocPageUDI: true,
         description: "Solvant industriel persistant dans l'eau.",
-        sousCategories: true,
         unite: "µg/L",
         resultats: {
           non_recherche: {
@@ -1459,7 +1439,6 @@ export const availableCategories: ICategory[] = [
     enfants: [],
     affichageBlocPageUDI: true,
     description: "Produit chimique utilisé dans les explosifs et les engrais.",
-    sousCategories: true,
     unite: "µg/L",
     resultatsDetails: "* D'après les instructions du Ministère de la Santé",
     resultats: {
@@ -1554,7 +1533,6 @@ export const availableCategories: ICategory[] = [
         enfants: [],
         affichageBlocPageUDI: true,
         description: "Métal toxique d'origine naturelle et industrielle.",
-        sousCategories: false,
         unite: "µg/L",
         resultats: {
           non_recherche: {
@@ -1641,7 +1619,6 @@ export const availableCategories: ICategory[] = [
           "Métal autrefois utilisé dans les canalisations et peintures.",
         detailsLegende:
           "* Une nouvelle limite réglementaire fixée à 5 µg/L s'appliquera en 2036. D'ici cette date, la limite actuelle de 10 µg/L continue de s'appliquer.",
-        sousCategories: false,
         unite: "µg/L",
         resultats: {
           non_recherche: {

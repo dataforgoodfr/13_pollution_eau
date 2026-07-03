@@ -129,7 +129,6 @@ export const availableCategories: ICategory[] = [
   {
     id: "pfas",
     nomAffichage: "PFAS",
-    sousCategories: false,
     disable: false,
     enfants: [],
     affichageBlocPageUDI: true,

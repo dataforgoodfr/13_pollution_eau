@@ -130,7 +130,109 @@ export const availableCategories: ICategory[] = [
     id: "pfas",
     nomAffichage: "PFAS",
     disable: false,
-    enfants: [],
+    enfants: [
+      {
+        id: "tfa",
+        nomAffichage: "TFA",
+        disable: false,
+        enfants: [],
+        affichageBlocPageUDI: true,
+        description:
+          "Acide trifluoroacétique, polluant éternel issu notamment de la dégradation d'autres PFAS et de certains pesticides.",
+        unite: "µg/L",
+        resultats: {
+          non_recherche: {
+            label: "Non recherché dans les 12 derniers mois",
+            couleur: "#cccccc",
+            couleurAlt: "#f7f7f7",
+            picto: null,
+          },
+          non_quantifie: {
+            label: "Non quantifié",
+            couleur: "#74c476",
+            couleurAlt: "#c7e9c0",
+            picto: null,
+          },
+          tfa_inf_0_1: {
+            label: "Concentration ≤ 0,1 µg/L",
+            couleur: "#c7e9c0",
+            couleurAlt: "#c7e9c0",
+            picto: null,
+          },
+          tfa_inf_0_5: {
+            label: "Concentration comprise entre 0,1 et 0,5 µg/L",
+            couleur: "#FFF33B",
+            couleurAlt: "#FFF33B",
+            picto: null,
+          },
+          tfa_inf_2_2: {
+            label: "Concentration comprise entre 0,5 et 2,2 µg/L",
+            couleur: "#fe9929",
+            couleurAlt: "#fe9929",
+            picto: "warning",
+          },
+          tfa_inf_10: {
+            label: "Concentration comprise entre 2,2 et 10 µg/L",
+            couleur: "#d95f0e",
+            couleurAlt: "#d95f0e",
+            picto: "warning",
+          },
+          tfa_inf_60: {
+            label: "Concentration comprise entre 10 et 60 µg/L",
+            couleur: "#FB726C",
+            couleurAlt: "#FB726C",
+            picto: "warning",
+          },
+          tfa_sup_60: {
+            label: "Concentration > 60 µg/L",
+            couleur: "#f03b20",
+            couleurAlt: "#bd0026",
+            picto: "warning",
+          },
+        },
+        resultatsAnnuels: {
+          nonRechercheLabel: "Aucune recherche dans l'année",
+          nonRechercheCouleur: "#d9d9d9",
+          nonRechercheCouleurAlt: "#f7f7f7",
+          ratioLimites: [
+            {
+              limite: 0,
+              label: "0%",
+              couleur: "#ffffd4",
+              couleurAlt: "#ffffd4",
+            },
+            {
+              limite: 0.25,
+              label: "≤ 25%",
+              couleur: "#fed98e",
+              couleurAlt: "#fed98e",
+            },
+            {
+              limite: 0.5,
+              label: "25 - 50%",
+              couleur: "#fe9929",
+              couleurAlt: "#fe9929",
+            },
+            {
+              limite: 0.75,
+              label: "50 - 75%",
+              couleur: "#d95f0e",
+              couleurAlt: "#d95f0e",
+            },
+            {
+              limite: 1,
+              label: "75 - 100%",
+              couleur: "#993404",
+              couleurAlt: "#993404",
+            },
+          ],
+          ratioLabelSingular: "analyse > 0,5 µg/L*",
+          ratioLabelPlural: "analyses > 0,5 µg/L*",
+          details:
+            "* Concentration en TFA > 0,5 µg/L, la limite de qualité réglementaire du total PFAS auquel le TFA appartient",
+        },
+      },
+    ],
     affichageBlocPageUDI: true,
     description:
       "Polluants éternels, utilisés dans l'industrie pour leurs propriétés antiadhésives et imperméables.",

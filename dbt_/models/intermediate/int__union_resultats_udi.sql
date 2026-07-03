@@ -325,6 +325,35 @@ SELECT
 FROM
     {{ ref('int__resultats_pfas_udi_dernier') }}
 UNION ALL
+-- pfas/tfa
+SELECT
+    cdreseau,
+    periode,
+    categorie,
+    null AS resultat,
+    ratio_limite_qualite AS ratio,
+    date_dernier_prel,
+    null AS nb_parametres,
+    nb_prelevements,
+    null AS nb_sup_valeur_sanitaire,
+    parametres_detectes
+FROM
+    {{ ref('int__resultats_tfa_udi_annuel') }}
+UNION ALL
+SELECT
+    cdreseau,
+    periode,
+    categorie,
+    resultat,
+    null AS ratio,
+    date_dernier_prel,
+    nb_parametres,
+    null AS nb_prelevements,
+    null AS nb_sup_valeur_sanitaire,
+    parametres_detectes
+FROM
+    {{ ref('int__resultats_tfa_udi_dernier') }}
+UNION ALL
 -- sub_indus
 SELECT
     cdreseau,

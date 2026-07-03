@@ -1025,27 +1025,33 @@ export const availableCategories: ICategory[] = [
             picto: null,
           },
           inf_limites: {
-            label: "Total pesticides ≤ 0,5 µg/L (eau conforme)",
+            label: "Somme pesticides ≤ 0,5 µg/L (eau conforme)",
             couleur: "#ffffd4",
             couleurAlt: "#ffffd4",
             picto: null,
           },
           sup_limite_qualite: {
-            label: "Total pesticides > 0,5 µg/L et ≤ 1 µg/L (eau non conforme)",
+            label: "Somme pesticides > 0,5 µg/L et ≤ 1 µg/L (eau non conforme)",
             couleur: "#fe9929",
             couleurAlt: "#fe9929",
             picto: "warning",
           },
           sup_1: {
-            label: "Total pesticides > 1 µg/L et ≤ 3 µg/L (eau non conforme)",
+            label: "Somme pesticides > 1 µg/L et ≤ 3 µg/L (eau non conforme)",
             couleur: "#d95f0e",
             couleurAlt: "#d95f0e",
             picto: "warning",
           },
           sup_3: {
-            label: "Total pesticides > 3 µg/L (eau non conforme)",
+            label: "Somme pesticides > 3 µg/L et ≤ 5 µg/L (eau non conforme)",
             couleur: "#993404",
             couleurAlt: "#993404",
+            picto: "warning",
+          },
+          sup_5: {
+            label: "Somme pesticides > 5 µg/L (eau non conforme)",
+            couleur: "#4d1a00",
+            couleurAlt: "#4d1a00",
             picto: "warning",
           },
         },
@@ -1101,7 +1107,7 @@ export const availableCategories: ICategory[] = [
           "Somme des concentrations de tous les pesticides quantifiés, y compris les substances actives et les métabolites pertinents et non pertinents.",
         unite: "µg/L",
         resultatsDetails:
-          "* Somme des concentrations de tous les pesticides quantifiés (les substances actives, les métabolites pertinents et non pertinents).",
+          "* Somme de tous les pesticides quantifiés (les substances actives, les métabolites pertinents et non pertinents).",
         resultats: {
           non_recherche: {
             label: "Aucune recherche de pesticides dans les 12 derniers mois",
@@ -1110,31 +1116,31 @@ export const availableCategories: ICategory[] = [
             picto: null,
           },
           inf_limites: {
-            label: "Somme des pesticides < 0,5 µg/L",
+            label: "Somme pesticides ≤ 0,5 µg/L",
             couleur: "#ffffd4",
             couleurAlt: "#ffffd4",
             picto: null,
           },
           sup_limite_qualite: {
-            label: "Somme des pesticides > 0,5 µg/L et ≤ 1 µg/L",
+            label: "Somme pesticides > 0,5 µg/L et ≤ 1 µg/L",
             couleur: "#fe9929",
             couleurAlt: "#fe9929",
             picto: "warning",
           },
           sup_1: {
-            label: "Somme des pesticides > 1 µg/L et ≤ 3 µg/L",
+            label: "Somme pesticides > 1 µg/L et ≤ 3 µg/L",
             couleur: "#d95f0e",
             couleurAlt: "#d95f0e",
             picto: "warning",
           },
           sup_3: {
-            label: "Somme des pesticides > 3 µg/L et ≤ 5 µg/L",
+            label: "Somme pesticides > 3 µg/L et ≤ 5 µg/L",
             couleur: "#993404",
             couleurAlt: "#993404",
             picto: "warning",
           },
           sup_5: {
-            label: "Somme des pesticides > 5 µg/L",
+            label: "Somme pesticides > 5 µg/L",
             couleur: "#4d1a00",
             couleurAlt: "#4d1a00",
             picto: "warning",

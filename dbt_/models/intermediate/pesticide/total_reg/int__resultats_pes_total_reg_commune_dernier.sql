@@ -71,6 +71,7 @@ SELECT
     'dernier_prel' AS periode,
     date_dernier_prel,
     CASE
+        WHEN total_pesticide > 5 THEN 'sup_5'
         WHEN total_pesticide > 3 THEN 'sup_3'
         WHEN total_pesticide > 1 THEN 'sup_1'
         WHEN total_pesticide > 0.5 THEN 'sup_limite_qualite'

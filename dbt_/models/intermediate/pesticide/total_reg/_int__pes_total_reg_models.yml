@@ -83,6 +83,7 @@ models:
                 - "sup_limite_qualite"
                 - "sup_1"
                 - "sup_3"
+                - "sup_5"
       - name: parametres_detectes
         description: "JSON contenant le total pesticide recalculé (TOTALPESTICIDE)."
         type: JSON
@@ -171,6 +172,7 @@ models:
                 - "sup_limite_qualite"
                 - "sup_1"
                 - "sup_3"
+                - "sup_5"
       - name: parametres_detectes
         description: "JSON contenant le total pesticide recalculé (TOTALPESTICIDE)."
         type: JSON

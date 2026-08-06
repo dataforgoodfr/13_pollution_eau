@@ -128,9 +128,10 @@ WHERE
         cdreseau = '067001860'
         AND annee = 2022
         AND (
-            nb_prelevements != 7
-            OR nb_depassements != 6
+            nb_prelevements != 12
+            OR nb_depassements != 10
             OR nb_sup_valeur_sanitaire != 0
-            OR ratio_limite_qualite < 0.85
+            OR ratio_limite_qualite < 0.83
+            OR ratio_limite_qualite > 0.84
         )
     )

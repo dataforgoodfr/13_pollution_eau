@@ -106,7 +106,7 @@ WHERE
         cdreseau = '027000943'
         AND annee = '2021'
         AND (
-            nb_prelevements != 63
+            nb_prelevements != 32
             OR nb_depassements != 1
             -- il y a 1 prélèvement = à 50 (= valeur_sanitaire_1)
         )

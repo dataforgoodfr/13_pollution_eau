@@ -54,33 +54,6 @@ export default function PollutionMapControlsPanel({
       </div>
 
       <div className="bg-white p-4 py-8 flex flex-col gap-8 rounded-t-lg flex-1 overflow-y-auto">
-        {(totalUdis !== null || lastUpdateDate) && (
-          <div className="grid grid-cols-2 gap-3">
-            {totalUdis !== null && (
-              <div className="rounded-xl border border-gray-200 p-3">
-                <div className="text-xl font-semibold text-gray-900">
-                  {totalUdis.toLocaleString("fr-FR")}
-                </div>
-                <div className="text-xs text-gray-500">
-                  {displayMode === "communes"
-                    ? "communes suivies"
-                    : "réseaux de distribution (UDI) suivis"}
-                </div>
-              </div>
-            )}
-            {lastUpdateDate && (
-              <div className="rounded-xl border border-gray-200 p-3">
-                <div className="text-xl font-semibold text-gray-900">
-                  {lastUpdateDate}
-                </div>
-                <div className="text-xs text-gray-500">
-                  dernière analyse disponible
-                </div>
-              </div>
-            )}
-          </div>
-        )}
-
         <PollutionMapCategorySelector
           period={period}
           setPeriod={setPeriod}
@@ -88,15 +61,49 @@ export default function PollutionMapControlsPanel({
           setCategory={setCategory}
         />
 
-        <PollutionMapLegend
-          variant="full"
-          period={period}
-          category={category}
-          pollutionStats={pollutionStats}
-          colorblindMode={colorblindMode}
-          setColorblindMode={setColorblindMode}
-          displayMode={displayMode}
-        />
+        <div className="border-t border-gray-200 pt-6">
+          <PollutionMapLegend
+            variant="full"
+            period={period}
+            category={category}
+            pollutionStats={pollutionStats}
+            colorblindMode={colorblindMode}
+            setColorblindMode={setColorblindMode}
+            displayMode={displayMode}
+          />
+        </div>
+
+        {(totalUdis !== null || lastUpdateDate) && (
+          <div className="border-t border-gray-200 pt-6">
+            <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-3">
+              À propos des données
+            </h3>
+            <div className="grid grid-cols-2 gap-3">
+              {totalUdis !== null && (
+                <div className="rounded-xl border border-gray-200 p-3">
+                  <div className="text-xl font-semibold text-gray-900">
+                    {totalUdis.toLocaleString("fr-FR")}
+                  </div>
+                  <div className="text-xs text-gray-500">
+                    {displayMode === "communes"
+                      ? "communes suivies"
+                      : "réseaux de distribution (UDI) suivis"}
+                  </div>
+                </div>
+              )}
+              {lastUpdateDate && (
+                <div className="rounded-xl border border-gray-200 p-3">
+                  <div className="text-xl font-semibold text-gray-900">
+                    {lastUpdateDate}
+                  </div>
+                  <div className="text-xs text-gray-500">
+                    dernière analyse disponible
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

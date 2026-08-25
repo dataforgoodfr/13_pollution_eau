@@ -25,11 +25,25 @@ interface ResultatsAnnuels {
   valeurSanitaireLabel?: string;
 }
 
+// Regroupe des sous-catégories par intention utilisateur ("que souhaitez-vous
+// savoir ?"). `label` permet d'afficher un libellé plus court ou plus parlant
+// que le `nomAffichage` de la catégorie référencée par `id`.
+export interface ICategoryGroupOption {
+  id: string;
+  label: string;
+}
+
+export interface ICategoryGroup {
+  titre: string;
+  options: ICategoryGroupOption[];
+}
+
 export interface ICategory {
   id: string;
   nomAffichage: string;
   disable: boolean;
   enfants: ICategory[];
+  groupes?: ICategoryGroup[];
   affichageBlocPageUDI: boolean;
   description: string;
   lienExterne?: string;
@@ -298,6 +312,45 @@ export const availableCategories: ICategory[] = [
       valeurSanitaireLabel:
         "la limite devant entraîner des restrictions de consommation",
     },
+    groupes: [
+      {
+        titre: "Connaître la conformité de l'eau à la réglementation pour…",
+        options: [
+          { id: "pesticide", label: "Tous les pesticides" },
+          { id: "sub_active", label: "Substances actives uniquement" },
+          { id: "metabolite_p", label: "Métabolites pertinents uniquement" },
+          { id: "pes_total_reg", label: "Total pesticides réglementaire" },
+        ],
+      },
+      {
+        titre:
+          "Connaître la concentration totale des pesticides présents dans l'eau",
+        options: [{ id: "pes_total_ts", label: "Total tous pesticides" }],
+      },
+      {
+        titre: "Connaître la concentration des métabolites non pertinents",
+        options: [
+          { id: "metabolite_np", label: "Métabolites non pertinents" },
+        ],
+      },
+      {
+        titre:
+          "Visualiser les concentrations des 5 molécules les plus fréquemment retrouvées",
+        options: [
+          { id: "metabolite_esa_metolachlore", label: "ESA-métolachlore" },
+          { id: "metabolite_chlorothalonil_r471811", label: "R471811" },
+          {
+            id: "metabolite_chloridazone_desphenyl",
+            label: "Chloridazone desphényl",
+          },
+          {
+            id: "metabolite_chloridazone_methyl_desphenyl",
+            label: "Chloridazone méthyl desphényl",
+          },
+          { id: "metabolite_atrazine_desethyl", label: "Atrazine déséthyl" },
+        ],
+      },
+    ],
     enfants: [
       {
         id: "sub_active",

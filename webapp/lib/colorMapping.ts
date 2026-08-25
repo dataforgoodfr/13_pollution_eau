@@ -6,6 +6,86 @@ import type {
   ColorSpecification,
 } from "maplibre-gl";
 
+export interface ZoneResult {
+  label: string;
+  color: string;
+}
+
+/**
+ * Résout le résultat d'une zone survolée à partir des propriétés de sa feature
+ * pmtiles : renvoie le libellé et la couleur correspondant à la sélection
+ * courante. Miroir de la logique de generateColorExpression ci-dessous — les
+ * deux doivent rester synchronisés.
+ */
+export function getZoneResult(
+  category: string,
+  period: string,
+  properties: Record<string, unknown>,
+  colorblindMode: boolean = false,
+): ZoneResult | null {
+  const categoryDetails = getCategoryById(category);
+  if (!categoryDetails) {
+    return null;
+  }
+
+  // Zones sans données (ni cdreseau ni commune) : transparentes sur la carte
+  if (
+    properties["cdreseau"] === undefined &&
+    properties["commune_code_insee"] === undefined
+  ) {
+    return null;
+  }
+
+  if (period.startsWith("dernier_prel")) {
+    const value = properties[getPropertyName(period, category, "resultat")];
+    const key =
+      value === undefined || value === null ? "non_recherche" : String(value);
+    const detail = categoryDetails.resultats[key];
+    if (!detail) {
+      return null;
+    }
+    return {
+      label: detail.label,
+      color: colorblindMode ? detail.couleurAlt : detail.couleur,
+    };
+  }
+
+  if (period.startsWith("bilan_annuel")) {
+    const annuels = categoryDetails.resultatsAnnuels;
+    if (!annuels) {
+      return null;
+    }
+    const ratio = properties[getPropertyName(period, category, "ratio")];
+    const nbPrelevements =
+      properties[getPropertyName(period, category, "nb_prelevements")];
+    if (
+      ratio === undefined ||
+      ratio === null ||
+      nbPrelevements === undefined ||
+      nbPrelevements === null ||
+      Number(nbPrelevements) === 0
+    ) {
+      return {
+        label: annuels.nonRechercheLabel,
+        color: colorblindMode
+          ? annuels.nonRechercheCouleurAlt
+          : annuels.nonRechercheCouleur,
+      };
+    }
+    const ratioValue = Number(ratio);
+    const limite = annuels.ratioLimites.find((l) => ratioValue <= l.limite);
+    if (!limite) {
+      return null;
+    }
+    return {
+      label: `${limite.label} des ${annuels.ratioLabelPlural}`,
+      color: colorblindMode ? limite.couleurAlt : limite.couleur,
+    };
+  }
+
+  return null;
+}
+
 /**
  * Generates a color expression for MapLibre GL based on data from pmtiles.
  *

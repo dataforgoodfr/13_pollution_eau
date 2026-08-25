@@ -12,6 +12,7 @@ import MapTopRightControls from "./MapTopRightControls";
 import PollutionMapLegend from "./PollutionMapLegend";
 import { clsx } from "clsx";
 import type { PollutionStats, ParameterValues } from "@/app/lib/data";
+import type { ZoneResult } from "@/lib/colorMapping";
 import { scrollIframeToFullscreen } from "@/lib/iframe-scroll";
 import EmbedBanner from "./EmbedBanner";
 
@@ -61,6 +62,7 @@ export default function PollutionMap({
   );
   const [colorblindMode, setColorblindMode] = useState(false);
   const [showCVMModal, setShowCVMModal] = useState(false);
+  const [hoveredResult, setHoveredResult] = useState<ZoneResult | null>(null);
 
   useEffect(() => {
     setIsMobile(window.innerWidth < 768);
@@ -132,6 +134,7 @@ export default function PollutionMap({
               setMarker={setMarker}
               colorblindMode={colorblindMode}
               isMobile={isMobile}
+              onHoverResultChange={setHoveredResult}
             />
           </div>
 
@@ -166,8 +169,7 @@ export default function PollutionMap({
               pollutionStats={pollutionStats}
               colorblindMode={colorblindMode}
               setColorblindMode={setColorblindMode}
-              displayMode={displayMode}
-              isMobile={isMobile}
+              hoveredResult={hoveredResult}
             />
           </div>
 

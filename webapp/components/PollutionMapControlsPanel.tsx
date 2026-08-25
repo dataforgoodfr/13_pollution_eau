@@ -49,7 +49,9 @@ export default function PollutionMapControlsPanel({
       </button>
 
       <div className="text-black p-4 pr-16">
-        <div className="text-xs font-thin">CARTE DE LA POLLUTION DE L&apos;EAU</div>
+        <div className="text-xs font-thin">
+          CARTE DE LA POLLUTION DE L&apos;EAU
+        </div>
         <div className="text-2xl">Paramètres</div>
       </div>
 

@@ -15,7 +15,6 @@ La structure du projet est la suivante :
 
 - `pipelines/` : Consolidation et préparation des données
 - `dbt_/` : Modèles de données et transformations
-- `analytics/` : Analyses et notebooks (n'est plus utilisé depuis la fin de la saison càd avril 2025)
 - `webapp/` : Site web Next.js interactif
 - `database/` : Base de données DuckDB et fichiers de cache
 
@@ -214,14 +213,6 @@ SCW_SECRET_KEY={SECRET_KEY}
 Les credentials sont disponibles via le coffre-fort vaultwarden (demander à un chef de projet sur Slack).
 
 Vous trouverez un exemple avec le fichier [.env.example](pipelines/config/.env.example)
-
-## Analyse de données
-
-Les analyses se font via Jupyter Notebook :
-
-```bash
-uv run jupyter notebook
-```
 
 ## Tests
 

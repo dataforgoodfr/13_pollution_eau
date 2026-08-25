@@ -1,6 +1,10 @@
 import { getCategoryById } from "@/lib/polluants";
 import { getPropertyName } from "@/lib/property";
-import { Info, ChevronUp, ChevronDown } from "lucide-react";
+import {
+  getStatistic as getStat,
+  getStatisticValue as getStatValue,
+} from "@/lib/stats";
+import { Info, ChevronUp, ChevronDown, ExternalLink } from "lucide-react";
 import React, { useState } from "react";
 import type { PollutionStats } from "@/app/lib/data";
 import {
@@ -19,6 +23,7 @@ interface PollutionMapLegendProps {
   setColorblindMode: (value: boolean) => void;
   displayMode: "communes" | "udis";
   isMobile?: boolean;
+  variant?: "compact" | "full";
 }
 
 function LegendItem({
@@ -80,27 +85,28 @@ export default function PollutionMapLegend({
   setColorblindMode,
   displayMode,
   isMobile = false,
+  variant = "compact",
 }: PollutionMapLegendProps) {
-  const [isExpanded, setIsExpanded] = useState(!isMobile);
+  // `null` means "no explicit user choice yet": default to expanded unless
+  // on mobile. Derived from the `isMobile` prop on every render (rather than
+  // captured once via useState) so it stays correct if `isMobile` is only
+  // known after mount, instead of getting stuck open on mobile.
+  const [isExpandedOverride, setIsExpandedOverride] = useState<boolean | null>(
+    null,
+  );
+  const isExpanded =
+    isExpandedOverride === null ? !isMobile : isExpandedOverride;
+  const setIsExpanded = setIsExpandedOverride;
   const categoryDetails = getCategoryById(category);
   if (!categoryDetails) {
     return null; // Handle the case where category details are not found
   }
 
-  // Helper function to get statistic value
-  const getStatistic = (propertyName: string): number | null => {
-    const stat = pollutionStats.find((s) => s.stat_nom === propertyName);
-    if (stat?.stat_chiffre !== null && stat?.stat_chiffre !== undefined) {
-      return Number(stat.stat_chiffre);
-    }
-    return null;
-  };
+  const getStatistic = (propertyName: string): number | null =>
+    getStat(pollutionStats, propertyName);
 
-  // Helper function to get statistic value
-  const getStatisticValue = (propertyName: string): string | number | null => {
-    const stat = pollutionStats.find((s) => s.stat_nom === propertyName);
-    return stat ? (stat.stat_chiffre ?? stat.stat_texte) : null;
-  };
+  const getStatisticValue = (propertyName: string): string | number | null =>
+    getStatValue(pollutionStats, propertyName);
 
   // Get total UDIs for percentage calculation
   const totalUdis = getStatistic("total_udis");
@@ -258,6 +264,66 @@ export default function PollutionMapLegend({
     );
   }
 
+  const descriptionBlock = (categoryDetails.description ||
+    categoryDetails.lienExterne) && (
+    <div className="mb-3 text-xs text-gray-600 space-y-1">
+      {categoryDetails.description && <p>{categoryDetails.description}</p>}
+      {categoryDetails.lienExterne && (
+        <a
+          href={categoryDetails.lienExterne}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-1 text-custom-drom hover:underline"
+        >
+          En savoir plus <ExternalLink size={12} />
+        </a>
+      )}
+    </div>
+  );
+
+  const bodyContent = (
+    <>
+      {descriptionBlock}
+      <div className="mb-2">{legendContent}</div>
+
+      <div className="space-y-2">
+        {getLastUpdateDate() && (
+          <p className="text-xs text-gray-500">
+            {getLastUpdateDate()}
+            {displayMode === "communes" &&
+              " - Les tracés de la carte affichent les communes"}
+          </p>
+        )}
+        <div className="flex items-center gap-3">
+          <Switch
+            id="colorblind-switch"
+            checked={colorblindMode}
+            onCheckedChange={setColorblindMode}
+          />
+          <label
+            htmlFor="colorblind-switch"
+            className="text-xs text-gray-500 cursor-pointer select-none"
+          >
+            Couleurs adaptées aux daltoniens
+          </label>
+        </div>
+      </div>
+    </>
+  );
+
+  if (variant === "full") {
+    return (
+      <TooltipProvider>
+        <div>
+          <h2 className="text-sm font-medium text-gray-900 mb-3">
+            Légende - {categoryDetails.nomAffichage}
+          </h2>
+          {bodyContent}
+        </div>
+      </TooltipProvider>
+    );
+  }
+
   return (
     <TooltipProvider>
       <div className="bg-white rounded-2xl border border-gray-500 shadow-lg max-w-md transform transition-all duration-300 ease-in-out overflow-hidden">
@@ -292,32 +358,7 @@ export default function PollutionMapLegend({
             overflow: isExpanded ? "visible" : "hidden",
           }}
         >
-          <div className="px-5 pb-5">
-            <div className="mb-2">{legendContent}</div>
-
-            <div className="space-y-2">
-              {getLastUpdateDate() && (
-                <p className="text-xs text-gray-500">
-                  {getLastUpdateDate()}
-                  {displayMode === "communes" &&
-                    " - Les tracés de la carte affichent les communes"}
-                </p>
-              )}
-              <div className="flex items-center gap-3">
-                <Switch
-                  id="colorblind-switch"
-                  checked={colorblindMode}
-                  onCheckedChange={setColorblindMode}
-                />
-                <label
-                  htmlFor="colorblind-switch"
-                  className="text-xs text-gray-500 cursor-pointer select-none"
-                >
-                  Couleurs adaptées aux daltoniens
-                </label>
-              </div>
-            </div>
-          </div>
+          <div className="px-5 pb-5">{bodyContent}</div>
         </div>
       </div>
     </TooltipProvider>

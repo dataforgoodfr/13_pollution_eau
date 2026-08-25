@@ -13,7 +13,6 @@ import "maplibre-gl/dist/maplibre-gl.css";
 import { Protocol } from "pmtiles";
 import { generateColorExpression } from "@/lib/colorMapping";
 import PollutionMapMarker from "@/components/PollutionMapMarker";
-import type { ParameterValues } from "@/app/lib/data";
 
 import { DEFAULT_MAP_STYLE, getDefaultLayers } from "@/app/config";
 import { frenchLocale } from "@/lib/mapLocale";
@@ -24,6 +23,9 @@ type PollutionMapBaseLayerProps = {
   displayMode: "communes" | "udis";
   selectedZoneCode: string | null;
   setSelectedZoneCode: (code: string | null) => void;
+  onZoneDataChange: (
+    data: Record<string, string | number | null> | null,
+  ) => void;
   mapState: { longitude: number; latitude: number; zoom: number };
   onMapStateChange?: (coords: {
     longitude: number;
@@ -44,7 +46,6 @@ type PollutionMapBaseLayerProps = {
   ) => void;
   colorblindMode?: boolean;
   isMobile?: boolean;
-  parameterValues: ParameterValues;
 };
 
 export default function PollutionMapBaseLayer({
@@ -53,13 +54,13 @@ export default function PollutionMapBaseLayer({
   displayMode,
   selectedZoneCode,
   setSelectedZoneCode,
+  onZoneDataChange,
   mapState,
   onMapStateChange,
   marker,
   setMarker,
   colorblindMode = false,
   isMobile = false,
-  parameterValues,
 }: PollutionMapBaseLayerProps) {
   useEffect(() => {
     // adds the support for PMTiles
@@ -177,14 +178,10 @@ export default function PollutionMapBaseLayer({
     >
       {marker ? (
         <PollutionMapMarker
-          period={period}
-          category={category}
           displayMode={displayMode}
           marker={marker}
-          selectedZoneCode={selectedZoneCode}
           setSelectedZoneCode={setSelectedZoneCode}
-          colorblindMode={colorblindMode}
-          parameterValues={parameterValues}
+          onZoneDataChange={onZoneDataChange}
         />
       ) : null}
       <AttributionControl compact={true} />

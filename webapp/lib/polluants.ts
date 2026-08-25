@@ -32,6 +32,7 @@ export interface ICategory {
   enfants: ICategory[];
   affichageBlocPageUDI: boolean;
   description: string;
+  lienExterne?: string;
   resultatsDetails?: string;
   titreStatut?: string;
   descriptionStatut?: string;

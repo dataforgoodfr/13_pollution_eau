@@ -2,13 +2,13 @@
 
 import { useState, JSX, useEffect } from "react";
 import PollutionMapBaseLayer from "@/components/PollutionMapBase";
-import PollutionMapFilters from "@/components/PollutionMapFilters";
-import PollutionSidePanel from "@/components/PollutionSidePanel";
+import PollutionZoneDetailPanel from "@/components/PollutionZoneDetailPanel";
+import PollutionMapControlsPanel from "@/components/PollutionMapControlsPanel";
 import PollutionMapSearchBox, { FilterResult } from "./PollutionMapSearchBox";
 import CVMInfoModal from "./CVMInfoModal";
 import { MAPLIBRE_MAP } from "@/app/config";
 import { MapProvider } from "react-map-gl/maplibre";
-import MapZoneSelector from "./MapZoneSelector";
+import MapTopRightControls from "./MapTopRightControls";
 import PollutionMapLegend from "./PollutionMapLegend";
 import { clsx } from "clsx";
 import type { PollutionStats, ParameterValues } from "@/app/lib/data";
@@ -35,21 +35,48 @@ export default function PollutionMap({
     zoom: number;
   }>(MAPLIBRE_MAP.initialViewState);
   const [selectedZoneCode, setSelectedZoneCode] = useState<string | null>(null);
+  const [selectedZoneData, setSelectedZoneData] = useState<Record<
+    string,
+    string | number | null
+  > | null>(null);
   const [marker, setMarker] = useState<{
     longitude: number;
     latitude: number;
     content?: JSX.Element;
   } | null>(null);
 
-  const [isMobile] = useState(() => {
-    if (typeof window !== "undefined") {
-      return window.innerWidth < 768;
-    }
-    return false; // Default to false for SSR
-  });
-  const [sidePanelOpen, setSidePanelOpen] = useState(() => !isMobile);
+  // isMobile is only used for non-layout-critical behavior (map gesture mode,
+  // legend's default expanded state). It's read after mount, so it starts
+  // false on both server and first client render — no hydration mismatch.
+  const [isMobile, setIsMobile] = useState(false);
+  // `null` means "no explicit user choice yet": the right panel's open/closed
+  // state is then decided purely by the md: responsive classes below (open on
+  // desktop, closed on mobile), which the browser resolves at first paint
+  // without any JS — so there's no server/client mismatch and no flash of the
+  // panel opening then immediately sliding closed on mobile. Once the user
+  // clicks the toggle, this becomes an explicit true/false that applies at
+  // every breakpoint.
+  const [rightPanelOverride, setRightPanelOverride] = useState<boolean | null>(
+    null,
+  );
   const [colorblindMode, setColorblindMode] = useState(false);
   const [showCVMModal, setShowCVMModal] = useState(false);
+
+  useEffect(() => {
+    setIsMobile(window.innerWidth < 768);
+  }, []);
+
+  const toggleRightPanel = () => {
+    setRightPanelOverride((current) => {
+      const currentlyOpen =
+        current === null
+          ? window.matchMedia("(min-width: 768px)").matches
+          : current;
+      return !currentlyOpen;
+    });
+  };
+
+  const leftPanelOpen = selectedZoneData !== null;
 
   // Show CVM modal when category changes to "cvm"
   useEffect(() => {
@@ -82,97 +109,114 @@ export default function PollutionMap({
     } else {
       setMarker(null);
       setSelectedZoneCode(null);
+      setSelectedZoneData(null);
     }
   };
 
   return (
     <div className="w-full h-full flex flex-col overflow-hidden">
       {showBanner && <EmbedBanner />}
-      <div className="flex flex-1 min-h-0">
+      <div className="relative flex-1 min-h-0">
         <MapProvider>
-          <div className="relative flex-1 transition-all duration-300 flex flex-col">
+          <div className="absolute inset-0">
             <PollutionMapBaseLayer
               period={period}
               category={category}
               displayMode={displayMode}
               selectedZoneCode={selectedZoneCode}
               setSelectedZoneCode={setSelectedZoneCode}
+              onZoneDataChange={setSelectedZoneData}
               mapState={mapState}
               onMapStateChange={setMapState}
               marker={marker}
               setMarker={setMarker}
               colorblindMode={colorblindMode}
               isMobile={isMobile}
-              parameterValues={parameterValues}
             />
+          </div>
 
-            <div className="absolute top-4 left-4 z-10 flex gap-1 md:gap-6 flex-col md:flex-row">
-              <PollutionMapFilters
-                period={period}
-                setPeriod={setPeriod}
-                category={category}
-                setCategory={setCategory}
-              />
-              <div className="md:hidden">
-                <PollutionMapSearchBox
-                  communeInseeCode={selectedZoneCode}
-                  onAddressFilter={handleAddressSelect}
-                />
-              </div>
-            </div>
-
-            <div className="absolute top-4 right-20 z-9 hidden md:block">
+          {!leftPanelOpen && (
+            <div className="absolute top-4 left-4 z-10">
               <PollutionMapSearchBox
                 communeInseeCode={selectedZoneCode}
                 onAddressFilter={handleAddressSelect}
               />
             </div>
+          )}
 
-            <div className="absolute top-4 right-4 z-8">
-              <MapZoneSelector setDisplayMode={setDisplayMode} />
-            </div>
+          <MapTopRightControls
+            rightPanelOverride={rightPanelOverride}
+            onToggleRightPanel={toggleRightPanel}
+            setDisplayMode={setDisplayMode}
+          />
 
-            <div className="absolute left-0 md:left-4 bottom-4 pl-4 pr-12 md:px-0 w-full md:w-auto">
-              <PollutionMapLegend
+          <div
+            className={clsx(
+              "absolute bottom-4 z-10 transition-[right] duration-300 ease-in-out",
+              rightPanelOverride === null
+                ? "right-4 md:right-[calc(400px_+_1rem)]"
+                : rightPanelOverride
+                  ? "hidden md:block md:right-[calc(400px_+_1rem)]"
+                  : "right-4",
+            )}
+          >
+            <PollutionMapLegend
+              period={period}
+              category={category}
+              pollutionStats={pollutionStats}
+              colorblindMode={colorblindMode}
+              setColorblindMode={setColorblindMode}
+              displayMode={displayMode}
+              isMobile={isMobile}
+            />
+          </div>
+
+          {/* Left panel - zone detail, slides in from the left over the map */}
+          <div
+            className={clsx(
+              "absolute inset-y-0 left-0 z-[60] w-full bg-[#E2E8F0] shadow-xl transition-transform duration-300 ease-in-out md:w-[400px]",
+              leftPanelOpen ? "translate-x-0" : "-translate-x-full",
+            )}
+          >
+            <div className="h-full overflow-y-auto">
+              <PollutionZoneDetailPanel
                 period={period}
                 category={category}
+                displayMode={displayMode}
+                selectedZoneData={selectedZoneData}
+                colorblindMode={colorblindMode}
+                parameterValues={parameterValues}
+                onClose={() => {
+                  setMarker(null);
+                  setSelectedZoneCode(null);
+                  setSelectedZoneData(null);
+                }}
+              />
+            </div>
+          </div>
+
+          {/* Right panel - filters/legend/stats, slides in from the right over the map */}
+          <div
+            className={clsx(
+              "absolute inset-y-0 right-0 z-[60] w-full bg-[#E2E8F0] shadow-xl transition-transform duration-300 ease-in-out md:w-[400px]",
+              rightPanelOverride === null
+                ? "translate-x-full md:translate-x-0"
+                : rightPanelOverride
+                  ? "translate-x-0"
+                  : "translate-x-full",
+            )}
+          >
+            <div className="h-full overflow-y-auto">
+              <PollutionMapControlsPanel
+                period={period}
+                setPeriod={setPeriod}
+                category={category}
+                setCategory={setCategory}
                 pollutionStats={pollutionStats}
                 colorblindMode={colorblindMode}
                 setColorblindMode={setColorblindMode}
                 displayMode={displayMode}
-                isMobile={isMobile}
-              />
-            </div>
-
-            {/* Side Panel toggle button  */}
-            <div
-              className="absolute right-0 top-1/2 transform -translate-y-1/2 cursor-pointer z-[21]"
-              onClick={() => setSidePanelOpen(!sidePanelOpen)}
-            >
-              <div className="bg-custom-drom text-white shadow-md rounded-l-md flex items-center justify-center h-16 w-6">
-                <div className="text-lg">{sidePanelOpen ? "›" : "‹"}</div>
-              </div>
-            </div>
-          </div>
-
-          {/* Side panel - responsive: hidden on mobile, visible on desktop */}
-          <div
-            className={clsx(
-              "bg-[#E2E8F0] transition-all duration-300 z-[60]",
-              // Mobile: full screen overlay when open, hidden when closed
-              "fixed inset-0 md:relative md:inset-auto",
-
-              sidePanelOpen
-                ? "block md:block md:w-[400px]"
-                : "hidden md:block md:w-0",
-            )}
-          >
-            {/* Panel content */}
-            <div className="h-full overflow-y-auto p-1 md:p-0">
-              <PollutionSidePanel
-                category={category}
-                period={period}
-                onClose={() => setSidePanelOpen(false)}
+                onClose={() => setRightPanelOverride(false)}
               />
             </div>
           </div>

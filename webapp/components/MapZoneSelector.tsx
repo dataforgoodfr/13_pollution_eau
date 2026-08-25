@@ -169,7 +169,10 @@ export default function MapZoneSelector({
                       {svg}
                     </Button>
                   </TooltipTrigger>
-                  <TooltipContent className="bg-white text-custom-drom">
+                  <TooltipContent
+                    side="left"
+                    className="bg-white text-custom-drom"
+                  >
                     {tooltip}
                   </TooltipContent>
                 </Tooltip>

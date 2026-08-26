@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { getPropertyName } from "@/lib/property";
 import { getCategoryById } from "@/lib/polluants";
 import { X, ChevronDown, ChevronUp } from "lucide-react";
@@ -10,7 +10,7 @@ type PollutionZoneDetailPanelProps = {
   period: string;
   category: string;
   displayMode: "communes" | "udis";
-  selectedZoneData: Record<string, string | number | null> | null;
+  selectedZoneCode: string | null;
   colorblindMode?: boolean;
   parameterValues: ParameterValues;
   onClose?: () => void;
@@ -247,7 +247,7 @@ export default function PollutionZoneDetailPanel({
   period,
   category,
   displayMode,
-  selectedZoneData,
+  selectedZoneCode,
   colorblindMode = false,
   parameterValues,
   onClose,
@@ -255,9 +255,81 @@ export default function PollutionZoneDetailPanel({
   const [collapsedSections, setCollapsedSections] = useState<
     Record<string, boolean>
   >({});
+  const [selectedZoneData, setSelectedZoneData] = useState<Record<
+    string,
+    string | number | null
+  > | null>(null);
+  const [zoneDataError, setZoneDataError] = useState(false);
+
+  // Fetch the selected zone's full data from the DB (SQL endpoint)
+  useEffect(() => {
+    if (!selectedZoneCode) {
+      setSelectedZoneData(null);
+      setZoneDataError(false);
+      return;
+    }
+
+    let cancelled = false;
+    setSelectedZoneData(null);
+    setZoneDataError(false);
+
+    fetch(
+      `/api/zone-detail?type=${displayMode}&code=${encodeURIComponent(selectedZoneCode)}`,
+    )
+      .then((res) => (res.ok ? res.json() : Promise.reject(res.status)))
+      .then((data) => {
+        if (!cancelled) {
+          setSelectedZoneData(data);
+        }
+      })
+      .catch((error) => {
+        console.error("Failed to fetch zone detail:", error);
+        if (!cancelled) {
+          setZoneDataError(true);
+        }
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [selectedZoneCode, displayMode]);
+
+  if (!selectedZoneCode) {
+    return null;
+  }
+
+  if (zoneDataError) {
+    return (
+      <div className="h-full flex flex-col relative">
+        <button
+          className="absolute top-5 right-5 text-black bg-white rounded-full p-2 shadow-md hover:text-gray-800 hover:bg-gray-100 transition duration-300 z-10"
+          onClick={() => onClose?.()}
+          aria-label="Close"
+        >
+          <X className="w-6 h-6" />
+        </button>
+        <div className="bg-white p-4 flex-1 rounded-t-lg flex items-center justify-center text-gray-500 text-sm text-center">
+          Impossible de charger les données pour cette zone.
+        </div>
+      </div>
+    );
+  }
 
   if (!selectedZoneData) {
-    return null;
+    return (
+      <div className="h-full flex flex-col relative">
+        <button
+          className="absolute top-5 right-5 text-black bg-white rounded-full p-2 shadow-md hover:text-gray-800 hover:bg-gray-100 transition duration-300 z-10"
+          onClick={() => onClose?.()}
+          aria-label="Close"
+        >
+          <X className="w-6 h-6" />
+        </button>
+        <div className="bg-white p-4 flex-1 rounded-t-lg flex items-center justify-center text-gray-500 text-sm">
+          Chargement...
+        </div>
+      </div>
+    );
   }
 
   const title =

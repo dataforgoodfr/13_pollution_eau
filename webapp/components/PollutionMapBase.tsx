@@ -25,9 +25,6 @@ type PollutionMapBaseLayerProps = {
   displayMode: "communes" | "udis";
   selectedZoneCode: string | null;
   setSelectedZoneCode: (code: string | null) => void;
-  onZoneDataChange: (
-    data: Record<string, string | number | null> | null,
-  ) => void;
   mapState: { longitude: number; latitude: number; zoom: number };
   onMapStateChange?: (coords: {
     longitude: number;
@@ -57,7 +54,6 @@ export default function PollutionMapBaseLayer({
   displayMode,
   selectedZoneCode,
   setSelectedZoneCode,
-  onZoneDataChange,
   mapState,
   onMapStateChange,
   marker,
@@ -113,13 +109,6 @@ export default function PollutionMapBaseLayer({
     if (event.features && event.features.length > 0) {
       console.log("zoom level:", mapState.zoom);
       console.log("Properties:", event.features[0].properties);
-      // setSelectedZoneData(event.features[0].properties);
-      // setSelectedZoneCode(
-      //   displayMode === "communes"
-      //     ? event.features[0].properties["commune_code_insee"]
-      //     : event.features[0].properties["cdreseau"],
-      // );
-
       setMarker({
         longitude: event.lngLat.lng,
         latitude: event.lngLat.lat,
@@ -221,7 +210,6 @@ export default function PollutionMapBaseLayer({
           displayMode={displayMode}
           marker={marker}
           setSelectedZoneCode={setSelectedZoneCode}
-          onZoneDataChange={onZoneDataChange}
         />
       ) : null}
       <AttributionControl compact={true} />

@@ -36,10 +36,6 @@ export default function PollutionMap({
     zoom: number;
   }>(MAPLIBRE_MAP.initialViewState);
   const [selectedZoneCode, setSelectedZoneCode] = useState<string | null>(null);
-  const [selectedZoneData, setSelectedZoneData] = useState<Record<
-    string,
-    string | number | null
-  > | null>(null);
   const [marker, setMarker] = useState<{
     longitude: number;
     latitude: number;
@@ -78,7 +74,7 @@ export default function PollutionMap({
     });
   };
 
-  const leftPanelOpen = selectedZoneData !== null;
+  const leftPanelOpen = selectedZoneCode !== null;
 
   // Show CVM modal when category changes to "cvm"
   useEffect(() => {
@@ -111,7 +107,6 @@ export default function PollutionMap({
     } else {
       setMarker(null);
       setSelectedZoneCode(null);
-      setSelectedZoneData(null);
     }
   };
 
@@ -127,7 +122,6 @@ export default function PollutionMap({
               displayMode={displayMode}
               selectedZoneCode={selectedZoneCode}
               setSelectedZoneCode={setSelectedZoneCode}
-              onZoneDataChange={setSelectedZoneData}
               mapState={mapState}
               onMapStateChange={setMapState}
               marker={marker}
@@ -151,6 +145,10 @@ export default function PollutionMap({
             rightPanelOverride={rightPanelOverride}
             onToggleRightPanel={toggleRightPanel}
             setDisplayMode={setDisplayMode}
+            onZoneChange={() => {
+              setMarker(null);
+              setSelectedZoneCode(null);
+            }}
           />
 
           <div
@@ -185,13 +183,12 @@ export default function PollutionMap({
                 period={period}
                 category={category}
                 displayMode={displayMode}
-                selectedZoneData={selectedZoneData}
+                selectedZoneCode={selectedZoneCode}
                 colorblindMode={colorblindMode}
                 parameterValues={parameterValues}
                 onClose={() => {
                   setMarker(null);
                   setSelectedZoneCode(null);
-                  setSelectedZoneData(null);
                 }}
               />
             </div>

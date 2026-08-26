@@ -12,16 +12,12 @@ type PollutionMapMarkerProps = {
     content?: JSX.Element;
   } | null;
   setSelectedZoneCode: (code: string | null) => void;
-  onZoneDataChange: (
-    data: Record<string, string | number | null> | null,
-  ) => void;
 };
 
 export default function PollutionMapMarker({
   displayMode,
   marker,
   setSelectedZoneCode,
-  onZoneDataChange,
 }: PollutionMapMarkerProps) {
   const { map } = useMap();
 
@@ -38,7 +34,7 @@ export default function PollutionMapMarker({
 
   useEffect(() => {
     if (!map || !marker) {
-      onZoneDataChange(null);
+      setSelectedZoneCode(null);
       return;
     }
 
@@ -58,7 +54,6 @@ export default function PollutionMapMarker({
       });
 
       if (features && features.length > 0) {
-        onZoneDataChange(features[0].properties);
         setSelectedZoneCode(
           displayMode === "communes"
             ? features[0].properties["commune_code_insee"]

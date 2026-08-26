@@ -53,8 +53,10 @@ export const ZONE_CONFIGS: { [key: number]: ZoneConfig } = {
 
 export default function MapZoneSelector({
   setDisplayMode,
+  onZoneChange,
 }: {
   setDisplayMode: (mode: "communes" | "udis") => void;
+  onZoneChange: () => void;
 }) {
   const { map } = useMap();
   const handleClick = (e: MouseEvent<HTMLButtonElement>) => {
@@ -67,6 +69,8 @@ export default function MapZoneSelector({
       zoom: ZONE_CONFIGS[numZone].zoom,
     });
     setSelectedZone(numZone);
+
+    onZoneChange();
 
     // Set display mode: UDI for Metropole, Communes for DOMs
     if (numZone === ZONE_METROPOLE) {

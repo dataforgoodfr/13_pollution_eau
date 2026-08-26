@@ -18,12 +18,14 @@ type MapTopRightControlsProps = {
   rightPanelOverride: boolean | null;
   onToggleRightPanel: () => void;
   setDisplayMode: (mode: "communes" | "udis") => void;
+  onZoneChange: () => void;
 };
 
 export default function MapTopRightControls({
   rightPanelOverride,
   onToggleRightPanel,
   setDisplayMode,
+  onZoneChange,
 }: MapTopRightControlsProps) {
   return (
     <div
@@ -61,7 +63,10 @@ export default function MapTopRightControls({
         </Tooltip>
       </TooltipProvider>
 
-      <MapZoneSelector setDisplayMode={setDisplayMode} />
+      <MapZoneSelector
+        setDisplayMode={setDisplayMode}
+        onZoneChange={onZoneChange}
+      />
       <MapZoomControl />
       <MapFullscreenControl />
     </div>

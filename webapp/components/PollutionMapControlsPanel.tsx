@@ -78,7 +78,7 @@ export default function PollutionMapControlsPanel({
         {(totalUdis !== null || lastUpdateDate) && (
           <div className="border-t border-gray-200 pt-6">
             <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-3">
-              À propos des données
+              Quelques chiffres
             </h3>
             <div className="grid grid-cols-2 gap-3">
               {totalUdis !== null && (

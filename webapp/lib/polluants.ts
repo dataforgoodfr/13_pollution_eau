@@ -15,6 +15,7 @@ interface RatioLimite {
 }
 
 interface ResultatsAnnuels {
+  topLegend?: string;
   nonRechercheLabel: string;
   nonRechercheCouleur: string;
   nonRechercheCouleurAlt: string;
@@ -53,6 +54,7 @@ export interface ICategory {
   couleurStatut?: string;
   couleurAltStatut?: string;
   picto?: string | null;
+  resultatsTopLegend?: string;
   resultats: { [key: string]: DetailResultat };
   resultatsAnnuels?: ResultatsAnnuels;
   unite?: string;
@@ -66,9 +68,11 @@ export const availableCategories: ICategory[] = [
     enfants: [],
     affichageBlocPageUDI: true,
     description:
-      "Ensemble des substances chimiques et biologiques pouvant contaminer l'eau, l'air et les sols.",
+      "Dans « tous polluants », nous regroupont les principaux polluants chimiques de l'eau potable : pesticides, nitrates, PFAS, CVM et perchlorates. La qualité de l'eau y est évaluée au regard des limites de qualité fixées par la réglementation et des limites sanitaires établies par les autorités de santé.",
     resultatsDetails:
       "* Pesticides, PFAS, CVM, et Perchlorate non quantifiés ; Nitrates non quantifiés ou  <=10 mg/L\n** D'après les recommandations du Ministère de la Santé ou du Haut Conseil de la Santé Publique",
+    resultatsTopLegend:
+      "Cette carte montre l'état actuel de l'eau d'après les dernières analyses disponibles pour chaque polluant : sa conformité aux limites de qualité réglementaires et les situations pour lesquelles l'eau devrait être déconseillée à la consommation. Chaque zone est classée d'après l'ensemble des polluants recherchés : c'est le résultat le plus défavorable qui détermine sa couleur.",
     resultats: {
       non_recherche: {
         label: "Aucun polluant recherché dans les 12 derniers mois",
@@ -83,15 +87,13 @@ export const availableCategories: ICategory[] = [
         picto: null,
       },
       quantifie: {
-        label:
-          "Au moins un polluant quantifié sans dépassement des limites de qualité",
+        label: "Au moins un polluant quantifié, sous les limites de qualité",
         couleur: "#FFF33B",
         couleurAlt: "#FFF33B",
         picto: null,
       },
       sup_limite_qualite: {
-        label:
-          "Au moins un polluant dépasse les limites de qualité (eau non conforme)",
+        label: "Dépassement d'une limite de qualité — eau non conforme",
         couleur: "#fe9929",
         couleurAlt: "#fe9929",
         picto: "warning",
@@ -137,6 +139,8 @@ export const availableCategories: ICategory[] = [
       ],
       ratioLabelSingular: "analyse non conforme",
       ratioLabelPlural: "analyses non conformes",
+      topLegend:
+        "Cette carte montre sur une année le pourcentage des analyses non conformes à la réglementation en vigueur cette année-là, pour au moins un des polluants suivis.",
       valeurSanitaireLabel:
         "la limite devant entraîner des restrictions de consommation",
     },
@@ -148,45 +152,46 @@ export const availableCategories: ICategory[] = [
     enfants: [],
     affichageBlocPageUDI: true,
     description:
-      "Polluants éternels, utilisés dans l'industrie pour leurs propriétés antiadhésives et imperméables.",
+      "Les PFAS sont des substances chimiques très persistantes, utilisées depuis les années 1950 pour leurs propriétés antiadhésives, antitaches et résistantes à la chaleur, et aujourd'hui largement présentes dans l'environnement.",
     unite: "µg/L",
     resultatsDetails:
       "* Somme des 20 PFAS = 0,1 µg/L\n** Somme des 4 PFAS (PFOA, PFOS, PFNA, PFHxS) = 0,02 µg/L\nHCSP: Haut Conseil de la Santé Publique",
+    resultatsTopLegend:
+      "Cette carte montre les concentrations en PFAS mesurées dans l'eau au cours de la dernière analyse dont les résultats sont disponibles. Chaque zone est classée d'après l'ensemble des PFAS recherchés : c'est le résultat le plus défavorable qui détermine sa couleur.",
     resultats: {
       non_recherche: {
-        label: "Aucun PFAS recherché dans les 12 derniers mois",
+        label: "Non recherché dans les 12 derniers mois",
         couleur: "#cccccc",
         couleurAlt: "#f7f7f7",
         picto: null,
       },
       non_quantifie: {
-        label: "Aucun PFAS quantifié",
+        label: "Non quantifié",
         couleur: "#74c476",
         couleurAlt: "#c7e9c0",
         picto: null,
       },
       somme_20pfas_inf_0_1_et_4pfas_inf_0_02: {
-        label:
-          "Au moins un PFAS quantifié sans dépassement de la limite de qualité* et de la limite recommandée par le HCSP**",
+        label: "Quantifié, sous la limite de qualité* et la limite HCSP**",
         couleur: "#FFF33B",
         couleurAlt: "#FFF33B",
         picto: null,
       },
       somme_20pfas_inf_0_1_et_4pfas_sup_0_02: {
-        label:
-          "Dépassement de la limite recommandée par le HCSP** sans dépassement de la limite de qualité*",
+        label: "Dépassement de la seule limite HCSP**",
         couleur: "#FDC70C",
         couleurAlt: "#FDC70C",
         picto: null,
       },
       somme_20pfas_sup_0_1: {
-        label: "Dépassement de la limite de qualité* (eau non conforme)",
+        label: "Dépassement de la limite de qualité* — eau non conforme",
         couleur: "#fe9929",
         couleurAlt: "#fe9929",
         picto: null,
       },
       sup_valeur_sanitaire: {
-        label: "Au moins un PFAS dépasse une limite sanitaire",
+        label:
+          "Dépassement d'une limite sanitaire — eau devant être déconseillée à la consommation",
         couleur: "#f03b20",
         couleurAlt: "#bd0026",
         picto: "red cross",
@@ -226,6 +231,8 @@ export const availableCategories: ICategory[] = [
       ratioLabelSingular: "analyse non conforme*",
       ratioLabelPlural: "analyses non conformes*",
       details: "* Somme des 20 PFAS > 0,1 µg/L",
+      topLegend:
+        "Cette carte montre sur une année le pourcentage des analyses pour lesquelles les concentrations en PFAS sont non conformes à la réglementation (supérieures à la limite de qualité de 0,1 µg/L pour la somme des 20 PFAS).",
       valeurSanitaireLabel: "une limite sanitaire",
     },
   },
@@ -235,40 +242,39 @@ export const availableCategories: ICategory[] = [
     disable: false,
     affichageBlocPageUDI: true,
     description:
-      "Substances chimiques utilisées pour lutter contre les nuisibles agricoles.",
+      "Le terme 'pesticides' regroupe ici les substances actives des produits phytosanitaires et biocides (herbicides, insecticides, fongicides…) ainsi que les métabolites issus de leur dégradation. Leur usage entraîne une contamination diffuse des eaux, par ruissellement ou infiltration dans les sols.",
     unite: "µg/L",
     resultatsDetails:
       "* D'après les recommandations du Haut Conseil de la Santé Publique",
+    resultatsTopLegend:
+      "Cette carte montre les concentrations en pesticides mesurées dans l'eau au cours de la dernière analyse de pesticides dont les résultats sont disponibles. Chaque zone est classée d'après l'ensemble des pesticides recherchés : c'est le résultat le plus défavorable qui détermine sa couleur.",
     resultats: {
       non_recherche: {
-        label: "Aucun pesticide recherché dans les 12 derniers mois",
+        label: "Non recherché dans les 12 derniers mois",
         couleur: "#cccccc",
         couleurAlt: "#f7f7f7",
         picto: null,
       },
       non_quantifie: {
-        label: "Aucun pesticide quantifié",
+        label: "Non quantifié",
         couleur: "#74c476",
         couleurAlt: "#c7e9c0",
         picto: null,
       },
       inf_limite_qualite: {
-        label:
-          "Au moins un pesticide quantifié sans dépassement des limites de qualité ",
+        label: "Quantifié, sous les limites de qualité",
         couleur: "#FFF33B",
         couleurAlt: "#FFF33B",
         picto: null,
       },
       sup_limite_qualite: {
-        label:
-          "Au moins un pesticide dépasse la limite de qualité (eau non conforme)",
+        label: "Dépassement d'une limite de qualité — eau non conforme",
         couleur: "#fe9929",
         couleurAlt: "#fe9929",
         picto: "warning",
       },
       sup_valeur_sanitaire: {
-        label:
-          "Eau devant être déconseillée à la consommation en raison de la présence de pesticides*",
+        label: "Eau devant être déconseillée à la consommation*",
         couleur: "#f03b20",
         couleurAlt: "#bd0026",
         picto: "red cross",
@@ -309,6 +315,8 @@ export const availableCategories: ICategory[] = [
       ratioLabelPlural: "analyses non conformes*",
       details:
         "* Au moins une substance active ou un métabolite pertinent > 0,1µg/L et/ou total pesticides réglementaire (somme des substances actives et métabolites pertinents) > 0,5 µg/L",
+      topLegend:
+        "Cette carte montre sur une année le pourcentage des analyses de pesticides pour lesquelles les concentrations sont non conformes à la réglementation (supérieures à 0,1 µg/L pour une substance active ou un métabolite pertinent, ou à 0,5 µg/L pour le total pesticides réglementaire).",
       valeurSanitaireLabel:
         "la limite devant entraîner des restrictions de consommation",
     },
@@ -329,9 +337,7 @@ export const availableCategories: ICategory[] = [
       },
       {
         titre: "Connaître la concentration des métabolites non pertinents",
-        options: [
-          { id: "metabolite_np", label: "Métabolites non pertinents" },
-        ],
+        options: [{ id: "metabolite_np", label: "Métabolites non pertinents" }],
       },
       {
         titre:
@@ -359,41 +365,39 @@ export const availableCategories: ICategory[] = [
         affichageBlocPageUDI: false,
         enfants: [],
         description:
-          "Molécules ayant un effet biocide contre les organismes nuisibles.",
+          "Les substances actives sont les molécules des pesticides ayant des propriétés herbicides, insecticides ou fongicides. Certaines sont très persistantes et se retrouvent dans l'eau potable des années après leur interdiction, comme l'atrazine interdite depuis 2003.",
         unite: "µg/L",
         resultatsDetails:
           "* D'après les recommandations du Haut Conseil de la Santé Publique",
+        resultatsTopLegend:
+          "Cette carte montre les concentrations en substances actives pesticides mesurées dans l'eau au cours de la dernière analyse dont les résultats sont disponibles. Elle n'indique ni les résultats des métabolites, ni ceux du total pesticides. Chaque zone est classée d'après l'ensemble des substances actives recherchées : c'est le résultat le plus défavorable qui détermine sa couleur.",
         resultats: {
           non_recherche: {
-            label:
-              "Aucune substance active recherchée dans les 12 derniers mois",
+            label: "Non recherché dans les 12 derniers mois",
             couleur: "#cccccc",
             couleurAlt: "#f7f7f7",
             picto: null,
           },
           non_quantifie: {
-            label: "Aucune substance active quantifiée",
+            label: "Non quantifié",
             couleur: "#74c476",
             couleurAlt: "#c7e9c0",
             picto: null,
           },
           inf_limite_qualite: {
-            label:
-              "Au moins une substance active quantifiée sans dépassement de la limite de qualité",
+            label: "Quantifié, sous la limite de qualité",
             couleur: "#FFF33B",
             couleurAlt: "#FFF33B",
             picto: null,
           },
           sup_limite_qualite: {
-            label:
-              "Au moins une substance active dépasse la limite de qualité (eau non conforme)",
+            label: "Dépassement de la limite de qualité — eau non conforme",
             couleur: "#fe9929",
             couleurAlt: "#fe9929",
             picto: "warning",
           },
           sup_valeur_sanitaire: {
-            label:
-              "Eau devant être déconseillée à la consommation en raison de la présence de substances actives*",
+            label: "Eau devant être déconseillée à la consommation*",
             couleur: "#f03b20",
             couleurAlt: "#bd0026",
             picto: "red cross",
@@ -438,6 +442,8 @@ export const availableCategories: ICategory[] = [
           ratioLabelSingular: "analyse non conforme*",
           ratioLabelPlural: "analyses non conformes*",
           details: "* Au moins une substance active > 0,1 µg/L",
+          topLegend:
+            "Cette carte montre sur une année le pourcentage des analyses pour lesquelles au moins une substance active dépasse la limite de qualité de 0,1 µg/L (eau non conforme).",
           valeurSanitaireLabel:
             "la limite devant entraîner des restrictions de consommation",
         },
@@ -447,41 +453,41 @@ export const availableCategories: ICategory[] = [
         nomAffichage: "Métabolites pertinents",
         disable: false,
         affichageBlocPageUDI: false,
-        description: "Produits de dégradation des substances actives.",
+        description:
+          "Les métabolites sont des substances issues de la dégradation des pesticides dans l'environnement. Ceux jugés « pertinents » par l'Anses — susceptibles d'engendrer un risque sanitaire inacceptable — doivent respecter la limite de qualité de 0,1 µg/L.",
         unite: "µg/L",
         resultatsDetails:
           "* D'après les recommandations du Haut Conseil de la Santé Publique",
+        resultatsTopLegend:
+          "Cette carte montre les concentrations en métabolites pertinents mesurées dans l'eau au cours de la dernière analyse dont les résultats sont disponibles. Elle n'indique ni les résultats des substances actives, ni ceux du total pesticides. Chaque zone est classée d'après l'ensemble des métabolites pertinents recherchés : c'est le résultat le plus défavorable qui détermine sa couleur.",
         resultats: {
           non_recherche: {
-            label:
-              "Aucun métabolite pertinent recherché dans les 12 derniers mois",
+            label: "Non recherché dans les 12 derniers mois",
             couleur: "#cccccc",
             couleurAlt: "#f7f7f7",
             picto: null,
           },
           non_quantifie: {
-            label: "Aucun métabolite pertinent quantifié",
+            label: "Non quantifié",
             couleur: "#74c476",
             couleurAlt: "#c7e9c0",
             picto: null,
           },
           inf_limites: {
-            label:
-              "Au moins un métabolite pertinent quantifié sans dépassement de la limite de qualité",
+            label: "Quantifié, sous la limite de qualité",
             couleur: "#FFF33B",
             couleurAlt: "#FFF33B",
             picto: null,
           },
           sup_limite_qualite: {
             label:
-              "Au moins un métabolite pertinent dépasse la limite de qualité de 0,1 µg/L (eau non conforme)",
+              "Dépassement de la limite de qualité de 0,1 µg/L — eau non conforme",
             couleur: "#fe9929",
             couleurAlt: "#fe9929",
             picto: "warning",
           },
           sup_valeur_sanitaire: {
-            label:
-              "Eau devant être déconseillée à la consommation en raison de la présence de métabolites pertinents*",
+            label: "Eau devant être déconseillée à la consommation*",
             couleur: "#f03b20",
             couleurAlt: "#bd0026",
             picto: "red cross",
@@ -526,6 +532,8 @@ export const availableCategories: ICategory[] = [
           ratioLabelSingular: "analyse non conforme*",
           ratioLabelPlural: "analyses non conformes*",
           details: "* Au moins un métabolite pertinent > 0,1 µg/L",
+          topLegend:
+            "Cette carte montre sur une année le pourcentage des analyses pour lesquelles au moins un métabolite dépasse la limite de qualité de 0,1 µg/L, selon la classification pertinent / non pertinent en vigueur cette année-là.",
           valeurSanitaireLabel:
             "la limite devant entraîner des restrictions de consommation",
         },
@@ -537,39 +545,38 @@ export const availableCategories: ICategory[] = [
         nomAffichage: "Métabolites non pertinents",
         disable: false,
         affichageBlocPageUDI: false,
-        description: "Produits de dégradation des substances actives.",
+        description:
+          "Les métabolites « non pertinents » sont des produits de dégradation des pesticides que l'Anses a jugés sans risque sanitaire inacceptable. Ils ne sont soumis qu'à une valeur « indicative » de 0,9 µg/L et ne sont pas comptés dans le total pesticides réglementaire.",
         unite: "µg/L",
+        resultatsTopLegend:
+          "Cette carte montre les concentrations en métabolites non pertinents mesurées dans l'eau au cours de la dernière analyse dont les résultats sont disponibles. Chaque zone est classée d'après l'ensemble des métabolites non pertinents recherchés : c'est le résultat le plus élevé qui détermine sa couleur.",
         resultats: {
           non_recherche: {
-            label:
-              "Aucun métabolite non pertinent recherché dans les 12 derniers mois",
+            label: "Non recherché dans les 12 derniers mois",
             couleur: "#cccccc",
             couleurAlt: "#f7f7f7",
             picto: null,
           },
           non_quantifie: {
-            label: "Aucun métabolite non pertinent quantifié",
+            label: "Non quantifié",
             couleur: "#74c476",
             couleurAlt: "#c7e9c0",
             picto: null,
           },
           inf_limites: {
-            label:
-              "Au moins un métabolite non pertinent quantifié sans dépasser 0,1 µg/L",
+            label: "Quantifié, ≤ 0,1 µg/L",
             couleur: "#FFF33B",
             couleurAlt: "#fec44f",
             picto: null,
           },
           inf_limites_sup_0_1: {
-            label:
-              "Au moins un métabolite non pertinent a une concentration comprise en 0,1 et 0,9 µg/L",
+            label: "Entre 0,1 et 0,9 µg/L",
             couleur: "#eedf00",
             couleurAlt: "#fe9929",
             picto: null,
           },
           sup_limite_indicative: {
-            label:
-              "Au moins un métabolite non pertinent dépasse la limite indicative de 0,9 µg/L",
+            label: "Dépassement de la limite indicative de 0,9 µg/L",
             couleur: "#FDC70C",
             couleurAlt: "#d95f0e",
             picto: null,
@@ -615,6 +622,8 @@ export const availableCategories: ICategory[] = [
           ratioLabelPlural: "analyses > 0.9 µg/L",
           details:
             '* Le dépassement de 0.9 µg/L n\'est pas considéré comme une "non conformité"',
+          topLegend:
+            "Cette carte montre sur une année le pourcentage des analyses pour lesquelles au moins un métabolite non pertinent dépasse la valeur indicative de 0,9 µg/L — un dépassement qui n'est pas considéré comme une non conformité par les autorités.",
         },
         enfants: [],
       },
@@ -624,7 +633,10 @@ export const availableCategories: ICategory[] = [
         disable: false,
         enfants: [],
         affichageBlocPageUDI: false,
-        description: "Métabolite du métolachlore, herbicide.",
+        description:
+          "L'ESA-métolachlore est un métabolite du S-métolachlore, herbicide très utilisé sur le maïs, le soja et le tournesol, interdit en France et en Europe depuis 2024. Jugé « pertinent » par l'Anses en 2019 puis « non pertinent » en 2022, alors que son potentiel cancérigène n'a jamais pu être évalué.",
+        resultatsTopLegend:
+          "Cette carte montre les concentrations en ESA-métolachlore mesurées dans l'eau au cours de la dernière analyse dont les résultats sont disponibles.",
         resultatsDetails:
           "* Si l'ESA métolachlore était considéré comme un métabolite pertinent, l'eau serait déclarée \"non conforme\" à partir de 0,1 µg/L. \n** La valeur de 3 µg/L, utilisée en Allemagne comme valeur de gestion, indique une contamination élevée.",
         unite: "µg/L",
@@ -642,26 +654,25 @@ export const availableCategories: ICategory[] = [
             picto: null,
           },
           inf_limites: {
-            label: "Concentration ≤ 0,1 µg/L",
+            label: "≤ 0,1 µg/L",
             couleur: "#FFF33B",
             couleurAlt: "#fec44f",
             picto: null,
           },
           inf_limites_sup_0_1: {
-            label: "Concentration comprise entre 0,1 et 0,9 µg/L*",
+            label: "Entre 0,1 et 0,9 µg/L*",
             couleur: "#eedf00",
             couleurAlt: "#fe9929",
             picto: null,
           },
           sup_limite_indicative: {
-            label:
-              "Concentration > 0,9 µg/L (dépassement de la limite indicative)",
+            label: "> 0,9 µg/L — limite indicative dépassée",
             couleur: "#FDC70C",
             couleurAlt: "#d95f0e",
             picto: "warning",
           },
           metabolite_sup_3: {
-            label: "Concentration > 3 µg/L**",
+            label: "> 3 µg/L**",
             couleur: "#d95f0e",
             couleurAlt: "#993404",
             picto: "warning",
@@ -707,6 +718,8 @@ export const availableCategories: ICategory[] = [
           ratioLabelPlural: "analyses non conformes*",
           details:
             "* Concentration > 0,1 µg/L lorsque l'ESA métolachlore était considéré pertinent (jusqu'en 2022). Le classement de l'ESA-métolachlore en non pertinent en 2022 explique pourquoi il n'y a plus de non conformité à partir de 2023.",
+          topLegend:
+            "Cette carte montre sur une année le pourcentage des analyses d'ESA-métolachlore non conformes à la réglementation en vigueur cette année-là : la limite de qualité de 0,1 µg/L s'appliquait jusqu'en 2022, remplacée depuis 2023 par la valeur indicative de 0,9 µg/L, dont le dépassement n'est pas une non conformité.",
           valeurSanitaireLabel: "la limite sanitaire",
         },
       },
@@ -716,7 +729,10 @@ export const availableCategories: ICategory[] = [
         disable: false,
         enfants: [],
         affichageBlocPageUDI: true,
-        description: "Métabolite du fongicide chlorothalonil.",
+        description:
+          "Le R471811 est un métabolite du chlorothalonil, fongicide très utilisé sur les céréales et interdit en France et en Europe depuis 2020. Jugé « pertinent » par l'Anses en 2022 puis « non pertinent » en 2024, sans qu'une évaluation complète de son potentiel cancérigène ait été faite.",
+        resultatsTopLegend:
+          "Cette carte montre les concentrations en chlorothalonil R471811 mesurées dans l'eau au cours de la dernière analyse dont les résultats sont disponibles.",
         resultatsDetails:
           '* Si le chlorothalonil R471811 était considéré comme un métabolite pertinent, l\'eau serait déclarée "non conforme" à partir de 0,1 µg/L. \n** La valeur de 3 µg/L, utilisée en Allemagne comme valeur de gestion, indique une contamination élevée.',
         unite: "µg/L",
@@ -734,26 +750,25 @@ export const availableCategories: ICategory[] = [
             picto: null,
           },
           inf_limites: {
-            label: "Concentration ≤ 0,1 µg/L",
+            label: "≤ 0,1 µg/L",
             couleur: "#FFF33B",
             couleurAlt: "#fec44f",
             picto: null,
           },
           inf_limites_sup_0_1: {
-            label: "Concentration comprise entre 0,1 et 0,9 µg/L*",
+            label: "Entre 0,1 et 0,9 µg/L*",
             couleur: "#eedf00",
             couleurAlt: "#fe9929",
             picto: null,
           },
           sup_limite_indicative: {
-            label:
-              "Concentration > 0,9 µg/L (dépassement de la limite indicative)",
+            label: "> 0,9 µg/L — limite indicative dépassée",
             couleur: "#FDC70C",
             couleurAlt: "#d95f0e",
             picto: "warning",
           },
           metabolite_sup_3: {
-            label: "Concentration > 3 µg/L**",
+            label: "> 3 µg/L**",
             couleur: "#d95f0e",
             couleurAlt: "#993404",
             picto: "warning",
@@ -799,6 +814,8 @@ export const availableCategories: ICategory[] = [
           ratioLabelPlural: "analyses non conformes*",
           details:
             "* Concentration > 0,1 µg/L lorsque le chlorothalonil R471811 était considéré pertinent (jusqu'en 2024). Le classement du Chlorothalonil R471811 en non pertinent en 2024 explique pourquoi il n'y a plus de non conformité à partir de 2025.",
+          topLegend:
+            "Cette carte montre sur une année le pourcentage des analyses de chlorothalonil R471811 non conformes à la réglementation en vigueur cette année-là : la limite de qualité de 0,1 µg/L s'appliquait jusqu'en 2024, remplacée depuis 2025 par la valeur indicative de 0,9 µg/L, dont le dépassement n'est pas une non conformité.",
           valeurSanitaireLabel: "la limite sanitaire",
         },
       },
@@ -809,10 +826,12 @@ export const availableCategories: ICategory[] = [
         enfants: [],
         affichageBlocPageUDI: true,
         description:
-          "Métabolite de la chloridazone, herbicide utilisé pour les betteraves.",
+          "Le chloridazone desphényl est un métabolite de la chloridazone, herbicide utilisé sur les betteraves des années 1960 jusqu'à son interdiction fin 2020. L'Anses le juge « pertinent ».",
         unite: "µg/L",
         resultatsDetails:
           "* D'après les recommandations du Ministère de la Santé",
+        resultatsTopLegend:
+          "Cette carte montre les concentrations en chloridazone desphényl mesurées dans l'eau au cours de la dernière analyse dont les résultats sont disponibles.",
         resultats: {
           non_recherche: {
             label: "Non recherché dans les 12 derniers mois",
@@ -827,27 +846,28 @@ export const availableCategories: ICategory[] = [
             picto: null,
           },
           inf_limites: {
-            label: "Concentration ≤ 0,1 µg/L",
+            label: "≤ 0,1 µg/L",
             couleur: "#FFF33B",
             couleurAlt: "#FFF33B",
             picto: null,
           },
           sup_limite_qualite: {
-            label:
-              "Concentration > 0,1 µg/L (dépassement de la limite de qualité, eau non conforme)",
+            label: "> 0,1 µg/L — eau non conforme",
             couleur: "#fe9929",
             couleurAlt: "#fe9929",
             picto: "warning",
           },
           sup_valeur_sanitaire: {
             label:
-              "Concentration > 11 µg/L (dépassement de la valeur sanitaire maximale (Vmax), eau devant être déconseillée à la consommation*)",
+              "> 11 µg/L (valeur sanitaire Vmax) — eau devant être déconseillée à la consommation*",
             couleur: "#f03b20",
             couleurAlt: "#bd0026",
             picto: "red cross",
           },
         },
         resultatsAnnuels: {
+          topLegend:
+            "Cette carte montre sur une année le pourcentage des analyses de chloridazone desphényl non conformes à la réglementation (supérieures à la limite de qualité de 0,1 µg/L).",
           nonRechercheLabel: "Aucune recherche dans l'année",
           nonRechercheCouleur: "#d9d9d9",
           nonRechercheCouleurAlt: "#f7f7f7",
@@ -895,9 +915,12 @@ export const availableCategories: ICategory[] = [
         disable: false,
         enfants: [],
         affichageBlocPageUDI: true,
-        description: "Autre métabolite de la chloridazone.",
+        description:
+          "Le chloridazone méthyl-desphényl est un autre métabolite de la chloridazone, herbicide utilisé sur les betteraves des années 1960 jusqu'à son interdiction fin 2020. L'Anses le juge « pertinent ».",
         unite: "µg/L",
         resultatsDetails: "* D'après les instructions du Ministère de la Santé",
+        resultatsTopLegend:
+          "Cette carte montre les concentrations en chloridazone méthyl-desphényl mesurées dans l'eau au cours de la dernière analyse dont les résultats sont disponibles.",
         resultats: {
           non_recherche: {
             label: "Non recherché dans les 12 derniers mois",
@@ -912,27 +935,28 @@ export const availableCategories: ICategory[] = [
             picto: null,
           },
           inf_limites: {
-            label: "Concentration ≤ 0,1 µg/L",
+            label: "≤ 0,1 µg/L",
             couleur: "#FFF33B",
             couleurAlt: "#FFF33B",
             picto: null,
           },
           sup_limite_qualite: {
-            label:
-              "Concentration > 0,1 µg/L (dépassement de la limite de qualité, eau non conforme)",
+            label: "> 0,1 µg/L — eau non conforme",
             couleur: "#fe9929",
             couleurAlt: "#fe9929",
             picto: "warning",
           },
           sup_valeur_sanitaire: {
             label:
-              "Concentration > 110 µg/L (dépassement de la valeur sanitaire maximale (Vmax), eau devant être déconseillée à la consommation*)",
+              "> 110 µg/L (valeur sanitaire Vmax) — eau devant être déconseillée à la consommation*",
             couleur: "#f03b20",
             couleurAlt: "#bd0026",
             picto: "red cross",
           },
         },
         resultatsAnnuels: {
+          topLegend:
+            "Cette carte montre sur une année le pourcentage des analyses de chloridazone méthyl-desphényl non conformes à la réglementation (supérieures à la limite de qualité de 0,1 µg/L).",
           nonRechercheLabel: "Aucune recherche dans l'année",
           nonRechercheCouleur: "#d9d9d9",
           nonRechercheCouleurAlt: "#f7f7f7",
@@ -981,9 +1005,11 @@ export const availableCategories: ICategory[] = [
         enfants: [],
         affichageBlocPageUDI: true,
         description:
-          "Métabolite de l'atrazine, herbicide interdit depuis 2003.",
+          "L'atrazine déséthyl est un métabolite de l'atrazine, herbicide très utilisé sur le maïs et le blé des années 1960 jusqu'à son interdiction en 2003. Il est considéré « pertinent par défaut », sa pertinence n'ayant jamais été évaluée par l'Anses.",
         unite: "µg/L",
         resultatsDetails: "* D'après les instructions du Ministère de la Santé",
+        resultatsTopLegend:
+          "Cette carte montre les concentrations en atrazine déséthyl mesurées dans l'eau au cours de la dernière analyse dont les résultats sont disponibles.",
         resultats: {
           non_recherche: {
             label: "Non recherché dans les 12 derniers mois",
@@ -998,27 +1024,28 @@ export const availableCategories: ICategory[] = [
             picto: null,
           },
           inf_limites: {
-            label: "Concentration ≤ 0,1 µg/L",
+            label: "≤ 0,1 µg/L",
             couleur: "#FFF33B",
             couleurAlt: "#FFF33B",
             picto: null,
           },
           sup_limite_qualite: {
-            label:
-              "Concentration > 0,1 µg/L (dépassement de la limite de qualité, eau non conforme)",
+            label: "> 0,1 µg/L — eau non conforme",
             couleur: "#fe9929",
             couleurAlt: "#fe9929",
             picto: "warning",
           },
           sup_valeur_sanitaire: {
             label:
-              "Concentration > 60 µg/L (dépassement de la valeur sanitaire maximale (Vmax), eau devant être déconseillée à la consommation*)",
+              "> 60 µg/L (valeur sanitaire Vmax) — eau devant être déconseillée à la consommation*",
             couleur: "#f03b20",
             couleurAlt: "#bd0026",
             picto: "red cross",
           },
         },
         resultatsAnnuels: {
+          topLegend:
+            "Cette carte montre sur une année le pourcentage des analyses d'atrazine déséthyl non conformes à la réglementation (supérieures à la limite de qualité de 0,1 µg/L).",
           nonRechercheLabel: "Aucune recherche dans l'année",
           nonRechercheCouleur: "#d9d9d9",
           nonRechercheCouleurAlt: "#f7f7f7",
@@ -1067,43 +1094,45 @@ export const availableCategories: ICategory[] = [
         enfants: [],
         affichageBlocPageUDI: true,
         description:
-          "Somme des concentrations de toutes les substances actives et métabolites pertinents quantifiés.",
+          "Le total pesticides « réglementaire » est la somme des concentrations des substances actives et des métabolites pertinents quantifiés lors d'un prélèvement. Les métabolites non pertinents en sont exclus, ce qui sous-estime l'exposition réelle et l'effet cocktail.",
         unite: "µg/L",
         resultatsDetails:
           "* Somme recalculée des substances actives et des métabolites pertinents quantifiés lors de chaque prélèvement.",
+        resultatsTopLegend:
+          "Cette carte montre le total pesticides réglementaire mesuré dans l'eau au cours de la dernière analyse dont les résultats sont disponibles, au regard de la limite de qualité de 0,5 µg/L.",
         resultats: {
           non_recherche: {
-            label: "Aucune recherche de pesticides dans les 12 derniers mois",
+            label: "Non recherché dans les 12 derniers mois",
             couleur: "#cccccc",
             couleurAlt: "#f7f7f7",
             picto: null,
           },
           inf_limites: {
-            label: "Somme pesticides ≤ 0,5 µg/L (eau conforme)",
+            label: "≤ 0,5 µg/L — eau conforme",
             couleur: "#ffffd4",
             couleurAlt: "#ffffd4",
             picto: null,
           },
           sup_limite_qualite: {
-            label: "Somme pesticides > 0,5 µg/L et ≤ 1 µg/L (eau non conforme)",
+            label: "> 0,5 et ≤ 1 µg/L — eau non conforme",
             couleur: "#fe9929",
             couleurAlt: "#fe9929",
             picto: "warning",
           },
           sup_1: {
-            label: "Somme pesticides > 1 µg/L et ≤ 3 µg/L (eau non conforme)",
+            label: "> 1 et ≤ 3 µg/L — eau non conforme",
             couleur: "#d95f0e",
             couleurAlt: "#d95f0e",
             picto: "warning",
           },
           sup_3: {
-            label: "Somme pesticides > 3 µg/L et ≤ 5 µg/L (eau non conforme)",
+            label: "> 3 et ≤ 5 µg/L — eau non conforme",
             couleur: "#993404",
             couleurAlt: "#993404",
             picto: "warning",
           },
           sup_5: {
-            label: "Somme pesticides > 5 µg/L (eau non conforme)",
+            label: "> 5 µg/L — eau non conforme",
             couleur: "#4d1a00",
             couleurAlt: "#4d1a00",
             picto: "warning",
@@ -1149,6 +1178,8 @@ export const availableCategories: ICategory[] = [
           ratioLabelPlural: "analyses non conformes*",
           details:
             "* Total pesticides réglementaire (paramètre PESTOT) > 0,5 µg/L",
+          topLegend:
+            "Cette carte montre sur une année le pourcentage des analyses pour lesquelles le total pesticides réglementaire dépasse la limite de qualité de 0,5 µg/L (eau non conforme).",
         },
       },
       {
@@ -1158,43 +1189,45 @@ export const availableCategories: ICategory[] = [
         enfants: [],
         affichageBlocPageUDI: true,
         description:
-          "Somme des concentrations de tous les pesticides quantifiés, y compris les substances actives et les métabolites pertinents et non pertinents.",
+          "Le total « tous pesticides » est la somme de tous les pesticides quantifiés : substances actives, métabolites pertinents et non pertinents. Nous l'avons calculé pour montrer la concentration réelle en pesticides dans l'eau, que le total réglementaire n'indique pas.",
         unite: "µg/L",
         resultatsDetails:
           "* Somme de tous les pesticides quantifiés (les substances actives, les métabolites pertinents et non pertinents).",
+        resultatsTopLegend:
+          "Cette carte montre le total de tous les pesticides mesurés dans l'eau au cours de la dernière analyse dont les résultats sont disponibles.",
         resultats: {
           non_recherche: {
-            label: "Aucune recherche de pesticides dans les 12 derniers mois",
+            label: "Non recherché dans les 12 derniers mois",
             couleur: "#cccccc",
             couleurAlt: "#f7f7f7",
             picto: null,
           },
           inf_limites: {
-            label: "Somme pesticides ≤ 0,5 µg/L",
+            label: "≤ 0,5 µg/L",
             couleur: "#ffffd4",
             couleurAlt: "#ffffd4",
             picto: null,
           },
           sup_limite_qualite: {
-            label: "Somme pesticides > 0,5 µg/L et ≤ 1 µg/L",
+            label: "> 0,5 et ≤ 1 µg/L",
             couleur: "#fe9929",
             couleurAlt: "#fe9929",
             picto: "warning",
           },
           sup_1: {
-            label: "Somme pesticides > 1 µg/L et ≤ 3 µg/L",
+            label: "> 1 et ≤ 3 µg/L",
             couleur: "#d95f0e",
             couleurAlt: "#d95f0e",
             picto: "warning",
           },
           sup_3: {
-            label: "Somme pesticides > 3 µg/L et ≤ 5 µg/L",
+            label: "> 3 et ≤ 5 µg/L",
             couleur: "#993404",
             couleurAlt: "#993404",
             picto: "warning",
           },
           sup_5: {
-            label: "Somme pesticides > 5 µg/L",
+            label: "> 5 µg/L",
             couleur: "#4d1a00",
             couleurAlt: "#4d1a00",
             picto: "warning",
@@ -1240,6 +1273,8 @@ export const availableCategories: ICategory[] = [
           ratioLabelPlural: "analyses > 0,5 µg/L*",
           details:
             "* Somme des pesticides (substances actives, métabolites pertinents et non pertinents) > 0,5 µg/L",
+          topLegend:
+            "Cette carte montre sur une année le pourcentage des analyses pour lesquelles le total de tous les pesticides dépasse 0,5 µg/L, la limite de qualité qui ne s'applique réglementairement qu'au total pesticides réglementaire.",
         },
       },
     ],
@@ -1251,9 +1286,11 @@ export const availableCategories: ICategory[] = [
     enfants: [],
     affichageBlocPageUDI: true,
     description:
-      "Résidus azotés provenant des engrais et des déchets organiques.",
+      "Les nitrates sont une des formes de l'azote, élément essentiel à la croissance des plantes. On estime que 88 % des nitrates présents dans les eaux viennent de l'agriculture (épandages de lisier et d'engrais azotés), le reste des rejets urbains et industriels.",
     unite: "mg/L",
     resultatsDetails: "* D'après les instructions du Ministère de la Santé",
+    resultatsTopLegend:
+      "Cette carte montre les concentrations en nitrates mesurées dans l'eau au cours des dernières analyses dont les résultats sont disponibles.",
     resultats: {
       non_recherche: {
         label: "Non recherché dans les 12 derniers mois",
@@ -1262,32 +1299,32 @@ export const availableCategories: ICategory[] = [
         picto: null,
       },
       non_quantifie: {
-        label: "Non quantifié ou concentration ≤ 10 mg/L",
+        label: "Non quantifié ou ≤ 10 mg/L",
         couleur: "#74c476",
         couleurAlt: "#c7e9c0",
         picto: null,
       },
       no3_inf_25: {
-        label: "Concentration comprise entre 10 et 25 mg/L",
+        label: "Entre 10 et 25 mg/L",
         couleur: "#FFF33B",
         couleurAlt: "#FFF33B",
         picto: null,
       },
       no3_inf_40: {
-        label: "Concentration comprise entre 25 et 40 mg/L",
+        label: "Entre 25 et 40 mg/L",
         couleur: "#FDC70C",
         couleurAlt: "#FDC70C",
         picto: null,
       },
       inf_valeur_sanitaire: {
-        label: "Concentration comprise entre 40 et 50 mg/L",
+        label: "Entre 40 et 50 mg/L",
         couleur: "#fe9929",
         couleurAlt: "#fe9929",
         picto: null,
       },
       sup_valeur_sanitaire: {
         label:
-          "Concentration > 50 mg/L (eau non conforme devant être déconseillée à la consommation pour les femmes enceintes et les nourrissons*)",
+          "> 50 mg/L — eau non conforme, déconseillée aux femmes enceintes et aux nourrissons*",
         couleur: "#f03b20",
         couleurAlt: "#bd0026",
         picto: "red cross",
@@ -1327,6 +1364,8 @@ export const availableCategories: ICategory[] = [
       ratioLabelSingular: "analyse non conforme*",
       ratioLabelPlural: "analyses non conformes*",
       details: "* Concentration > 50 mg/L",
+      topLegend:
+        "Cette carte montre sur une année le pourcentage des analyses de nitrates non conformes à la réglementation (supérieures à la limite de qualité de 50 mg/L).",
     },
   },
   {
@@ -1335,9 +1374,12 @@ export const availableCategories: ICategory[] = [
     disable: false,
     enfants: [],
     affichageBlocPageUDI: true,
-    description: "Utilisé pour produire le PVC, polluant volatil.",
+    description:
+      "Le CVM (chlorure de vinyle monomère) est une substance gazeuse utilisée pour fabriquer le PVC, classée cancérogène certain pour l'homme. Les canalisations en PVC posées avant 1980 peuvent en relarguer dans l'eau, souvent sur quelques tronçons seulement d'un réseau.",
     unite: "µg/L",
     resultatsDetails: "* D'après les instructions du Ministère de la Santé",
+    resultatsTopLegend:
+      "Cette carte montre les concentrations en CVM mesurées dans l'eau au cours des dernières analyses dont les résultats sont disponibles.",
     resultats: {
       non_recherche: {
         label: "Non recherché dans les 12 derniers mois",
@@ -1352,14 +1394,14 @@ export const availableCategories: ICategory[] = [
         picto: null,
       },
       inf_limites: {
-        label: "Concentration ≤ 0,5 µg/L",
+        label: "≤ 0,5 µg/L",
         couleur: "#FFF33B",
         couleurAlt: "#FFF33B",
         picto: null,
       },
       cvm_sup_0_5: {
         label:
-          "Concentration > 0,5 µg/L (dépassement de la limite de qualité, eau pouvant faire l'objet de restriction de la consommation*)",
+          "> 0,5 µg/L — limite de qualité dépassée, consommation pouvant être restreinte*",
         couleur: "#fe9929",
         couleurAlt: "#fe9929",
         picto: null,
@@ -1399,6 +1441,8 @@ export const availableCategories: ICategory[] = [
       ratioLabelSingular: "analyse non conforme*",
       ratioLabelPlural: "analyses non conformes*",
       details: "* Concentration > 0,5 µg/L",
+      topLegend:
+        "Cette carte montre sur une année le pourcentage des analyses de CVM non conformes à la réglementation (supérieures à la limite de qualité de 0,5 µg/L).",
     },
   },
   /*{
@@ -1492,9 +1536,12 @@ export const availableCategories: ICategory[] = [
     disable: false,
     enfants: [],
     affichageBlocPageUDI: true,
-    description: "Produit chimique utilisé dans les explosifs et les engrais.",
+    description:
+      "Les perchlorates sont des sels utilisés dans des applications militaires (dispositifs pyrotechniques, poudres), industrielles (propulseurs) et agricoles (engrais). Très stables et solubles, ils persistent des dizaines d'années dans l'eau une fois émis.",
     unite: "µg/L",
     resultatsDetails: "* D'après les instructions du Ministère de la Santé",
+    resultatsTopLegend:
+      "Cette carte montre les concentrations en perchlorates mesurées dans l'eau au cours des dernières analyses dont les résultats sont disponibles. Aucune limite réglementaire ne s'applique aux perchlorates, les seuils affichés sont ceux recommandés par le ministère de la Santé.",
     resultats: {
       non_recherche: {
         label: "Non recherché dans les 12 derniers mois",
@@ -1509,21 +1556,21 @@ export const availableCategories: ICategory[] = [
         picto: null,
       },
       inf_valeur_sanitaire: {
-        label: "Concentration ≤ 4 µg/L",
+        label: "≤ 4 µg/L",
         couleur: "#FFF33B",
         couleurAlt: "#FFF33B",
         picto: null,
       },
       sup_valeur_sanitaire: {
         label:
-          "Concentration comprise entre 4 µg/L et 15 µg/L (l'eau ne doit pas être utilisée pour la préparation des biberons des nourrissons de moins de 6 mois*)",
+          "Entre 4 et 15 µg/L — eau à éviter pour les biberons des nourrissons de moins de 6 mois*",
         couleur: "#FB726C",
         couleurAlt: "#FB726C",
         picto: "red cross",
       },
       sup_valeur_sanitaire_2: {
         label:
-          "Concentration > 15 µg/L (l'eau ne doit pas être utilisée pour la préparation des biberons des nourrissons de moins de 6 mois ni consommée par les femmes enceintes et allaitantes*)",
+          "> 15 µg/L — eau également déconseillée aux femmes enceintes et allaitantes*",
         couleur: "#FC3127",
         couleurAlt: "#FC3127",
         picto: "red cross",
@@ -1564,6 +1611,8 @@ export const availableCategories: ICategory[] = [
       ratioLabelPlural: "analyses > 4 µg/L*",
       details:
         "* Le dépassement de 4 µg/L, qui n'est pas une limite de qualité réglementaire, n'est pas considéré comme une \"non conformité\"",
+      topLegend:
+        "Cette carte montre sur une année le pourcentage des analyses pour lesquelles les concentrations en perchlorates dépassent 4 µg/L, seuil au-delà duquel l'eau ne doit pas être utilisée pour la préparation des biberons des nourrissons de moins de 6 mois.",
     },
   },
   /*],

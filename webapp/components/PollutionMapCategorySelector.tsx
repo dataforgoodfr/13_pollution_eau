@@ -164,11 +164,6 @@ export default function PollutionMapCategorySelector({
             ))}
           </div>
         )}
-        <p className="mt-2 text-[11px] text-gray-500">
-          {isBilan
-            ? "Le pourcentage d'analyses non conformes sur l'année choisie."
-            : "La situation la plus récente connue pour chaque zone."}
-        </p>
       </section>
 
       {/* 3. Affinage par sous-catégorie (pesticides) */}

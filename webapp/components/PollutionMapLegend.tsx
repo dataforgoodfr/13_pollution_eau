@@ -421,10 +421,19 @@ export default function PollutionMapLegend({
     );
   }
 
+  // Phrase d'introduction propre au type de carte affiché (dernière analyse ou
+  // bilan annuel), à la suite de la description générale du polluant.
+  const topSentence =
+    period === "dernier_prel"
+      ? categoryDetails.resultatsTopLegend
+      : categoryDetails.resultatsAnnuels?.topLegend;
+
   const descriptionBlock = (categoryDetails.description ||
+    topSentence ||
     categoryDetails.lienExterne) && (
-    <div className="mb-3 text-xs text-gray-600 space-y-1">
+    <div className="mb-3 text-xs text-gray-600 space-y-2">
       {categoryDetails.description && <p>{categoryDetails.description}</p>}
+      {topSentence && <p>{topSentence}</p>}
       {categoryDetails.lienExterne && (
         <a
           href={categoryDetails.lienExterne}
@@ -469,9 +478,9 @@ export default function PollutionMapLegend({
   return (
     <TooltipProvider>
       <div>
-        <h2 className="text-sm font-medium text-gray-900 mb-3">
-          Légende - {categoryDetails.nomAffichage}
-        </h2>
+        <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-3">
+          Ce qu&apos;affiche la carte
+        </h3>
         {bodyContent}
       </div>
     </TooltipProvider>

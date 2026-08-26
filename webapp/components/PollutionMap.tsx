@@ -164,6 +164,7 @@ export default function PollutionMap({
             <PollutionMapLegend
               period={period}
               category={category}
+              displayMode={displayMode}
               pollutionStats={pollutionStats}
               colorblindMode={colorblindMode}
               setColorblindMode={setColorblindMode}

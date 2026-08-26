@@ -84,7 +84,6 @@ export default function PollutionMapMarker({
         map.off("sourcedata", sourceLoadHandler);
       };
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [displayMode, map, marker, setSelectedZoneCode]);
 
   if (!marker) {

@@ -10,6 +10,8 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import MapZoneSelector from "./MapZoneSelector";
+import MapZoomControl from "./MapZoomControl";
+import MapFullscreenControl from "./MapFullscreenControl";
 
 type MapTopRightControlsProps = {
   // `null` means "no explicit user choice yet" - see PollutionMap.tsx for why.
@@ -60,6 +62,8 @@ export default function MapTopRightControls({
       </TooltipProvider>
 
       <MapZoneSelector setDisplayMode={setDisplayMode} />
+      <MapZoomControl />
+      <MapFullscreenControl />
     </div>
   );
 }

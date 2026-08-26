@@ -1,13 +1,14 @@
 "use client";
 import { MouseEvent, useState } from "react";
 import { Button } from "./ui/button";
+import { ButtonGroup, ButtonGroupSeparator } from "./ui/button-group";
 import { TooltipContent, TooltipProvider, TooltipTrigger } from "./ui/tooltip";
 import { Tooltip } from "@radix-ui/react-tooltip";
 import { useMap } from "react-map-gl/maplibre";
 import { cn } from "@/lib/utils";
 import { scrollIframeToFullscreen } from "@/lib/iframe-scroll";
+import { MAPLIBRE_MAP } from "@/app/config";
 
-const ZONE_NOZONE = 0;
 const ZONE_METROPOLE = 1;
 const ZONE_GUADELOUPE = 2;
 const ZONE_MARTINIQUE = 3;
@@ -22,8 +23,11 @@ type ZoneConfig = {
 
 export const ZONE_CONFIGS: { [key: number]: ZoneConfig } = {
   [ZONE_METROPOLE]: {
-    center: [2.5, 46.2],
-    zoom: 5,
+    center: [
+      MAPLIBRE_MAP.initialViewState.longitude,
+      MAPLIBRE_MAP.initialViewState.latitude,
+    ],
+    zoom: MAPLIBRE_MAP.initialViewState.zoom,
   },
   [ZONE_GUADELOUPE]: {
     center: [-61.5, 16.2],
@@ -71,7 +75,7 @@ export default function MapZoneSelector({
       setDisplayMode("communes");
     }
   };
-  const [selectedZone, setSelectedZone] = useState<number>(ZONE_NOZONE);
+  const [selectedZone, setSelectedZone] = useState<number>(ZONE_METROPOLE);
 
   const DROMS = [
     {
@@ -145,22 +149,28 @@ export default function MapZoneSelector({
   ];
 
   return (
-    <>
-      <div className="grid gap-2">
-        <div className="w-[48px] grid-cols-1 gap-2 space-y-2">
-          {DROMS.map(({ id, tooltip, svg }) => {
-            const isSelected = selectedZone === id;
+    <div className="rounded-md bg-white border border-gray-500 overflow-hidden">
+      <ButtonGroup orientation="vertical">
+        {DROMS.map(({ id, tooltip, svg }, index) => {
+          const isSelected = selectedZone === id;
 
-            return (
-              <TooltipProvider key={`DROM_${id}`}>
+          return (
+            <div key={`DROM_${id}`}>
+              {index > 0 && (
+                <ButtonGroupSeparator
+                  orientation="horizontal"
+                  className="bg-gray-300"
+                />
+              )}
+              <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <Button
                       className={cn(
-                        "px-4 py-2 rounded w-[48px]  border",
+                        "w-[48px] h-[40px] rounded-none border-none",
                         isSelected
-                          ? "bg-custom-drom text-white border-custom-drom"
-                          : "bg-white text-custom-drom border-gray-500",
+                          ? "bg-custom-drom text-white"
+                          : "bg-white text-custom-drom",
                         "hover:bg-custom-drom hover:text-white",
                       )}
                       onClick={handleClick}
@@ -177,10 +187,10 @@ export default function MapZoneSelector({
                   </TooltipContent>
                 </Tooltip>
               </TooltipProvider>
-            );
-          })}
-        </div>
-      </div>
-    </>
+            </div>
+          );
+        })}
+      </ButtonGroup>
+    </div>
   );
 }

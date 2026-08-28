@@ -20,6 +20,7 @@ WHERE
         'metabolite_chlorothalonil_r471811',
         'metabolite_chloridazone_desphenyl',
         'metabolite_chloridazone_methyl_desphenyl',
-        'metabolite_atrazine_desethyl'
+        'metabolite_atrazine_desethyl',
+        'tfa'
     )
 GROUP BY inseecommune, periode

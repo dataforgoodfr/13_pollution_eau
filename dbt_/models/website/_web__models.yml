@@ -57,6 +57,7 @@ models:
                 - metaux_lourds_as
                 - metaux_lourds_pb
                 - nitrate
+                - tfa
                 - tous
       - name: resultat
         description: "Résultat qualitatif de l'analyse"
@@ -139,6 +140,7 @@ models:
                 - metaux_lourds_as
                 - metaux_lourds_pb
                 - nitrate
+                - tfa
                 - tous
       - name: resultat
         description: "Résultat qualitatif de l'analyse"

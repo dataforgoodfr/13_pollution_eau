@@ -33,6 +33,7 @@ categories AS (
         --'metaux_lourds_as',
         --'metaux_lourds_pb',
         'nitrate',
+        'tfa',
         'tous'
     ]) AS categorie
 ),

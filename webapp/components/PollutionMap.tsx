@@ -52,16 +52,7 @@ export default function PollutionMap({
   // legend's default expanded state). It's read after mount, so it starts
   // false on both server and first client render — no hydration mismatch.
   const [isMobile, setIsMobile] = useState(false);
-  // `null` means "no explicit user choice yet": the right panel's open/closed
-  // state is then decided purely by the md: responsive classes below (open on
-  // desktop, closed on mobile), which the browser resolves at first paint
-  // without any JS — so there's no server/client mismatch and no flash of the
-  // panel opening then immediately sliding closed on mobile. Once the user
-  // clicks the toggle, this becomes an explicit true/false that applies at
-  // every breakpoint.
-  const [rightPanelOverride, setRightPanelOverride] = useState<boolean | null>(
-    null,
-  );
+  const [rightPanelOpen, setRightPanelOpen] = useState(false);
   const [colorblindMode, setColorblindMode] = useState(false);
   const [showCVMModal, setShowCVMModal] = useState(false);
   const [hoveredResult, setHoveredResult] = useState<ZoneResult | null>(null);
@@ -70,15 +61,7 @@ export default function PollutionMap({
     setIsMobile(window.innerWidth < 768);
   }, []);
 
-  const toggleRightPanel = () => {
-    setRightPanelOverride((current) => {
-      const currentlyOpen =
-        current === null
-          ? window.matchMedia("(min-width: 768px)").matches
-          : current;
-      return !currentlyOpen;
-    });
-  };
+  const toggleRightPanel = () => setRightPanelOpen((open) => !open);
 
   const leftPanelOpen = selectedZoneCode !== null;
 
@@ -148,7 +131,7 @@ export default function PollutionMap({
           )}
 
           <MapTopRightControls
-            rightPanelOverride={rightPanelOverride}
+            rightPanelOpen={rightPanelOpen}
             onToggleRightPanel={toggleRightPanel}
             setDisplayMode={setDisplayMode}
             onZoneChange={() => {
@@ -160,11 +143,9 @@ export default function PollutionMap({
           <div
             className={clsx(
               "absolute bottom-4 z-10 transition-[right] duration-300 ease-in-out",
-              rightPanelOverride === null
-                ? "right-4 md:right-[calc(400px_+_1rem)]"
-                : rightPanelOverride
-                  ? "hidden md:block md:right-[calc(400px_+_1rem)]"
-                  : "right-4",
+              rightPanelOpen
+                ? "hidden md:block md:right-[calc(400px_+_1rem)]"
+                : "right-4",
             )}
           >
             <PollutionMapLegend
@@ -222,11 +203,7 @@ export default function PollutionMap({
           <div
             className={clsx(
               "absolute inset-y-0 right-0 z-[60] w-full bg-[#E2E8F0] shadow-xl transition-transform duration-300 ease-in-out md:w-[400px]",
-              rightPanelOverride === null
-                ? "translate-x-full md:translate-x-0"
-                : rightPanelOverride
-                  ? "translate-x-0"
-                  : "translate-x-full",
+              rightPanelOpen ? "translate-x-0" : "translate-x-full",
             )}
           >
             <div className="h-full overflow-y-auto">
@@ -239,7 +216,7 @@ export default function PollutionMap({
                 colorblindMode={colorblindMode}
                 setColorblindMode={setColorblindMode}
                 displayMode={displayMode}
-                onClose={() => setRightPanelOverride(false)}
+                onClose={() => setRightPanelOpen(false)}
               />
             </div>
           </div>

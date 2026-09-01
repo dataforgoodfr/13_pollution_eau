@@ -33,6 +33,7 @@ DEFAULT_WEBSITE_TABLES = [
     "int__udi_geom",
     "int__lien_commune_cdreseau",
     "int__valeurs_de_reference",
+    "int__resultats_udi",
 ]
 
 DEFAULT_OUTPUT_FILE = "database/database_website.duckdb"

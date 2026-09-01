@@ -5,14 +5,13 @@ import { ChevronDown, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { availableCategories, getCategoryById } from "@/lib/polluants";
 import type { ICategory } from "@/lib/polluants";
-import type { ParameterValues } from "@/app/lib/data";
+import AnalysesModal, {
+  type AnalysesFilters,
+} from "@/components/AnalysesModal";
 import {
   findTopLevelCategory,
-  formatValue,
   getAnnualResult,
   getLastPrelResult,
-  getParameterColor,
-  getParameterName,
   readNumber,
   readString,
   type Severity,
@@ -27,7 +26,6 @@ type PollutionZoneDetailPanelV2Props = {
   displayMode: "communes" | "udis";
   selectedZoneCode: string | null;
   colorblindMode?: boolean;
-  parameterValues: ParameterValues;
   onClose?: () => void;
 };
 
@@ -57,6 +55,16 @@ const SEVERITY_ORDER: Severity[] = [
   "quantifie",
 ];
 
+// Correspondance entre l'id de catégorie du panel (lib/polluants.ts) et la
+// valeur brute `categorie` exposée par l'API.
+const CATEGORY_ID_TO_ANALYSES_CATEGORIE: Record<string, string> = {
+  pfas: "pfas",
+  pesticide: "pesticide",
+  nitrate: "nitrate",
+  cvm: "cvm",
+  sub_indus_perchlorate: "substances_indus",
+};
+
 function Dot({ color, large = false }: { color: string; large?: boolean }) {
   return (
     <span
@@ -66,57 +74,6 @@ function Dot({ color, large = false }: { color: string; large?: boolean }) {
       )}
       style={{ backgroundColor: color }}
     />
-  );
-}
-
-function SubstanceList({
-  parametres,
-  categoryId,
-  unite,
-  parameterValues,
-  title,
-}: {
-  parametres: Array<{ code: string; value: number }>;
-  categoryId: string;
-  unite?: string;
-  parameterValues: ParameterValues;
-  title: string;
-}) {
-  if (parametres.length === 0) return null;
-
-  return (
-    <div className="mt-3">
-      <p className="font-medium mb-1.5 text-xs">{title}</p>
-      <ul className="space-y-1 border-l-2 border-gray-200 pl-2">
-        {parametres.map(({ code, value }) => {
-          const color = getParameterColor(
-            code,
-            value,
-            parameterValues,
-            categoryId,
-          );
-          return (
-            <li
-              key={code}
-              className="flex justify-between items-start gap-2 text-xs"
-            >
-              <span
-                className="font-light flex-1"
-                style={color ? { color } : undefined}
-              >
-                {getParameterName(code, parameterValues)}
-              </span>
-              <span
-                className="font-light whitespace-nowrap font-numbers"
-                style={color ? { color } : undefined}
-              >
-                {formatValue(value)} {unite || ""}
-              </span>
-            </li>
-          );
-        })}
-      </ul>
-    </div>
   );
 }
 
@@ -188,14 +145,14 @@ function CategoryContent({
   period,
   setPeriod,
   colorblindMode,
-  parameterValues,
+  onOpenAnalyses,
 }: {
   categoryDetails: ICategory;
   data: ZoneDetail;
   period: string;
   setPeriod: (period: string) => void;
   colorblindMode: boolean;
-  parameterValues: ParameterValues;
+  onOpenAnalyses?: (date?: string) => void;
 }) {
   if (period !== "dernier_prel") {
     const current = getAnnualResult(
@@ -224,6 +181,14 @@ function CategoryContent({
           setPeriod={setPeriod}
           colorblindMode={colorblindMode}
         />
+        {onOpenAnalyses && (
+          <button
+            onClick={() => onOpenAnalyses()}
+            className="mt-3 text-xs text-custom-drom hover:underline"
+          >
+            Voir les analyses
+          </button>
+        )}
       </>
     );
   }
@@ -233,20 +198,23 @@ function CategoryContent({
   return (
     <>
       {result.date && (
-        <p className="text-xs text-gray-500">
-          Analyse du {new Date(result.date).toLocaleDateString("fr-FR")}
-          {result.nbParametres
-            ? ` — ${result.nbParametres} ${result.nbParametres > 1 ? "paramètres recherchés" : "paramètre recherché"}`
-            : ""}
+        <p className="text-xs text-gray-500 flex items-center justify-between gap-2">
+          <span>
+            Analyse du {new Date(result.date).toLocaleDateString("fr-FR")}
+            {result.nbParametres
+              ? ` — ${result.nbParametres} ${result.nbParametres > 1 ? "paramètres recherchés" : "paramètre recherché"}`
+              : ""}
+          </span>
+          {onOpenAnalyses && (
+            <button
+              onClick={() => onOpenAnalyses(result.date!.slice(0, 10))}
+              className="text-custom-drom hover:underline whitespace-nowrap"
+            >
+              Voir les analyses
+            </button>
+          )}
         </p>
       )}
-      <SubstanceList
-        parametres={result.parametres}
-        categoryId={categoryDetails.id}
-        unite={categoryDetails.unite}
-        parameterValues={parameterValues}
-        title="Substances quantifiées"
-      />
     </>
   );
 }
@@ -265,7 +233,7 @@ function CategoryRow({
   isOpen,
   onToggle,
   colorblindMode,
-  parameterValues,
+  onOpenAnalyses,
   children,
 }: {
   categoryId: string;
@@ -277,7 +245,7 @@ function CategoryRow({
   isOpen: boolean;
   onToggle: () => void;
   colorblindMode: boolean;
-  parameterValues: ParameterValues;
+  onOpenAnalyses?: (date?: string) => void;
   children?: React.ReactNode;
 }) {
   const categoryDetails = getCategoryById(categoryId);
@@ -346,7 +314,7 @@ function CategoryRow({
             period={period}
             setPeriod={setPeriod}
             colorblindMode={colorblindMode}
-            parameterValues={parameterValues}
+            onOpenAnalyses={onOpenAnalyses}
           />
           {children}
         </div>
@@ -363,11 +331,19 @@ export default function PollutionZoneDetailPanelV2({
   displayMode,
   selectedZoneCode,
   colorblindMode = false,
-  parameterValues,
   onClose,
 }: PollutionZoneDetailPanelV2Props) {
   const [zoneData, setZoneData] = useState<ZoneDetail | null>(null);
   const [zoneDataError, setZoneDataError] = useState(false);
+  const [showAnalysesModal, setShowAnalysesModal] = useState(false);
+  const [analysesFilters, setAnalysesFilters] = useState<
+    AnalysesFilters | undefined
+  >(undefined);
+
+  const openAnalyses = (filters?: AnalysesFilters) => {
+    setAnalysesFilters(filters);
+    setShowAnalysesModal(true);
+  };
 
   useEffect(() => {
     if (!selectedZoneCode) {
@@ -585,7 +561,15 @@ export default function PollutionZoneDetailPanelV2({
               isOpen={openTopLevel?.id === item.id}
               onToggle={() => toggleTopLevel(item.id)}
               colorblindMode={colorblindMode}
-              parameterValues={parameterValues}
+              onOpenAnalyses={
+                CATEGORY_ID_TO_ANALYSES_CATEGORIE[item.id]
+                  ? (date?: string) =>
+                      openAnalyses({
+                        categorie: CATEGORY_ID_TO_ANALYSES_CATEGORIE[item.id],
+                        date,
+                      })
+                  : undefined
+              }
             >
               {item.groupes && (
                 <div className="mt-4 space-y-4">
@@ -611,7 +595,6 @@ export default function PollutionZoneDetailPanelV2({
                                 toggleSubCategory(option.id, item.id)
                               }
                               colorblindMode={colorblindMode}
-                              parameterValues={parameterValues}
                             />
                           ))}
                       </div>
@@ -623,6 +606,15 @@ export default function PollutionZoneDetailPanelV2({
           ))}
         </div>
 
+        {displayMode === "udis" && (
+          <button
+            onClick={() => openAnalyses()}
+            className="w-full text-center rounded-xl border border-gray-200 py-2 text-xs text-gray-600 hover:bg-gray-50 transition-colors"
+          >
+            Voir toutes les analyses de l&apos;UDI
+          </button>
+        )}
+
         <p className="text-[11px] text-gray-500 leading-relaxed">
           Ces résultats proviennent du contrôle sanitaire des eaux distribuées,
           réalisé par les Agences régionales de santé et publié en open data par
@@ -630,6 +622,16 @@ export default function PollutionZoneDetailPanelV2({
           ce qui permet de comparer cette zone avec les zones voisines.
         </p>
       </div>
+
+      {displayMode === "udis" && (
+        <AnalysesModal
+          open={showAnalysesModal}
+          onOpenChange={setShowAnalysesModal}
+          cdreseau={selectedZoneCode}
+          nomreseaux={title}
+          initialFilters={analysesFilters}
+        />
+      )}
     </div>
   );
 }

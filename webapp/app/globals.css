@@ -151,6 +151,20 @@
   }
 }
 
+/*
+ * Hauteur plein écran suivant la hauteur de viewport réellement visible
+ * (barre d'adresse mobile affichée ou non), avec repli sur 100vh pour les
+ * navigateurs ne supportant pas dvh.
+ */
+.h-screen-dvh {
+  height: 100vh;
+  height: 100dvh;
+}
+.min-h-screen-dvh {
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
 /* MapLibre Popup styling overrides */
 .maplibregl-map {
   font: inherit !important; /* Inherit font from website */

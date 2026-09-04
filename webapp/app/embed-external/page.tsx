@@ -14,7 +14,7 @@ export default async function EmbedExternal({
   const { category } = await searchParams;
 
   return (
-    <div className="flex flex-col min-h-screen min-h-dvh w-screen h-screen h-dvh">
+    <div className="flex flex-col min-h-screen-dvh w-screen h-screen-dvh">
       <main className="flex-1 w-full h-full">
         <PollutionMap
           pollutionStats={stats}

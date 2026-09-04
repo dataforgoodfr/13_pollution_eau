@@ -11,6 +11,76 @@ export interface ZoneResult {
   color: string;
 }
 
+export interface ScaleSegment {
+  /** Clé de résultat (dernier_prel) ou `ratio_${limite}` (bilan annuel). */
+  key: string;
+  label: string;
+  color: string;
+}
+
+export interface ColorScale {
+  /** Pastille "non recherché", affichée à part de l'échelle colorée. */
+  gray: ScaleSegment | null;
+  /** Segments colorés dans l'ordre croissant de gravité. */
+  segments: ScaleSegment[];
+}
+
+/**
+ * Construit l'échelle de couleurs d'une sélection (catégorie × période), telle
+ * qu'affichée dans la légende compacte et dans le panel de zone. Les couples
+ * libellé/couleur sont les mêmes que ceux produits par getZoneResult, ce qui
+ * permet de retrouver un segment par égalité.
+ */
+export function getColorScale(
+  category: string,
+  period: string,
+  colorblindMode: boolean = false,
+): ColorScale | null {
+  const categoryDetails = getCategoryById(category);
+  if (!categoryDetails) {
+    return null;
+  }
+
+  if (period.startsWith("bilan_annuel")) {
+    const annuels = categoryDetails.bilanAnnuel;
+    if (!annuels) {
+      return null;
+    }
+    return {
+      gray: {
+        key: "non_recherche",
+        label: annuels.nonRechercheLabel,
+        color: colorblindMode
+          ? annuels.nonRechercheCouleurAlt
+          : annuels.nonRechercheCouleur,
+      },
+      segments: annuels.ratioLimites.map((l) => ({
+        key: `ratio_${l.limite}`,
+        label: `${l.label} des ${annuels.ratioLabelPlural}`,
+        color: colorblindMode ? l.couleurAlt : l.couleur,
+      })),
+    };
+  }
+
+  let gray: ScaleSegment | null = null;
+  const segments: ScaleSegment[] = [];
+  Object.entries(categoryDetails.derniereAnalyse.resultats).forEach(
+    ([key, detail]) => {
+      const segment = {
+        key,
+        label: detail.label,
+        color: colorblindMode ? detail.couleurAlt : detail.couleur,
+      };
+      if (key === "non_recherche") {
+        gray = segment;
+      } else {
+        segments.push(segment);
+      }
+    },
+  );
+  return { gray, segments };
+}
+
 /**
  * Résout le résultat d'une zone survolée à partir des propriétés de sa feature
  * pmtiles : renvoie le libellé et la couleur correspondant à la sélection

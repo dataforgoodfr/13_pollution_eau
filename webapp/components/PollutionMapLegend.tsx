@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 import { ExternalLink, Info } from "lucide-react";
 import React from "react";
 import type { PollutionStats } from "@/app/lib/data";
-import type { ZoneResult } from "@/lib/colorMapping";
+import { getColorScale, type ZoneResult } from "@/lib/colorMapping";
 import {
   Tooltip,
   TooltipContent,
@@ -139,48 +139,21 @@ export default function PollutionMapLegend({
       ? `bilan annuel ${period.replace("bilan_annuel_", "")}`
       : "dernières analyses";
 
-    // Construit l'échelle : la pastille grise "non recherché" à part, puis les
-    // segments colorés dans l'ordre croissant de gravité. Les couples
-    // libellé/couleur sont construits comme dans getZoneResult, ce qui permet
-    // de retrouver le segment correspondant au résultat survolé par égalité.
-    let graySegment: ZoneResult | null = null;
-    let segments: ZoneResult[] = [];
-    let anchors: { debut: string; fin: string } | null = null;
-    let caption: string | null = null;
-
-    if (isBilan) {
-      const annuels = categoryDetails.bilanAnnuel;
-      if (!annuels) {
-        return null;
-      }
-      graySegment = {
-        label: annuels.nonRechercheLabel,
-        color: colorblindMode
-          ? annuels.nonRechercheCouleurAlt
-          : annuels.nonRechercheCouleur,
-      };
-      segments = annuels.ratioLimites.map((l) => ({
-        label: `${l.label} des ${annuels.ratioLabelPlural}`,
-        color: colorblindMode ? l.couleurAlt : l.couleur,
-      }));
-      anchors = { debut: "0 %", fin: "100 %" };
-      caption = `Part des ${annuels.ratioLabelPlural}`;
-    } else {
-      Object.entries(categoryDetails.derniereAnalyse.resultats).forEach(
-        ([key, detail]) => {
-          const segment = {
-            label: detail.label,
-            color: colorblindMode ? detail.couleurAlt : detail.couleur,
-          };
-          if (key === "non_recherche") {
-            graySegment = segment;
-          } else {
-            segments.push(segment);
-          }
-        },
-      );
-      anchors = COMPACT_ANCHORS[category] ?? null;
+    // L'échelle (pastille grise "non recherché" à part, puis segments colorés
+    // par gravité croissante) vient de getColorScale : ses couples
+    // libellé/couleur sont ceux de getZoneResult, ce qui permet de retrouver
+    // le segment correspondant au résultat survolé par égalité.
+    const scale = getColorScale(category, period, colorblindMode);
+    if (!scale) {
+      return null;
     }
+    const { gray: graySegment, segments } = scale;
+    const annuels = categoryDetails.bilanAnnuel;
+    const anchors: { debut: string; fin: string } | null = isBilan
+      ? { debut: "0 %", fin: "100 %" }
+      : (COMPACT_ANCHORS[category] ?? null);
+    const caption: string | null =
+      isBilan && annuels ? `Part des ${annuels.ratioLabelPlural}` : null;
 
     const hoveredIndex = hoveredResult
       ? segments.findIndex(
@@ -223,7 +196,7 @@ export default function PollutionMapLegend({
             )}
             <div className="flex flex-1 gap-px">
               {segments.map((segment, index) => (
-                <Tooltip key={segment.color + segment.label}>
+                <Tooltip key={segment.key}>
                   <TooltipTrigger asChild>
                     <span
                       className={cn(

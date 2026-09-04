@@ -209,6 +209,8 @@ export type AnnualResult = {
   color: string;
   label: string;
   ratio: number | null;
+  /** Borne `limite` du palier atteint dans `ratioLimites`, null sans donnée. */
+  limite: number | null;
   nbPrelevements: number | null;
   nbSupValeurSanitaire: number | null;
   parametres: Array<{ code: string; value: number }>;
@@ -247,6 +249,7 @@ export function getAnnualResult(
         ] || ERROR_COLOR,
       label: annuels?.nonRechercheLabel || ERROR_LABEL,
       ratio: null,
+      limite: null,
       nbPrelevements,
       nbSupValeurSanitaire,
       parametres,
@@ -264,6 +267,7 @@ export function getAnnualResult(
       : ERROR_COLOR,
     label: `${Math.round(ratio * 100)}% des ${annuels?.ratioLabelPlural || "analyses non conformes"}`,
     ratio,
+    limite: limite?.limite ?? null,
     nbPrelevements,
     nbSupValeurSanitaire,
     parametres,

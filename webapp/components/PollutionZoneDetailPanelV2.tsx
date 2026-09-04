@@ -9,6 +9,7 @@ import type { ParameterValues } from "@/app/lib/data";
 import AnalysesModal, {
   type AnalysesFilters,
 } from "@/components/AnalysesModal";
+import PollutionColorScale from "@/components/PollutionColorScale";
 import {
   findTopLevelCategory,
   formatValue,
@@ -397,15 +398,26 @@ function CategoryRow({
   if (!categoryDetails) return null;
 
   const isBilan = period !== "dernier_prel";
-  const result = isBilan
-    ? getAnnualResult(data, period, categoryId, colorblindMode)
-    : getLastPrelResult(data, categoryId, colorblindMode);
   const year = period.split("_")[2];
-  const summaryLabel = !isBilan
-    ? result.label
-    : "hasData" in result && !result.hasData
-      ? `Aucune recherche en ${year}`
-      : `${result.label} en ${year}`;
+
+  // Libellé de synthèse et clé du segment courant sur l'échelle de couleurs
+  // (cf. getColorScale).
+  let summaryLabel: string;
+  let activeKey: string | null;
+  if (isBilan) {
+    const result = getAnnualResult(data, period, categoryId, colorblindMode);
+    summaryLabel = result.hasData
+      ? `${result.label} en ${year}`
+      : `Aucune recherche en ${year}`;
+    activeKey =
+      result.hasData && result.limite !== null
+        ? `ratio_${result.limite}`
+        : "non_recherche";
+  } else {
+    const result = getLastPrelResult(data, categoryId, colorblindMode);
+    summaryLabel = result.label;
+    activeKey = result.resultKey;
+  }
 
   return (
     <div
@@ -419,7 +431,12 @@ function CategoryRow({
         aria-expanded={isOpen}
         className="w-full flex items-center gap-3 px-3 py-3 text-left transition-colors hover:bg-gray-50"
       >
-        <Dot color={result.color} large />
+        <PollutionColorScale
+          category={categoryId}
+          period={period}
+          colorblindMode={colorblindMode}
+          activeKey={activeKey}
+        />
         <span className="flex-1 min-w-0">
           <span className="block font-medium">
             {categoryDetails.nomAffichage}

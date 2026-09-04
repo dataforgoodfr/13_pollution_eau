@@ -342,12 +342,12 @@ function CategoryContent({
               : "1 substance a été quantifiée."}
           </>
         ) : (
-          <>
-            {" et aucune substance n'a été quantifiée"}
-            {detailLink && <p className="mt-3 text-xs">{detailLink}</p>}
-          </>
+          " et aucune substance n'a été quantifiée"
         )}
       </p>
+      {quantifies.length === 0 && detailLink && (
+        <p className="mt-3 text-xs">{detailLink}</p>
+      )}
       {result.explication && (
         <p className="mt-3 text-xs text-gray-600 leading-relaxed whitespace-pre-line">
           {result.explication}

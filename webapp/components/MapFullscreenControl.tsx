@@ -5,8 +5,16 @@ import { Button } from "./ui/button";
 
 export default function MapFullscreenControl() {
   const [isFullscreen, setIsFullscreen] = useState(false);
+  // La Fullscreen API n'existe pas sur iPhone (Safari, Chrome iOS...), quel
+  // que soit le navigateur : seul un <video> peut y passer en plein écran.
+  // Détecté via document.fullscreenEnabled (pas de sniff d'UA) ; lu après le
+  // montage, donc true au premier rendu serveur et client, pas de mismatch
+  // d'hydratation.
+  const [fullscreenSupported, setFullscreenSupported] = useState(true);
 
   useEffect(() => {
+    setFullscreenSupported(document.fullscreenEnabled);
+
     const handleFullscreenChange = () => {
       setIsFullscreen(!!document.fullscreenElement);
     };
@@ -25,6 +33,10 @@ export default function MapFullscreenControl() {
       document.exitFullscreen();
     }
   };
+
+  if (!fullscreenSupported) {
+    return null;
+  }
 
   return (
     <div className="rounded-md bg-white border border-gray-500 overflow-hidden">

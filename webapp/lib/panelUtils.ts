@@ -164,6 +164,7 @@ export type LastPrelResult = {
   severity: Severity;
   color: string;
   label: string;
+  explication: string | null;
   date: string | null;
   nbParametres: number | null;
   parametres: Array<{ code: string; value: number }>;
@@ -185,6 +186,7 @@ export function getLastPrelResult(
     severity: detail?.severite ?? "non_recherche",
     color: detail?.[colorblindMode ? "couleurAlt" : "couleur"] || ERROR_COLOR,
     label: detail?.label || ERROR_LABEL,
+    explication: detail?.explication || null,
     date: readString(
       data,
       getPropertyName("dernier_prel", categoryId, "date_dernier_prel"),

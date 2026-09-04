@@ -16,6 +16,7 @@ interface DetailResultat {
   couleur: string;
   couleurAlt: string;
   severite: Severity;
+  explication?: string;
 }
 
 interface RatioLimite {
@@ -168,10 +169,9 @@ export const availableCategories: ICategory[] = [
       "Les PFAS sont des substances chimiques très persistantes, utilisées depuis les années 1950 pour leurs propriétés antiadhésives, antitaches et résistantes à la chaleur, et aujourd'hui largement présentes dans l'environnement.",
     unite: "µg/L",
     derniereAnalyse: {
-      details:
-        "* Somme des 20 PFAS = 0,1 µg/L\n** Somme des 4 PFAS (PFOA, PFOS, PFNA, PFHxS) = 0,02 µg/L\nHCSP: Haut Conseil de la Santé Publique",
+      details: "HCSP : Haut Conseil de la Santé Publique",
       topLegend:
-        "Cette carte montre les concentrations en PFAS mesurées dans l'eau au cours de la dernière analyse dont les résultats sont disponibles. Chaque zone est classée d'après l'ensemble des PFAS recherchés : c'est le résultat le plus défavorable qui détermine sa couleur.",
+        "Cette carte classe chaque zone selon le résultat le plus défavorable de la dernière analyse PFAS : conformité à la limite de qualité réglementaire (somme des 20 PFAS), à la limite recommandée par le HCSP (somme des 4 PFAS) et aux valeurs sanitaires.",
       resultats: {
         non_recherche: {
           label: "Non recherché dans les 12 derniers mois",
@@ -186,29 +186,36 @@ export const availableCategories: ICategory[] = [
           severite: "non_quantifie",
         },
         somme_20pfas_inf_0_1_et_4pfas_inf_0_02: {
-          label: "Quantifié, sous la limite de qualité* et la limite HCSP**",
+          label: "Quantifié, conforme",
           couleur: "#FFF33B",
           couleurAlt: "#FFF33B",
           severite: "quantifie",
+          explication:
+            "La somme des 20 PFAS est inférieure à la limite de qualité réglementaire de 0,1 µg/L et la somme des 4 PFAS est inférieure à la limite recommandée par le Haut Conseil de la Santé Publique. L'eau est conforme à la réglementation pour le paramètre PFAS.",
         },
         somme_20pfas_inf_0_1_et_4pfas_sup_0_02: {
-          label: "Dépassement de la seule limite HCSP**",
+          label: "Conforme, dépassement de la limite HCSP",
           couleur: "#FDC70C",
           couleurAlt: "#FDC70C",
           severite: "vigilance",
+          explication:
+            "La somme des 20 PFAS est inférieure à la limite de qualité réglementaire de 0,1 µg/L. L'eau est donc conforme à la réglementation pour le paramètre PFAS.\nToutefois, la somme des 4 PFAS est supérieure à la limite recommandée par le Haut Conseil de la Santé Publique, indiquant que des mesures doivent être prises rapidement pour rétablir la qualité de l'eau.",
         },
         somme_20pfas_sup_0_1: {
-          label: "Dépassement de la limite de qualité* — eau non conforme",
+          label: "Non conforme",
           couleur: "#fe9929",
           couleurAlt: "#fe9929",
           severite: "non_conforme",
+          explication:
+            "La qualité de l'eau est non conforme à la réglementation car la somme des 20 PFAS dépasse la limite de qualité réglementaire de 0,1 µg/L. Des mesures doivent être prises rapidement pour rétablir la qualité de l'eau.",
         },
         sup_valeur_sanitaire: {
-          label:
-            "Dépassement d'une limite sanitaire — eau devant être déconseillée à la consommation",
+          label: "Eau déconseillée à la consommation",
           couleur: "#f03b20",
           couleurAlt: "#bd0026",
           severite: "deconseille",
+          explication:
+            "La qualité de l'eau est non conforme à la réglementation car la somme des 20 PFAS dépasse la limite de qualité réglementaire de 0,1 µg/L. Des mesures doivent être prises rapidement pour rétablir la qualité de l'eau.\nDe plus, la concentration d'un ou plusieurs PFAS dépasse la valeur sanitaire. L'eau doit être interdite à la consommation pour l'ensemble de la population.",
         },
       },
     },

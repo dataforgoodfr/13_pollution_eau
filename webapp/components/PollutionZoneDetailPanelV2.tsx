@@ -57,7 +57,7 @@ const SEVERITY_INTRO: Record<Severity, string | null> = {
     "Eau devant être déconseillée à la consommation pour tout ou partie de la population en raison de :",
   non_conforme: "Eau non conforme aux limites réglementaires pour :",
   vigilance: "Concentrations élevées, sans non conformité, pour :",
-  quantifie: "Quantifié sous les limites de qualité :",
+  quantifie: "Quantifié, sans dépassement des limites :",
   non_quantifie: null,
   non_recherche: null,
 };
@@ -337,8 +337,8 @@ function CategoryContent({
           <>
             {" et "}
             {quantifies.length > 1
-              ? `${quantifies.length} substances ont été quantifiées :`
-              : "1 substance a été quantifiée :"}
+              ? `${quantifies.length} substances ont été quantifiées.`
+              : "1 substance a été quantifiée."}
           </>
         ) : (
           <>
@@ -347,6 +347,11 @@ function CategoryContent({
           </>
         )}
       </p>
+      {result.explication && (
+        <p className="mt-3 text-xs text-gray-600 leading-relaxed whitespace-pre-line">
+          {result.explication}
+        </p>
+      )}
       {substanceGroups.length > 0 && (
         <>
           {substanceGroups.map((group) => (

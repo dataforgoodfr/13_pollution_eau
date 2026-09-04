@@ -1,7 +1,7 @@
 import { availableCategories, getCategoryById } from "@/lib/polluants";
-import { getLegendItems } from "@/lib/legendStats";
+import { getLegendItems, type LegendStatItem } from "@/lib/legendStats";
 import { cn } from "@/lib/utils";
-import { ExternalLink } from "lucide-react";
+import { ExternalLink, Info } from "lucide-react";
 import React from "react";
 import type { PollutionStats } from "@/app/lib/data";
 import type { ZoneResult } from "@/lib/colorMapping";
@@ -11,6 +11,11 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { Switch } from "@/components/ui/switch";
 
 interface PollutionMapLegendProps {
@@ -58,7 +63,11 @@ const COMPACT_ANCHORS: Record<string, { debut: string; fin: string }> = {
   sub_indus_perchlorate: { debut: "Non quantifié", fin: "> 15 µg/L" },
 };
 
-function LegendItem({ color, label }: { color?: string; label: string }) {
+function LegendItem({
+  color,
+  label,
+  explication,
+}: Pick<LegendStatItem, "color" | "label" | "explication">) {
   return (
     <div className="flex items-center gap-3">
       <div
@@ -69,6 +78,28 @@ function LegendItem({ color, label }: { color?: string; label: string }) {
       ></div>
       <div className="flex-1">
         <span className="text-gray-900">{label}</span>
+        {explication && (
+          <Popover>
+            <PopoverTrigger
+              aria-label="En savoir plus sur cette situation"
+              className="ml-1 inline-flex align-middle text-gray-400 hover:text-gray-700 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-400 rounded-full"
+            >
+              <Info size={14} />
+            </PopoverTrigger>
+            <PopoverContent
+              side="bottom"
+              align="start"
+              collisionPadding={8}
+              className="z-[70] w-72 max-w-[calc(100vw-2rem)] p-3 text-xs leading-snug text-gray-700"
+            >
+              {explication.split("\n").map((line, index) => (
+                <p key={index} className={index > 0 ? "mt-2" : undefined}>
+                  {line}
+                </p>
+              ))}
+            </PopoverContent>
+          </Popover>
+        )}
       </div>
     </div>
   );

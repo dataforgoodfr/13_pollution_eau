@@ -8,6 +8,7 @@ export type LegendStatItem = {
   color: string;
   count: number | null;
   population: number | null;
+  explication?: string;
 };
 
 /**
@@ -39,6 +40,7 @@ export function getLegendItems(
           color: colorblindMode ? value.couleurAlt : value.couleur,
           count: stat(statName),
           population: stat(`${statName}_population`),
+          explication: value.explication,
         };
       },
     );

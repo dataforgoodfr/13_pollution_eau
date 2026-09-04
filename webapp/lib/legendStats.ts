@@ -31,7 +31,7 @@ export function getLegendItems(
     getStatistic(pollutionStats, propertyName);
 
   if (period === "dernier_prel") {
-    return Object.entries(categoryDetails.resultats).map(
+    return Object.entries(categoryDetails.derniereAnalyse.resultats).map(
       ([resultKey, value]) => {
         const statName = getPropertyName(period, category, resultKey);
         return {
@@ -44,7 +44,7 @@ export function getLegendItems(
     );
   }
 
-  const annuels = categoryDetails.resultatsAnnuels;
+  const annuels = categoryDetails.bilanAnnuel;
   if (!annuels) {
     return [];
   }

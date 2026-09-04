@@ -40,7 +40,7 @@ export function getZoneResult(
     const value = properties[getPropertyName(period, category, "resultat")];
     const key =
       value === undefined || value === null ? "non_recherche" : String(value);
-    const detail = categoryDetails.resultats[key];
+    const detail = categoryDetails.derniereAnalyse.resultats[key];
     if (!detail) {
       return null;
     }
@@ -51,7 +51,7 @@ export function getZoneResult(
   }
 
   if (period.startsWith("bilan_annuel")) {
-    const annuels = categoryDetails.resultatsAnnuels;
+    const annuels = categoryDetails.bilanAnnuel;
     if (!annuels) {
       return null;
     }
@@ -122,24 +122,26 @@ export function generateColorExpression(
   // dernier prélèvement specific logic
   if (period.startsWith("dernier_prel")) {
     const resultatProp = getPropertyName(period, category, "resultat");
-    Object.entries(categoryDetails.resultats).forEach(([value, detail]) => {
-      // the value "non_recherche" is actually null in data, and missing in the pmtiles
-      if (value === "non_recherche") {
-        cases.push(["!", ["has", resultatProp]]);
-      } else {
-        cases.push(["==", ["get", resultatProp], value]);
-      }
+    Object.entries(categoryDetails.derniereAnalyse.resultats).forEach(
+      ([value, detail]) => {
+        // the value "non_recherche" is actually null in data, and missing in the pmtiles
+        if (value === "non_recherche") {
+          cases.push(["!", ["has", resultatProp]]);
+        } else {
+          cases.push(["==", ["get", resultatProp], value]);
+        }
 
-      // Check if the color is valid and use colorblind alternative if needed
-      const color = colorblindMode ? detail.couleurAlt : detail.couleur;
-      const isValidColor = color && color.startsWith("#");
+        // Check if the color is valid and use colorblind alternative if needed
+        const color = colorblindMode ? detail.couleurAlt : detail.couleur;
+        const isValidColor = color && color.startsWith("#");
 
-      cases.push(isValidColor ? color : errorColor);
-    });
+        cases.push(isValidColor ? color : errorColor);
+      },
+    );
   }
   // bilan annuel specific logic
   else if (period.startsWith("bilan_annuel")) {
-    if (!categoryDetails.resultatsAnnuels) {
+    if (!categoryDetails.bilanAnnuel) {
       return errorColor;
     }
 
@@ -159,12 +161,12 @@ export function generateColorExpression(
     ]);
     cases.push(
       colorblindMode
-        ? categoryDetails.resultatsAnnuels.nonRechercheCouleurAlt
-        : categoryDetails.resultatsAnnuels.nonRechercheCouleur,
+        ? categoryDetails.bilanAnnuel.nonRechercheCouleurAlt
+        : categoryDetails.bilanAnnuel.nonRechercheCouleur,
     );
 
     // Color scale for ratio values using ratioLimites
-    categoryDetails.resultatsAnnuels.ratioLimites.forEach((l) => {
+    categoryDetails.bilanAnnuel.ratioLimites.forEach((l) => {
       cases.push(["<=", ["get", ratioProp], l.limite]);
       cases.push(colorblindMode ? l.couleurAlt : l.couleur);
     });

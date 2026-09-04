@@ -1,5 +1,9 @@
 import type { ParameterValues } from "@/app/lib/data";
-import { getCategoryById, type ICategory } from "@/lib/polluants";
+import {
+  getCategoryById,
+  type ICategory,
+  type Severity,
+} from "@/lib/polluants";
 import { getPropertyName } from "@/lib/property";
 
 /**
@@ -144,63 +148,12 @@ export function groupPesticideParametres(
   });
 
   return [
-    ...PESTICIDE_GROUP_DEFS.map((def) => ({ ...def, params: buckets[def.key] })),
+    ...PESTICIDE_GROUP_DEFS.map((def) => ({
+      ...def,
+      params: buckets[def.key],
+    })),
     { key: "autres", titre: "Autres", params: buckets.autres },
   ].filter((group) => group.params.length > 0);
-}
-
-/**
- * Gravité normalisée, commune à toutes les catégories. Chaque catégorie a ses
- * propres clés de résultat (cf. `resultats` dans polluants.ts) : cette échelle
- * permet de les comparer entre elles pour le bloc résumé du panel.
- */
-export type Severity =
-  | "non_recherche"
-  | "non_quantifie"
-  | "quantifie"
-  | "vigilance"
-  | "non_conforme"
-  | "deconseille";
-
-const SEVERITY_BY_RESULT: Record<string, Severity> = {
-  non_recherche: "non_recherche",
-  non_quantifie: "non_quantifie",
-  quantifie: "quantifie",
-  inf_limite_qualite: "quantifie",
-  inf_limites: "quantifie",
-  inf_valeur_sanitaire: "quantifie",
-  no3_inf_25: "quantifie",
-  no3_inf_40: "quantifie",
-  somme_20pfas_inf_0_1_et_4pfas_inf_0_02: "quantifie",
-  inf_limites_sup_0_1: "vigilance",
-  sup_limite_indicative: "vigilance",
-  metabolite_sup_3: "vigilance",
-  somme_20pfas_inf_0_1_et_4pfas_sup_0_02: "vigilance",
-  sup_1: "vigilance",
-  sup_3: "vigilance",
-  sup_5: "vigilance",
-  sup_limite_qualite: "non_conforme",
-  sup_limite_qualite_2036: "non_conforme",
-  somme_20pfas_sup_0_1: "non_conforme",
-  cvm_sup_0_5: "non_conforme",
-  sup_valeur_sanitaire: "deconseille",
-  sup_valeur_sanitaire_2: "deconseille",
-  sup_limite_sanitaire: "deconseille",
-};
-
-export function getSeverity(
-  categoryId: string,
-  resultKey: string | null,
-): Severity {
-  if (!resultKey) return "non_recherche";
-  // Pour le total pesticides réglementaire, tous les paliers au-dessus de
-  // 0,5 µg/L sont des non conformités.
-  if (categoryId === "pes_total_reg") {
-    if (["sup_limite_qualite", "sup_1", "sup_3", "sup_5"].includes(resultKey)) {
-      return "non_conforme";
-    }
-  }
-  return SEVERITY_BY_RESULT[resultKey] ?? "non_recherche";
 }
 
 const ERROR_COLOR = "#333333";
@@ -225,11 +178,11 @@ export function getLastPrelResult(
   const resultKey =
     readString(data, getPropertyName("dernier_prel", categoryId, "resultat")) ??
     "non_recherche";
-  const detail = details?.resultats[resultKey];
+  const detail = details?.derniereAnalyse.resultats[resultKey];
 
   return {
     resultKey,
-    severity: getSeverity(categoryId, resultKey),
+    severity: detail?.severite ?? "non_recherche",
     color: detail?.[colorblindMode ? "couleurAlt" : "couleur"] || ERROR_COLOR,
     label: detail?.label || ERROR_LABEL,
     date: readString(
@@ -266,7 +219,7 @@ export function getAnnualResult(
   colorblindMode: boolean,
 ): AnnualResult {
   const details = getCategoryById(categoryId);
-  const annuels = details?.resultatsAnnuels;
+  const annuels = details?.bilanAnnuel;
   const ratio = readNumber(data, getPropertyName(period, categoryId, "ratio"));
   const nbPrelevements = readNumber(
     data,

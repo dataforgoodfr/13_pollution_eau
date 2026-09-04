@@ -2,7 +2,6 @@
 
 import { useState, JSX, useEffect } from "react";
 import PollutionMapBaseLayer from "@/components/PollutionMapBase";
-import PollutionZoneDetailPanel from "@/components/PollutionZoneDetailPanel";
 import PollutionZoneDetailPanelV2 from "@/components/PollutionZoneDetailPanelV2";
 import PollutionMapControlsPanel from "@/components/PollutionMapControlsPanel";
 import PollutionMapSearchBox, { FilterResult } from "./PollutionMapSearchBox";
@@ -16,11 +15,6 @@ import type { PollutionStats, ParameterValues } from "@/app/lib/data";
 import type { ZoneResult } from "@/lib/colorMapping";
 import { scrollIframeToFullscreen } from "@/lib/iframe-scroll";
 import EmbedBanner from "./EmbedBanner";
-
-// Bascule entre l'ancien panel de détail (une seule catégorie à la fois, celle
-// de la carte) et le nouveau (toutes les catégories d'un coup). Repasser à
-// false suffit à revenir à l'ancien.
-const USE_ZONE_DETAIL_PANEL_V2 = true;
 
 export default function PollutionMap({
   pollutionStats,
@@ -167,35 +161,20 @@ export default function PollutionMap({
             )}
           >
             <div className="h-full overflow-y-auto">
-              {USE_ZONE_DETAIL_PANEL_V2 ? (
-                <PollutionZoneDetailPanelV2
-                  period={period}
-                  setPeriod={setPeriod}
-                  category={category}
-                  setCategory={setCategory}
-                  displayMode={displayMode}
-                  selectedZoneCode={selectedZoneCode}
-                  colorblindMode={colorblindMode}
-                  parameterValues={parameterValues}
-                  onClose={() => {
-                    setMarker(null);
-                    setSelectedZoneCode(null);
-                  }}
-                />
-              ) : (
-                <PollutionZoneDetailPanel
-                  period={period}
-                  category={category}
-                  displayMode={displayMode}
-                  selectedZoneCode={selectedZoneCode}
-                  colorblindMode={colorblindMode}
-                  parameterValues={parameterValues}
-                  onClose={() => {
-                    setMarker(null);
-                    setSelectedZoneCode(null);
-                  }}
-                />
-              )}
+              <PollutionZoneDetailPanelV2
+                period={period}
+                setPeriod={setPeriod}
+                category={category}
+                setCategory={setCategory}
+                displayMode={displayMode}
+                selectedZoneCode={selectedZoneCode}
+                colorblindMode={colorblindMode}
+                parameterValues={parameterValues}
+                onClose={() => {
+                  setMarker(null);
+                  setSelectedZoneCode(null);
+                }}
+              />
             </div>
           </div>
 

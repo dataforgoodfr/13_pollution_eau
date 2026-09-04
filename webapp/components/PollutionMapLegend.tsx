@@ -118,7 +118,7 @@ export default function PollutionMapLegend({
     let caption: string | null = null;
 
     if (isBilan) {
-      const annuels = categoryDetails.resultatsAnnuels;
+      const annuels = categoryDetails.bilanAnnuel;
       if (!annuels) {
         return null;
       }
@@ -135,17 +135,19 @@ export default function PollutionMapLegend({
       anchors = { debut: "0 %", fin: "100 %" };
       caption = `Part des ${annuels.ratioLabelPlural}`;
     } else {
-      Object.entries(categoryDetails.resultats).forEach(([key, detail]) => {
-        const segment = {
-          label: detail.label,
-          color: colorblindMode ? detail.couleurAlt : detail.couleur,
-        };
-        if (key === "non_recherche") {
-          graySegment = segment;
-        } else {
-          segments.push(segment);
-        }
-      });
+      Object.entries(categoryDetails.derniereAnalyse.resultats).forEach(
+        ([key, detail]) => {
+          const segment = {
+            label: detail.label,
+            color: colorblindMode ? detail.couleurAlt : detail.couleur,
+          };
+          if (key === "non_recherche") {
+            graySegment = segment;
+          } else {
+            segments.push(segment);
+          }
+        },
+      );
       anchors = COMPACT_ANCHORS[category] ?? null;
     }
 
@@ -236,7 +238,7 @@ export default function PollutionMapLegend({
     );
   }
 
-  if (period !== "dernier_prel" && !categoryDetails.resultatsAnnuels) {
+  if (period !== "dernier_prel" && !categoryDetails.bilanAnnuel) {
     return null;
   }
 
@@ -249,8 +251,8 @@ export default function PollutionMapLegend({
 
   const detailsText =
     period === "dernier_prel"
-      ? categoryDetails.resultatsDetails
-      : categoryDetails.resultatsAnnuels?.details;
+      ? categoryDetails.derniereAnalyse.details
+      : categoryDetails.bilanAnnuel?.details;
 
   const legendContent = (
     <>
@@ -276,8 +278,8 @@ export default function PollutionMapLegend({
   // bilan annuel), à la suite de la description générale du polluant.
   const topSentence =
     period === "dernier_prel"
-      ? categoryDetails.resultatsTopLegend
-      : categoryDetails.resultatsAnnuels?.topLegend;
+      ? categoryDetails.derniereAnalyse.topLegend
+      : categoryDetails.bilanAnnuel?.topLegend;
 
   const descriptionBlock = (categoryDetails.description ||
     topSentence ||

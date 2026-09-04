@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { ChevronDown, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { availableCategories, getCategoryById } from "@/lib/polluants";
-import type { ICategory } from "@/lib/polluants";
+import type { ICategory, Severity } from "@/lib/polluants";
 import type { ParameterValues } from "@/app/lib/data";
 import AnalysesModal, {
   type AnalysesFilters,
@@ -19,7 +19,6 @@ import {
   groupPesticideParametres,
   readNumber,
   readString,
-  type Severity,
   type ZoneDetail,
 } from "@/lib/panelUtils";
 
@@ -238,7 +237,7 @@ function CategoryContent({
             {current.nbSupValeurSanitaire > 1
               ? " analyses dépassent "
               : " analyse dépasse "}
-            {categoryDetails.resultatsAnnuels?.valeurSanitaireLabel ||
+            {categoryDetails.bilanAnnuel?.valeurSanitaireLabel ||
               "la limite sanitaire"}{" "}
             en {period.split("_")[2]}.
           </p>

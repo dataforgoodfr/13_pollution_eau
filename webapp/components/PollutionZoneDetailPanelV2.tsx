@@ -266,7 +266,7 @@ function CategoryContent({
 
   if (!result.date) {
     return (
-      <p className="text-xs text-gray-500">
+      <p className="text-xs text-gray-600">
         Pas d&apos;analyse effectuée dans les 12 derniers mois
       </p>
     );
@@ -456,6 +456,11 @@ function CategoryRow({
 
       {isOpen && (
         <div className="border-t border-gray-100 bg-white px-3 py-3">
+          {categoryDetails.description && (
+            <p className="mb-3 text-xs text-gray-600 leading-relaxed">
+              {categoryDetails.description}
+            </p>
+          )}
           <CategoryContent
             categoryDetails={categoryDetails}
             data={data}

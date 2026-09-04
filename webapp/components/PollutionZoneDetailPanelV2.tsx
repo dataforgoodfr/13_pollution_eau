@@ -5,13 +5,18 @@ import { ChevronDown, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { availableCategories, getCategoryById } from "@/lib/polluants";
 import type { ICategory } from "@/lib/polluants";
+import type { ParameterValues } from "@/app/lib/data";
 import AnalysesModal, {
   type AnalysesFilters,
 } from "@/components/AnalysesModal";
 import {
   findTopLevelCategory,
+  formatValue,
   getAnnualResult,
   getLastPrelResult,
+  getParameterColor,
+  getParameterName,
+  groupPesticideParametres,
   readNumber,
   readString,
   type Severity,
@@ -26,8 +31,18 @@ type PollutionZoneDetailPanelV2Props = {
   displayMode: "communes" | "udis";
   selectedZoneCode: string | null;
   colorblindMode?: boolean;
+  parameterValues: ParameterValues;
   onClose?: () => void;
 };
+
+// Catégories de premier niveau n'ayant qu'une seule substance recherchée :
+// pas de décompte "N substances recherchées", juste "la substance a été
+// quantifiée / n'a pas été quantifiée".
+const SINGLE_SUBSTANCE_CATEGORIES = new Set([
+  "nitrate",
+  "cvm",
+  "sub_indus_perchlorate",
+]);
 
 // Ordre d'affichage de l'accordéon : celui de availableCategories, "tous" étant
 // traité à part dans le bloc résumé.
@@ -74,6 +89,58 @@ function Dot({ color, large = false }: { color: string; large?: boolean }) {
       )}
       style={{ backgroundColor: color }}
     />
+  );
+}
+
+/** Liste verticale de substances quantifiées, groupée sous un titre (pesticides, PFAS…). */
+function SubstanceList({
+  parametres,
+  categoryId,
+  unite,
+  parameterValues,
+  title,
+}: {
+  parametres: Array<{ code: string; value: number }>;
+  categoryId: string;
+  unite?: string;
+  parameterValues: ParameterValues;
+  title: string;
+}) {
+  if (parametres.length === 0) return null;
+
+  return (
+    <div className="mt-3">
+      <p className="font-medium mb-1.5 text-xs">{title}</p>
+      <ul className="space-y-1 border-l-2 border-gray-200 pl-2">
+        {parametres.map(({ code, value }) => {
+          const color = getParameterColor(
+            code,
+            value,
+            parameterValues,
+            categoryId,
+          );
+          return (
+            <li
+              key={code}
+              className="flex justify-between items-start gap-2 text-xs"
+            >
+              <span
+                className="font-light flex-1"
+                style={color ? { color } : undefined}
+              >
+                {getParameterName(code, parameterValues)}
+              </span>
+              <span
+                className="font-light whitespace-nowrap font-numbers"
+                style={color ? { color } : undefined}
+              >
+                {formatValue(value)} {unite || ""}
+              </span>
+            </li>
+          );
+        })}
+      </ul>
+    </div>
   );
 }
 
@@ -145,6 +212,7 @@ function CategoryContent({
   period,
   setPeriod,
   colorblindMode,
+  parameterValues,
   onOpenAnalyses,
 }: {
   categoryDetails: ICategory;
@@ -152,6 +220,7 @@ function CategoryContent({
   period: string;
   setPeriod: (period: string) => void;
   colorblindMode: boolean;
+  parameterValues: ParameterValues;
   onOpenAnalyses?: (date?: string) => void;
 }) {
   if (period !== "dernier_prel") {
@@ -195,58 +264,130 @@ function CategoryContent({
 
   const result = getLastPrelResult(data, categoryDetails.id, colorblindMode);
 
+  if (!result.date) {
+    return (
+      <p className="text-xs text-gray-500">
+        Pas d&apos;analyse effectuée dans les 12 derniers mois
+      </p>
+    );
+  }
+
+  const dateLabel = new Date(result.date).toLocaleDateString("fr-FR");
+  const isSingleSubstance = SINGLE_SUBSTANCE_CATEGORIES.has(categoryDetails.id);
+  const isPesticide = categoryDetails.id === "pesticide";
+  const quantifies = result.parametres;
+
+  const detailLink = onOpenAnalyses ? (
+    <button
+      onClick={() => onOpenAnalyses(result.date!.slice(0, 10))}
+      className="text-custom-drom hover:underline whitespace-nowrap"
+    >
+      Voir les résultats détaillés.
+    </button>
+  ) : null;
+
+  if (isSingleSubstance) {
+    const substance = quantifies[0];
+    return (
+      <>
+        <p className="text-xs text-gray-600 leading-relaxed">
+          Lors de la dernière analyse en date du {dateLabel},{" "}
+          {substance ? (
+            <>
+              la substance a été quantifiée (
+              {getParameterName(substance.code, parameterValues)}{" "}
+              {formatValue(substance.value)} {categoryDetails.unite || ""})
+            </>
+          ) : (
+            "la substance n'a pas été quantifiée"
+          )}
+          .
+        </p>
+        {detailLink && <p className="mt-3 text-xs">{detailLink}</p>}
+      </>
+    );
+  }
+
+  const nbParametres = result.nbParametres ?? 0;
+
+  // Catégories à plusieurs substances : le détail des quantifiées est
+  // toujours affiché en listes verticales sous la phrase (comme pour les
+  // pesticides), jamais énuméré inline dans la phrase elle-même.
+  const substanceGroups = isPesticide
+    ? groupPesticideParametres(quantifies, parameterValues)
+    : quantifies.length > 0
+      ? [
+          {
+            key: "quantifiees",
+            titre: "Substances quantifiées",
+            params: quantifies,
+          },
+        ]
+      : [];
+
   return (
     <>
-      {result.date && (
-        <p className="text-xs text-gray-500 flex items-center justify-between gap-2">
-          <span>
-            Analyse du {new Date(result.date).toLocaleDateString("fr-FR")}
-            {result.nbParametres
-              ? ` — ${result.nbParametres} ${result.nbParametres > 1 ? "paramètres recherchés" : "paramètre recherché"}`
-              : ""}
-          </span>
-          {onOpenAnalyses && (
-            <button
-              onClick={() => onOpenAnalyses(result.date!.slice(0, 10))}
-              className="text-custom-drom hover:underline whitespace-nowrap"
-            >
-              Voir les analyses
-            </button>
-          )}
-        </p>
+      <p className="text-xs text-gray-600 leading-relaxed">
+        Lors de la dernière analyse en date du {dateLabel},{" "}
+        {nbParametres > 1
+          ? `${nbParametres} substances ont été recherchées`
+          : nbParametres === 1
+            ? "1 substance a été recherchée"
+            : "aucune substance n'a été recherchée"}
+        {quantifies.length > 0 ? (
+          <>
+            {" et "}
+            {quantifies.length > 1
+              ? `${quantifies.length} substances ont été quantifiées :`
+              : "1 substance a été quantifiée :"}
+          </>
+        ) : (
+          <>
+            {" et aucune substance n'a été quantifiée"}
+            {detailLink && <p className="mt-3 text-xs">{detailLink}</p>}
+          </>
+        )}
+      </p>
+      {substanceGroups.length > 0 && (
+        <>
+          {substanceGroups.map((group) => (
+            <SubstanceList
+              key={group.key}
+              title={group.titre}
+              parametres={group.params}
+              categoryId={categoryDetails.id}
+              unite={categoryDetails.unite}
+              parameterValues={parameterValues}
+            />
+          ))}
+          {detailLink && <p className="mt-3 text-xs">{detailLink}</p>}
+        </>
       )}
     </>
   );
 }
 
-/**
- * Une ligne de l'accordéon. `level` 0 pour une catégorie de premier niveau,
- * 1 pour une sous-catégorie (pesticides).
- */
+/** Une ligne de l'accordéon, une par catégorie de premier niveau. */
 function CategoryRow({
   categoryId,
-  label,
-  level,
   data,
   period,
   setPeriod,
   isOpen,
   onToggle,
   colorblindMode,
+  parameterValues,
   onOpenAnalyses,
-  children,
 }: {
   categoryId: string;
-  label?: string;
-  level: 0 | 1;
   data: ZoneDetail;
   period: string;
   setPeriod: (period: string) => void;
   isOpen: boolean;
   onToggle: () => void;
   colorblindMode: boolean;
+  parameterValues: ParameterValues;
   onOpenAnalyses?: (date?: string) => void;
-  children?: React.ReactNode;
 }) {
   const categoryDetails = getCategoryById(categoryId);
   if (!categoryDetails) return null;
@@ -267,33 +408,19 @@ function CategoryRow({
       className={cn(
         "rounded-xl border bg-white overflow-hidden",
         isOpen ? "border-custom-drom" : "border-gray-200",
-        level === 1 && "bg-gray-50/60",
       )}
     >
       <button
         onClick={onToggle}
         aria-expanded={isOpen}
-        className={cn(
-          "w-full flex items-center gap-3 px-3 text-left transition-colors hover:bg-gray-50",
-          level === 0 ? "py-3" : "py-2",
-        )}
+        className="w-full flex items-center gap-3 px-3 py-3 text-left transition-colors hover:bg-gray-50"
       >
-        <Dot color={result.color} large={level === 0} />
+        <Dot color={result.color} large />
         <span className="flex-1 min-w-0">
-          <span
-            className={cn(
-              "block",
-              level === 0 ? "font-medium" : "text-xs font-medium",
-            )}
-          >
-            {label || categoryDetails.nomAffichage}
+          <span className="block font-medium">
+            {categoryDetails.nomAffichage}
           </span>
-          <span
-            className={cn(
-              "block text-gray-500 leading-snug",
-              level === 0 ? "text-xs" : "text-[11px]",
-            )}
-          >
+          <span className="block text-gray-500 leading-snug text-xs">
             {summaryLabel}
           </span>
         </span>
@@ -314,9 +441,9 @@ function CategoryRow({
             period={period}
             setPeriod={setPeriod}
             colorblindMode={colorblindMode}
+            parameterValues={parameterValues}
             onOpenAnalyses={onOpenAnalyses}
           />
-          {children}
         </div>
       )}
     </div>
@@ -331,6 +458,7 @@ export default function PollutionZoneDetailPanelV2({
   displayMode,
   selectedZoneCode,
   colorblindMode = false,
+  parameterValues,
   onClose,
 }: PollutionZoneDetailPanelV2Props) {
   const [zoneData, setZoneData] = useState<ZoneDetail | null>(null);
@@ -419,19 +547,17 @@ export default function PollutionZoneDetailPanelV2({
     : [];
 
   // La catégorie sélectionnée sur la carte pilote l'accordéon (et inversement) :
-  // "tous" = tout replié, le bloc résumé est alors mis en avant.
+  // "tous" = tout replié, le bloc résumé est alors mis en avant. Si la carte
+  // affiche une sous-catégorie (ex. une molécule de pesticide précise), on
+  // ouvre sa catégorie parente : il n'y a pas de ligne dédiée à la
+  // sous-catégorie dans ce panel.
   const openTopLevel =
     category === "tous"
       ? undefined
       : findTopLevelCategory(category, availableCategories);
-  const openSubCategory =
-    openTopLevel && openTopLevel.id !== category ? category : null;
 
   const toggleTopLevel = (categoryId: string) => {
     setCategory(openTopLevel?.id === categoryId ? "tous" : categoryId);
-  };
-  const toggleSubCategory = (subId: string, parentId: string) => {
-    setCategory(openSubCategory === subId ? parentId : subId);
   };
 
   // Bloc résumé : regroupe les catégories de premier niveau par gravité.
@@ -460,11 +586,6 @@ export default function PollutionZoneDetailPanelV2({
         </div>
         <div className="text-2xl leading-tight">{title}</div>
         <div className="mt-1 text-xs text-gray-600 space-y-0.5">
-          {code && (
-            <div>
-              {displayMode === "communes" ? "Code INSEE" : "Code UDI"} : {code}
-            </div>
-          )}
           {displayMode === "udis" && population !== null && (
             <div>
               Ce réseau alimente {population.toLocaleString("fr-FR")} personnes.
@@ -554,14 +675,15 @@ export default function PollutionZoneDetailPanelV2({
             <CategoryRow
               key={item.id}
               categoryId={item.id}
-              level={0}
               data={zoneData}
               period={period}
               setPeriod={setPeriod}
               isOpen={openTopLevel?.id === item.id}
               onToggle={() => toggleTopLevel(item.id)}
               colorblindMode={colorblindMode}
+              parameterValues={parameterValues}
               onOpenAnalyses={
+                displayMode === "udis" &&
                 CATEGORY_ID_TO_ANALYSES_CATEGORIE[item.id]
                   ? (date?: string) =>
                       openAnalyses({
@@ -570,39 +692,7 @@ export default function PollutionZoneDetailPanelV2({
                       })
                   : undefined
               }
-            >
-              {item.groupes && (
-                <div className="mt-4 space-y-4">
-                  {item.groupes.map((groupe) => (
-                    <div key={groupe.titre}>
-                      <p className="text-[11px] font-medium text-gray-600 mb-1.5">
-                        {groupe.titre}
-                      </p>
-                      <div className="space-y-1.5">
-                        {groupe.options
-                          .filter((option) => option.id !== item.id)
-                          .map((option) => (
-                            <CategoryRow
-                              key={option.id}
-                              categoryId={option.id}
-                              label={option.label}
-                              level={1}
-                              data={zoneData}
-                              period={period}
-                              setPeriod={setPeriod}
-                              isOpen={openSubCategory === option.id}
-                              onToggle={() =>
-                                toggleSubCategory(option.id, item.id)
-                              }
-                              colorblindMode={colorblindMode}
-                            />
-                          ))}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </CategoryRow>
+            />
           ))}
         </div>
 
@@ -618,8 +708,11 @@ export default function PollutionZoneDetailPanelV2({
         <p className="text-[11px] text-gray-500 leading-relaxed">
           Ces résultats proviennent du contrôle sanitaire des eaux distribuées,
           réalisé par les Agences régionales de santé et publié en open data par
-          le ministère de la Santé. Déplier un polluant l’affiche sur la carte,
-          ce qui permet de comparer cette zone avec les zones voisines.
+          le ministère de la Santé.
+          {code &&
+            ` Ils concernent ${displayMode === "communes" ? "la commune identifiée avec le code INSEE" : "le réseau de distribution identifié avec le code "} ${code}.`}{" "}
+          Déplier un polluant l’affiche sur la carte, ce qui permet de comparer
+          cette zone avec les zones voisines.
         </p>
       </div>
 

@@ -167,7 +167,7 @@ const columns: ColumnDef<AnalyseRow>[] = [
   {
     id: "web_label",
     accessorKey: "web_label",
-    header: "Paramètre",
+    header: "Substance",
     cell: ({ row }) => (
       <span title={row.original.cdparametresiseeaux}>
         {row.original.web_label || row.original.cdparametresiseeaux}
@@ -285,7 +285,7 @@ export default function AnalysesModal({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open, cdreseau]);
 
-  // Debounce de la recherche paramètre.
+  // Debounce de la recherche substance.
   useEffect(() => {
     const handle = setTimeout(() => setParametre(parametreInput), 300);
     return () => clearTimeout(handle);
@@ -449,7 +449,7 @@ export default function AnalysesModal({
 
           <Input
             className="w-[220px]"
-            placeholder="Rechercher un paramètre..."
+            placeholder="Rechercher une substance..."
             value={parametreInput}
             onChange={(e) => setParametreInput(e.target.value)}
           />

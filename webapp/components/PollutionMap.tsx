@@ -176,6 +176,7 @@ export default function PollutionMap({
                   displayMode={displayMode}
                   selectedZoneCode={selectedZoneCode}
                   colorblindMode={colorblindMode}
+                  parameterValues={parameterValues}
                   onClose={() => {
                     setMarker(null);
                     setSelectedZoneCode(null);

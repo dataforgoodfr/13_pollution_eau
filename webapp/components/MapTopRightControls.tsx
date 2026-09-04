@@ -40,7 +40,7 @@ export default function MapTopRightControls({
           <TooltipTrigger asChild>
             <Button
               onClick={onToggleRightPanel}
-              aria-label="Paramètres de la carte"
+              aria-label="Réglages de la carte"
               className={clsx(
                 "h-[48px] w-[48px] rounded border p-0",
                 rightPanelOpen
@@ -53,7 +53,7 @@ export default function MapTopRightControls({
             </Button>
           </TooltipTrigger>
           <TooltipContent side="left" className="bg-white text-custom-drom">
-            Paramètres : filtres et légende
+            Réglages de la carte
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>

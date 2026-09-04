@@ -17,6 +17,7 @@ type PollutionMapCategorySelectorProps = {
   setPeriod: (period: string) => void;
   category: string;
   setCategory: (category: string) => void;
+  lastUpdateDate?: string | null;
 };
 
 const CATEGORY_ICONS: Record<string, LucideIcon> = {
@@ -88,6 +89,7 @@ export default function PollutionMapCategorySelector({
   setPeriod,
   category,
   setCategory,
+  lastUpdateDate,
 }: PollutionMapCategorySelectorProps) {
   const selectedTopLevel = findTopLevelCategory(category, availableCategories);
   const isBilan = period.startsWith("bilan_annuel");
@@ -151,6 +153,11 @@ export default function PollutionMapCategorySelector({
             Bilans annuels
           </button>
         </div>
+        {!isBilan && lastUpdateDate && (
+          <p className="mt-2 text-[11px] text-gray-500">
+            Date de dernière analyse disponible : {lastUpdateDate}
+          </p>
+        )}
         {isBilan && (
           <div className="mt-2 flex flex-wrap gap-1.5">
             {bilanYears.map((year) => (

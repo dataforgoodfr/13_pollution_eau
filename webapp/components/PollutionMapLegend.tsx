@@ -1,8 +1,7 @@
 import { availableCategories, getCategoryById } from "@/lib/polluants";
-import { getPropertyName } from "@/lib/property";
+import { getLegendItems } from "@/lib/legendStats";
 import { cn } from "@/lib/utils";
-import { getStatistic as getStat } from "@/lib/stats";
-import { Info, ExternalLink } from "lucide-react";
+import { ExternalLink } from "lucide-react";
 import React from "react";
 import type { PollutionStats } from "@/app/lib/data";
 import type { ZoneResult } from "@/lib/colorMapping";
@@ -59,19 +58,7 @@ const COMPACT_ANCHORS: Record<string, { debut: string; fin: string }> = {
   sub_indus_perchlorate: { debut: "Non quantifié", fin: "> 15 µg/L" },
 };
 
-function LegendItem({
-  color,
-  label,
-  count,
-  percentage,
-  population,
-}: {
-  color?: string;
-  label: string;
-  count?: number | null;
-  percentage?: number | null;
-  population?: number | null;
-}) {
+function LegendItem({ color, label }: { color?: string; label: string }) {
   return (
     <div className="flex items-center gap-3">
       <div
@@ -83,29 +70,6 @@ function LegendItem({
       <div className="flex-1">
         <span className="text-gray-900">{label}</span>
       </div>
-      {count !== null && count !== undefined && (
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Info className="w-4 h-4 text-gray-400 hover:text-gray-600 cursor-help" />
-          </TooltipTrigger>
-          <TooltipContent>
-            <p>
-              {count}{" "}
-              {count < 2
-                ? "réseau de distribution (UDI) est"
-                : "réseaux de distribution (UDI) sont"}{" "}
-              dans cette situation
-              {percentage !== null &&
-                percentage !== undefined &&
-                ` (~${percentage.toFixed(1)}%)`}
-              {population !== null && population !== undefined && (
-                <>, alimentant {population.toLocaleString("fr-FR")} personnes</>
-              )}
-              .
-            </p>
-          </TooltipContent>
-        </Tooltip>
-      )}
     </div>
   );
 }
@@ -272,154 +236,41 @@ export default function PollutionMapLegend({
     );
   }
 
-  const getStatistic = (propertyName: string): number | null =>
-    getStat(pollutionStats, propertyName);
+  if (period !== "dernier_prel" && !categoryDetails.resultatsAnnuels) {
+    return null;
+  }
 
-  // Get total UDIs for percentage calculation
-  const totalUdis = getStatistic("total_udis");
-
-  const legendItems = Object.entries(categoryDetails.resultats).map(
-    ([resultKey, value]) => {
-      // Calculate count, percentage, and population for this legend item
-      let count = null;
-      let percentage = null;
-      let population = null;
-
-      if (period === "dernier_prel") {
-        const statName = getPropertyName(period, category, resultKey);
-        count = getStatistic(statName);
-        if (count !== null && totalUdis) {
-          percentage = (count / totalUdis) * 100;
-        }
-        // Get population statistic
-        const populationStatName = `${statName}_population`;
-        population = getStatistic(populationStatName);
-      }
-
-      return {
-        label: value.label,
-        color: colorblindMode ? value.couleurAlt : value.couleur,
-        count,
-        percentage,
-        population,
-      };
-    },
+  const legendItems = getLegendItems(
+    period,
+    category,
+    pollutionStats,
+    colorblindMode,
   );
 
-  let legendContent = null;
+  const detailsText =
+    period === "dernier_prel"
+      ? categoryDetails.resultatsDetails
+      : categoryDetails.resultatsAnnuels?.details;
 
-  if (period === "dernier_prel") {
-    // dernier_prel
-    legendContent = (
-      <>
-        <div className="space-y-3 text-xs">
-          {legendItems.map((item) => (
-            <LegendItem
-              key={item.color + item.label}
-              color={item.color}
-              label={item.label}
-              count={item.count}
-              percentage={item.percentage}
-              population={item.population}
-            />
+  const legendContent = (
+    <>
+      <div className="space-y-3 text-xs">
+        {legendItems.map((item) => (
+          <LegendItem key={item.color + item.label} {...item} />
+        ))}
+      </div>
+      {detailsText && (
+        <p className="text-gray-500 mt-4 text-xs">
+          {detailsText.split("\n").map((line, index) => (
+            <React.Fragment key={index}>
+              {index > 0 && <br />}
+              {line}
+            </React.Fragment>
           ))}
-        </div>
-        {categoryDetails.resultatsDetails && (
-          <p className="text-gray-500 mt-4 text-xs">
-            {categoryDetails.resultatsDetails
-              ?.split("\n")
-              .map((line, index) => (
-                <React.Fragment key={index}>
-                  {index > 0 && <br />}
-                  {line}
-                </React.Fragment>
-              ))}
-          </p>
-        )}
-      </>
-    );
-  } else {
-    // bilan_annuel
-    if (!categoryDetails.resultatsAnnuels) {
-      return null;
-    }
-
-    // For annual reports, get stats for ratio intervals and other items
-    const getAnnualStats = (ratioKey: string) => {
-      const statName = `${period}_${category}_ratio_${ratioKey}`;
-      const count = getStatistic(statName);
-      const population = getStatistic(`${statName}_population`);
-      if (count !== null && totalUdis) {
-        const percentage = (count / totalUdis) * 100;
-        return { count, percentage, population };
-      }
-      return { count: null, percentage: null, population };
-    };
-
-    const nonRechercheStats = (() => {
-      const statName = `${period}_${category}_non_recherche`;
-      const count = getStatistic(statName);
-      const population = getStatistic(`${statName}_population`);
-      if (count !== null && totalUdis) {
-        const percentage = (count / totalUdis) * 100;
-        return { count, percentage, population };
-      }
-      return { count: null, percentage: null, population };
-    })();
-
-    legendContent = (
-      <>
-        <div className="space-y-3 text-xs">
-          <LegendItem
-            color={
-              colorblindMode
-                ? categoryDetails.resultatsAnnuels.nonRechercheCouleurAlt
-                : categoryDetails.resultatsAnnuels.nonRechercheCouleur || ""
-            }
-            label={categoryDetails.resultatsAnnuels.nonRechercheLabel || ""}
-            count={nonRechercheStats.count}
-            percentage={nonRechercheStats.percentage}
-            population={nonRechercheStats.population}
-          />
-          {categoryDetails.resultatsAnnuels.ratioLimites.map((item) => {
-            // Map the ratio limits to the corresponding database keys based on actual limit values
-            let ratioKey: string;
-            if (item.limite === 0) ratioKey = "0";
-            else if (item.limite === 0.25) ratioKey = "0.25";
-            else if (item.limite === 0.5) ratioKey = "0.5";
-            else if (item.limite === 0.75) ratioKey = "0.75";
-            else if (item.limite === 1) ratioKey = "1";
-            else ratioKey = "erreur"; // for unexpected values
-
-            const stats = getAnnualStats(ratioKey);
-
-            return (
-              <LegendItem
-                key={item.couleur + item.label}
-                color={colorblindMode ? item.couleurAlt : item.couleur}
-                label={`${item.label} des ${categoryDetails.resultatsAnnuels?.ratioLabelPlural}`}
-                count={stats.count}
-                percentage={stats.percentage}
-                population={stats.population}
-              />
-            );
-          })}
-        </div>
-        {categoryDetails.resultatsAnnuels?.details && (
-          <p className="text-gray-500 mt-4 text-xs">
-            {categoryDetails.resultatsAnnuels.details
-              ?.split("\n")
-              .map((line, index) => (
-                <React.Fragment key={index}>
-                  {index > 0 && <br />}
-                  {line}
-                </React.Fragment>
-              ))}
-          </p>
-        )}
-      </>
-    );
-  }
+        </p>
+      )}
+    </>
+  );
 
   // Phrase d'introduction propre au type de carte affiché (dernière analyse ou
   // bilan annuel), à la suite de la description générale du polluant.
@@ -447,8 +298,8 @@ export default function PollutionMapLegend({
     </div>
   );
 
-  const bodyContent = (
-    <>
+  return (
+    <div>
       {descriptionBlock}
       <div className="mb-2">{legendContent}</div>
 
@@ -468,21 +319,10 @@ export default function PollutionMapLegend({
             htmlFor="colorblind-switch"
             className="text-xs text-gray-500 cursor-pointer select-none"
           >
-            Couleurs adaptées aux daltoniens
+            Couleurs plus contrastées
           </label>
         </div>
       </div>
-    </>
-  );
-
-  return (
-    <TooltipProvider>
-      <div>
-        <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-3">
-          Ce qu&apos;affiche la carte
-        </h3>
-        {bodyContent}
-      </div>
-    </TooltipProvider>
+    </div>
   );
 }

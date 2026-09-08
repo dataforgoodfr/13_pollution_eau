@@ -303,6 +303,11 @@ function CategoryContent({
           )}
           .
         </p>
+        {result.explication && (
+          <p className="mt-3 text-xs text-gray-600 leading-relaxed whitespace-pre-line">
+            {result.explication}
+          </p>
+        )}
         {detailLink && <p className="mt-3 text-xs">{detailLink}</p>}
       </>
     );

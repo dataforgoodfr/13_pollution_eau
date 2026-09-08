@@ -83,10 +83,8 @@ export const availableCategories: ICategory[] = [
     description:
       "Dans « tous polluants », nous regroupont les principaux polluants chimiques de l'eau potable : pesticides, nitrates, PFAS, CVM et perchlorates. La qualité de l'eau y est évaluée au regard des limites de qualité fixées par la réglementation et des limites sanitaires établies par les autorités de santé.",
     derniereAnalyse: {
-      details:
-        "* Pesticides, PFAS, CVM, et Perchlorate non quantifiés ; Nitrates non quantifiés ou  <=10 mg/L\n** D'après les recommandations du Ministère de la Santé ou du Haut Conseil de la Santé Publique",
       topLegend:
-        "Cette carte montre l'état actuel de l'eau d'après les dernières analyses disponibles pour chaque polluant : sa conformité aux limites de qualité réglementaires et les situations pour lesquelles l'eau devrait être déconseillée à la consommation. Chaque zone est classée d'après l'ensemble des polluants recherchés : c'est le résultat le plus défavorable qui détermine sa couleur.",
+        "Cette carte montre l'état actuel de l'eau d'après les dernières analyses disponibles pour chaque polluant : pesticides, nitrates, PFAS, CVM et perchlorates. Chaque zone est classée d'après le résultat le plus défavorable parmi l'ensemble des polluants recherchés.",
       resultats: {
         non_recherche: {
           label: "Aucun polluant recherché dans les 12 derniers mois",
@@ -95,29 +93,36 @@ export const availableCategories: ICategory[] = [
           severite: "non_recherche",
         },
         non_quantifie: {
-          label: "Aucun polluant quantifié*",
+          label: "Aucun polluant quantifié",
           couleur: "#74c476",
           couleurAlt: "#c7e9c0",
           severite: "non_quantifie",
+          explication:
+            "Aucun pesticide, PFAS, CVM ni perchlorate n'a été quantifié lors de la dernière analyse, et la concentration en nitrates est inférieure ou égale à 10 mg/L (le niveau des eaux non polluées).",
         },
         quantifie: {
-          label: "Au moins un polluant quantifié, sous les limites de qualité",
+          label: "Polluant quantifié, eau conforme",
           couleur: "#FFF33B",
           couleurAlt: "#FFF33B",
           severite: "quantifie",
+          explication:
+            "Au moins un polluant a été quantifié, mais toutes les concentrations mesurées restent sous les limites de qualité réglementaires. L'eau est conforme à la réglementation.",
         },
         sup_limite_qualite: {
-          label: "Dépassement d'une limite de qualité — eau non conforme",
+          label: "Eau non conforme",
           couleur: "#fe9929",
           couleurAlt: "#fe9929",
           severite: "non_conforme",
+          explication:
+            "Au moins un polluant dépasse sa limite de qualité réglementaire : l'eau est non conforme. Des mesures doivent être prises rapidement pour rétablir la qualité de l'eau.",
         },
         sup_limite_sanitaire: {
-          label:
-            "Eau devant être déconseillée à la consommation pour toute ou partie de la population**",
+          label: "Eau déconseillée à la consommation",
           couleur: "#f03b20",
           couleurAlt: "#bd0026",
           severite: "deconseille",
+          explication:
+            "L'eau devrait être déconseillée à la consommation pour tout ou partie de la population (femmes enceintes, nourrissons…), d'après les recommandations du Ministère de la Santé ou du Haut Conseil de la Santé Publique.",
         },
       },
     },
@@ -186,7 +191,7 @@ export const availableCategories: ICategory[] = [
           severite: "non_quantifie",
         },
         somme_20pfas_inf_0_1_et_4pfas_inf_0_02: {
-          label: "Quantifié, conforme",
+          label: "Quantifié, eau conforme",
           couleur: "#FFF33B",
           couleurAlt: "#FFF33B",
           severite: "quantifie",
@@ -194,7 +199,7 @@ export const availableCategories: ICategory[] = [
             "La somme des 20 PFAS est inférieure à la limite de qualité réglementaire de 0,1 µg/L et la somme des 4 PFAS est inférieure à la limite recommandée par le Haut Conseil de la Santé Publique. L'eau est conforme à la réglementation pour le paramètre PFAS.",
         },
         somme_20pfas_inf_0_1_et_4pfas_sup_0_02: {
-          label: "Conforme, dépassement de la limite HCSP",
+          label: "Eau conforme, dépassement de la limite HCSP",
           couleur: "#FDC70C",
           couleurAlt: "#FDC70C",
           severite: "vigilance",
@@ -202,7 +207,7 @@ export const availableCategories: ICategory[] = [
             "La somme des 20 PFAS est inférieure à la limite de qualité réglementaire de 0,1 µg/L. L'eau est donc conforme à la réglementation pour le paramètre PFAS.\nToutefois, la somme des 4 PFAS est supérieure à la limite recommandée par le Haut Conseil de la Santé Publique, indiquant que des mesures doivent être prises rapidement pour rétablir la qualité de l'eau.",
         },
         somme_20pfas_sup_0_1: {
-          label: "Non conforme",
+          label: "Eau non conforme",
           couleur: "#fe9929",
           couleurAlt: "#fe9929",
           severite: "non_conforme",
@@ -266,10 +271,8 @@ export const availableCategories: ICategory[] = [
       "Le terme 'pesticides' regroupe ici les substances actives des produits phytosanitaires et biocides (herbicides, insecticides, fongicides…) ainsi que les métabolites issus de leur dégradation. Leur usage entraîne une contamination diffuse des eaux, par ruissellement ou infiltration dans les sols.",
     unite: "µg/L",
     derniereAnalyse: {
-      details:
-        "* D'après les recommandations du Haut Conseil de la Santé Publique",
       topLegend:
-        "Cette carte montre les concentrations en pesticides mesurées dans l'eau au cours de la dernière analyse de pesticides dont les résultats sont disponibles. Chaque zone est classée d'après l'ensemble des pesticides recherchés : c'est le résultat le plus défavorable qui détermine sa couleur.",
+        "Cette carte montre les concentrations en pesticides mesurées dans l'eau au cours de la dernière analyse de pesticides dont les résultats sont disponibles. Chaque zone est classée d'après le résultat le plus défavorable parmi l'ensemble des pesticides recherchés.",
       resultats: {
         non_recherche: {
           label: "Non recherché dans les 12 derniers mois",
@@ -284,22 +287,28 @@ export const availableCategories: ICategory[] = [
           severite: "non_quantifie",
         },
         inf_limite_qualite: {
-          label: "Quantifié, sous les limites de qualité",
+          label: "Quantifié, eau conforme",
           couleur: "#FFF33B",
           couleurAlt: "#FFF33B",
           severite: "quantifie",
+          explication:
+            "Au moins un pesticide a été quantifié, mais aucune limite de qualité n'est dépassée : chaque substance active et chaque métabolite pertinent reste sous 0,1 µg/L, et le total pesticides réglementaire sous 0,5 µg/L. L'eau est conforme à la réglementation.",
         },
         sup_limite_qualite: {
-          label: "Dépassement d'une limite de qualité — eau non conforme",
+          label: "Eau non conforme",
           couleur: "#fe9929",
           couleurAlt: "#fe9929",
           severite: "non_conforme",
+          explication:
+            "Une limite de qualité est dépassée : une substance active ou un métabolite pertinent au-dessus de 0,1 µg/L, ou le total pesticides réglementaire au-dessus de 0,5 µg/L. L'eau est non conforme à la réglementation et des mesures doivent être prises rapidement pour rétablir sa qualité.",
         },
         sup_valeur_sanitaire: {
-          label: "Eau devant être déconseillée à la consommation*",
+          label: "Eau déconseillée à la consommation",
           couleur: "#f03b20",
           couleurAlt: "#bd0026",
           severite: "deconseille",
+          explication:
+            "La concentration d'un ou plusieurs pesticides dépasse sa valeur sanitaire, en plus de la limite de qualité réglementaire. L'eau devrait être déconseillée à la consommation pour tout ou partie de la population, d'après les recommandations du Haut Conseil de la Santé Publique.",
         },
       },
     },
@@ -1320,9 +1329,8 @@ export const availableCategories: ICategory[] = [
       "Les nitrates sont une des formes de l'azote, élément essentiel à la croissance des plantes. On estime que 88 % des nitrates présents dans les eaux viennent de l'agriculture (épandages de lisier et d'engrais azotés), le reste des rejets urbains et industriels.",
     unite: "mg/L",
     derniereAnalyse: {
-      details: "* D'après les instructions du Ministère de la Santé",
       topLegend:
-        "Cette carte montre les concentrations en nitrates mesurées dans l'eau au cours des dernières analyses dont les résultats sont disponibles.",
+        "Cette carte montre les concentrations en nitrates des dernières analyses disponibles, au regard de la limite de qualité de 50 mg/L : au-delà, l'eau est non conforme et déconseillée aux femmes enceintes et aux nourrissons.",
       resultats: {
         non_recherche: {
           label: "Non recherché dans les 12 derniers mois",
@@ -1335,31 +1343,41 @@ export const availableCategories: ICategory[] = [
           couleur: "#74c476",
           couleurAlt: "#c7e9c0",
           severite: "non_quantifie",
+          explication:
+            "L'eau est au niveau des eaux non polluées, dont la concentration naturelle en nitrates dépasse rarement 10 mg/L.",
         },
         no3_inf_25: {
-          label: "Entre 10 et 25 mg/L",
+          label: "Teneur faible, 10 à 25 mg/L",
           couleur: "#FFF33B",
           couleurAlt: "#FFF33B",
           severite: "quantifie",
+          explication:
+            "L'eau est conforme à la limite de qualité de 50 mg/L, mais la concentration en nitrates dépasse le niveau naturel des eaux non polluées : cet apport vient principalement de l'agriculture.",
         },
         no3_inf_40: {
-          label: "Entre 25 et 40 mg/L",
+          label: "Teneur modérée, 25 à 40 mg/L",
           couleur: "#FDC70C",
           couleurAlt: "#FDC70C",
           severite: "quantifie",
+          explication:
+            "L'eau est conforme à la limite de qualité de 50 mg/L, mais la contamination en nitrates est nettement marquée.",
         },
         inf_valeur_sanitaire: {
-          label: "Entre 40 et 50 mg/L",
+          label: "Proche de la limite, 40 à 50 mg/L",
           couleur: "#fe9929",
           couleurAlt: "#fe9929",
           severite: "quantifie",
+          explication:
+            "L'eau reste conforme, mais la concentration en nitrates s'approche de près de la limite de qualité de 50 mg/L.",
         },
         sup_valeur_sanitaire: {
           label:
-            "> 50 mg/L — eau non conforme, déconseillée aux femmes enceintes et aux nourrissons*",
+            "Eau non conforme, déconseillée aux femmes enceintes et nourrissons",
           couleur: "#f03b20",
           couleurAlt: "#bd0026",
           severite: "deconseille",
+          explication:
+            "La limite de qualité réglementaire de 50 mg/L est dépassée : l'eau est non conforme. D'après les instructions du Ministère de la Santé, elle est déconseillée aux femmes enceintes et aux nourrissons.",
         },
       },
     },
@@ -1407,12 +1425,11 @@ export const availableCategories: ICategory[] = [
     disable: false,
     enfants: [],
     description:
-      "Le CVM (chlorure de vinyle monomère) est une substance gazeuse utilisée pour fabriquer le PVC, classée cancérogène certain pour l'homme. Les canalisations en PVC posées avant 1980 peuvent en relarguer dans l'eau, souvent sur quelques tronçons seulement d'un réseau.",
+      "Le CVM (chlorure de vinyle monomère) est une substance gazeuse utilisée pour fabriquer le PVC, classée cancérogène certain pour l'homme. Les canalisations en PVC posées avant 1980 peuvent en relarguer dans l'eau, souvent sur quelques tronçons seulement d'un réseau : un résultat conforme n'exclut donc pas une contamination sur quelques rues.",
     unite: "µg/L",
     derniereAnalyse: {
-      details: "* D'après les instructions du Ministère de la Santé",
       topLegend:
-        "Cette carte montre les concentrations en CVM mesurées dans l'eau au cours des dernières analyses dont les résultats sont disponibles.",
+        "Cette carte montre les concentrations en CVM des dernières analyses disponibles, au regard de la limite de qualité de 0,5 µg/L : au-delà, l'eau est non conforme et sa consommation peut être restreinte.",
       resultats: {
         non_recherche: {
           label: "Non recherché dans les 12 derniers mois",
@@ -1427,17 +1444,20 @@ export const availableCategories: ICategory[] = [
           severite: "non_quantifie",
         },
         inf_limites: {
-          label: "≤ 0,5 µg/L",
+          label: "Quantifié, eau conforme",
           couleur: "#FFF33B",
           couleurAlt: "#FFF33B",
           severite: "quantifie",
+          explication:
+            "Du CVM a été quantifié, mais la concentration reste sous la limite de qualité réglementaire de 0,5 µg/L. L'eau est conforme à la réglementation.",
         },
         cvm_sup_0_5: {
-          label:
-            "> 0,5 µg/L — limite de qualité dépassée, consommation pouvant être restreinte*",
+          label: "Eau non conforme",
           couleur: "#fe9929",
           couleurAlt: "#fe9929",
           severite: "non_conforme",
+          explication:
+            "La limite de qualité réglementaire de 0,5 µg/L est dépassée : l'eau est non conforme. Le CVM étant classé cancérogène certain pour l'homme, sa consommation peut être restreinte d'après les instructions du Ministère de la Santé.",
         },
       },
     },
@@ -1573,9 +1593,8 @@ export const availableCategories: ICategory[] = [
       "Les perchlorates sont des sels utilisés dans des applications militaires (dispositifs pyrotechniques, poudres), industrielles (propulseurs) et agricoles (engrais). Très stables et solubles, ils persistent des dizaines d'années dans l'eau une fois émis.",
     unite: "µg/L",
     derniereAnalyse: {
-      details: "* D'après les instructions du Ministère de la Santé",
       topLegend:
-        "Cette carte montre les concentrations en perchlorates mesurées dans l'eau au cours des dernières analyses dont les résultats sont disponibles. Aucune limite réglementaire ne s'applique aux perchlorates, les seuils affichés sont ceux recommandés par le ministère de la Santé.",
+        "Cette carte montre les concentrations en perchlorates des dernières analyses disponibles. Aucune limite de qualité réglementaire ne s'applique : les seuils de 4 et 15 µg/L sont des recommandations du Ministère de la Santé, dont le dépassement ne rend pas l'eau « non conforme ».",
       resultats: {
         non_recherche: {
           label: "Non recherché dans les 12 derniers mois",
@@ -1590,24 +1609,29 @@ export const availableCategories: ICategory[] = [
           severite: "non_quantifie",
         },
         inf_valeur_sanitaire: {
-          label: "≤ 4 µg/L",
+          label: "Faible concentration",
           couleur: "#FFF33B",
           couleurAlt: "#FFF33B",
           severite: "quantifie",
+          explication:
+            "Des perchlorates ont été quantifiés, mais la concentration reste sous le seuil de 4 µg/L recommandé par le Ministère de la Santé.",
         },
         sup_valeur_sanitaire: {
-          label:
-            "Entre 4 et 15 µg/L — eau à éviter pour les biberons des nourrissons de moins de 6 mois*",
+          label: "Eau déconseillée aux nourrissons",
           couleur: "#FB726C",
           couleurAlt: "#FB726C",
           severite: "deconseille",
+          explication:
+            "Le seuil de 4 µg/L est dépassé : d'après les instructions du Ministère de la Santé, l'eau ne doit pas être utilisée pour préparer les biberons des nourrissons de moins de 6 mois.",
         },
         sup_valeur_sanitaire_2: {
           label:
-            "> 15 µg/L — eau également déconseillée aux femmes enceintes et allaitantes*",
+            "Eau déconseillée aux nourrissons, femmes enceintes et allaitantes",
           couleur: "#FC3127",
           couleurAlt: "#FC3127",
           severite: "deconseille",
+          explication:
+            "Le seuil de 15 µg/L est dépassé : d'après les instructions du Ministère de la Santé, l'eau est déconseillée aux femmes enceintes et allaitantes, en plus des nourrissons de moins de 6 mois.",
         },
       },
     },

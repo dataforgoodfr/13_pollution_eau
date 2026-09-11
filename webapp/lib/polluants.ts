@@ -1883,6 +1883,32 @@ export function getCategoryById(
   return undefined;
 }
 
+/**
+ * Catégories de premier niveau effectivement proposées, dans l'ordre de
+ * `availableCategories`. "tous" en est exclu : il est traité à part, là où il
+ * sert de résumé. Version non récursive de `getAllEnabledCategories`.
+ */
+export const TOP_LEVEL_CATEGORIES = availableCategories.filter(
+  (item) => !item.disable && item.id !== "tous",
+);
+
+/**
+ * Remonte à la catégorie de premier niveau à partir d'un identifiant qui peut
+ * être une sous-catégorie (ex. une molécule de pesticide précise) : ni le
+ * panel de zone ni le sélecteur de la carte n'ont de ligne dédiée aux
+ * sous-catégories.
+ */
+export function findTopLevelCategory(
+  selectedId: string,
+  categories: ICategory[] = availableCategories,
+): ICategory | undefined {
+  return categories.find(
+    (item) =>
+      item.id === selectedId ||
+      item.enfants?.some((child) => child.id === selectedId),
+  );
+}
+
 // Helper function to get all enabled categories recursively, excluding "tous"
 export const getAllEnabledCategories = (
   categories: ICategory[] = availableCategories,

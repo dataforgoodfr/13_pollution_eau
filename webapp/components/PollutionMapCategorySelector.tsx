@@ -1,7 +1,8 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { availableCategories, ICategory } from "@/lib/polluants";
+import { availableCategories, findTopLevelCategory } from "@/lib/polluants";
+import { BILAN_YEARS, LATEST_BILAN_YEAR } from "@/lib/zoneDetail";
 import {
   LayoutGrid,
   Droplets,
@@ -29,19 +30,10 @@ const CATEGORY_ICONS: Record<string, LucideIcon> = {
   sub_indus_perchlorate: Factory,
 };
 
-const bilanYears = ["2026", "2025", "2024", "2023", "2022", "2021", "2020"];
-const defaultBilanPeriod = `bilan_annuel_${bilanYears[0]}`;
-
-function findTopLevelCategory(
-  selectedId: string,
-  categories: ICategory[],
-): ICategory | undefined {
-  return categories.find(
-    (item) =>
-      item.id === selectedId ||
-      item.enfants?.some((child) => child.id === selectedId),
-  );
-}
+// Ici la plus récente vient en premier : c'est celle vers laquelle on veut
+// envoyer l'utilisateur, pas une frise chronologique.
+const bilanYears = [...BILAN_YEARS].reverse();
+const defaultBilanPeriod = `bilan_annuel_${LATEST_BILAN_YEAR}`;
 
 function SectionTitle({ step, children }: { step: number; children: string }) {
   return (

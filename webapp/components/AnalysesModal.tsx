@@ -94,6 +94,24 @@ const CATEGORIE_BY_VALUE = Object.fromEntries(
   CATEGORIE_OPTIONS.map((item) => [item.value, item]),
 );
 
+/**
+ * Correspondance entre l'id de catégorie de lib/polluants.ts et la valeur
+ * `categorie` attendue par /api/udi-analyses — le vocabulaire de
+ * CATEGORIE_OPTIONS ci-dessus. Toutes les catégories n'ont pas d'équivalent :
+ * `undefined` signifie qu'on ne sait pas pré-filtrer la modale pour elle.
+ */
+const CATEGORY_ID_TO_ANALYSES_CATEGORIE: Record<string, string> = {
+  pfas: "pfas",
+  pesticide: "pesticide",
+  nitrate: "nitrate",
+  cvm: "cvm",
+  sub_indus_perchlorate: "substances_indus",
+};
+
+export function getAnalysesCategorie(categoryId: string): string | undefined {
+  return CATEGORY_ID_TO_ANALYSES_CATEGORIE[categoryId];
+}
+
 const SEVERITE_OPTIONS: Array<{
   value: string;
   label: string;

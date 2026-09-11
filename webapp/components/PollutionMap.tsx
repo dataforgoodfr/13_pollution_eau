@@ -162,7 +162,6 @@ export default function PollutionMap({
           >
             <div className="h-full overflow-y-auto">
               <PollutionZoneDetailPanelV2
-                period={period}
                 setPeriod={setPeriod}
                 category={category}
                 setCategory={setCategory}

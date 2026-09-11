@@ -160,7 +160,7 @@ export default function PollutionMap({
               leftPanelOpen ? "translate-x-0" : "-translate-x-full",
             )}
           >
-            <div className="h-full overflow-y-auto">
+            <div className="h-full overflow-hidden">
               <PollutionZoneDetailPanelV2
                 setPeriod={setPeriod}
                 category={category}

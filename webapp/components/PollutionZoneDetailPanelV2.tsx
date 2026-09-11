@@ -127,10 +127,10 @@ export default function PollutionZoneDetailPanelV2({
     : [];
 
   return (
-    <div className="h-full flex flex-col relative bg-kaki">
+    <div className="h-full flex flex-col relative bg-kaki overflow-hidden">
       {closeButton}
 
-      <div className="text-white p-4 pr-16">
+      <div className="flex-shrink-0 text-white p-4 pr-16">
         <div className="text-xs font-thin">
           {displayMode === "communes" ? "COMMUNE" : "RÉSEAU DE DISTRIBUTION"}
         </div>
@@ -151,7 +151,9 @@ export default function PollutionZoneDetailPanelV2({
         </div>
       </div>
 
-      <div className="bg-white p-4 rounded-t-lg flex-1 text-sm space-y-4">
+      {/* min-h-0 : sans lui, un enfant flex refuse de rétrécir sous sa taille
+          de contenu et le débordement part sur le conteneur parent. */}
+      <div className="bg-white p-4 rounded-t-lg flex-1 min-h-0 overflow-y-auto text-sm space-y-4">
         {/* Onglets. Seul "Dernières analyses" resynchronise la carte : la
             section "Évolution temporelle" se lit sans rien y changer. */}
         <div className="grid grid-cols-2 gap-1 rounded-xl bg-gray-100 p-1">

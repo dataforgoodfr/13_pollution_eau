@@ -64,7 +64,7 @@ export default function MapZoneSelector({
     const numZone: number = parseInt(
       e.currentTarget.getAttribute("value") || "0",
     );
-    map?.flyTo({
+    map?.jumpTo({
       center: ZONE_CONFIGS[numZone].center,
       zoom: ZONE_CONFIGS[numZone].zoom,
     });
@@ -183,10 +183,7 @@ export default function MapZoneSelector({
                       {svg}
                     </Button>
                   </TooltipTrigger>
-                  <TooltipContent
-                    side="left"
-                    className="bg-white text-kaki"
-                  >
+                  <TooltipContent side="left" className="bg-white text-kaki">
                     {tooltip}
                   </TooltipContent>
                 </Tooltip>

@@ -31,12 +31,21 @@ const SINGLE_SUBSTANCE_CATEGORIES = new Set([
   "sub_indus_perchlorate",
 ]);
 
-const SEVERITY_INTRO: Record<Severity, string | null> = {
-  deconseille:
-    "Eau devant être déconseillée à la consommation pour tout ou partie de la population en raison de :",
-  non_conforme: "Eau non conforme aux limites réglementaires pour :",
-  vigilance: "Concentrations élevées, sans non conformité, pour :",
-  quantifie: "Quantifié, sans dépassement des limites :",
+/**
+ * Morceau de phrase décrivant une gravité, complété par la liste des
+ * catégories concernées. Les catégories sont toujours placées après « pour »
+ * pour éviter tout problème d'accord (« le CVM », « les pesticides »…).
+ * `null` = gravité qui n'apparaît pas dans la phrase de résumé.
+ */
+const SEVERITY_CLAUSE: Record<Severity, ((noms: string) => string) | null> = {
+  deconseille: (noms) =>
+    `l'eau devrait être déconseillée à la consommation pour tout ou partie de la population, en raison des concentrations mesurées pour ${noms}`,
+  non_conforme: (noms) =>
+    `les limites réglementaires sont dépassées pour ${noms}`,
+  vigilance: (noms) =>
+    `des concentrations élevées, sans non-conformité, ont été mesurées pour ${noms}`,
+  quantifie: (noms) =>
+    `des polluants ont été quantifiés pour ${noms}, sous les limites réglementaires`,
   non_quantifie: null,
   non_recherche: null,
 };
@@ -48,13 +57,46 @@ const SEVERITY_ORDER: Severity[] = [
   "quantifie",
 ];
 
-function Dot({ color }: { color: string }) {
-  return (
-    <span
-      className="w-4 h-4 rounded-full flex-shrink-0 border border-black/10"
-      style={{ backgroundColor: color }}
-    />
+/** Nom de la catégorie tel qu'il s'insère dans une phrase (avec son article). */
+const CATEGORY_DANS_PHRASE: Record<string, string> = {
+  pfas: "les PFAS",
+  pesticide: "les pesticides",
+  nitrate: "les nitrates",
+  cvm: "le CVM",
+  sub_indus: "les substances industrielles",
+  sub_indus_perchlorate: "le perchlorate",
+  "metaux-lourds": "les métaux lourds",
+};
+
+function joinNames(categories: ICategory[]): string {
+  const noms = categories.map(
+    (item) => CATEGORY_DANS_PHRASE[item.id] ?? `les ${item.nomAffichage}`,
   );
+  if (noms.length <= 1) return noms.join("");
+  return `${noms.slice(0, -1).join(", ")} et ${noms[noms.length - 1]}`;
+}
+
+/**
+ * Phrase expliquant la couleur « tous polluants », construite à partir des
+ * catégories regroupées par gravité. Sans catégorie à citer (rien de
+ * quantifié, ou rien de recherché), on retombe sur l'explication générique de
+ * la catégorie "tous".
+ */
+function buildSummarySentence(
+  buckets: Map<Severity, ICategory[]>,
+  fallback: string | null,
+): string | null {
+  const clauses = SEVERITY_ORDER.flatMap((severity) => {
+    const bucket = buckets.get(severity);
+    const clause = SEVERITY_CLAUSE[severity];
+    if (!bucket?.length || !clause) return [];
+    return [clause(joinNames(bucket))];
+  });
+
+  if (clauses.length === 0) return fallback;
+
+  const sentence = clauses.join(" ; ");
+  return `${sentence.charAt(0).toUpperCase()}${sentence.slice(1)}.`;
 }
 
 /** Liste verticale de substances quantifiées, groupée sous un titre (pesticides, PFAS…). */
@@ -342,7 +384,8 @@ export default function DernieresAnalyses({
   setCategory,
   onOpenAnalyses,
 }: DernieresAnalysesProps) {
-  // "tous" = tout replié, le bloc résumé est alors mis en avant. Si la carte
+  // "tous" = tout replié, et c'est ce que la carte affiche par défaut : replier
+  // un accordéon y revient. Si la carte
   // affiche une sous-catégorie (ex. une molécule de pesticide précise), on
   // ouvre sa catégorie parente : il n'y a pas de ligne dédiée à la
   // sous-catégorie dans ce panel.
@@ -357,55 +400,73 @@ export default function DernieresAnalyses({
   const summaryBuckets = new Map<Severity, ICategory[]>();
   TOP_LEVEL_CATEGORIES.forEach((item) => {
     const { severity } = getLastPrelResult(data, item.id, colorblindMode);
-    if (!SEVERITY_INTRO[severity]) return;
+    if (!SEVERITY_CLAUSE[severity]) return;
     const bucket = summaryBuckets.get(severity) || [];
     bucket.push(item);
     summaryBuckets.set(severity, bucket);
   });
 
   const globalResult = getLastPrelResult(data, "tous", colorblindMode);
+  const summarySentence = buildSummarySentence(
+    summaryBuckets,
+    globalResult.explication,
+  );
+  const globalDate = globalResult.date
+    ? new Date(globalResult.date).toLocaleDateString("fr-FR", {
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+      })
+    : null;
 
   return (
     <div className="space-y-4">
-      {/* Résumé toutes catégories */}
-      <button
-        onClick={() => setCategory("tous")}
-        className={cn(
-          "w-full text-left rounded-xl border p-3 transition-colors",
-          category === "tous"
-            ? "border-custom-drom bg-gray-50"
-            : "border-gray-200 hover:bg-gray-50",
-        )}
-      >
-        <div className="flex items-start gap-3">
-          <span className="mt-0.5">
-            <Dot color={globalResult.color} />
+      {/* Résumé toutes catégories. Bloc purement informatif : il ne pilote pas
+          la carte, qui affiche déjà "tous" tant qu'aucun accordéon n'est
+          ouvert. */}
+      <section className="rounded-xl border border-gray-200 bg-gray-50 px-3.5 py-4">
+        <div className="flex items-start gap-4">
+          {/* Le halo est un élément à part (et non un box-shadow) pour pouvoir
+              l'animer sans faire bouger la pastille elle-même. */}
+          <span className="relative flex-shrink-0 w-[62px] h-[62px] mx-1 mt-1">
+            <span
+              aria-hidden
+              className="absolute -inset-[5px] rounded-full animate-halo-ping motion-reduce:hidden"
+              style={{ backgroundColor: globalResult.color }}
+            />
+            <span
+              className="relative block w-full h-full rounded-full border border-kaki/25"
+              style={{ backgroundColor: globalResult.color }}
+            />
           </span>
-          <span className="flex-1">
-            <span className="block text-xs uppercase tracking-wide text-gray-400 mb-0.5">
-              Tous polluants
-            </span>
-            <span className="block leading-snug">{globalResult.label}</span>
-          </span>
+          <div className="flex-1 min-w-0">
+            <p className="text-lg font-medium leading-tight text-gray-900 text-pretty">
+              {globalResult.label}
+            </p>
+            {globalDate && (
+              <p className="mt-1.5 text-xs leading-relaxed text-greydark">
+                Dernière analyse le{" "}
+                <span className="font-numbers">{globalDate}</span>
+                {globalResult.nbParametres ? (
+                  <>
+                    {" · "}
+                    <span className="font-numbers">
+                      {globalResult.nbParametres}
+                    </span>{" "}
+                    substances recherchées
+                  </>
+                ) : null}
+              </p>
+            )}
+          </div>
         </div>
 
-        {summaryBuckets.size > 0 && (
-          <div className="mt-3 space-y-2 text-sm">
-            {SEVERITY_ORDER.map((severity) => {
-              const bucket = summaryBuckets.get(severity);
-              if (!bucket || bucket.length === 0) return null;
-              return (
-                <div key={severity}>
-                  <p className="font-medium">{SEVERITY_INTRO[severity]}</p>
-                  <p className="text-gray-600">
-                    {bucket.map((item) => item.nomAffichage).join(", ")}
-                  </p>
-                </div>
-              );
-            })}
-          </div>
+        {summarySentence && (
+          <p className="mt-3.5 pt-3 border-t border-gray-200 text-[13px] leading-relaxed text-gray-700">
+            {summarySentence}
+          </p>
         )}
-      </button>
+      </section>
 
       {/* Accordéon par catégorie */}
       <div className="space-y-2">

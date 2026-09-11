@@ -67,6 +67,18 @@ export default {
         "background-confirm": "#8dbe5a",
         "color-confirm": "#8dbe5a",
       },
+      keyframes: {
+        // Halo de la pastille "tous polluants" : une onde qui part de la
+        // pastille vers l'extérieur puis disparaît (le temps mort de la fin
+        // espace les pulsations). Décoratif : rester discret, jamais clignoter.
+        "halo-ping": {
+          "0%": { transform: "scale(0.85)", opacity: "0.5" },
+          "70%, 100%": { transform: "scale(1.18)", opacity: "0" },
+        },
+      },
+      animation: {
+        "halo-ping": "halo-ping 3s cubic-bezier(0, 0, 0.1, 1) infinite",
+      },
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",

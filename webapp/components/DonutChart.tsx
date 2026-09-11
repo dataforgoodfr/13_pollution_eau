@@ -70,13 +70,13 @@ export default function DonutChart({
         <div className="text-sm font-semibold text-gray-900">
           {formatTotal(total)}
         </div>
-        <div className="text-xs text-gray-500">{title}</div>
+        <div className="text-sm text-gray-500">{title}</div>
       </div>
       <ul className="w-full space-y-1">
         {nonZeroSlices.map((slice) => (
           <li
             key={slice.color + slice.label}
-            className="flex items-center gap-1.5 text-[11px] leading-tight"
+            className="flex items-center gap-1.5 text-xs leading-tight"
           >
             <span
               className="w-2 h-2 rounded-full flex-shrink-0"

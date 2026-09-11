@@ -46,10 +46,10 @@ function findTopLevelCategory(
 function SectionTitle({ step, children }: { step: number; children: string }) {
   return (
     <h3 className="flex items-center gap-2 mb-2">
-      <span className="flex items-center justify-center w-5 h-5 rounded-full bg-custom-drom text-white text-[11px] font-semibold flex-shrink-0">
+      <span className="flex items-center justify-center w-5 h-5 rounded-full bg-kaki text-white text-xs font-semibold flex-shrink-0">
         {step}
       </span>
-      <span className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
+      <span className="text-sm font-semibold text-greydark uppercase tracking-wide">
         {children}
       </span>
     </h3>
@@ -74,7 +74,7 @@ function Chip({
       className={cn(
         "rounded-full border px-3 py-1 text-xs transition-colors text-left",
         active
-          ? "bg-custom-drom text-white border-custom-drom"
+          ? "bg-kaki text-white border-kaki"
           : "bg-white text-gray-700 border-gray-300 hover:border-gray-400",
         disabled && "opacity-40 cursor-not-allowed",
       )}
@@ -111,13 +111,13 @@ export default function PollutionMapCategorySelector({
                 className={cn(
                   "flex flex-col items-center justify-center gap-1 rounded-xl border p-2 text-center transition-colors",
                   isActive
-                    ? "bg-custom-drom text-white border-custom-drom"
+                    ? "bg-kaki text-white border-kaki"
                     : "bg-white text-gray-700 border-gray-300 hover:border-gray-400",
                   item.disable && "opacity-40 cursor-not-allowed",
                 )}
               >
                 <Icon size={20} />
-                <span className="text-[11px] leading-tight">
+                <span className="text-xs leading-tight">
                   {item.nomAffichage}
                 </span>
               </button>
@@ -154,8 +154,8 @@ export default function PollutionMapCategorySelector({
           </button>
         </div>
         {!isBilan && lastUpdateDate && (
-          <p className="mt-2 text-[11px] text-gray-500">
-            Date de dernière analyse disponible : {lastUpdateDate}
+          <p className="mt-2 text-sm">
+            Dernière analyse disponible : {lastUpdateDate}
           </p>
         )}
         {isBilan && (
@@ -180,7 +180,7 @@ export default function PollutionMapCategorySelector({
           <div className="space-y-4 rounded-xl bg-gray-50 p-3">
             {selectedTopLevel.groupes.map((groupe) => (
               <div key={groupe.titre}>
-                <p className="text-[11px] font-medium text-gray-600 mb-1.5">
+                <p className="text-xs font-medium text-gray-600 mb-1.5">
                   {groupe.titre}
                 </p>
                 <div className="flex flex-wrap gap-1.5">

@@ -71,13 +71,13 @@ function LegendItem({
   return (
     <div className="flex items-center gap-3">
       <div
-        className="w-6 h-4 flex-shrink-0"
+        className="w-6 h-3 rounded-sm flex-shrink-0"
         style={{
           backgroundColor: color || undefined,
         }}
       ></div>
       <div className="flex-1">
-        <span className="text-gray-900">{label}</span>
+        <span>{label}</span>
         {explication && (
           <Popover>
             <PopoverTrigger
@@ -90,7 +90,7 @@ function LegendItem({
               side="bottom"
               align="start"
               collisionPadding={8}
-              className="z-[70] w-72 max-w-[calc(100vw-2rem)] p-3 text-xs leading-snug text-gray-700"
+              className="z-[70] w-72 max-w-[calc(100vw-2rem)] p-3 text-sm leading-snug text-gray-700"
             >
               {explication.split("\n").map((line, index) => (
                 <p key={index} className={index > 0 ? "mt-2" : undefined}>
@@ -260,13 +260,13 @@ export default function PollutionMapLegend({
 
   const legendContent = (
     <>
-      <div className="space-y-3 text-xs">
+      <div className="space-y-3 text-sm">
         {legendItems.map((item) => (
           <LegendItem key={item.color + item.label} {...item} />
         ))}
       </div>
       {detailsText && (
-        <p className="text-gray-500 mt-4 text-xs">
+        <p className="text-gray-500 mt-4 text-sm">
           {detailsText.split("\n").map((line, index) => (
             <React.Fragment key={index}>
               {index > 0 && <br />}
@@ -288,7 +288,7 @@ export default function PollutionMapLegend({
   const descriptionBlock = (categoryDetails.description ||
     topSentence ||
     categoryDetails.lienExterne) && (
-    <div className="mb-3 text-xs text-gray-600 space-y-2">
+    <>
       {categoryDetails.description && <p>{categoryDetails.description}</p>}
       {topSentence && <p>{topSentence}</p>}
       {categoryDetails.lienExterne && (
@@ -296,39 +296,39 @@ export default function PollutionMapLegend({
           href={categoryDetails.lienExterne}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-1 text-custom-drom hover:underline"
+          className="inline-flex items-center gap-1 text-kaki hover:underline"
         >
           En savoir plus <ExternalLink size={12} />
         </a>
       )}
-    </div>
+    </>
   );
 
   return (
-    <div>
+    <>
       {descriptionBlock}
-      <div className="mb-2">{legendContent}</div>
+      <div className="">{legendContent}</div>
 
       <div className="space-y-2">
         {displayMode === "communes" && (
-          <p className="text-xs text-gray-500">
+          <p className="text-sm text-gray-500">
             Les tracés de la carte affichent les communes.
           </p>
         )}
-        <div className="flex items-center gap-3">
-          <Switch
-            id="colorblind-switch"
-            checked={colorblindMode}
-            onCheckedChange={setColorblindMode}
-          />
-          <label
-            htmlFor="colorblind-switch"
-            className="text-xs text-gray-500 cursor-pointer select-none"
-          >
-            Couleurs plus contrastées
-          </label>
-        </div>
       </div>
-    </div>
+      <div className="flex items-center gap-3">
+        <Switch
+          id="colorblind-switch"
+          checked={colorblindMode}
+          onCheckedChange={setColorblindMode}
+        />
+        <label
+          htmlFor="colorblind-switch"
+          className="text-sm text-gray-500 cursor-pointer select-none"
+        >
+          Couleurs plus contrastées
+        </label>
+      </div>
+    </>
   );
 }

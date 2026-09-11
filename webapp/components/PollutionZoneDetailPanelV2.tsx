@@ -122,7 +122,7 @@ function SubstanceList({
           return (
             <li
               key={code}
-              className="flex justify-between items-start gap-2 text-xs"
+              className="flex justify-between items-start gap-2 text-sm"
             >
               <span
                 className="font-light flex-1"
@@ -176,7 +176,7 @@ function AnnualHistory({
               <button
                 onClick={() => setPeriod(yearPeriod)}
                 className={cn(
-                  "w-full flex items-center gap-2 rounded-lg px-2 py-1.5 text-left text-xs transition-colors",
+                  "w-full flex items-center gap-2 rounded-lg px-2 py-1.5 text-left text-sm transition-colors",
                   isActive ? "bg-gray-100" : "hover:bg-gray-50",
                 )}
               >
@@ -198,7 +198,7 @@ function AnnualHistory({
           );
         })}
       </ul>
-      <p className="mt-1.5 text-[11px] text-gray-400">
+      <p className="mt-1.5 text-xs text-gray-400">
         Cliquez sur une année pour l’afficher sur la carte.
       </p>
     </div>
@@ -233,7 +233,7 @@ function CategoryContent({
     return (
       <>
         {current.hasData && !!current.nbSupValeurSanitaire && (
-          <p className="text-xs text-gray-600">
+          <p className="text-sm text-gray-600">
             {current.nbSupValeurSanitaire}
             {current.nbSupValeurSanitaire > 1
               ? " analyses dépassent "
@@ -253,7 +253,7 @@ function CategoryContent({
         {onOpenAnalyses && (
           <button
             onClick={() => onOpenAnalyses()}
-            className="mt-3 text-xs text-custom-drom hover:underline"
+            className="mt-3 text-sm text-custom-drom hover:underline"
           >
             Voir les analyses
           </button>
@@ -266,7 +266,7 @@ function CategoryContent({
 
   if (!result.date) {
     return (
-      <p className="text-xs text-gray-600">
+      <p className="text-sm text-gray-600">
         Pas d&apos;analyse effectuée dans les 12 derniers mois
       </p>
     );
@@ -290,7 +290,7 @@ function CategoryContent({
     const substance = quantifies[0];
     return (
       <>
-        <p className="text-xs text-gray-600 leading-relaxed">
+        <p className="text-sm text-gray-600 leading-relaxed">
           Lors de la dernière analyse en date du {dateLabel},{" "}
           {substance ? (
             <>
@@ -304,11 +304,11 @@ function CategoryContent({
           .
         </p>
         {result.explication && (
-          <p className="mt-3 text-xs text-gray-600 leading-relaxed whitespace-pre-line">
+          <p className="mt-3 text-sm text-gray-600 leading-relaxed whitespace-pre-line">
             {result.explication}
           </p>
         )}
-        {detailLink && <p className="mt-3 text-xs">{detailLink}</p>}
+        {detailLink && <p className="mt-3 text-sm">{detailLink}</p>}
       </>
     );
   }
@@ -332,7 +332,7 @@ function CategoryContent({
 
   return (
     <>
-      <p className="text-xs text-gray-600 leading-relaxed">
+      <p className="text-sm text-gray-600 leading-relaxed">
         Lors de la dernière analyse en date du {dateLabel},{" "}
         {nbParametres > 1
           ? `${nbParametres} substances ont été recherchées`
@@ -351,10 +351,10 @@ function CategoryContent({
         )}
       </p>
       {quantifies.length === 0 && detailLink && (
-        <p className="mt-3 text-xs">{detailLink}</p>
+        <p className="mt-3 text-sm">{detailLink}</p>
       )}
       {result.explication && (
-        <p className="mt-3 text-xs text-gray-600 leading-relaxed whitespace-pre-line">
+        <p className="mt-3 text-sm text-gray-600 leading-relaxed whitespace-pre-line">
           {result.explication}
         </p>
       )}
@@ -370,7 +370,7 @@ function CategoryContent({
               parameterValues={parameterValues}
             />
           ))}
-          {detailLink && <p className="mt-3 text-xs">{detailLink}</p>}
+          {detailLink && <p className="mt-3 text-sm">{detailLink}</p>}
         </>
       )}
     </>
@@ -446,7 +446,7 @@ function CategoryRow({
           <span className="block font-medium">
             {categoryDetails.nomAffichage}
           </span>
-          <span className="block text-gray-500 leading-snug text-xs">
+          <span className="block text-gray-500 leading-snug text-sm">
             {summaryLabel}
           </span>
         </span>
@@ -462,7 +462,7 @@ function CategoryRow({
       {isOpen && (
         <div className="border-t border-gray-100 bg-white px-3 py-3">
           {categoryDetails.description && (
-            <p className="mb-3 text-xs text-gray-600 leading-relaxed">
+            <p className="mb-3 text-sm text-gray-600 leading-relaxed">
               {categoryDetails.description}
             </p>
           )}
@@ -542,7 +542,7 @@ export default function PollutionZoneDetailPanelV2({
 
   const closeButton = (
     <button
-      className="absolute top-5 right-5 text-black bg-white rounded-full p-2 shadow-md hover:text-gray-800 hover:bg-gray-100 transition duration-300 z-10"
+      className="absolute top-5 right-5 text-kaki bg-white border border-greydark rounded-full p-2 hover:bg-greylight transition duration-300 z-10"
       onClick={() => onClose?.()}
       aria-label="Fermer"
     >
@@ -608,15 +608,15 @@ export default function PollutionZoneDetailPanelV2({
     : getLastPrelResult(zoneData, "tous", colorblindMode);
 
   return (
-    <div className="h-full flex flex-col relative">
+    <div className="h-full flex flex-col relative bg-kaki">
       {closeButton}
 
-      <div className="text-black p-4 pr-16">
+      <div className="text-white p-4 pr-16">
         <div className="text-xs font-thin">
           {displayMode === "communes" ? "COMMUNE" : "RÉSEAU DE DISTRIBUTION"}
         </div>
         <div className="text-2xl leading-tight">{title}</div>
-        <div className="mt-1 text-xs text-gray-600 space-y-0.5">
+        <div className="mt-1 text-sm text-white/80 space-y-0.5">
           {displayMode === "udis" && population !== null && (
             <div>
               Ce réseau alimente {population.toLocaleString("fr-FR")} personnes.
@@ -638,7 +638,7 @@ export default function PollutionZoneDetailPanelV2({
           <button
             onClick={() => setPeriod("dernier_prel")}
             className={cn(
-              "rounded-lg px-2 py-1.5 text-xs transition-colors",
+              "rounded-lg px-2 py-1.5 text-sm transition-colors",
               !isBilan
                 ? "bg-white text-gray-900 font-medium shadow-sm"
                 : "text-gray-600 hover:text-gray-900",
@@ -649,7 +649,7 @@ export default function PollutionZoneDetailPanelV2({
           <button
             onClick={() => setPeriod(DEFAULT_BILAN_PERIOD)}
             className={cn(
-              "rounded-lg px-2 py-1.5 text-xs transition-colors",
+              "rounded-lg px-2 py-1.5 text-sm transition-colors",
               isBilan
                 ? "bg-white text-gray-900 font-medium shadow-sm"
                 : "text-gray-600 hover:text-gray-900",
@@ -683,7 +683,7 @@ export default function PollutionZoneDetailPanelV2({
           </div>
 
           {summaryBuckets.size > 0 && (
-            <div className="mt-3 space-y-2 text-xs">
+            <div className="mt-3 space-y-2 text-sm">
               {SEVERITY_ORDER.map((severity) => {
                 const bucket = summaryBuckets.get(severity);
                 if (!bucket || bucket.length === 0) return null;
@@ -730,13 +730,13 @@ export default function PollutionZoneDetailPanelV2({
         {displayMode === "udis" && (
           <button
             onClick={() => openAnalyses()}
-            className="w-full text-center rounded-xl border border-gray-200 py-2 text-xs text-gray-600 hover:bg-gray-50 transition-colors"
+            className="w-full text-center rounded-xl border border-gray-200 py-2 text-sm text-gray-600 hover:bg-gray-50 transition-colors"
           >
             Voir toutes les analyses de l&apos;UDI
           </button>
         )}
 
-        <p className="text-[11px] text-gray-500 leading-relaxed">
+        <p className="text-xs text-gray-500 leading-relaxed">
           Ces résultats proviennent du contrôle sanitaire des eaux distribuées,
           réalisé par les Agences régionales de santé et publié en open data par
           le ministère de la Santé.

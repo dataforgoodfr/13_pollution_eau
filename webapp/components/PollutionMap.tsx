@@ -138,7 +138,7 @@ export default function PollutionMap({
             className={clsx(
               "absolute bottom-4 z-10 transition-[right] duration-300 ease-in-out",
               rightPanelOpen
-                ? "hidden md:block md:right-[calc(400px_+_1rem)]"
+                ? "hidden md:block md:right-[calc(400px_+_1rem)] xl:right-[calc(480px_+_1rem)]"
                 : "right-4",
             )}
           >
@@ -156,7 +156,7 @@ export default function PollutionMap({
           {/* Left panel - zone detail, slides in from the left over the map */}
           <div
             className={clsx(
-              "absolute inset-y-0 left-0 z-[60] w-full bg-[#E2E8F0] shadow-xl transition-transform duration-300 ease-in-out md:w-[480px] xl:w-[560px]",
+              "absolute inset-y-0 left-0 z-[60] w-full shadow-xl transition-transform duration-300 ease-in-out md:w-[480px] xl:w-[560px]",
               leftPanelOpen ? "translate-x-0" : "-translate-x-full",
             )}
           >
@@ -181,7 +181,7 @@ export default function PollutionMap({
           {/* Right panel - filters/legend/stats, slides in from the right over the map */}
           <div
             className={clsx(
-              "absolute inset-y-0 right-0 z-[60] w-full bg-[#E2E8F0] shadow-xl transition-transform duration-300 ease-in-out md:w-[400px]",
+              "absolute inset-y-0 right-0 z-[60] w-full shadow-xl transition-transform duration-300 ease-in-out md:w-[400px] xl:w-[480px]",
               rightPanelOpen ? "translate-x-0" : "translate-x-full",
             )}
           >

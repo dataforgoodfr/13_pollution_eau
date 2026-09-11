@@ -153,7 +153,7 @@ export default function MapZoneSelector({
   ];
 
   return (
-    <div className="rounded-md bg-white border border-gray-500 overflow-hidden">
+    <div className="rounded-md bg-white border border-greydark overflow-hidden">
       <ButtonGroup orientation="vertical">
         {DROMS.map(({ id, tooltip, svg }, index) => {
           const isSelected = selectedZone === id;
@@ -163,7 +163,7 @@ export default function MapZoneSelector({
               {index > 0 && (
                 <ButtonGroupSeparator
                   orientation="horizontal"
-                  className="bg-gray-300"
+                  className="bg-greylight"
                 />
               )}
               <TooltipProvider>
@@ -173,9 +173,9 @@ export default function MapZoneSelector({
                       className={cn(
                         "w-[48px] h-[40px] rounded-none border-none",
                         isSelected
-                          ? "bg-custom-drom text-white"
-                          : "bg-white text-custom-drom",
-                        "hover:bg-custom-drom hover:text-white",
+                          ? "bg-kaki text-white"
+                          : "bg-white text-kaki",
+                        "hover:bg-kaki hover:text-white",
                       )}
                       onClick={handleClick}
                       value={id}
@@ -185,7 +185,7 @@ export default function MapZoneSelector({
                   </TooltipTrigger>
                   <TooltipContent
                     side="left"
-                    className="bg-white text-custom-drom"
+                    className="bg-white text-kaki"
                   >
                     {tooltip}
                   </TooltipContent>

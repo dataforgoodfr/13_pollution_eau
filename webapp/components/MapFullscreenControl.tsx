@@ -39,9 +39,9 @@ export default function MapFullscreenControl() {
   }
 
   return (
-    <div className="rounded-md bg-white border border-gray-500 overflow-hidden">
+    <div className="rounded-md bg-white border border-greydark overflow-hidden">
       <Button
-        className="w-[48px] h-[40px] rounded-none border-none bg-white text-custom-drom hover:bg-custom-drom hover:text-white"
+        className="w-[48px] h-[40px] rounded-none border-none bg-white text-kaki hover:bg-kaki hover:text-white"
         title={isFullscreen ? "Quitter le plein écran" : "Plein écran"}
         onClick={toggleFullscreen}
       >

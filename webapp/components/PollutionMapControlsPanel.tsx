@@ -84,23 +84,19 @@ export default function PollutionMapControlsPanel({
   );
 
   return (
-    <div className="h-full flex flex-col relative">
-      <button
-        className="absolute top-5 right-5 text-black bg-white rounded-full p-2 shadow-md hover:text-gray-800 hover:bg-gray-100 transition duration-300 z-10"
-        onClick={() => onClose?.()}
-        aria-label="Close"
-      >
-        <X className="w-6 h-6" />
-      </button>
-
-      <div className="text-black p-4 pr-16">
-        <div className="text-xs font-thin">
-          CARTE DE LA POLLUTION DE L&apos;EAU
-        </div>
+    <div className="h-full flex flex-col relative bg-kaki">
+      <div className=" text-white p-4 flex items-center justify-between gap-4">
         <div className="text-2xl">Réglages de la carte</div>
+        <button
+          className="shrink-0 text-kaki bg-white border border-greydark rounded-full p-2 hover:bg-greylight transition duration-300 z-10"
+          onClick={() => onClose?.()}
+          aria-label="Close"
+        >
+          <X className="w-6 h-6" />
+        </button>
       </div>
 
-      <div className="bg-white p-4 py-8 flex flex-col gap-8 rounded-t-lg flex-1 overflow-y-auto">
+      <div className="bg-white p-4 flex flex-col space-y-6 rounded-t-xl flex-1 overflow-y-auto">
         <PollutionMapCategorySelector
           period={period}
           setPeriod={setPeriod}
@@ -109,8 +105,8 @@ export default function PollutionMapControlsPanel({
           lastUpdateDate={lastUpdateDate}
         />
 
-        <div className="border-t border-gray-200 pt-6">
-          <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-3">
+        <div className="border-t border-greylight pt-6 space-y-3 text-sm">
+          <h3 className="text-sm font-semibold text-greydark uppercase tracking-wide mb-3">
             Ce qu&apos;affiche la carte
           </h3>
 
@@ -126,27 +122,27 @@ export default function PollutionMapControlsPanel({
         </div>
 
         {(totalUdis !== null || lastUpdateDate || totalUdisInChart > 0) && (
-          <div className="border-t border-gray-200 pt-6">
-            <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-3">
+          <div className="border-t border-greylight pt-6">
+            <h3 className="text-sm font-semibold text-greydark uppercase tracking-wide mb-3">
               Quelques chiffres
             </h3>
             <div className="grid grid-cols-2 gap-3">
               {totalUdis !== null && (
-                <div className="rounded-xl border border-gray-200 p-3">
-                  <div className="text-xl font-semibold text-gray-900">
+                <div className="rounded-xl border border-greylight p-3">
+                  <div className="text-xl font-semibold text-dark">
                     {totalUdis.toLocaleString("fr-FR")}
                   </div>
-                  <div className="text-xs text-gray-500">
+                  <div className="text-sm text-greydark">
                     réseaux de distribution suivis
                   </div>
                 </div>
               )}
               {lastUpdateDate && (
-                <div className="rounded-xl border border-gray-200 p-3">
-                  <div className="text-xl font-semibold text-gray-900">
+                <div className="rounded-xl border border-greylight p-3">
+                  <div className="text-xl font-semibold text-dark">
                     {lastUpdateDate}
                   </div>
-                  <div className="text-xs text-gray-500">
+                  <div className="text-sm text-greydark">
                     dernière analyse disponible
                   </div>
                 </div>
@@ -154,7 +150,7 @@ export default function PollutionMapControlsPanel({
             </div>
             {totalUdisInChart > 0 && (
               <div className="grid grid-cols-1 gap-3 mt-3">
-                <div className="rounded-xl border border-gray-200 p-3">
+                <div className="rounded-xl border border-greylight p-3">
                   <DonutChart
                     title="réseaux de distribution"
                     slices={udiSlices}
@@ -164,7 +160,7 @@ export default function PollutionMapControlsPanel({
                   />
                 </div>
                 {totalPopulation > 0 && (
-                  <div className="rounded-xl border border-gray-200 p-3">
+                  <div className="rounded-xl border border-greylight p-3">
                     <DonutChart
                       title="nombre d'habitants"
                       slices={populationSlices}

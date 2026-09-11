@@ -8,10 +8,10 @@ export default function MapZoomControl() {
   const { map } = useMap();
 
   return (
-    <div className="rounded-md bg-white border border-gray-500 overflow-hidden">
+    <div className="rounded-md bg-white border border-greydark overflow-hidden">
       <ButtonGroup orientation="vertical">
         <Button
-          className="w-[48px] h-[40px] rounded-none border-none bg-white text-custom-drom hover:bg-custom-drom hover:text-white"
+          className="w-[48px] h-[40px] rounded-none border-none bg-white text-kaki hover:bg-kaki hover:text-white"
           title="Zoom avant"
           onClick={() => map?.zoomIn()}
         >
@@ -19,10 +19,10 @@ export default function MapZoomControl() {
         </Button>
         <ButtonGroupSeparator
           orientation="horizontal"
-          className="bg-gray-300"
+          className="bg-greylight"
         />
         <Button
-          className="w-[48px] h-[40px] rounded-none border-none bg-white text-custom-drom hover:bg-custom-drom hover:text-white"
+          className="w-[48px] h-[40px] rounded-none border-none bg-white text-kaki hover:bg-kaki hover:text-white"
           title="Zoom arrière"
           onClick={() => map?.zoomOut()}
         >

@@ -31,7 +31,7 @@ export default function MapTopRightControls({
       className={clsx(
         "absolute top-4 z-20 flex flex-col items-end gap-2 transition-[right] duration-300 ease-in-out",
         rightPanelOpen
-          ? "hidden md:flex md:right-[calc(400px_+_1rem)]"
+          ? "hidden md:flex md:right-[calc(400px_+_1rem)] xl:right-[calc(480px_+_1rem)]"
           : "right-4",
       )}
     >
@@ -44,15 +44,15 @@ export default function MapTopRightControls({
               className={clsx(
                 "h-[48px] w-[48px] rounded border p-0",
                 rightPanelOpen
-                  ? "bg-custom-drom text-white border-custom-drom"
-                  : "bg-white text-custom-drom border-gray-500",
-                "hover:bg-custom-drom hover:text-white",
+                  ? "bg-kaki text-white border-kaki"
+                  : "bg-white text-kaki border-greydark",
+                "hover:bg-kaki hover:text-white",
               )}
             >
               <SlidersHorizontal size={20} />
             </Button>
           </TooltipTrigger>
-          <TooltipContent side="left" className="bg-white text-custom-drom">
+          <TooltipContent side="left" className="bg-white text-kaki">
             Réglages de la carte
           </TooltipContent>
         </Tooltip>

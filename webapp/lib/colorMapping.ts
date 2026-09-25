@@ -125,16 +125,9 @@ export function getZoneResult(
     if (!annuels) {
       return null;
     }
+    // ratio est absent quand aucun prélèvement n'a été fait sur l'année
     const ratio = properties[getPropertyName(period, category, "ratio")];
-    const nbPrelevements =
-      properties[getPropertyName(period, category, "nb_prelevements")];
-    if (
-      ratio === undefined ||
-      ratio === null ||
-      nbPrelevements === undefined ||
-      nbPrelevements === null ||
-      Number(nbPrelevements) === 0
-    ) {
+    if (ratio === undefined || ratio === null) {
       return {
         label: annuels.nonRechercheLabel,
         color: colorblindMode
@@ -216,19 +209,9 @@ export function generateColorExpression(
     }
 
     const ratioProp = getPropertyName(period, category, "ratio");
-    const nbPrelevementsProp = getPropertyName(
-      period,
-      category,
-      "nb_prelevements",
-    );
 
-    // Check if nb_prelevements is 0 or empty (no research), or ratio is empty
-    cases.push([
-      "any",
-      ["!", ["has", nbPrelevementsProp]],
-      ["!", ["has", ratioProp]],
-      ["==", ["get", nbPrelevementsProp], 0],
-    ]);
+    // ratio is missing from the pmtiles when there was no prelevement (no research)
+    cases.push(["!", ["has", ratioProp]]);
     cases.push(
       colorblindMode
         ? categoryDetails.bilanAnnuel.nonRechercheCouleurAlt

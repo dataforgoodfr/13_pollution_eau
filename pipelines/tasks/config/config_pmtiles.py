@@ -2,13 +2,14 @@
 
 # Value columns to pivot for both data types. Only the columns actually read
 # by webapp/lib/colorMapping.ts for map fill-color/hover belong here - anything
-# else (date_dernier_prel, nb_parametres, nb_sup_valeur_sanitaire,
-# parametres_detectes...) is served on-demand by webapp/app/api/zone-detail
-# from web__resultats_udi / web__resultats_communes directly.
+# else (date_dernier_prel, nb_parametres, nb_prelevements,
+# nb_sup_valeur_sanitaire, parametres_detectes...) is served on-demand by
+# webapp/app/api/zone-detail from web__resultats_udi / web__resultats_communes
+# directly. nb_prelevements is not needed for the map: ratio is null exactly
+# when there is no prelevement.
 value_columns = [
     "resultat",
     "ratio",
-    "nb_prelevements",
 ]
 
 # Configuration for both commune and UDI data processing

@@ -63,6 +63,9 @@ udi_periodes_categories AS (
         periodes AS p
     CROSS JOIN
         categories
+    WHERE
+        NOT (categories.categorie = 'tous' AND p.periode != 'dernier_prel')
+-- La catégorie 'tous' n'existe que pour le dernier prélèvement (pas de bilan annuel)
 ),
 
 -- Append results from 'tous' category (in another model to avoid circular dependency)
@@ -79,19 +82,6 @@ results AS (
         nb_sup_valeur_sanitaire,
         parametres_detectes
     FROM {{ ref('int__union_resultats_udi') }}
-    UNION ALL
-    SELECT
-        cdreseau,
-        periode,
-        categorie,
-        null AS resultat,
-        ratio,
-        null AS date_dernier_prel,
-        null AS nb_parametres,
-        nb_prelevements,
-        nb_sup_valeur_sanitaire,
-        null AS parametres_detectes
-    FROM {{ ref('int__resultats_tous_udi_annuel') }}
     UNION ALL
     SELECT
         cdreseau,

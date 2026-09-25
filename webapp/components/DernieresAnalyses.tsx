@@ -1,6 +1,6 @@
 "use client";
 
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, Info } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
   findTopLevelCategory,
@@ -22,6 +22,11 @@ import {
   type AnalysesFilters,
 } from "@/components/AnalysesModal";
 import PollutionColorScale from "@/components/PollutionColorScale";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 
 // Catégories de premier niveau n'ayant qu'une seule substance recherchée :
 // pas de décompte "N substances recherchées", juste "la substance a été
@@ -303,6 +308,9 @@ function CategoryRow({
   if (!categoryDetails) return null;
 
   const result = getLastPrelResult(data, categoryId, colorblindMode);
+  const dateLabel = result.date
+    ? new Date(result.date).toLocaleDateString("fr-FR")
+    : null;
 
   return (
     <div
@@ -311,11 +319,10 @@ function CategoryRow({
         isOpen ? "border-custom-drom" : "border-gray-200",
       )}
     >
-      <button
-        onClick={onToggle}
-        aria-expanded={isOpen}
-        className="w-full flex items-center gap-3 px-3 py-3 text-left transition-colors hover:bg-gray-50"
-      >
+      {/* L'en-tête contient deux boutons (dépliage et "i") qui ne peuvent pas
+          être imbriqués : le bouton de dépliage couvre toute la ligne via son
+          pseudo-élément ::after, et le "i" passe au-dessus (relative z-10). */}
+      <div className="relative flex items-center gap-3 px-3 py-3 transition-colors hover:bg-gray-50">
         <PollutionColorScale
           category={categoryId}
           period="dernier_prel"
@@ -323,10 +330,42 @@ function CategoryRow({
           activeKey={result.resultKey}
         />
         <span className="flex-1 min-w-0">
-          <span className="block font-medium">
-            {categoryDetails.nomAffichage}
+          <span className="flex items-center gap-1">
+            <button
+              onClick={onToggle}
+              aria-expanded={isOpen}
+              className="font-medium text-left after:absolute after:inset-0 focus-visible:outline-none focus-visible:after:ring-2 focus-visible:after:ring-inset focus-visible:after:ring-custom-drom"
+            >
+              {categoryDetails.nomAffichage}
+            </button>
+            {categoryDetails.description && (
+              <Popover>
+                <PopoverTrigger
+                  aria-label={`En savoir plus sur ${categoryDetails.nomAffichage}`}
+                  className="relative z-10 inline-flex text-gray-400 hover:text-gray-700 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-400 rounded-full"
+                >
+                  <Info size={14} />
+                </PopoverTrigger>
+                <PopoverContent
+                  side="bottom"
+                  align="start"
+                  collisionPadding={8}
+                  className="z-[70] w-72 max-w-[calc(100vw-2rem)] p-3 text-sm leading-snug text-gray-700"
+                >
+                  {categoryDetails.description}
+                </PopoverContent>
+              </Popover>
+            )}
+            {dateLabel && (
+              <span className="ml-auto pl-2 text-xs text-gray-400 font-numbers whitespace-nowrap">
+                {dateLabel}
+              </span>
+            )}
           </span>
-          <span className="block text-gray-500 leading-snug text-sm">
+          <span
+            className="block truncate text-gray-500 leading-snug text-sm"
+            title={result.label}
+          >
             {result.label}
           </span>
         </span>
@@ -337,15 +376,10 @@ function CategoryRow({
             isOpen && "rotate-180",
           )}
         />
-      </button>
+      </div>
 
       {isOpen && (
         <div className="border-t border-gray-100 bg-white px-3 py-3">
-          {categoryDetails.description && (
-            <p className="mb-3 text-sm text-gray-600 leading-relaxed">
-              {categoryDetails.description}
-            </p>
-          )}
           <CategoryContent
             categoryDetails={categoryDetails}
             data={data}
@@ -412,24 +446,16 @@ export default function DernieresAnalyses({
     summaryBuckets,
     globalResult.explication,
   );
-  const globalDate = globalResult.date
-    ? new Date(globalResult.date).toLocaleDateString("fr-FR", {
-        day: "numeric",
-        month: "long",
-        year: "numeric",
-      })
-    : null;
-
   return (
     <div className="space-y-4">
       {/* Résumé toutes catégories. Bloc purement informatif : il ne pilote pas
           la carte, qui affiche déjà "tous" tant qu'aucun accordéon n'est
           ouvert. */}
       <section className="rounded-xl border border-gray-200 bg-gray-50 px-3.5 py-4">
-        <div className="flex items-start gap-4">
+        <div className="flex items-center gap-4">
           {/* Le halo est un élément à part (et non un box-shadow) pour pouvoir
               l'animer sans faire bouger la pastille elle-même. */}
-          <span className="relative flex-shrink-0 w-[62px] h-[62px] mx-1 mt-1">
+          <span className="relative flex-shrink-0 w-[62px] h-[62px] mx-1">
             <span
               aria-hidden
               className="absolute -inset-[5px] rounded-full animate-halo-ping motion-reduce:hidden"
@@ -444,21 +470,6 @@ export default function DernieresAnalyses({
             <p className="text-lg font-medium leading-tight text-gray-900 text-pretty">
               {globalResult.label}
             </p>
-            {globalDate && (
-              <p className="mt-1.5 text-xs leading-relaxed text-greydark">
-                Dernière analyse le{" "}
-                <span className="font-numbers">{globalDate}</span>
-                {globalResult.nbParametres ? (
-                  <>
-                    {" · "}
-                    <span className="font-numbers">
-                      {globalResult.nbParametres}
-                    </span>{" "}
-                    substances recherchées
-                  </>
-                ) : null}
-              </p>
-            )}
           </div>
         </div>
 

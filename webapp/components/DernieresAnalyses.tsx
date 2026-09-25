@@ -451,30 +451,30 @@ export default function DernieresAnalyses({
       {/* Résumé toutes catégories. Bloc purement informatif : il ne pilote pas
           la carte, qui affiche déjà "tous" tant qu'aucun accordéon n'est
           ouvert. */}
-      <section className="rounded-xl border border-gray-200 bg-gray-50 px-3.5 py-4">
-        <div className="flex items-center gap-4">
-          {/* Le halo est un élément à part (et non un box-shadow) pour pouvoir
-              l'animer sans faire bouger la pastille elle-même. */}
-          <span className="relative flex-shrink-0 w-[62px] h-[62px] mx-1">
-            <span
-              aria-hidden
-              className="absolute -inset-[5px] rounded-full animate-halo-ping motion-reduce:hidden"
-              style={{ backgroundColor: globalResult.color }}
-            />
-            <span
-              className="relative block w-full h-full rounded-full border border-kaki/25"
-              style={{ backgroundColor: globalResult.color }}
-            />
-          </span>
-          <div className="flex-1 min-w-0">
-            <p className="text-lg font-medium leading-tight text-gray-900 text-pretty">
-              {globalResult.label}
-            </p>
+      <section className="rounded-xl border border-gray-200 bg-gray-50 px-3.5 pt-4 pb-3.5">
+        <p className="text-lg font-semibold leading-tight text-gray-900 text-pretty">
+          {globalResult.label}
+        </p>
+
+        {/* Échelle de gravité "tous polluants" : situe le résultat de la zone
+            entre le meilleur et le pire cas. */}
+        <div className="mt-3">
+          <PollutionColorScale
+            category="tous"
+            period="dernier_prel"
+            colorblindMode={colorblindMode}
+            activeKey={globalResult.resultKey}
+            size="lg"
+            marker="Cette eau"
+          />
+          <div className="mt-2 flex justify-between gap-4 text-[10px] leading-tight text-gray-500">
+            <span>Aucun polluant quantifié</span>
+            <span className="text-right">Eau déconseillée</span>
           </div>
         </div>
 
         {summarySentence && (
-          <p className="mt-3.5 pt-3 border-t border-gray-200 text-[13px] leading-relaxed text-gray-700">
+          <p className="mt-4 pt-3 border-t border-gray-200 text-[13px] leading-relaxed text-gray-700">
             {summarySentence}
           </p>
         )}

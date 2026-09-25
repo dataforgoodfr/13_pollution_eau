@@ -21,15 +21,6 @@ type PollutionMapCategorySelectorProps = {
   lastUpdateDate?: string | null;
 };
 
-const CATEGORY_ICONS: Record<string, LucideIcon> = {
-  tous: LayoutGrid,
-  pfas: Droplets,
-  pesticide: Sprout,
-  nitrate: Leaf,
-  cvm: FlaskConical,
-  sub_indus_perchlorate: Factory,
-};
-
 // Ici la plus récente vient en premier : c'est celle vers laquelle on veut
 // envoyer l'utilisateur, pas une frise chronologique.
 const bilanYears = [...BILAN_YEARS].reverse();
@@ -93,7 +84,6 @@ export default function PollutionMapCategorySelector({
         <SectionTitle step={1}>Polluant</SectionTitle>
         <div className="grid grid-cols-3 gap-2">
           {availableCategories.map((item) => {
-            const Icon = CATEGORY_ICONS[item.id] || FlaskConical;
             const isActive = selectedTopLevel?.id === item.id;
             return (
               <button
@@ -108,7 +98,6 @@ export default function PollutionMapCategorySelector({
                   item.disable && "opacity-40 cursor-not-allowed",
                 )}
               >
-                <Icon size={20} />
                 <span className="text-xs leading-tight">
                   {item.nomAffichage}
                 </span>

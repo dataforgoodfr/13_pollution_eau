@@ -1,7 +1,11 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { availableCategories, findTopLevelCategory } from "@/lib/polluants";
+import {
+  availableCategories,
+  findTopLevelCategory,
+  getCategoryById,
+} from "@/lib/polluants";
 import { BILAN_YEARS, LATEST_BILAN_YEAR } from "@/lib/zoneDetail";
 import {
   LayoutGrid,
@@ -76,6 +80,9 @@ export default function PollutionMapCategorySelector({
 }: PollutionMapCategorySelectorProps) {
   const selectedTopLevel = findTopLevelCategory(category, availableCategories);
   const isBilan = period.startsWith("bilan_annuel");
+  // Sans bilan annuel (ex. "tous"), seule la dernière analyse est proposée :
+  // pas de choix de temporalité.
+  const hasBilan = !!getCategoryById(category)?.bilanAnnuel;
 
   return (
     <div className="space-y-6">
@@ -110,32 +117,34 @@ export default function PollutionMapCategorySelector({
       {/* 2. Choix de la temporalité */}
       <section>
         <SectionTitle step={2}>Temporalité</SectionTitle>
-        <div className="grid grid-cols-2 gap-1 rounded-xl bg-gray-100 p-1">
-          <button
-            onClick={() => setPeriod("dernier_prel")}
-            className={cn(
-              "rounded-lg px-2 py-1.5 text-xs transition-colors",
-              !isBilan
-                ? "bg-white text-gray-900 font-medium shadow-sm"
-                : "text-gray-600 hover:text-gray-900",
-            )}
-          >
-            Dernières analyses
-          </button>
-          <button
-            onClick={() => setPeriod(defaultBilanPeriod)}
-            className={cn(
-              "rounded-lg px-2 py-1.5 text-xs transition-colors",
-              isBilan
-                ? "bg-white text-gray-900 font-medium shadow-sm"
-                : "text-gray-600 hover:text-gray-900",
-            )}
-          >
-            Bilans annuels
-          </button>
-        </div>
+        {hasBilan && (
+          <div className="grid grid-cols-2 gap-1 rounded-xl bg-gray-100 p-1">
+            <button
+              onClick={() => setPeriod("dernier_prel")}
+              className={cn(
+                "rounded-lg px-2 py-1.5 text-xs transition-colors",
+                !isBilan
+                  ? "bg-white text-gray-900 font-medium shadow-sm"
+                  : "text-gray-600 hover:text-gray-900",
+              )}
+            >
+              Dernières analyses
+            </button>
+            <button
+              onClick={() => setPeriod(defaultBilanPeriod)}
+              className={cn(
+                "rounded-lg px-2 py-1.5 text-xs transition-colors",
+                isBilan
+                  ? "bg-white text-gray-900 font-medium shadow-sm"
+                  : "text-gray-600 hover:text-gray-900",
+              )}
+            >
+              Bilans annuels
+            </button>
+          </div>
+        )}
         {!isBilan && lastUpdateDate && (
-          <p className="mt-2 text-sm">
+          <p className={cn("text-sm", hasBilan && "mt-2")}>
             Dernière analyse disponible : {lastUpdateDate}
           </p>
         )}

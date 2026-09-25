@@ -126,44 +126,6 @@ export const availableCategories: ICategory[] = [
         },
       },
     },
-    bilanAnnuel: {
-      nonRechercheLabel: "Aucune recherche dans l'année",
-      nonRechercheCouleur: "#d9d9d9",
-      nonRechercheCouleurAlt: "#f7f7f7",
-      ratioLimites: [
-        { limite: 0, label: "0%", couleur: "#ffffd4", couleurAlt: "#ffffd4" },
-        {
-          limite: 0.25,
-          label: "≤ 25%",
-          couleur: "#fed98e",
-          couleurAlt: "#fed98e",
-        },
-        {
-          limite: 0.5,
-          label: "25 - 50%",
-          couleur: "#fe9929",
-          couleurAlt: "#fe9929",
-        },
-        {
-          limite: 0.75,
-          label: "50 - 75%",
-          couleur: "#d95f0e",
-          couleurAlt: "#d95f0e",
-        },
-        {
-          limite: 1,
-          label: "75 - 100%",
-          couleur: "#993404",
-          couleurAlt: "#993404",
-        },
-      ],
-      ratioLabelSingular: "analyse non conforme",
-      ratioLabelPlural: "analyses non conformes",
-      topLegend:
-        "Cette carte montre sur une année le pourcentage des analyses non conformes à la réglementation en vigueur cette année-là, pour au moins un des polluants suivis.",
-      valeurSanitaireLabel:
-        "la limite devant entraîner des restrictions de consommation",
-    },
   },
   {
     id: "pfas",

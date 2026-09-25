@@ -15,6 +15,7 @@ import type { PollutionStats, ParameterValues } from "@/app/lib/data";
 import type { ZoneResult } from "@/lib/colorMapping";
 import { scrollIframeToFullscreen } from "@/lib/iframe-scroll";
 import EmbedBanner from "./EmbedBanner";
+import { getCategoryById } from "@/lib/polluants";
 
 export default function PollutionMap({
   pollutionStats,
@@ -56,6 +57,15 @@ export default function PollutionMap({
   }, []);
 
   const toggleRightPanel = () => setRightPanelOpen((open) => !open);
+
+  // Certaines catégories n'ont pas de bilan annuel (ex. "tous") : on revient
+  // alors au dernier prélèvement, seule période qu'elles proposent.
+  const selectCategory = (nextCategory: string) => {
+    setCategory(nextCategory);
+    if (!getCategoryById(nextCategory)?.bilanAnnuel) {
+      setPeriod("dernier_prel");
+    }
+  };
 
   const leftPanelOpen = selectedZoneCode !== null;
 
@@ -164,7 +174,7 @@ export default function PollutionMap({
               <PollutionZoneDetailPanelV2
                 setPeriod={setPeriod}
                 category={category}
-                setCategory={setCategory}
+                setCategory={selectCategory}
                 displayMode={displayMode}
                 selectedZoneCode={selectedZoneCode}
                 colorblindMode={colorblindMode}
@@ -189,7 +199,7 @@ export default function PollutionMap({
                 period={period}
                 setPeriod={setPeriod}
                 category={category}
-                setCategory={setCategory}
+                setCategory={selectCategory}
                 pollutionStats={pollutionStats}
                 colorblindMode={colorblindMode}
                 setColorblindMode={setColorblindMode}

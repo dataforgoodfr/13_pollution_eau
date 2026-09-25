@@ -157,7 +157,7 @@ SELECT
     periode,
     categorie,
     null AS resultat,
-    ratio_limite_qualite AS ratio,
+    ratio,
     null AS date_dernier_prel,
     null AS nb_parametres,
     nb_prelevements,

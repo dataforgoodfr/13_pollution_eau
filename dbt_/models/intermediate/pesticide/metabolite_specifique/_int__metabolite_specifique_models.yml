@@ -34,7 +34,7 @@ models:
           - dbt_utils.expression_is_true:
               expression: "LIKE 'bilan_annuel%'"
       - name: nb_depassements
-        description: "Nombre de prélèvements avec dépassement de la limite de qualité."
+        description: "Nombre de prélèvements avec dépassement de la limite de qualité (ou, à défaut, de la limite indicative)."
         type: INTEGER
       - name: nb_sup_valeur_sanitaire
         description: "Nombre de prélèvements avec dépassement de la valeur sanitaire."
@@ -42,8 +42,8 @@ models:
       - name: nb_prelevements
         description: "Nombre de prélèvements total"
         type: INTEGER
-      - name: ratio_limite_qualite
-        description: "Pourcentage de prélèvements qui dépassent la limite"
+      - name: ratio
+        description: "Pourcentage de prélèvements qui dépassent la limite de qualité (ou, à défaut, la limite indicative)"
         type: FLOAT
         tests:
           - not_null
@@ -143,7 +143,7 @@ models:
           - dbt_utils.expression_is_true:
               expression: "LIKE 'bilan_annuel%'"
       - name: nb_depassements
-        description: "Nombre de prélèvements avec dépassement de la limite de qualité."
+        description: "Nombre de prélèvements avec dépassement de la limite de qualité (ou, à défaut, de la limite indicative)."
         type: INTEGER
       - name: nb_sup_valeur_sanitaire
         description: "Nombre de prélèvements avec dépassement de la valeur sanitaire."
@@ -151,8 +151,8 @@ models:
       - name: nb_prelevements
         description: "Nombre de prélèvements total"
         type: INTEGER
-      - name: ratio_limite_qualite
-        description: "Pourcentage de prélèvements qui dépassent la limite"
+      - name: ratio
+        description: "Pourcentage de prélèvements qui dépassent la limite de qualité (ou, à défaut, la limite indicative)"
         type: FLOAT
         tests:
           - not_null

@@ -7,8 +7,16 @@ metabolite_specifique_prels AS (
         datetimeprel,
         cdparametresiseeaux,
         valtraduite,
-        limite_qualite,
         valeur_sanitaire_1,
+        -- Limite à laquelle on compare les résultats pour le bilan annuel :
+        -- la limite de qualité (0,1 µg/L) si elle existe, sinon la limite
+        -- indicative (0,9 µg/L). Seuls l'ESA métolachlore (depuis 2023) et le
+        -- chlorothalonil R471811 (depuis 2025) n'ont plus de limite de
+        -- qualité, suite à leur reclassement en métabolite non pertinent
+        -- (cf. int__resultats_udi). Sans ce fallback, leur ratio serait
+        -- toujours de 0 après le reclassement.
+        -- cf. test_metabolite_specifique_limites.sql
+        COALESCE(limite_qualite, limite_indicative) AS limite,
         CASE
             WHEN cdparametresiseeaux IN ('ESAMTC', 'MTCESA') THEN 'metabolite_esa_metolachlore'
             WHEN
@@ -39,7 +47,7 @@ SELECT
         DISTINCT
         CASE
             WHEN
-                valtraduite IS NOT NULL AND valtraduite > limite_qualite
+                valtraduite IS NOT NULL AND valtraduite > limite
                 THEN referenceprel
         END
     ) AS nb_depassements,
@@ -57,13 +65,13 @@ SELECT
             DISTINCT
             CASE
                 WHEN
-                    valtraduite IS NOT NULL AND valtraduite > limite_qualite
+                    valtraduite IS NOT NULL AND valtraduite > limite
                     THEN referenceprel
             END
         )::float
         /
         COUNT(DISTINCT referenceprel)::float
-    ) AS ratio_limite_qualite,
+    ) AS ratio,
     CASE
         WHEN type_metabolite = 'metabolite_esa_metolachlore'
             THEN TO_JSON({ 'ESAMTC': MAX(valtraduite) })

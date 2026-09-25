@@ -4,7 +4,7 @@ SELECT
     cdreseau,
     categorie,
     resultat,
-    0 AS ratio_limite_qualite,
+    0 AS ratio,
     0 AS nb_sup_valeur_sanitaire
 FROM
     {{ ref('int__resultats_metabolite_specifique_udi_dernier') }}
@@ -71,7 +71,7 @@ SELECT
     cdreseau,
     categorie,
     '' AS resultat,
-    ratio_limite_qualite,
+    ratio,
     nb_sup_valeur_sanitaire
 FROM
     {{ ref('int__resultats_metabolite_specifique_udi_annuel') }}
@@ -84,7 +84,7 @@ WHERE
             nb_prelevements != 2
             OR nb_depassements != 0
             OR nb_sup_valeur_sanitaire != 0
-            OR ratio_limite_qualite != 0.0
+            OR ratio != 0.0
         )
     )
     OR
@@ -96,7 +96,7 @@ WHERE
             nb_prelevements != 2
             OR nb_depassements != 0
             OR nb_sup_valeur_sanitaire != 0
-            OR ratio_limite_qualite != 0.0
+            OR ratio != 0.0
         )
     )
     OR
@@ -108,7 +108,7 @@ WHERE
             nb_prelevements != 2
             OR nb_depassements != 0
             OR nb_sup_valeur_sanitaire != 0
-            OR ratio_limite_qualite != 0.0
+            OR ratio != 0.0
         )
     )
     OR
@@ -117,10 +117,13 @@ WHERE
         AND categorie = 'metabolite_esa_metolachlore'
         AND annee = 2024
         AND (
+            -- ESA métolachlore non pertinent depuis 2023 : pas de limite de
+            -- qualité, on compare à la limite indicative (0,9 µg/L).
+            -- 4 prélèvements entre 1,189 et 1,347 µg/L
             nb_prelevements != 4
-            OR nb_depassements != 0
+            OR nb_depassements != 4
             OR nb_sup_valeur_sanitaire != 0
-            OR ratio_limite_qualite != 0.0
+            OR ratio != 1.0
         )
     )
     OR
@@ -132,7 +135,7 @@ WHERE
             nb_prelevements != 12
             OR nb_depassements != 12
             OR nb_sup_valeur_sanitaire != 0
-            OR ratio_limite_qualite != 1.0
+            OR ratio != 1.0
         )
     )
     OR
@@ -141,10 +144,11 @@ WHERE
         AND categorie = 'metabolite_chlorothalonil_r471811'
         AND annee = 2025
         AND (
-            -- pour l'instant on a pas tout les prélèvements de 2025
-            -- mais on sait déjà qu'avec la règle (pas de limite qualité)
-            -- on aura forcément 0 dépassement de la limite qualité
-            ratio_limite_qualite != 0.0
+            -- R471811 non pertinent depuis 2025 : pas de limite de qualité,
+            -- on compare à la limite indicative (0,9 µg/L).
+            -- Pour l'instant on n'a pas tous les prélèvements de 2025, mais
+            -- les résultats de cette UDI sont systématiquement > 6 µg/L
+            ratio != 1.0
         )
     )
     OR
@@ -156,7 +160,7 @@ WHERE
             nb_prelevements != 19
             OR nb_depassements != 19
             OR nb_sup_valeur_sanitaire != 4
-            OR ratio_limite_qualite != 1.0
+            OR ratio != 1.0
         )
     )
     OR
@@ -168,6 +172,6 @@ WHERE
             nb_prelevements != 4
             OR nb_depassements != 3
             OR nb_sup_valeur_sanitaire != 0
-            OR ratio_limite_qualite != 0.75
+            OR ratio != 0.75
         )
     )

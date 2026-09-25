@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import type { ParameterValues } from "@/app/lib/data";
 import { getCategoryById, TOP_LEVEL_CATEGORIES } from "@/lib/polluants";
 import { getParameterName } from "@/lib/parametres";
-import type { ZoneDetail } from "@/lib/zoneDetail";
+import type { ZoneDetail } from "@/app/api/zone-detail/route";
 import {
   getAnalysesCategorie,
   type AnalysesFilters,

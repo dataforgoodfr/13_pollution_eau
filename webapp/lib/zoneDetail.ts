@@ -1,5 +1,8 @@
 import { getCategoryById, type Severity } from "@/lib/polluants";
-import { getPropertyName } from "@/lib/property";
+import type {
+  ParametresDetectes,
+  ZoneDetail,
+} from "@/app/api/zone-detail/route";
 
 /**
  * Années pour lesquelles les modèles `bilan_annuel_YYYY` existent, dans
@@ -19,35 +22,12 @@ export const BILAN_YEARS = [
 /** L'année de bilan la plus récente, celle proposée par défaut. */
 export const LATEST_BILAN_YEAR = BILAN_YEARS[BILAN_YEARS.length - 1];
 
-/**
- * Données d'une zone renvoyées par /api/zone-detail : un sac plat de clés
- * `${periode}_${categorie}_${champ}` plus quelques champs d'identité.
- */
-export type ZoneDetail = Record<string, unknown>;
-
-export function readString(data: ZoneDetail, key: string): string | null {
-  const value = data[key];
-  return typeof value === "string" && value !== "" ? value : null;
-}
-
-export function readNumber(data: ZoneDetail, key: string): number | null {
-  const value = data[key];
-  return typeof value === "number" && !Number.isNaN(value) ? value : null;
-}
-
-function parseParametresDetectes(
-  raw: string | null,
+function sortParametres(
+  parametres: ParametresDetectes | undefined,
 ): Array<{ code: string; value: number }> {
-  if (!raw) return [];
-  try {
-    const parsed = JSON.parse(raw) as Record<string, number>;
-    return Object.entries(parsed)
-      .map(([code, value]) => ({ code, value: Number(value) }))
-      .sort((a, b) => b.value - a.value);
-  } catch (error) {
-    console.error("Error parsing parametres_detectes:", error);
-    return [];
-  }
+  return Object.entries(parametres ?? {})
+    .map(([code, value]) => ({ code, value }))
+    .sort((a, b) => b.value - a.value);
 }
 
 const ERROR_COLOR = "#333333";
@@ -70,9 +50,8 @@ export function getLastPrelResult(
   colorblindMode: boolean,
 ): LastPrelResult {
   const details = getCategoryById(categoryId);
-  const resultKey =
-    readString(data, getPropertyName("dernier_prel", categoryId, "resultat")) ??
-    "non_recherche";
+  const entry = data.dernierPrel[categoryId];
+  const resultKey = entry?.resultat ?? "non_recherche";
   const detail = details?.derniereAnalyse.resultats[resultKey];
 
   return {
@@ -81,20 +60,9 @@ export function getLastPrelResult(
     color: detail?.[colorblindMode ? "couleurAlt" : "couleur"] || ERROR_COLOR,
     label: detail?.label || ERROR_LABEL,
     explication: detail?.explication || null,
-    date: readString(
-      data,
-      getPropertyName("dernier_prel", categoryId, "date_dernier_prel"),
-    ),
-    nbParametres: readNumber(
-      data,
-      getPropertyName("dernier_prel", categoryId, "nb_parametres"),
-    ),
-    parametres: parseParametresDetectes(
-      readString(
-        data,
-        getPropertyName("dernier_prel", categoryId, "parametres_detectes"),
-      ),
-    ),
+    date: entry?.date ?? null,
+    nbParametres: entry?.nbParametres ?? null,
+    parametres: sortParametres(entry?.parametresDetectes),
   };
 }
 
@@ -112,29 +80,15 @@ export type AnnualResult = {
 
 export function getAnnualResult(
   data: ZoneDetail,
-  period: string,
+  year: string,
   categoryId: string,
   colorblindMode: boolean,
 ): AnnualResult {
   const details = getCategoryById(categoryId);
   const annuels = details?.bilanAnnuel;
-  const ratio = readNumber(data, getPropertyName(period, categoryId, "ratio"));
-  const nbPrelevements = readNumber(
-    data,
-    getPropertyName(period, categoryId, "nb_prelevements"),
-  );
-  const parametres = parseParametresDetectes(
-    readString(
-      data,
-      getPropertyName(period, categoryId, "parametres_detectes"),
-    ),
-  );
-  const nbSupValeurSanitaire = readNumber(
-    data,
-    getPropertyName(period, categoryId, "nb_sup_valeur_sanitaire"),
-  );
+  const entry = data.bilans[categoryId]?.[year];
 
-  if (!nbPrelevements || ratio === null) {
+  if (!entry) {
     return {
       hasData: false,
       color:
@@ -144,12 +98,13 @@ export function getAnnualResult(
       label: annuels?.nonRechercheLabel || ERROR_LABEL,
       ratio: null,
       limite: null,
-      nbPrelevements,
-      nbSupValeurSanitaire,
-      parametres,
+      nbPrelevements: null,
+      nbSupValeurSanitaire: null,
+      parametres: [],
     };
   }
 
+  const { ratio } = entry;
   const limite = (annuels?.ratioLimites || []).find(
     (item) => ratio <= item.limite,
   );
@@ -162,8 +117,8 @@ export function getAnnualResult(
     label: `${Math.round(ratio * 100)}% des ${annuels?.ratioLabelPlural || "analyses non conformes"}`,
     ratio,
     limite: limite?.limite ?? null,
-    nbPrelevements,
-    nbSupValeurSanitaire,
-    parametres,
+    nbPrelevements: entry.nbPrelevements,
+    nbSupValeurSanitaire: entry.nbSupValeurSanitaire,
+    parametres: sortParametres(entry.parametresDetectes),
   };
 }

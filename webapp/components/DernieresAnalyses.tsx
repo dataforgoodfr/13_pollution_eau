@@ -15,7 +15,8 @@ import {
   getParameterName,
   groupPesticideParametres,
 } from "@/lib/parametres";
-import { getLastPrelResult, type ZoneDetail } from "@/lib/zoneDetail";
+import { getLastPrelResult } from "@/lib/zoneDetail";
+import type { ZoneDetail } from "@/app/api/zone-detail/route";
 import {
   getAnalysesCategorie,
   type AnalysesFilters,

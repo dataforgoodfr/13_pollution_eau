@@ -4,8 +4,8 @@ import {
   BILAN_YEARS,
   getAnnualResult,
   LATEST_BILAN_YEAR,
-  type ZoneDetail,
 } from "@/lib/zoneDetail";
+import type { ZoneDetail } from "@/app/api/zone-detail/route";
 
 // Hauteur en px d'une barre à 100 %. Le calcul est fait en px plutôt qu'en %
 // pour réserver au-dessus la ligne du pourcentage sans risque de débordement.
@@ -39,12 +39,7 @@ export default function AnnualRatioHistogram({
 }) {
   const years = BILAN_YEARS.map((year) => ({
     year,
-    result: getAnnualResult(
-      data,
-      `bilan_annuel_${year}`,
-      categoryDetails.id,
-      colorblindMode,
-    ),
+    result: getAnnualResult(data, year, categoryDetails.id, colorblindMode),
   }));
 
   // Synthèse : la dernière année renseignée, pas forcément l'année en cours.

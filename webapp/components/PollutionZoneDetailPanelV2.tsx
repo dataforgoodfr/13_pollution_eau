@@ -9,7 +9,7 @@ import AnalysesModal, {
 } from "@/components/AnalysesModal";
 import DernieresAnalyses from "@/components/DernieresAnalyses";
 import EvolutionTemporelle from "@/components/EvolutionTemporelle";
-import { readNumber, readString, type ZoneDetail } from "@/lib/zoneDetail";
+import type { ZoneDetail } from "@/app/api/zone-detail/route";
 
 type PollutionZoneDetailPanelV2Props = {
   setPeriod: (period: string) => void;
@@ -113,18 +113,8 @@ export default function PollutionZoneDetailPanelV2({
   }
 
   const isEvolution = tab === "evolution";
-  const title =
-    displayMode === "communes"
-      ? readString(zoneData, "commune_nom")
-      : readString(zoneData, "nomreseaux");
-  const code =
-    displayMode === "communes"
-      ? readString(zoneData, "commune_code_insee")
-      : readString(zoneData, "cdreseau");
-  const population = readNumber(zoneData, "population");
-  const communesDesservies = Array.isArray(zoneData["communes_desservies"])
-    ? (zoneData["communes_desservies"] as string[])
-    : [];
+  const { nom: title, code, population } = zoneData.zone;
+  const communesDesservies = zoneData.zone.communesDesservies ?? [];
 
   return (
     <div className="h-full flex flex-col relative bg-kaki overflow-hidden">
@@ -136,7 +126,7 @@ export default function PollutionZoneDetailPanelV2({
         </div>
         <div className="text-2xl leading-tight">{title}</div>
         <div className="mt-1 text-sm text-white/80 space-y-0.5">
-          {displayMode === "udis" && population !== null && (
+          {displayMode === "udis" && population != null && (
             <div>
               Ce réseau alimente {population.toLocaleString("fr-FR")} personnes.
             </div>

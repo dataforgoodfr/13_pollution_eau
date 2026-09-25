@@ -1,17 +1,45 @@
 import { NextRequest, NextResponse } from "next/server";
 import db from "@/app/lib/duckdb";
-import { getPropertyName } from "@/lib/property";
 
 type ZoneType = "udis" | "communes";
 
-const NUMERIC_FIELDS = [
-  "ratio",
-  "nb_parametres",
-  "nb_prelevements",
-  "nb_sup_valeur_sanitaire",
-];
-const STRING_FIELDS = ["resultat", "date_dernier_prel", "parametres_detectes"];
-const VALUE_FIELDS = [...NUMERIC_FIELDS, ...STRING_FIELDS];
+/** Codes de paramètres quantifiés → valeur mesurée. */
+export type ParametresDetectes = Record<string, number>;
+
+export type DernierPrelEntry = {
+  resultat: string | null;
+  date: string | null;
+  nbParametres: number | null;
+  parametresDetectes: ParametresDetectes;
+};
+
+/** Présent uniquement pour les années avec au moins un prélèvement. */
+export type AnnualEntry = {
+  ratio: number;
+  nbPrelevements: number;
+  nbSupValeurSanitaire: number | null;
+  parametresDetectes: ParametresDetectes;
+};
+
+/**
+ * Données d'une zone renvoyées par /api/zone-detail. Les catégories (et les
+ * années de bilan) sans donnée sont absentes.
+ */
+export type ZoneDetail = {
+  zone: {
+    code: string;
+    nom: string | null;
+    /** UDI uniquement. */
+    population?: number | null;
+    /** UDI uniquement. */
+    communesDesservies?: string[];
+  };
+  dernierPrel: Partial<Record<string, DernierPrelEntry>>;
+  /** Par catégorie, puis par année ("2024"). */
+  bilans: Partial<Record<string, Partial<Record<string, AnnualEntry>>>>;
+};
+
+const BILAN_ANNUEL_PREFIX = "bilan_annuel_";
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
@@ -42,9 +70,28 @@ export async function GET(request: NextRequest) {
   }
 }
 
-type ZoneDetailData = Record<string, string | number | string[] | null>;
-
 type Connection = Awaited<ReturnType<typeof db.connect>>;
+
+function toStringOrNull(value: unknown): string | null {
+  return value === null || value === undefined ? null : String(value);
+}
+
+function toNumberOrNull(value: unknown): number | null {
+  return value === null || value === undefined ? null : Number(value);
+}
+
+function parseParametresDetectes(value: unknown): ParametresDetectes {
+  if (value === null || value === undefined) return {};
+  try {
+    const parsed = JSON.parse(String(value)) as Record<string, unknown>;
+    return Object.fromEntries(
+      Object.entries(parsed).map(([code, v]) => [code, Number(v)]),
+    );
+  } catch (error) {
+    console.error("Error parsing parametres_detectes:", error);
+    return {};
+  }
+}
 
 /**
  * Communes alimentées par une UDI. Le lien commune ↔ réseau est historisé par
@@ -78,10 +125,11 @@ async function fetchCommunesDesservies(
 async function fetchZoneDetail(
   type: ZoneType,
   code: string,
-): Promise<ZoneDetailData | null> {
+): Promise<ZoneDetail | null> {
   const table =
     type === "udis" ? "web__resultats_udi" : "web__resultats_communes";
   const codeColumn = type === "udis" ? "cdreseau" : "commune_code_insee";
+  const nomColumn = type === "udis" ? "nomreseaux" : "commune_nom";
 
   const connection = await db.connect();
   try {
@@ -96,42 +144,55 @@ async function fetchZoneDetail(
       return null;
     }
 
-    const data: ZoneDetailData = {
-      [codeColumn]: code,
+    const data: ZoneDetail = {
+      zone: {
+        code,
+        nom: toStringOrNull(rows[0][nomColumn]) || null,
+      },
+      dernierPrel: {},
+      bilans: {},
     };
     if (type === "udis") {
-      data["nomreseaux"] = rows[0].nomreseaux
-        ? String(rows[0].nomreseaux)
-        : null;
-      data["population"] = rows[0].population
-        ? Number(rows[0].population)
-        : null;
-      data["communes_desservies"] = await fetchCommunesDesservies(
+      data.zone.population = toNumberOrNull(rows[0].population) || null;
+      data.zone.communesDesservies = await fetchCommunesDesservies(
         connection,
         code,
       );
-    } else {
-      data["commune_nom"] = rows[0].commune_nom
-        ? String(rows[0].commune_nom)
-        : null;
     }
 
+    // web__resultats_* contient toutes les combinaisons zone × période ×
+    // catégorie, y compris vides : on n'en garde que les lignes renseignées.
     rows.forEach((row) => {
-      const periode = row.periode ? String(row.periode) : null;
-      const categorie = row.categorie ? String(row.categorie) : null;
+      const periode = toStringOrNull(row.periode);
+      const categorie = toStringOrNull(row.categorie);
       if (!periode || !categorie) return;
 
-      VALUE_FIELDS.forEach((field) => {
-        const value = row[field];
-        const propertyName = getPropertyName(periode, categorie, field);
-        if (value === null || value === undefined) {
-          data[propertyName] = null;
-        } else if (NUMERIC_FIELDS.includes(field)) {
-          data[propertyName] = Number(value);
-        } else {
-          data[propertyName] = value.toString();
+      if (periode === "dernier_prel") {
+        const entry: DernierPrelEntry = {
+          resultat: toStringOrNull(row.resultat),
+          date: toStringOrNull(row.date_dernier_prel),
+          nbParametres: toNumberOrNull(row.nb_parametres),
+          parametresDetectes: parseParametresDetectes(row.parametres_detectes),
+        };
+        if (entry.resultat !== null || entry.date !== null) {
+          data.dernierPrel[categorie] = entry;
         }
-      });
+      } else if (periode.startsWith(BILAN_ANNUEL_PREFIX)) {
+        // ratio est null exactement quand il n'y a eu aucun prélèvement
+        const ratio = toNumberOrNull(row.ratio);
+        if (ratio === null) return;
+        const annee = periode.slice(BILAN_ANNUEL_PREFIX.length);
+        const entry: AnnualEntry = {
+          ratio,
+          nbPrelevements: Number(row.nb_prelevements),
+          nbSupValeurSanitaire: toNumberOrNull(row.nb_sup_valeur_sanitaire),
+          parametresDetectes: parseParametresDetectes(row.parametres_detectes),
+        };
+        data.bilans[categorie] = {
+          ...data.bilans[categorie],
+          [annee]: entry,
+        };
+      }
     });
 
     return data;

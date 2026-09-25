@@ -35,6 +35,7 @@ interface PollutionMapLegendProps {
 const COMPACT_ANCHORS: Record<string, { debut: string; fin: string }> = {
   tous: { debut: "Non quantifié", fin: "Eau déconseillée" },
   pfas: { debut: "Non quantifié", fin: "Limite sanitaire dépassée" },
+  tfa: { debut: "Non quantifié", fin: "> 60 µg/L" },
   pesticide: { debut: "Non quantifié", fin: "Eau déconseillée" },
   sub_active: { debut: "Non quantifié", fin: "Eau déconseillée" },
   metabolite_p: { debut: "Non quantifié", fin: "Eau déconseillée" },

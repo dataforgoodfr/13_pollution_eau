@@ -131,7 +131,7 @@ export const availableCategories: ICategory[] = [
     id: "pfas",
     nomAffichage: "PFAS",
     disable: false,
-    enfants: [],
+    // "pfas" désigne ici la carte des 20 PFAS réglementés
     description:
       "Les PFAS sont des substances chimiques très persistantes, utilisées depuis les années 1950 pour leurs propriétés antiadhésives, antitaches et résistantes à la chaleur, et aujourd'hui largement présentes dans l'environnement.",
     unite: "µg/L",
@@ -217,13 +217,128 @@ export const availableCategories: ICategory[] = [
           couleurAlt: "#993404",
         },
       ],
-      ratioLabelSingular: "analyse non conforme*",
-      ratioLabelPlural: "analyses non conformes*",
-      details: "* Somme des 20 PFAS > 0,1 µg/L",
+      ratioLabelSingular: "analyse non conforme",
+      ratioLabelPlural: "analyses non conformes",
       topLegend:
-        "Cette carte montre sur une année le pourcentage des analyses pour lesquelles les concentrations en PFAS sont non conformes à la réglementation (supérieures à la limite de qualité de 0,1 µg/L pour la somme des 20 PFAS).",
+        "Cette carte montre le pourcentage des analyses des 20 PFAS réalisées dans l’année non conformes à la réglementation (supérieures à la limite de qualité de 0.1 µg/L pour la somme de 20 PFAS). ",
       valeurSanitaireLabel: "une limite sanitaire",
     },
+    groupes: [
+      {
+        titre: "Connaître la conformité de l'eau à la réglementation pour…",
+        options: [{ id: "pfas", label: "20 PFAS réglementés" }],
+      },
+      {
+        titre: "Connaître la concentration en TFA",
+        options: [{ id: "tfa", label: "TFA" }],
+      },
+    ],
+    enfants: [
+      {
+        id: "tfa",
+        nomAffichage: "TFA",
+        disable: false,
+        enfants: [],
+        description:
+          "Le TFA (acide trifluoroacétique) est un PFAS à chaîne très courte, issu notamment de la dégradation d'autres PFAS et de certains pesticides. Il ne fait pas partie des 20 PFAS réglementés.",
+        unite: "µg/L",
+        derniereAnalyse: {
+          topLegend:
+            "Cette carte montre la concentration en TFA mesurée dans l'eau au cours de la dernière analyse de TFA dont les résultats sont disponibles.",
+          resultats: {
+            non_recherche: {
+              label: "Non recherché dans les 12 derniers mois",
+              couleur: "#cccccc",
+              couleurAlt: "#f7f7f7",
+              severite: "non_recherche",
+            },
+            non_quantifie: {
+              label: "Non quantifié",
+              couleur: "#74c476",
+              couleurAlt: "#c7e9c0",
+              severite: "non_quantifie",
+            },
+            tfa_inf_0_1: {
+              label: "≤ 0,1 µg/L",
+              couleur: "#c7e9c0",
+              couleurAlt: "#c7e9c0",
+              severite: "quantifie",
+            },
+            tfa_inf_0_5: {
+              label: "> 0,1 et ≤ 0,5 µg/L",
+              couleur: "#FFF33B",
+              couleurAlt: "#FFF33B",
+              severite: "quantifie",
+            },
+            tfa_inf_2_2: {
+              label: "> 0,5 et ≤ 2,2 µg/L",
+              couleur: "#fe9929",
+              couleurAlt: "#fe9929",
+              severite: "vigilance",
+            },
+            tfa_inf_10: {
+              label: "> 2,2 et ≤ 10 µg/L",
+              couleur: "#d95f0e",
+              couleurAlt: "#d95f0e",
+              severite: "vigilance",
+            },
+            tfa_inf_60: {
+              label: "> 10 et ≤ 60 µg/L",
+              couleur: "#FB726C",
+              couleurAlt: "#FB726C",
+              severite: "vigilance",
+            },
+            tfa_sup_60: {
+              label: "> 60 µg/L",
+              couleur: "#f03b20",
+              couleurAlt: "#bd0026",
+              severite: "vigilance",
+            },
+          },
+        },
+        bilanAnnuel: {
+          nonRechercheLabel: "Aucune recherche dans l'année",
+          nonRechercheCouleur: "#d9d9d9",
+          nonRechercheCouleurAlt: "#f7f7f7",
+          ratioLimites: [
+            {
+              limite: 0,
+              label: "0%",
+              couleur: "#ffffd4",
+              couleurAlt: "#ffffd4",
+            },
+            {
+              limite: 0.25,
+              label: "≤ 25%",
+              couleur: "#fed98e",
+              couleurAlt: "#fed98e",
+            },
+            {
+              limite: 0.5,
+              label: "25 - 50%",
+              couleur: "#fe9929",
+              couleurAlt: "#fe9929",
+            },
+            {
+              limite: 0.75,
+              label: "50 - 75%",
+              couleur: "#d95f0e",
+              couleurAlt: "#d95f0e",
+            },
+            {
+              limite: 1,
+              label: "75 - 100%",
+              couleur: "#993404",
+              couleurAlt: "#993404",
+            },
+          ],
+          ratioLabelSingular: "analyse > 0,5 µg/L",
+          ratioLabelPlural: "analyses > 0,5 µg/L",
+          topLegend:
+            "Cette carte montre sur une année le pourcentage des analyses pour lesquelles la concentration en TFA dépasse 0,5 µg/L, la limite de qualité réglementaire du total PFAS auquel le TFA appartient.",
+        },
+      },
+    ],
   },
   {
     id: "pesticide",

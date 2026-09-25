@@ -1,0 +1,189 @@
+models:
+  - name: int__resultats_tfa_commune_annuel
+    description: Résultats du TFA par commune pour la temporalité 'bilan annuel'
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - inseecommune
+            - annee
+    columns:
+      - name: inseecommune
+        description: "Code INSEE de la commune"
+        type: VARCHAR
+        tests:
+          - not_null
+      - name: annee
+        description: "Année du prélèvement"
+        type: SMALLINT
+      - name: categorie
+        description: "Catégorie du paramètre analysé (ici, toujours 'tfa')."
+        type: VARCHAR
+        tests:
+          - accepted_values:
+              values: ["tfa"]
+      - name: periode
+        description: "Période du résultat"
+        type: VARCHAR
+        tests:
+          - dbt_utils.expression_is_true:
+              expression: "LIKE 'bilan_annuel%'"
+      - name: nb_depassements
+        description: "Nombre de prélèvements avec une concentration en TFA > 0,5 µg/L (limite de qualité du total PFAS, auquel le TFA appartient)."
+        type: INTEGER
+      - name: nb_prelevements
+        description: "Nombre de prélèvements total"
+        type: INTEGER
+      - name: ratio_limite_qualite
+        description: "Pourcentage de prélèvements qui dépassent 0,5 µg/L"
+        type: FLOAT
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              max_value: 1
+      - name: parametres_detectes
+        description: "JSON contenant des paramètres détectés"
+        type: JSON
+
+  - name: int__resultats_tfa_commune_dernier
+    description: Résultats du TFA par commune pour la temporalité 'derniers prélèvements'
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - inseecommune
+            - categorie
+    columns:
+      - name: inseecommune
+        description: "Code INSEE de la commune"
+        type: VARCHAR
+        tests:
+          - not_null
+      - name: categorie
+        description: "Catégorie du paramètre analysé (ici, toujours 'tfa')."
+        type: VARCHAR
+        tests:
+          - accepted_values:
+              values: ["tfa"]
+      - name: periode
+        description: "Période d'analyse des prélèvements (ici, toujours 'dernier_prel')."
+        type: VARCHAR
+        tests:
+          - accepted_values:
+              values: ["dernier_prel"]
+      - name: date_dernier_prel
+        description: "Date et heure du dernier prélèvement pris en compte dans l'analyse."
+        type: TIMESTAMP
+        tests:
+          - not_null
+      - name: nb_parametres
+        type: INTEGER
+      - name: resultat
+        description: "Interprétation du résultat en fonction des seuils de gestion et de la valeur mesurée."
+        type: VARCHAR
+        tests:
+          - accepted_values:
+              values:
+                - "non_quantifie"
+                - "tfa_inf_0_1"
+                - "tfa_inf_0_5"
+                - "tfa_inf_2_2"
+                - "tfa_inf_10"
+                - "tfa_inf_60"
+                - "tfa_sup_60"
+      - name: parametres_detectes
+        description: "JSON contenant les paramètres détectés (valtraduite > 0) avec leurs valeurs correspondantes."
+        type: JSON
+
+  - name: int__resultats_tfa_udi_annuel
+    description: >
+      Bilan annuel des prélèvements d'eau potable pour le TFA à l'échelle des UDI (Unités de distribution d'eau).
+      Ce modèle agrège les résultats des prélèvements d'une année donnée en identifiant la fréquence de dépassement
+      de 0,5 µg/L, la limite de qualité réglementaire du total PFAS auquel le TFA appartient.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - cdreseau
+            - annee
+    columns:
+      - name: cdreseau
+        description: "Code de l'installation (UDI)."
+        type: VARCHAR
+        tests:
+          - not_null
+      - name: annee
+        description: "Année du prélèvement"
+        type: SMALLINT
+      - name: categorie
+        description: "Catégorie du paramètre analysé (ici, toujours 'tfa')."
+        type: VARCHAR
+        tests:
+          - accepted_values:
+              values: ["tfa"]
+      - name: periode
+        description: "Période du résultat"
+        type: VARCHAR
+        tests:
+          - dbt_utils.expression_is_true:
+              expression: "LIKE 'bilan_annuel%'"
+      - name: nb_depassements
+        description: "Nombre de prélèvements avec une concentration en TFA > 0,5 µg/L (limite de qualité du total PFAS, auquel le TFA appartient)."
+        type: INTEGER
+      - name: nb_prelevements
+        description: "Nombre de prélèvements total"
+        type: INTEGER
+      - name: ratio_limite_qualite
+        description: "Pourcentage de prélèvements qui dépassent 0,5 µg/L"
+        type: FLOAT
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              max_value: 1
+      - name: parametres_detectes
+        description: "JSON contenant des paramètres détectés"
+        type: JSON
+
+  - name: int__resultats_tfa_udi_dernier
+    description: "Résultats des derniers prélèvements pour le TFA par UDI. Ce modèle sélectionne le dernier prélèvement de TFA et le classe selon des seuils de gestion propres au TFA."
+    columns:
+      - name: cdreseau
+        description: "Code de l'installation (UDI)."
+        type: VARCHAR
+        tests:
+          - not_null
+          - unique
+      - name: categorie
+        description: "Catégorie du paramètre analysé (ici, toujours 'tfa')."
+        type: VARCHAR
+        tests:
+          - accepted_values:
+              values: ["tfa"]
+      - name: periode
+        description: "Période d'analyse des prélèvements (ici, toujours 'dernier_prel')."
+        type: VARCHAR
+        tests:
+          - accepted_values:
+              values: ["dernier_prel"]
+      - name: date_dernier_prel
+        description: "Date et heure du dernier prélèvement pris en compte dans l'analyse."
+        type: TIMESTAMP
+        tests:
+          - not_null
+      - name: nb_parametres
+        type: INTEGER
+      - name: resultat
+        description: "Interprétation du résultat en fonction des seuils de gestion et de la valeur mesurée."
+        type: VARCHAR
+        tests:
+          - accepted_values:
+              values:
+                - "non_quantifie"
+                - "tfa_inf_0_1"
+                - "tfa_inf_0_5"
+                - "tfa_inf_2_2"
+                - "tfa_inf_10"
+                - "tfa_inf_60"
+                - "tfa_sup_60"
+      - name: parametres_detectes
+        description: "JSON contenant les paramètres détectés (valtraduite > 0) avec leurs valeurs correspondantes."
+        type: JSON

@@ -23,11 +23,21 @@ WITH latest_pfas_results AS (
         ) - INTERVAL 1 YEAR) + INTERVAL 1 DAY
 ),
 
+-- Ce modèle porte sur la liste réglementaire des 20 PFAS (21 codes
+-- cdparametresiseeaux, PFOS apparaissant sous deux codes : PFOS et ASPFOS),
+-- dont la somme est fournie par le paramètre SPFAS.
+-- Le TFA a lui aussi categorie_1 = 'pfas' dans le
+-- seed mais ne fait PAS partie de ces 20 PFAS : il a sa propre catégorie
+-- ('tfa', cf. modèles pfas/tfa/). Idéalement il serait exclu entièrement de
+-- ce modèle, mais on souhaite continuer à l'afficher dans parametres_detectes
+-- lorsqu'il est quantifié. Il est donc conservé dans latest_pfas_results
+-- mais exclu de tous les calculs qui déterminent le resultat.
 aggregated_results AS (
     SELECT
         referenceprel,
         cdreseau,
-        COUNT(DISTINCT cdparametresiseeaux) AS nb_parametres,
+        COUNT(DISTINCT cdparametresiseeaux)
+        FILTER (WHERE cdparametresiseeaux != 'TFA') AS nb_parametres,
         MAX(datetimeprel) AS datetimeprel,
         -- La somme des 20 PFAS est disponible comme un paramètre (SPFAS)
         MAX(
@@ -59,7 +69,8 @@ aggregated_results AS (
         COUNT(
             DISTINCT CASE
                 WHEN
-                    valeur_sanitaire_1 IS NOT NULL
+                    cdparametresiseeaux != 'TFA'
+                    AND valeur_sanitaire_1 IS NOT NULL
                     AND valtraduite IS NOT NULL
                     AND valtraduite > valeur_sanitaire_1
                     THEN cdparametresiseeaux
@@ -67,7 +78,10 @@ aggregated_results AS (
         ) AS nb_pfas_above_limit,
         COUNT(
             DISTINCT CASE
-                WHEN valtraduite != 0 THEN cdparametresiseeaux
+                WHEN
+                    cdparametresiseeaux != 'TFA'
+                    AND valtraduite != 0
+                    THEN cdparametresiseeaux
             END
         ) AS nb_quantified_params,
         TO_JSON(

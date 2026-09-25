@@ -13,6 +13,9 @@ pfas_prels AS (
         {{ ref('int__resultats_communes') }}
     WHERE
         categorie = 'pfas'
+        -- Le TFA ne fait pas partie de la liste des 20 PFAS : il a sa propre
+        -- catégorie ('tfa', cf. modèles pfas/tfa/)
+        AND cdparametresiseeaux != 'TFA'
 ),
 
 -- 1 : Agrégation des résultats en une seule ligne par prélèvement / udi / année

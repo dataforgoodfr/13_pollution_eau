@@ -2,7 +2,6 @@ import { availableCategories, getCategoryById } from "@/lib/polluants";
 import { getLegendItems, type LegendStatItem } from "@/lib/legendStats";
 import { cn } from "@/lib/utils";
 import { ExternalLink, Info } from "lucide-react";
-import React from "react";
 import type { PollutionStats } from "@/app/lib/data";
 import { getColorScale, type ZoneResult } from "@/lib/colorMapping";
 import {
@@ -254,29 +253,12 @@ export default function PollutionMapLegend({
     colorblindMode,
   );
 
-  const detailsText =
-    period === "dernier_prel"
-      ? categoryDetails.derniereAnalyse.details
-      : categoryDetails.bilanAnnuel?.details;
-
   const legendContent = (
-    <>
-      <div className="space-y-3 text-sm">
-        {legendItems.map((item) => (
-          <LegendItem key={item.color + item.label} {...item} />
-        ))}
-      </div>
-      {detailsText && (
-        <p className="text-gray-500 mt-4 text-sm">
-          {detailsText.split("\n").map((line, index) => (
-            <React.Fragment key={index}>
-              {index > 0 && <br />}
-              {line}
-            </React.Fragment>
-          ))}
-        </p>
-      )}
-    </>
+    <div className="space-y-3 text-sm">
+      {legendItems.map((item) => (
+        <LegendItem key={item.color + item.label} {...item} />
+      ))}
+    </div>
   );
 
   // Phrase d'introduction propre au type de carte affiché (dernière analyse ou
@@ -291,7 +273,7 @@ export default function PollutionMapLegend({
     categoryDetails.lienExterne) && (
     <>
       {categoryDetails.description && <p>{categoryDetails.description}</p>}
-      {topSentence && <p>{topSentence}</p>}
+      {topSentence && <p className="whitespace-pre-line">{topSentence}</p>}
       {categoryDetails.lienExterne && (
         <a
           href={categoryDetails.lienExterne}

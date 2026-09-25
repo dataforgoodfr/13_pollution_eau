@@ -180,14 +180,6 @@ export default function AnnualRatioHistogram({
         </p>
       )}
 
-      {/* Cette note explique l'astérisque de `ratioLabelPlural` : sans taux
-          affiché, elle n'a plus rien à expliquer. */}
-      {hasAnyData && categoryDetails.bilanAnnuel?.details && (
-        <p className="mt-2 text-[11px] text-gray-400 leading-relaxed">
-          {categoryDetails.bilanAnnuel.details}
-        </p>
-      )}
-
       {onOpenAnalyses && (
         <button
           onClick={onOpenAnalyses}

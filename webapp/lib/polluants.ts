@@ -1,4 +1,31 @@
 /**
+ * Couleurs des cartes "dernière analyse" (`derniereAnalyse.resultats`).
+ *
+ * Palettes ColorBrewer (Greys, Greens, YlOrBr, Reds, PuRd, RdPu), en 5 classes
+ * de préférence, 6 ou 9 seulement quand il faut plus de niveaux.
+ *
+ * `couleur` (vision standard) : la teinte porte le sens.
+ *   gravité                 couleur   couleurAlt
+ *   non_recherche           #cccccc   #f7f7f7    gris neutre
+ *   non_quantifie           #74c476   #c7e9c0    vert
+ *   quantifie               #fee391   #fec44f    jaune
+ *   vigilance               #fec44f   #fe9929    jaune foncé
+ *   non_conforme            #fe9929   #d95f0e    orangé
+ *   deconseille_sensibles   #fb6a4a   #dd1c77    rouge (alt : magenta)
+ *   deconseille_population  #980043   #49006a    rouge-violet (alt : violet très sombre)
+ *
+ * `couleurAlt` (daltoniens, malvoyants) : dans chaque catégorie, la luminance
+ * (L* CIELAB) doit être strictement décroissante du moins grave au plus grave,
+ * pour que l'ordre reste lisible sans percevoir les teintes. On peut changer de
+ * palette d'un niveau à l'autre, mais toujours en montant d'index. Une seule
+ * couleur très sombre en fin d'échelle : deux couleurs sombres voisines se
+ * confondent sur la carte (d'où le magenta pour deconseille_sensibles).
+ *
+ * Catégories sans seuil réglementaire (pes_total_ts, tfa, métabolites non
+ * pertinents) : simple gradation jaune → orangé → marron (YlOrBr).
+ */
+
+/**
  * Gravité normalisée, commune à toutes les catégories. Chaque catégorie a ses
  * propres clés de résultat (cf. `resultats` ci-dessous) : cette échelle permet
  * de les comparer entre elles pour le bloc résumé du panel de zone.
@@ -99,21 +126,21 @@ export const availableCategories: ICategory[] = [
         },
         quantifie: {
           label: "Eau conforme avec au moins 1 polluant quantifié",
-          couleur: "#FFF33B",
-          couleurAlt: "#FFF33B",
+          couleur: "#fee391",
+          couleurAlt: "#fec44f",
           severite: "quantifie",
         },
         sup_limite_qualite: {
           label: "Eau non conforme",
           couleur: "#fe9929",
-          couleurAlt: "#fe9929",
+          couleurAlt: "#d95f0e",
           severite: "non_conforme",
         },
         deconseille_sensibles: {
           label:
             "Eau déconseillée à la consommation pour les personnes sensibles",
           couleur: "#fb6a4a",
-          couleurAlt: "#f03b20",
+          couleurAlt: "#dd1c77",
           severite: "deconseille_sensibles",
           explication:
             "L'eau devrait être déconseillée à la consommation pour les personnes sensibles (nourrissons, femmes enceintes ou allaitantes), en raison des concentrations en nitrates ou en perchlorate, d'après les recommandations du Ministère de la Santé ou du Haut Conseil de la Santé Publique.",
@@ -121,7 +148,7 @@ export const availableCategories: ICategory[] = [
         deconseille_population: {
           label: "Eau déconseillée à la consommation pour toute la population",
           couleur: "#980043",
-          couleurAlt: "#980043",
+          couleurAlt: "#49006a",
           severite: "deconseille_population",
           explication:
             "L'eau devrait être déconseillée à la consommation pour toute la population, en raison des concentrations en pesticides ou en PFAS, d'après les recommandations du Ministère de la Santé ou du Haut Conseil de la Santé Publique.",
@@ -155,26 +182,26 @@ export const availableCategories: ICategory[] = [
         },
         somme_20pfas_inf_0_1_et_4pfas_inf_0_02: {
           label: "Eau conforme avec au moins 1 PFAS quantifié",
-          couleur: "#FFF33B",
-          couleurAlt: "#FFF33B",
+          couleur: "#fee391",
+          couleurAlt: "#fec44f",
           severite: "quantifie",
         },
         somme_20pfas_inf_0_1_et_4pfas_sup_0_02: {
           label: "Eau conforme mais dépassement de la limite HCSP",
-          couleur: "#FDC70C",
-          couleurAlt: "#FDC70C",
+          couleur: "#fec44f",
+          couleurAlt: "#fe9929",
           severite: "vigilance",
         },
         somme_20pfas_sup_0_1: {
           label: "Eau non conforme",
           couleur: "#fe9929",
-          couleurAlt: "#fe9929",
+          couleurAlt: "#d95f0e",
           severite: "non_conforme",
         },
         sup_valeur_sanitaire: {
           label: "Eau non conforme et déconseillée à la consommation",
           couleur: "#980043",
-          couleurAlt: "#980043",
+          couleurAlt: "#49006a",
           severite: "deconseille_population",
           explication:
             "La concentration d'un ou plusieurs PFAS dépasse la limite sanitaire.",
@@ -255,38 +282,38 @@ export const availableCategories: ICategory[] = [
             },
             tfa_inf_0_1: {
               label: "≤ 0,1 µg/L",
-              couleur: "#c7e9c0",
-              couleurAlt: "#c7e9c0",
+              couleur: "#fee391",
+              couleurAlt: "#fec44f",
               severite: "quantifie",
             },
             tfa_inf_0_5: {
               label: "> 0,1 et ≤ 0,5 µg/L",
-              couleur: "#FFF33B",
-              couleurAlt: "#FFF33B",
+              couleur: "#fec44f",
+              couleurAlt: "#fe9929",
               severite: "quantifie",
             },
             tfa_inf_2_2: {
               label: "> 0,5 et ≤ 2,2 µg/L",
               couleur: "#fe9929",
-              couleurAlt: "#fe9929",
+              couleurAlt: "#ec7014",
               severite: "vigilance",
             },
             tfa_inf_10: {
               label: "> 2,2 et ≤ 10 µg/L",
-              couleur: "#d95f0e",
-              couleurAlt: "#d95f0e",
+              couleur: "#ec7014",
+              couleurAlt: "#cc4c02",
               severite: "vigilance",
             },
             tfa_inf_60: {
               label: "> 10 et ≤ 60 µg/L",
-              couleur: "#FB726C",
-              couleurAlt: "#FB726C",
+              couleur: "#cc4c02",
+              couleurAlt: "#993404",
               severite: "vigilance",
             },
             tfa_sup_60: {
               label: "> 60 µg/L",
-              couleur: "#f03b20",
-              couleurAlt: "#bd0026",
+              couleur: "#993404",
+              couleurAlt: "#662506",
               severite: "vigilance",
             },
           },
@@ -360,20 +387,20 @@ export const availableCategories: ICategory[] = [
         },
         inf_limite_qualite: {
           label: "Eau conforme, avec au moins un pesticide quantifié",
-          couleur: "#FFF33B",
-          couleurAlt: "#FFF33B",
+          couleur: "#fee391",
+          couleurAlt: "#fec44f",
           severite: "quantifie",
         },
         sup_limite_qualite: {
           label: "Eau non conforme",
           couleur: "#fe9929",
-          couleurAlt: "#fe9929",
+          couleurAlt: "#d95f0e",
           severite: "non_conforme",
         },
         sup_valeur_sanitaire: {
           label: "Eau non conforme et déconseillée à la consommation",
           couleur: "#980043",
-          couleurAlt: "#980043",
+          couleurAlt: "#49006a",
           severite: "deconseille_population",
           explication:
             "L'eau est déconseillée à la consommation d'après les recommandations du Haut Conseil de la Santé Publique.",
@@ -482,21 +509,21 @@ export const availableCategories: ICategory[] = [
             },
             inf_limite_qualite: {
               label: "Au moins une substance active quantifiée, ≤ 1 µg/L",
-              couleur: "#FFF33B",
-              couleurAlt: "#FFF33B",
+              couleur: "#fee391",
+              couleurAlt: "#fec44f",
               severite: "quantifie",
             },
             sup_limite_qualite: {
               label:
                 "Eau non conforme (au moins une substance active > 0.1 µg/L)",
               couleur: "#fe9929",
-              couleurAlt: "#fe9929",
+              couleurAlt: "#d95f0e",
               severite: "non_conforme",
             },
             sup_valeur_sanitaire: {
               label: "Eau non conforme et déconseillée à la consommation",
               couleur: "#980043",
-              couleurAlt: "#980043",
+              couleurAlt: "#49006a",
               severite: "deconseille_population",
               explication:
                 "L'eau est déconseillée à la consommation d'après les recommandations du Haut Conseil de la Santé Publique.",
@@ -572,21 +599,21 @@ export const availableCategories: ICategory[] = [
             },
             inf_limites: {
               label: "Au moins un métabolite pertinent quantifié, ≤ 1 µg/L",
-              couleur: "#FFF33B",
-              couleurAlt: "#FFF33B",
+              couleur: "#fee391",
+              couleurAlt: "#fec44f",
               severite: "quantifie",
             },
             sup_limite_qualite: {
               label:
                 "Eau non conforme (au moins un métabolite pertinent > 0,1 µg/L)",
               couleur: "#fe9929",
-              couleurAlt: "#fe9929",
+              couleurAlt: "#d95f0e",
               severite: "non_conforme",
             },
             sup_valeur_sanitaire: {
               label: "Eau déconseillée à la consommation",
               couleur: "#980043",
-              couleurAlt: "#980043",
+              couleurAlt: "#49006a",
               severite: "deconseille_population",
               explication:
                 "L'eau est déconseillée à la consommation d'après les recommandations du Haut Conseil de la Santé Publique.",
@@ -665,20 +692,20 @@ export const availableCategories: ICategory[] = [
             inf_limites: {
               label:
                 "Au moins un métabolite non pertinent quantifié, ≤ 0,1 µg/L",
-              couleur: "#FFF33B",
+              couleur: "#fee391",
               couleurAlt: "#fec44f",
               severite: "quantifie",
             },
             inf_limites_sup_0_1: {
               label:
                 "Au moins un métabolite non pertinent entre 0,1 et 0,9 µg/L",
-              couleur: "#eedf00",
+              couleur: "#fec44f",
               couleurAlt: "#fe9929",
               severite: "quantifie",
             },
             sup_limite_indicative: {
               label: "Au moins un métabolite non pertinent > 0,9 µg/L",
-              couleur: "#FDC70C",
+              couleur: "#fe9929",
               couleurAlt: "#d95f0e",
               severite: "vigilance",
             },
@@ -753,19 +780,19 @@ export const availableCategories: ICategory[] = [
             },
             inf_limites: {
               label: "≤ 0,1 µg/L",
-              couleur: "#FFF33B",
+              couleur: "#fee391",
               couleurAlt: "#fec44f",
               severite: "quantifie",
             },
             inf_limites_sup_0_1: {
               label: "Entre 0,1 et 0,9 µg/L",
-              couleur: "#eedf00",
+              couleur: "#fec44f",
               couleurAlt: "#fe9929",
               severite: "quantifie",
             },
             sup_limite_indicative: {
               label: "> 0,9 µg/L",
-              couleur: "#FDC70C",
+              couleur: "#fe9929",
               couleurAlt: "#d95f0e",
               severite: "vigilance",
             },
@@ -848,19 +875,19 @@ export const availableCategories: ICategory[] = [
             },
             inf_limites: {
               label: "≤ 0,1 µg/L",
-              couleur: "#FFF33B",
+              couleur: "#fee391",
               couleurAlt: "#fec44f",
               severite: "quantifie",
             },
             inf_limites_sup_0_1: {
               label: "Entre 0,1 et 0,9 µg/L",
-              couleur: "#eedf00",
+              couleur: "#fec44f",
               couleurAlt: "#fe9929",
               severite: "quantifie",
             },
             sup_limite_indicative: {
               label: "> 0,9 µg/L",
-              couleur: "#FDC70C",
+              couleur: "#fe9929",
               couleurAlt: "#d95f0e",
               severite: "vigilance",
             },
@@ -943,21 +970,21 @@ export const availableCategories: ICategory[] = [
             },
             inf_limites: {
               label: "≤ 0,1 µg/L",
-              couleur: "#FFF33B",
-              couleurAlt: "#FFF33B",
+              couleur: "#fee391",
+              couleurAlt: "#fec44f",
               severite: "quantifie",
             },
             sup_limite_qualite: {
               label: "> 0,1 µg/L — eau non conforme",
               couleur: "#fe9929",
-              couleurAlt: "#fe9929",
+              couleurAlt: "#d95f0e",
               severite: "non_conforme",
             },
             sup_valeur_sanitaire: {
               label:
                 "> 11 µg/L (valeur sanitaire Vmax) — eau devant être déconseillée à la consommation",
               couleur: "#980043",
-              couleurAlt: "#980043",
+              couleurAlt: "#49006a",
               severite: "deconseille_population",
               explication:
                 "L'eau est déconseillée à la consommation d'après les recommandations du Haut Conseil de la Santé Publique.",
@@ -1033,21 +1060,21 @@ export const availableCategories: ICategory[] = [
             },
             inf_limites: {
               label: "≤ 0,1 µg/L",
-              couleur: "#FFF33B",
-              couleurAlt: "#FFF33B",
+              couleur: "#fee391",
+              couleurAlt: "#fec44f",
               severite: "quantifie",
             },
             sup_limite_qualite: {
               label: "> 0,1 µg/L — eau non conforme",
               couleur: "#fe9929",
-              couleurAlt: "#fe9929",
+              couleurAlt: "#d95f0e",
               severite: "non_conforme",
             },
             sup_valeur_sanitaire: {
               label:
                 "> 110 µg/L (valeur sanitaire Vmax) — eau devant être déconseillée à la consommation",
               couleur: "#980043",
-              couleurAlt: "#980043",
+              couleurAlt: "#49006a",
               severite: "deconseille_population",
               explication:
                 "L'eau est déconseillée à la consommation d'après les recommandations du Haut Conseil de la Santé Publique.",
@@ -1123,21 +1150,21 @@ export const availableCategories: ICategory[] = [
             },
             inf_limites: {
               label: "≤ 0,1 µg/L",
-              couleur: "#FFF33B",
-              couleurAlt: "#FFF33B",
+              couleur: "#fee391",
+              couleurAlt: "#fec44f",
               severite: "quantifie",
             },
             sup_limite_qualite: {
               label: "> 0,1 µg/L — eau non conforme",
               couleur: "#fe9929",
-              couleurAlt: "#fe9929",
+              couleurAlt: "#d95f0e",
               severite: "non_conforme",
             },
             sup_valeur_sanitaire: {
               label:
                 "> 60 µg/L (valeur sanitaire Vmax) — eau devant être déconseillée à la consommation",
               couleur: "#980043",
-              couleurAlt: "#980043",
+              couleurAlt: "#49006a",
               severite: "deconseille_population",
               explication:
                 "L'eau est déconseillée à la consommation d'après les recommandations du Haut Conseil de la Santé Publique.",
@@ -1207,8 +1234,8 @@ export const availableCategories: ICategory[] = [
             },
             inf_limites: {
               label: "≤ 0,5 µg/L",
-              couleur: "#ffffd4",
-              couleurAlt: "#ffffd4",
+              couleur: "#fee391",
+              couleurAlt: "#fec44f",
               severite: "quantifie",
             },
             sup_limite_qualite: {
@@ -1231,8 +1258,8 @@ export const availableCategories: ICategory[] = [
             },
             sup_5: {
               label: "> 5 µg/L — eau non conforme",
-              couleur: "#4d1a00",
-              couleurAlt: "#4d1a00",
+              couleur: "#662506",
+              couleurAlt: "#662506",
               severite: "non_conforme",
             },
           },
@@ -1299,8 +1326,8 @@ export const availableCategories: ICategory[] = [
             },
             inf_limites: {
               label: "≤ 0,5 µg/L",
-              couleur: "#ffffd4",
-              couleurAlt: "#ffffd4",
+              couleur: "#fee391",
+              couleurAlt: "#fec44f",
               severite: "quantifie",
             },
             sup_limite_qualite: {
@@ -1323,8 +1350,8 @@ export const availableCategories: ICategory[] = [
             },
             sup_5: {
               label: "> 5 µg/L",
-              couleur: "#4d1a00",
-              couleurAlt: "#4d1a00",
+              couleur: "#662506",
+              couleurAlt: "#662506",
               severite: "quantifie",
             },
           },
@@ -1399,27 +1426,27 @@ export const availableCategories: ICategory[] = [
         },
         no3_inf_25: {
           label: "Entre 10 et 25 mg/L",
-          couleur: "#FFF33B",
-          couleurAlt: "#FFF33B",
+          couleur: "#fee391",
+          couleurAlt: "#fec44f",
           severite: "quantifie",
         },
         no3_inf_40: {
           label: "Entre 25 et 40 mg/L",
-          couleur: "#FDC70C",
-          couleurAlt: "#FDC70C",
+          couleur: "#fec44f",
+          couleurAlt: "#fe9929",
           severite: "quantifie",
         },
         inf_valeur_sanitaire: {
           label: "Entre 40 et 50 mg/L",
-          couleur: "#fe9929",
-          couleurAlt: "#fe9929",
+          couleur: "#fdae6b",
+          couleurAlt: "#d95f0e",
           severite: "quantifie",
         },
         sup_valeur_sanitaire: {
           label:
             "> 50 mg/L — eau non conforme, déconseillée aux femmes enceintes et nourrissons",
           couleur: "#fb6a4a",
-          couleurAlt: "#f03b20",
+          couleurAlt: "#dd1c77",
           severite: "deconseille_sensibles",
         },
       },
@@ -1487,14 +1514,14 @@ export const availableCategories: ICategory[] = [
         },
         inf_limites: {
           label: "< 0.5 µg/L",
-          couleur: "#FFF33B",
-          couleurAlt: "#FFF33B",
+          couleur: "#fee391",
+          couleurAlt: "#fec44f",
           severite: "quantifie",
         },
         cvm_sup_0_5: {
           label: "> 0.5 µg/L — eau non conforme",
           couleur: "#fe9929",
-          couleurAlt: "#fe9929",
+          couleurAlt: "#d95f0e",
           severite: "non_conforme",
         },
       },
@@ -1647,22 +1674,22 @@ export const availableCategories: ICategory[] = [
         },
         inf_valeur_sanitaire: {
           label: "Inférieure au seuil d’alerte de 4 µg/L",
-          couleur: "#FFF33B",
-          couleurAlt: "#FFF33B",
+          couleur: "#fee391",
+          couleurAlt: "#fec44f",
           severite: "quantifie",
         },
         sup_valeur_sanitaire: {
           label:
             "Entre 4 et 15 µg/L — eau déconseillée aux nourrissons de moins de 6 mois",
           couleur: "#fcae91",
-          couleurAlt: "#de2d26",
+          couleurAlt: "#df65b0",
           severite: "deconseille_sensibles",
         },
         sup_valeur_sanitaire_2: {
           label:
             "Supérieure à 15 µg/L — eau déconseillée aux nourrissons, femmes enceintes et allaitantes",
           couleur: "#fb6a4a",
-          couleurAlt: "#a50f15",
+          couleurAlt: "#dd1c77",
           severite: "deconseille_sensibles",
         },
       },

@@ -31,5 +31,34 @@ WHERE
     (
         cdreseau = '088002246'
         AND date_dernier_prel = '2025-04-22 08:11:00'
-        AND resultat != 'sup_limite_sanitaire'
+        AND resultat NOT IN ('deconseille_sensibles', 'deconseille_population')
+    )
+    OR
+    -- perchlorate entre 4 et 15 µg/L : déconseillée aux personnes sensibles
+    (
+        cdreseau = '088002246'
+        AND date_dernier_prel = '2026-04-17 08:18:00'
+        AND resultat != 'deconseille_sensibles'
+    )
+    OR
+    -- nitrates > 50 mg/L et perchlorate > 15 µg/L : personnes sensibles
+    (
+        cdreseau = '062000681'
+        AND date_dernier_prel = '2026-05-19 11:12:00'
+        AND resultat != 'deconseille_sensibles'
+    )
+    OR
+    -- PFAS > valeur sanitaire : déconseillée à toute la population
+    (
+        cdreseau = '055000741'
+        AND date_dernier_prel = '2026-06-08 10:56:00'
+        AND resultat != 'deconseille_population'
+    )
+    OR
+    -- pesticide > valeur sanitaire et nitrates > 50 mg/L : le cas
+    -- "toute la population" l'emporte sur "personnes sensibles"
+    (
+        cdreseau = '028000816'
+        AND date_dernier_prel = '2026-06-17 10:13:00'
+        AND resultat != 'deconseille_population'
     )

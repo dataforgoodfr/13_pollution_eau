@@ -9,7 +9,8 @@ export type Severity =
   | "quantifie"
   | "vigilance"
   | "non_conforme"
-  | "deconseille";
+  | "deconseille_sensibles"
+  | "deconseille_population";
 
 interface DetailResultat {
   label: string;
@@ -108,13 +109,22 @@ export const availableCategories: ICategory[] = [
           couleurAlt: "#fe9929",
           severite: "non_conforme",
         },
-        sup_limite_sanitaire: {
-          label: "Eau déconseillée à la consommation",
-          couleur: "#f03b20",
-          couleurAlt: "#bd0026",
-          severite: "deconseille",
+        deconseille_sensibles: {
+          label:
+            "Eau déconseillée à la consommation pour les personnes sensibles",
+          couleur: "#fb6a4a",
+          couleurAlt: "#f03b20",
+          severite: "deconseille_sensibles",
           explication:
-            "L'eau devrait être déconseillée à la consommation pour tout ou partie de la population (femmes enceintes, nourrissons…), d'après les recommandations du Ministère de la Santé ou du Haut Conseil de la Santé Publique.",
+            "L'eau devrait être déconseillée à la consommation pour les personnes sensibles (nourrissons, femmes enceintes ou allaitantes), en raison des concentrations en nitrates ou en perchlorate, d'après les recommandations du Ministère de la Santé ou du Haut Conseil de la Santé Publique.",
+        },
+        deconseille_population: {
+          label: "Eau déconseillée à la consommation pour toute la population",
+          couleur: "#980043",
+          couleurAlt: "#980043",
+          severite: "deconseille_population",
+          explication:
+            "L'eau devrait être déconseillée à la consommation pour toute la population, en raison des concentrations en pesticides ou en PFAS, d'après les recommandations du Ministère de la Santé ou du Haut Conseil de la Santé Publique.",
         },
       },
     },
@@ -163,9 +173,9 @@ export const availableCategories: ICategory[] = [
         },
         sup_valeur_sanitaire: {
           label: "Eau non conforme et déconseillée à la consommation",
-          couleur: "#f03b20",
-          couleurAlt: "#bd0026",
-          severite: "deconseille",
+          couleur: "#980043",
+          couleurAlt: "#980043",
+          severite: "deconseille_population",
           explication:
             "La concentration d'un ou plusieurs PFAS dépasse la limite sanitaire.",
         },
@@ -362,9 +372,9 @@ export const availableCategories: ICategory[] = [
         },
         sup_valeur_sanitaire: {
           label: "Eau non conforme et déconseillée à la consommation",
-          couleur: "#f03b20",
-          couleurAlt: "#bd0026",
-          severite: "deconseille",
+          couleur: "#980043",
+          couleurAlt: "#980043",
+          severite: "deconseille_population",
           explication:
             "L'eau est déconseillée à la consommation d'après les recommandations du Haut Conseil de la Santé Publique.",
         },
@@ -485,9 +495,9 @@ export const availableCategories: ICategory[] = [
             },
             sup_valeur_sanitaire: {
               label: "Eau non conforme et déconseillée à la consommation",
-              couleur: "#f03b20",
-              couleurAlt: "#bd0026",
-              severite: "deconseille",
+              couleur: "#980043",
+              couleurAlt: "#980043",
+              severite: "deconseille_population",
               explication:
                 "L'eau est déconseillée à la consommation d'après les recommandations du Haut Conseil de la Santé Publique.",
             },
@@ -575,9 +585,9 @@ export const availableCategories: ICategory[] = [
             },
             sup_valeur_sanitaire: {
               label: "Eau déconseillée à la consommation",
-              couleur: "#f03b20",
-              couleurAlt: "#bd0026",
-              severite: "deconseille",
+              couleur: "#980043",
+              couleurAlt: "#980043",
+              severite: "deconseille_population",
               explication:
                 "L'eau est déconseillée à la consommation d'après les recommandations du Haut Conseil de la Santé Publique.",
             },
@@ -946,9 +956,9 @@ export const availableCategories: ICategory[] = [
             sup_valeur_sanitaire: {
               label:
                 "> 11 µg/L (valeur sanitaire Vmax) — eau devant être déconseillée à la consommation",
-              couleur: "#f03b20",
-              couleurAlt: "#bd0026",
-              severite: "deconseille",
+              couleur: "#980043",
+              couleurAlt: "#980043",
+              severite: "deconseille_population",
               explication:
                 "L'eau est déconseillée à la consommation d'après les recommandations du Haut Conseil de la Santé Publique.",
             },
@@ -1036,9 +1046,9 @@ export const availableCategories: ICategory[] = [
             sup_valeur_sanitaire: {
               label:
                 "> 110 µg/L (valeur sanitaire Vmax) — eau devant être déconseillée à la consommation",
-              couleur: "#f03b20",
-              couleurAlt: "#bd0026",
-              severite: "deconseille",
+              couleur: "#980043",
+              couleurAlt: "#980043",
+              severite: "deconseille_population",
               explication:
                 "L'eau est déconseillée à la consommation d'après les recommandations du Haut Conseil de la Santé Publique.",
             },
@@ -1126,9 +1136,9 @@ export const availableCategories: ICategory[] = [
             sup_valeur_sanitaire: {
               label:
                 "> 60 µg/L (valeur sanitaire Vmax) — eau devant être déconseillée à la consommation",
-              couleur: "#f03b20",
-              couleurAlt: "#bd0026",
-              severite: "deconseille",
+              couleur: "#980043",
+              couleurAlt: "#980043",
+              severite: "deconseille_population",
               explication:
                 "L'eau est déconseillée à la consommation d'après les recommandations du Haut Conseil de la Santé Publique.",
             },
@@ -1408,9 +1418,9 @@ export const availableCategories: ICategory[] = [
         sup_valeur_sanitaire: {
           label:
             "> 50 mg/L — eau non conforme, déconseillée aux femmes enceintes et nourrissons",
-          couleur: "#f03b20",
-          couleurAlt: "#bd0026",
-          severite: "deconseille",
+          couleur: "#fb6a4a",
+          couleurAlt: "#f03b20",
+          severite: "deconseille_sensibles",
         },
       },
     },
@@ -1644,16 +1654,16 @@ export const availableCategories: ICategory[] = [
         sup_valeur_sanitaire: {
           label:
             "Entre 4 et 15 µg/L — eau déconseillée aux nourrissons de moins de 6 mois",
-          couleur: "#FB726C",
-          couleurAlt: "#FB726C",
-          severite: "deconseille",
+          couleur: "#fcae91",
+          couleurAlt: "#de2d26",
+          severite: "deconseille_sensibles",
         },
         sup_valeur_sanitaire_2: {
           label:
             "Supérieure à 15 µg/L — eau déconseillée aux nourrissons, femmes enceintes et allaitantes",
-          couleur: "#FC3127",
-          couleurAlt: "#FC3127",
-          severite: "deconseille",
+          couleur: "#fb6a4a",
+          couleurAlt: "#a50f15",
+          severite: "deconseille_sensibles",
         },
       },
     },

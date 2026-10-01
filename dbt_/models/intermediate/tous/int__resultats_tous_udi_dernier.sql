@@ -5,10 +5,25 @@ SELECT
     MAX(date_dernier_prel) AS date_dernier_prel,
     SUM(nb_parametres) AS nb_parametres,
     CASE
-        WHEN BOOL_OR(resultat IN (
-            'sup_valeur_sanitaire',
-            'sup_valeur_sanitaire_2'
-        )) THEN 'sup_limite_sanitaire'
+        -- Dépassement d'une valeur sanitaire : selon le polluant, l'eau est
+        -- déconseillée à toute la population (pesticides, PFAS) ou seulement
+        -- aux personnes sensibles (nitrates et perchlorate : nourrissons,
+        -- femmes enceintes...). Le cas "toute la population" l'emporte.
+        WHEN BOOL_OR(
+            categorie IN ('pesticide', 'pfas')
+            AND resultat = 'sup_valeur_sanitaire'
+        ) THEN 'deconseille_population'
+
+        WHEN BOOL_OR(
+            (categorie = 'nitrate' AND resultat = 'sup_valeur_sanitaire')
+            OR (
+                categorie = 'sub_indus_perchlorate'
+                AND resultat IN (
+                    'sup_valeur_sanitaire',
+                    'sup_valeur_sanitaire_2'
+                )
+            )
+        ) THEN 'deconseille_sensibles'
 
         WHEN BOOL_OR(resultat IN (
             'cvm_sup_0_5',

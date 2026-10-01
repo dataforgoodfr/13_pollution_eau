@@ -44,8 +44,10 @@ const SINGLE_SUBSTANCE_CATEGORIES = new Set([
  * `null` = gravité qui n'apparaît pas dans la phrase de résumé.
  */
 const SEVERITY_CLAUSE: Record<Severity, ((noms: string) => string) | null> = {
-  deconseille: (noms) =>
-    `l'eau devrait être déconseillée à la consommation pour tout ou partie de la population, en raison des concentrations mesurées pour ${noms}`,
+  deconseille_population: (noms) =>
+    `l'eau devrait être déconseillée à la consommation pour toute la population, en raison des concentrations mesurées pour ${noms}`,
+  deconseille_sensibles: (noms) =>
+    `l'eau devrait être déconseillée aux personnes sensibles (nourrissons, femmes enceintes…), en raison des concentrations mesurées pour ${noms}`,
   non_conforme: (noms) =>
     `les limites réglementaires sont dépassées pour ${noms}`,
   vigilance: (noms) =>
@@ -57,7 +59,8 @@ const SEVERITY_CLAUSE: Record<Severity, ((noms: string) => string) | null> = {
 };
 
 const SEVERITY_ORDER: Severity[] = [
-  "deconseille",
+  "deconseille_population",
+  "deconseille_sensibles",
   "non_conforme",
   "vigilance",
   "quantifie",
@@ -469,7 +472,7 @@ export default function DernieresAnalyses({
           />
           <div className="mt-2 flex justify-between gap-4 text-[10px] leading-tight text-gray-500">
             <span>Aucun polluant quantifié</span>
-            <span className="text-right">Eau déconseillée</span>
+            <span className="text-right">Eau déconseillée à tous</span>
           </div>
         </div>
 

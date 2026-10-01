@@ -135,7 +135,7 @@ export default function PollutionMapBaseLayer({
     }, HOVER_DELAY_MS);
   }
 
-  function onMouseLeave() {
+  function onMouseOut() {
     clearHover();
     setOverZone(false);
   }
@@ -285,7 +285,7 @@ export default function PollutionMapBaseLayer({
       mapLib={maplibregl}
       onClick={onClick}
       onMouseMove={onMouseMove}
-      onMouseLeave={onMouseLeave}
+      onMouseOut={onMouseOut}
       cursor={overZone ? "pointer" : undefined}
       onMove={handleMapStateChange}
       interactiveLayerIds={["color-layer"]}

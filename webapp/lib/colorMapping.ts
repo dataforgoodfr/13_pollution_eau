@@ -75,6 +75,49 @@ export function getColorScale(
 }
 
 /**
+ * Retrouve, à partir des propriétés pmtiles d'une zone, la clé du segment de
+ * getColorScale qui la colore. Miroir de la logique de generateColorExpression
+ * ci-dessous — les deux doivent rester synchronisés. Renvoie null pour les
+ * zones sans données (transparentes sur la carte).
+ */
+export function getZoneScaleKey(
+  category: string,
+  period: string,
+  properties: Record<string, unknown>,
+): string | null {
+  const categoryDetails = getCategoryById(category);
+  if (
+    !categoryDetails ||
+    (properties["cdreseau"] === undefined &&
+      properties["commune_code_insee"] === undefined)
+  ) {
+    return null;
+  }
+
+  if (period.startsWith("dernier_prel")) {
+    const value = properties[getPropertyName(period, category, "resultat")];
+    return value === undefined || value === null
+      ? "non_recherche"
+      : String(value);
+  }
+
+  if (period.startsWith("bilan_annuel")) {
+    const annuels = categoryDetails.bilanAnnuel;
+    if (!annuels) {
+      return null;
+    }
+    const ratio = properties[getPropertyName(period, category, "ratio")];
+    if (ratio === undefined || ratio === null) {
+      return "non_recherche";
+    }
+    const limite = annuels.ratioLimites.find((l) => Number(ratio) <= l.limite);
+    return limite ? `ratio_${limite.limite}` : null;
+  }
+
+  return null;
+}
+
+/**
  * Generates a color expression for MapLibre GL based on data from pmtiles.
  *
  * Creates a case-based expression that maps different pollution values to specific colors

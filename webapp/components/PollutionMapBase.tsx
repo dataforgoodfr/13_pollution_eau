@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, JSX } from "react";
+import { useEffect, useMemo, useRef, useState, JSX } from "react";
 import ReactMapGl, {
   MapLayerMouseEvent,
   ViewStateChangeEvent,
@@ -9,8 +9,11 @@ import ReactMapGl, {
 import maplibregl from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 import { Protocol } from "pmtiles";
-import { generateColorExpression } from "@/lib/colorMapping";
+import { generateColorExpression, getZoneScaleKey } from "@/lib/colorMapping";
 import PollutionMapMarker from "@/components/PollutionMapMarker";
+import PollutionMapHoverTooltip, {
+  type HoveredZone,
+} from "@/components/PollutionMapHoverTooltip";
 
 import { DEFAULT_MAP_STYLE, getDefaultLayers } from "@/app/config";
 import { frenchLocale } from "@/lib/mapLocale";
@@ -64,6 +67,83 @@ export default function PollutionMapBaseLayer({
       maplibregl.removeProtocol("pmtiles");
     };
   }, []);
+
+  // Zone survolée : étiquette près du curseur + contour mis en évidence,
+  // affichés seulement une fois la souris immobile depuis HOVER_DELAY_MS (pas
+  // de clignotement quand on balaie la carte). Tout mouvement les masque et
+  // relance le délai.
+  const HOVER_DELAY_MS = 500;
+  const [hoveredZone, setHoveredZone] = useState<HoveredZone | null>(null);
+  // Curseur "main" immédiat au-dessus d'une zone, indépendamment du délai.
+  const [overZone, setOverZone] = useState(false);
+  const tooltipRef = useRef<HTMLDivElement>(null);
+  const hoverTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  function clearHover() {
+    if (hoverTimeoutRef.current) {
+      clearTimeout(hoverTimeoutRef.current);
+      hoverTimeoutRef.current = null;
+    }
+    setHoveredZone(null);
+  }
+
+  // La sélection change : le résultat affiché ne correspond plus, on le
+  // masque jusqu'au prochain arrêt de la souris.
+  useEffect(() => {
+    clearHover();
+  }, [category, period, displayMode]);
+
+  useEffect(() => () => clearHover(), []);
+
+  function onMouseMove(event: MapLayerMouseEvent) {
+    // Pas d'étiquette sur écran tactile : le tap ouvre directement le détail.
+    if (window.matchMedia("(hover: none)").matches) return;
+
+    clearHover();
+
+    const feature = event.features?.[0];
+    const scaleKey = feature
+      ? getZoneScaleKey(category, period, feature.properties)
+      : null;
+    setOverZone(scaleKey !== null);
+    if (!feature || scaleKey === null) {
+      return;
+    }
+
+    const code = String(
+      feature.properties[
+        displayMode === "communes" ? "commune_code_insee" : "cdreseau"
+      ],
+    );
+    const name =
+      feature.properties[
+        displayMode === "communes" ? "commune_nom" : "nomreseaux"
+      ];
+    const container = event.target.getContainer();
+    const { x, y } = event.point;
+
+    hoverTimeoutRef.current = setTimeout(() => {
+      hoverTimeoutRef.current = null;
+      // Décalée en bas à droite du curseur, ou basculée de l'autre côté près
+      // des bords droit/bas de la carte.
+      const tooltip = tooltipRef.current;
+      if (tooltip) {
+        const offset = 14;
+        const flipX = x + offset + 260 > container.clientWidth;
+        const flipY = y + offset + 80 > container.clientHeight;
+        tooltip.style.transform = [
+          `translate(${x + (flipX ? -offset : offset)}px, ${y + (flipY ? -offset : offset)}px)`,
+          `translate(${flipX ? "-100%" : "0"}, ${flipY ? "-100%" : "0"})`,
+        ].join(" ");
+      }
+      setHoveredZone({ code, name: name ? String(name) : null, scaleKey });
+    }, HOVER_DELAY_MS);
+  }
+
+  function onMouseLeave() {
+    clearHover();
+    setOverZone(false);
+  }
 
   function onClick(event: MapLayerMouseEvent) {
     if (event.features && event.features.length > 0) {
@@ -140,6 +220,18 @@ export default function PollutionMapBaseLayer({
           ],
         },
       },
+      // Zone survolée : contour sombre fin, sous celui de la zone sélectionnée.
+      {
+        id: "hovered-border-layer",
+        type: "line",
+        source: source,
+        "source-layer": sourceLayer,
+        filter: ["==", ["get", idProperty], hoveredZone?.code ?? ""],
+        paint: {
+          "line-color": "#1f2937",
+          "line-width": 1.5,
+        },
+      },
       // Zone sélectionnée : calque à part pour être dessinée au-dessus des
       // limites voisines et rester visible à tous les niveaux de zoom.
       {
@@ -169,7 +261,14 @@ export default function PollutionMapBaseLayer({
       ...DEFAULT_MAP_STYLE,
       layers: [...getDefaultLayers(), ...dynamicLayers],
     } as maplibregl.StyleSpecification;
-  }, [selectedZoneCode, displayMode, category, period, colorblindMode]);
+  }, [
+    selectedZoneCode,
+    hoveredZone?.code,
+    displayMode,
+    category,
+    period,
+    colorblindMode,
+  ]);
 
   const isInIframe =
     typeof window !== "undefined" && window.self !== window.top;
@@ -182,6 +281,9 @@ export default function PollutionMapBaseLayer({
       {...mapState}
       mapLib={maplibregl}
       onClick={onClick}
+      onMouseMove={onMouseMove}
+      onMouseLeave={onMouseLeave}
+      cursor={overZone ? "pointer" : undefined}
       onMove={handleMapStateChange}
       interactiveLayerIds={["color-layer"]}
       attributionControl={false}
@@ -195,6 +297,14 @@ export default function PollutionMapBaseLayer({
           setSelectedZoneCode={setSelectedZoneCode}
         />
       ) : null}
+      <PollutionMapHoverTooltip
+        ref={tooltipRef}
+        zone={hoveredZone}
+        displayMode={displayMode}
+        category={category}
+        period={period}
+        colorblindMode={colorblindMode}
+      />
       <AttributionControl compact={true} />
     </ReactMapGl>
   );

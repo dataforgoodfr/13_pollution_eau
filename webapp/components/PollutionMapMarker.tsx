@@ -5,12 +5,16 @@ import { useMap, Marker } from "react-map-gl/maplibre";
 import { MapPin } from "lucide-react";
 import { frameZone, getMapInsets } from "@/lib/zoneFraming";
 
+/** Adresse recherchée, et zoom auquel y placer la carte. */
+export type MarkerPosition = {
+  longitude: number;
+  latitude: number;
+  zoom: number;
+};
+
 type PollutionMapMarkerProps = {
   displayMode: "communes" | "udis";
-  marker: {
-    longitude: number;
-    latitude: number;
-  } | null;
+  marker: MarkerPosition | null;
   setSelectedZoneCode: (code: string | null) => void;
   rightPanelOpen: boolean;
 };
@@ -30,65 +34,79 @@ export default function PollutionMapMarker({
     rightPanelOpenRef.current = rightPanelOpen;
   }, [rightPanelOpen]);
 
+  // Dernière adresse sur laquelle la carte a été placée : un changement de
+  // mode d'affichage relance la recherche de zone sans redéplacer la carte.
+  const jumpedMarkerRef = useRef<MarkerPosition | null>(null);
+
   useEffect(() => {
     if (!map || !marker) {
       setSelectedZoneCode(null);
       return;
     }
 
-    const sourceName = displayMode === "communes" ? "communes" : "udis";
-    const source = map.getSource(sourceName);
-
-    if (!source) {
-      console.log(`Source "${sourceName}" not found`);
-      return;
+    // Déplacement impératif (et non via mapState) : jumpTo interrompt
+    // l'éventuel mouvement en cours (inertie d'un geste, animation), alors que
+    // react-map-gl ignore un changement de mapState tant que la carte bouge.
+    if (jumpedMarkerRef.current !== marker) {
+      jumpedMarkerRef.current = marker;
+      map.jumpTo({
+        center: [marker.longitude, marker.latitude],
+        zoom: marker.zoom,
+      });
     }
 
-    // Function to query features at marker position
-    const queryMarkerFeatures = () => {
-      const point = map.project([marker.longitude, marker.latitude]);
-      const features = map.queryRenderedFeatures(point, {
-        layers: ["color-layer"],
-      });
+    const idProperty =
+      displayMode === "communes" ? "commune_code_insee" : "cdreseau";
+    let zoneCode: string | null = null;
 
-      const code =
-        features?.[0]?.properties[
-          displayMode === "communes" ? "commune_code_insee" : "cdreseau"
-        ];
-      if (code !== undefined && code !== null) {
-        // Zone trouvée sous l'adresse : on la sélectionne et on cadre la carte
-        // dessus.
-        setSelectedZoneCode(String(code));
-        frameZone(map.getMap(), displayMode, String(code), {
-          insets: getMapInsets(rightPanelOpenRef.current),
-          anchor: [marker.longitude, marker.latitude],
-          allowZoomOut: true,
-        });
-      } else {
+    // Cadre la carte sur la zone une fois ses tuiles chargées (sinon son
+    // étendue serait incomplète).
+    const frame = () => {
+      if (zoneCode === null) {
+        return;
+      }
+      frameZone(map.getMap(), displayMode, zoneCode, {
+        insets: getMapInsets(rightPanelOpenRef.current),
+        anchor: [marker.longitude, marker.latitude],
+        allowZoomOut: true,
+      });
+    };
+
+    // Zone sous l'adresse, dès qu'elle est dessinée : sur réseau lent, le
+    // panneau s'ouvre sans attendre que toute la carte soit chargée.
+    const findZone = () => {
+      const point = map.project([marker.longitude, marker.latitude]);
+      const code = map.queryRenderedFeatures(point, {
+        layers: ["color-layer"],
+      })?.[0]?.properties[idProperty];
+      if (code === undefined || code === null) {
+        return;
+      }
+      zoneCode = String(code);
+      map.off("render", findZone);
+      map.off("idle", onIdle);
+      setSelectedZoneCode(zoneCode);
+      map.once("idle", frame);
+    };
+
+    // Carte entièrement chargée et toujours aucune zone : dernier essai.
+    const onIdle = () => {
+      findZone();
+      if (zoneCode === null) {
+        map.off("render", findZone);
         console.log("No features found at marker");
       }
     };
 
-    // Check if source is already loaded
-    if (map.isSourceLoaded(sourceName)) {
-      queryMarkerFeatures();
-    } else {
-      // If not loaded, wait for it to load
-      const sourceLoadHandler = () => {
-        if (map.isSourceLoaded(sourceName)) {
-          queryMarkerFeatures();
-          // Remove the listener after successful query
-          map.off("sourcedata", sourceLoadHandler);
-        }
-      };
+    map.on("render", findZone);
+    map.once("idle", onIdle);
+    map.triggerRepaint();
 
-      map.on("sourcedata", sourceLoadHandler);
-
-      // Cleanup: remove listener if component unmounts before source loads
-      return () => {
-        map.off("sourcedata", sourceLoadHandler);
-      };
-    }
+    return () => {
+      map.off("render", findZone);
+      map.off("idle", onIdle);
+      map.off("idle", frame);
+    };
   }, [displayMode, map, marker, setSelectedZoneCode]);
 
   if (!marker) {

@@ -11,7 +11,9 @@ import "maplibre-gl/dist/maplibre-gl.css";
 import { Protocol } from "pmtiles";
 import { generateColorExpression, getZoneScaleKey } from "@/lib/colorMapping";
 import { frameZone, getMapInsets } from "@/lib/zoneFraming";
-import PollutionMapMarker from "@/components/PollutionMapMarker";
+import PollutionMapMarker, {
+  type MarkerPosition,
+} from "@/components/PollutionMapMarker";
 import PollutionMapHoverTooltip, {
   type HoveredZone,
 } from "@/components/PollutionMapHoverTooltip";
@@ -31,10 +33,7 @@ type PollutionMapBaseLayerProps = {
     latitude: number;
     zoom: number;
   }) => void;
-  marker: {
-    longitude: number;
-    latitude: number;
-  } | null;
+  marker: MarkerPosition | null;
   colorblindMode?: boolean;
   isMobile?: boolean;
   /** Panneau des réglages ouvert : masque la droite de la carte. */

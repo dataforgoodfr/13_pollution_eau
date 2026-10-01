@@ -153,28 +153,53 @@ export default function PollutionMapBaseLayer({
           ],
         },
       },
+      // Limites entre zones : liseré blanc discret, qui sépare les zones sans
+      // concurrencer leurs couleurs.
       {
         id: "border-layer",
         type: "line",
         source: source,
         "source-layer": sourceLayer,
         paint: {
-          "line-color": [
-            "case",
-            ["==", ["get", idProperty], selectedZoneCode || ""],
-            "#000000",
-            "#7F7F7F",
-          ],
+          "line-color": "#ffffff",
+          "line-opacity": 0.7,
           "line-width": [
             "interpolate",
             ["linear"],
             ["zoom"],
+            6,
             0,
-            0.0, // At zoom level 0, line width is 0px
-            7,
-            0.0, // At zoom level 7, line width is 0px
-            20,
-            2.0, // At zoom level 20, line width is 2.0px
+            8,
+            0.4,
+            11,
+            0.8,
+            14,
+            1.2,
+            18,
+            2,
+          ],
+        },
+      },
+      // Zone sélectionnée : calque à part pour être dessinée au-dessus des
+      // limites voisines et rester visible à tous les niveaux de zoom.
+      {
+        id: "selected-border-layer",
+        type: "line",
+        source: source,
+        "source-layer": sourceLayer,
+        filter: ["==", ["get", idProperty], selectedZoneCode || ""],
+        paint: {
+          "line-color": "#1f2937",
+          "line-width": [
+            "interpolate",
+            ["linear"],
+            ["zoom"],
+            5,
+            1.5,
+            10,
+            2.5,
+            16,
+            3.5,
           ],
         },
       },

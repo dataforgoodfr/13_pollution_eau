@@ -12,7 +12,6 @@ import MapTopRightControls from "./MapTopRightControls";
 import PollutionMapLegend from "./PollutionMapLegend";
 import { clsx } from "clsx";
 import type { PollutionStats, ParameterValues } from "@/app/lib/data";
-import type { ZoneResult } from "@/lib/colorMapping";
 import { scrollIframeToFullscreen } from "@/lib/iframe-scroll";
 import EmbedBanner from "./EmbedBanner";
 import { getCategoryById } from "@/lib/polluants";
@@ -50,7 +49,6 @@ export default function PollutionMap({
   const [rightPanelOpen, setRightPanelOpen] = useState(false);
   const [colorblindMode, setColorblindMode] = useState(false);
   const [showCVMModal, setShowCVMModal] = useState(false);
-  const [hoveredResult, setHoveredResult] = useState<ZoneResult | null>(null);
 
   useEffect(() => {
     setIsMobile(window.innerWidth < 768);
@@ -121,7 +119,6 @@ export default function PollutionMap({
               setMarker={setMarker}
               colorblindMode={colorblindMode}
               isMobile={isMobile}
-              onHoverResultChange={setHoveredResult}
             />
           </div>
 
@@ -144,22 +141,12 @@ export default function PollutionMap({
             }}
           />
 
-          <div
-            className={clsx(
-              "absolute bottom-4 z-10 transition-[right] duration-300 ease-in-out",
-              rightPanelOpen
-                ? "hidden md:block md:right-[calc(400px_+_1rem)] xl:right-[calc(480px_+_1rem)]"
-                : "right-4",
-            )}
-          >
+          <div className="absolute bottom-4 right-4 z-10">
             <PollutionMapLegend
               period={period}
               category={category}
-              displayMode={displayMode}
-              pollutionStats={pollutionStats}
               colorblindMode={colorblindMode}
-              setColorblindMode={setColorblindMode}
-              hoveredResult={hoveredResult}
+              onOpenDetails={() => setRightPanelOpen(true)}
             />
           </div>
 

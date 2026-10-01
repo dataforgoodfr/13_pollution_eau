@@ -1,12 +1,18 @@
 "use client";
 
-import { X } from "lucide-react";
+import { ExternalLink, Info, X } from "lucide-react";
 import PollutionMapCategorySelector from "./PollutionMapCategorySelector";
-import PollutionMapLegend from "./PollutionMapLegend";
 import DonutChart from "./DonutChart";
 import { getStatistic, getStatisticValue } from "@/lib/stats";
-import { getLegendItems } from "@/lib/legendStats";
+import { getLegendItems, type LegendStatItem } from "@/lib/legendStats";
+import { getCategoryById } from "@/lib/polluants";
 import type { PollutionStats } from "@/app/lib/data";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { Switch } from "@/components/ui/switch";
 
 const millionsFormatter = new Intl.NumberFormat("fr-FR", {
   maximumFractionDigits: 1,
@@ -20,6 +26,48 @@ function formatPopulation(value: number): string {
     return `${millionsFormatter.format(value / 1_000_000)} M`;
   }
   return value.toLocaleString("fr-FR");
+}
+
+function LegendItem({
+  color,
+  label,
+  explication,
+}: Pick<LegendStatItem, "color" | "label" | "explication">) {
+  return (
+    <div className="flex items-center gap-3">
+      <div
+        className="w-6 h-3 rounded-sm flex-shrink-0"
+        style={{
+          backgroundColor: color || undefined,
+        }}
+      ></div>
+      <div className="flex-1">
+        <span>{label}</span>
+        {explication && (
+          <Popover>
+            <PopoverTrigger
+              aria-label="En savoir plus sur cette situation"
+              className="ml-1 inline-flex align-middle text-gray-400 hover:text-gray-700 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-400 rounded-full"
+            >
+              <Info size={14} />
+            </PopoverTrigger>
+            <PopoverContent
+              side="bottom"
+              align="start"
+              collisionPadding={8}
+              className="z-[70] w-72 max-w-[calc(100vw-2rem)] p-3 text-sm leading-snug text-gray-700"
+            >
+              {explication.split("\n").map((line, index) => (
+                <p key={index} className={index > 0 ? "mt-2" : undefined}>
+                  {line}
+                </p>
+              ))}
+            </PopoverContent>
+          </Popover>
+        )}
+      </div>
+    </div>
+  );
 }
 
 type PollutionMapControlsPanelProps = {
@@ -53,6 +101,14 @@ export default function PollutionMapControlsPanel({
   const lastUpdateDate = lastUpdateValue
     ? new Date(lastUpdateValue).toLocaleDateString("fr-FR")
     : null;
+
+  const categoryDetails = getCategoryById(category);
+  // Phrase d'introduction propre au type de carte affiché (dernière analyse ou
+  // bilan annuel), à la suite de la description générale du polluant.
+  const topSentence =
+    period === "dernier_prel"
+      ? categoryDetails?.derniereAnalyse.topLegend
+      : categoryDetails?.bilanAnnuel?.topLegend;
 
   const legendItems = getLegendItems(
     period,
@@ -110,15 +166,43 @@ export default function PollutionMapControlsPanel({
             Ce qu&apos;affiche la carte
           </h3>
 
-          <PollutionMapLegend
-            variant="full"
-            period={period}
-            category={category}
-            pollutionStats={pollutionStats}
-            colorblindMode={colorblindMode}
-            setColorblindMode={setColorblindMode}
-            displayMode={displayMode}
-          />
+          {categoryDetails?.description && <p>{categoryDetails.description}</p>}
+          {topSentence && <p className="whitespace-pre-line">{topSentence}</p>}
+          {categoryDetails?.lienExterne && (
+            <a
+              href={categoryDetails.lienExterne}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1 text-kaki hover:underline"
+            >
+              En savoir plus <ExternalLink size={12} />
+            </a>
+          )}
+
+          <div className="space-y-3">
+            {legendItems.map((item) => (
+              <LegendItem key={item.color + item.label} {...item} />
+            ))}
+          </div>
+
+          {displayMode === "communes" && (
+            <p className="text-gray-500">
+              Les tracés de la carte affichent les communes.
+            </p>
+          )}
+          <div className="flex items-center gap-3">
+            <Switch
+              id="colorblind-switch"
+              checked={colorblindMode}
+              onCheckedChange={setColorblindMode}
+            />
+            <label
+              htmlFor="colorblind-switch"
+              className="text-gray-500 cursor-pointer select-none"
+            >
+              Couleurs plus contrastées
+            </label>
+          </div>
         </div>
 
         {(totalUdis !== null || lastUpdateDate || totalUdisInChart > 0) && (

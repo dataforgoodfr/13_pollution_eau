@@ -6,11 +6,6 @@ import type {
   ColorSpecification,
 } from "maplibre-gl";
 
-export interface ZoneResult {
-  label: string;
-  color: string;
-}
-
 export interface ScaleSegment {
   /** Clé de résultat (dernier_prel) ou `ratio_${limite}` (bilan annuel). */
   key: string;
@@ -27,9 +22,7 @@ export interface ColorScale {
 
 /**
  * Construit l'échelle de couleurs d'une sélection (catégorie × période), telle
- * qu'affichée dans la légende compacte et dans le panel de zone. Les couples
- * libellé/couleur sont les mêmes que ceux produits par getZoneResult, ce qui
- * permet de retrouver un segment par égalité.
+ * qu'affichée dans la légende compacte et dans le panel de zone.
  */
 export function getColorScale(
   category: string,
@@ -79,74 +72,6 @@ export function getColorScale(
     },
   );
   return { gray, segments };
-}
-
-/**
- * Résout le résultat d'une zone survolée à partir des propriétés de sa feature
- * pmtiles : renvoie le libellé et la couleur correspondant à la sélection
- * courante. Miroir de la logique de generateColorExpression ci-dessous — les
- * deux doivent rester synchronisés.
- */
-export function getZoneResult(
-  category: string,
-  period: string,
-  properties: Record<string, unknown>,
-  colorblindMode: boolean = false,
-): ZoneResult | null {
-  const categoryDetails = getCategoryById(category);
-  if (!categoryDetails) {
-    return null;
-  }
-
-  // Zones sans données (ni cdreseau ni commune) : transparentes sur la carte
-  if (
-    properties["cdreseau"] === undefined &&
-    properties["commune_code_insee"] === undefined
-  ) {
-    return null;
-  }
-
-  if (period.startsWith("dernier_prel")) {
-    const value = properties[getPropertyName(period, category, "resultat")];
-    const key =
-      value === undefined || value === null ? "non_recherche" : String(value);
-    const detail = categoryDetails.derniereAnalyse.resultats[key];
-    if (!detail) {
-      return null;
-    }
-    return {
-      label: detail.label,
-      color: colorblindMode ? detail.couleurAlt : detail.couleur,
-    };
-  }
-
-  if (period.startsWith("bilan_annuel")) {
-    const annuels = categoryDetails.bilanAnnuel;
-    if (!annuels) {
-      return null;
-    }
-    // ratio est absent quand aucun prélèvement n'a été fait sur l'année
-    const ratio = properties[getPropertyName(period, category, "ratio")];
-    if (ratio === undefined || ratio === null) {
-      return {
-        label: annuels.nonRechercheLabel,
-        color: colorblindMode
-          ? annuels.nonRechercheCouleurAlt
-          : annuels.nonRechercheCouleur,
-      };
-    }
-    const ratioValue = Number(ratio);
-    const limite = annuels.ratioLimites.find((l) => ratioValue <= l.limite);
-    if (!limite) {
-      return null;
-    }
-    return {
-      label: `${limite.label} des ${annuels.ratioLabelPlural}`,
-      color: colorblindMode ? limite.couleurAlt : limite.couleur,
-    };
-  }
-
-  return null;
 }
 
 /**

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, JSX } from "react";
+import { useEffect, useMemo, JSX } from "react";
 import ReactMapGl, {
   MapLayerMouseEvent,
   ViewStateChangeEvent,
@@ -9,11 +9,7 @@ import ReactMapGl, {
 import maplibregl from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 import { Protocol } from "pmtiles";
-import {
-  generateColorExpression,
-  getZoneResult,
-  type ZoneResult,
-} from "@/lib/colorMapping";
+import { generateColorExpression } from "@/lib/colorMapping";
 import PollutionMapMarker from "@/components/PollutionMapMarker";
 
 import { DEFAULT_MAP_STYLE, getDefaultLayers } from "@/app/config";
@@ -45,7 +41,6 @@ type PollutionMapBaseLayerProps = {
   ) => void;
   colorblindMode?: boolean;
   isMobile?: boolean;
-  onHoverResultChange?: (result: ZoneResult | null) => void;
 };
 
 export default function PollutionMapBaseLayer({
@@ -60,34 +55,7 @@ export default function PollutionMapBaseLayer({
   setMarker,
   colorblindMode = false,
   isMobile = false,
-  onHoverResultChange,
 }: PollutionMapBaseLayerProps) {
-  // Clé du dernier résultat survolé, pour n'émettre vers le parent (et donc ne
-  // re-rendre) que quand le libellé/la couleur changent, pas à chaque mousemove.
-  const lastHoverKeyRef = useRef<string | null>(null);
-
-  const emitHoverResult = (result: ZoneResult | null) => {
-    const key = result ? result.label + result.color : null;
-    if (key !== lastHoverKeyRef.current) {
-      lastHoverKeyRef.current = key;
-      onHoverResultChange?.(result);
-    }
-  };
-
-  function onMouseMove(event: MapLayerMouseEvent) {
-    if (!onHoverResultChange) return;
-    const feature = event.features?.[0];
-    emitHoverResult(
-      feature
-        ? getZoneResult(category, period, feature.properties, colorblindMode)
-        : null,
-    );
-  }
-
-  function onMouseLeave() {
-    emitHoverResult(null);
-  }
-
   useEffect(() => {
     // adds the support for PMTiles
     const protocol = new Protocol();
@@ -96,14 +64,6 @@ export default function PollutionMapBaseLayer({
       maplibregl.removeProtocol("pmtiles");
     };
   }, []);
-
-  // La sélection change : le résultat survolé affiché ne correspond plus à ce
-  // que colore la carte, on le réinitialise jusqu'au prochain mousemove.
-  useEffect(() => {
-    lastHoverKeyRef.current = null;
-    onHoverResultChange?.(null);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [category, period, colorblindMode]);
 
   function onClick(event: MapLayerMouseEvent) {
     if (event.features && event.features.length > 0) {
@@ -222,8 +182,6 @@ export default function PollutionMapBaseLayer({
       {...mapState}
       mapLib={maplibregl}
       onClick={onClick}
-      onMouseMove={onMouseMove}
-      onMouseLeave={onMouseLeave}
       onMove={handleMapStateChange}
       interactiveLayerIds={["color-layer"]}
       attributionControl={false}

@@ -1,36 +1,22 @@
-import { availableCategories, getCategoryById } from "@/lib/polluants";
-import { getLegendItems, type LegendStatItem } from "@/lib/legendStats";
+"use client";
+
+import { useEffect, useState } from "react";
+import { getCategoryById } from "@/lib/polluants";
 import { cn } from "@/lib/utils";
-import { ExternalLink, Info } from "lucide-react";
-import type { PollutionStats } from "@/app/lib/data";
-import { getColorScale, type ZoneResult } from "@/lib/colorMapping";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { Switch } from "@/components/ui/switch";
+import { ChevronRight } from "lucide-react";
+import { getColorScale } from "@/lib/colorMapping";
 
 interface PollutionMapLegendProps {
   period: string;
   category: string;
-  pollutionStats: PollutionStats;
   colorblindMode: boolean;
-  setColorblindMode: (value: boolean) => void;
-  displayMode: "communes" | "udis";
-  variant?: "compact" | "full";
-  hoveredResult?: ZoneResult | null;
+  /** Ouvre le panneau des réglages, qui contient la légende détaillée. */
+  onOpenDetails: () => void;
 }
 
-// Ancres textuelles des extrémités de l'échelle compacte (mode "dernières
-// analyses") : résument en deux mots le sens de la première et de la dernière
-// couleur, les libellés complets restant accessibles en tooltip.
+// Ancres textuelles des extrémités de l'échelle (mode "dernières analyses") :
+// résument en deux mots le sens de la première et de la dernière couleur, les
+// libellés complets s'affichant au survol des segments.
 const COMPACT_ANCHORS: Record<string, { debut: string; fin: string }> = {
   tous: { debut: "Non quantifié", fin: "Eau déconseillée" },
   pfas: { debut: "Non quantifié", fin: "Limite sanitaire dépassée" },
@@ -63,255 +49,141 @@ const COMPACT_ANCHORS: Record<string, { debut: string; fin: string }> = {
   sub_indus_perchlorate: { debut: "Non quantifié", fin: "> 15 µg/L" },
 };
 
-function LegendItem({
-  color,
-  label,
-  explication,
-}: Pick<LegendStatItem, "color" | "label" | "explication">) {
-  return (
-    <div className="flex items-center gap-3">
-      <div
-        className="w-6 h-3 rounded-sm flex-shrink-0"
-        style={{
-          backgroundColor: color || undefined,
-        }}
-      ></div>
-      <div className="flex-1">
-        <span>{label}</span>
-        {explication && (
-          <Popover>
-            <PopoverTrigger
-              aria-label="En savoir plus sur cette situation"
-              className="ml-1 inline-flex align-middle text-gray-400 hover:text-gray-700 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-400 rounded-full"
-            >
-              <Info size={14} />
-            </PopoverTrigger>
-            <PopoverContent
-              side="bottom"
-              align="start"
-              collisionPadding={8}
-              className="z-[70] w-72 max-w-[calc(100vw-2rem)] p-3 text-sm leading-snug text-gray-700"
-            >
-              {explication.split("\n").map((line, index) => (
-                <p key={index} className={index > 0 ? "mt-2" : undefined}>
-                  {line}
-                </p>
-              ))}
-            </PopoverContent>
-          </Popover>
-        )}
-      </div>
-    </div>
-  );
-}
-
+/**
+ * Légende compacte posée sur la carte : une phrase décrit la sélection
+ * courante et une échelle de couleurs segmentée la résume. Le survol (ou le
+ * tap sur mobile) d'un segment affiche son libellé ; sinon un lien invite à
+ * ouvrir le panneau des réglages pour la légende détaillée.
+ */
 export default function PollutionMapLegend({
   period,
   category,
-  pollutionStats,
   colorblindMode,
-  setColorblindMode,
-  displayMode,
-  variant = "compact",
-  hoveredResult = null,
+  onOpenDetails,
 }: PollutionMapLegendProps) {
+  const [activeKey, setActiveKey] = useState<string | null>(null);
+
+  // La sélection change : le segment actif n'existe plus forcément.
+  useEffect(() => {
+    setActiveKey(null);
+  }, [category, period, colorblindMode]);
+
   const categoryDetails = getCategoryById(category);
-  if (!categoryDetails) {
-    return null; // Handle the case where category details are not found
-  }
-
-  // Compact : pastille de synthèse posée sur la carte. Une phrase décrit la
-  // sélection courante, une échelle de couleurs segmentée résume la légende
-  // (libellés complets en tooltip), et le survol d'une zone sur la carte
-  // surligne le segment correspondant avec son libellé en dessous.
-  if (variant === "compact") {
-    const topLevel = availableCategories.find(
-      (item) =>
-        item.id === category ||
-        item.enfants?.some((child) => child.id === category),
-    );
-    const selectionLabel =
-      topLevel && topLevel.id !== category
-        ? `${topLevel.nomAffichage} · ${categoryDetails.nomAffichage}`
-        : categoryDetails.nomAffichage;
-    const isBilan = period.startsWith("bilan_annuel");
-    const periodLabel = isBilan
-      ? `bilan annuel ${period.replace("bilan_annuel_", "")}`
-      : "dernières analyses";
-
-    // L'échelle (pastille grise "non recherché" à part, puis segments colorés
-    // par gravité croissante) vient de getColorScale : ses couples
-    // libellé/couleur sont ceux de getZoneResult, ce qui permet de retrouver
-    // le segment correspondant au résultat survolé par égalité.
-    const scale = getColorScale(category, period, colorblindMode);
-    if (!scale) {
-      return null;
-    }
-    const { gray: graySegment, segments } = scale;
-    const annuels = categoryDetails.bilanAnnuel;
-    const anchors: { debut: string; fin: string } | null = isBilan
-      ? { debut: "0 %", fin: "100 %" }
-      : (COMPACT_ANCHORS[category] ?? null);
-    const caption: string | null =
-      isBilan && annuels ? `Part des ${annuels.ratioLabelPlural}` : null;
-
-    const hoveredIndex = hoveredResult
-      ? segments.findIndex(
-          (s) =>
-            s.label === hoveredResult.label && s.color === hoveredResult.color,
-        )
-      : -1;
-    const grayHovered =
-      hoveredResult !== null &&
-      graySegment !== null &&
-      graySegment.label === hoveredResult.label &&
-      graySegment.color === hoveredResult.color;
-    const hasHover = hoveredIndex >= 0 || grayHovered;
-
-    return (
-      <TooltipProvider>
-        <div className="w-72 bg-white/95 rounded-xl border border-gray-300 shadow-lg px-3 py-2 text-xs">
-          <p className="text-gray-900">
-            <span className="font-medium">{selectionLabel}</span>
-            <span className="text-gray-500"> — {periodLabel}</span>
-          </p>
-
-          <div className="mt-2 flex items-center gap-2">
-            {graySegment && (
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <span
-                    className={cn(
-                      "h-3 w-4 rounded-sm flex-shrink-0 transition-all",
-                      grayHovered && "ring-2 ring-gray-900 ring-offset-1",
-                      hasHover && !grayHovered && "opacity-30",
-                    )}
-                    style={{ backgroundColor: graySegment.color }}
-                  />
-                </TooltipTrigger>
-                <TooltipContent className="max-w-56">
-                  <p>{graySegment.label}</p>
-                </TooltipContent>
-              </Tooltip>
-            )}
-            <div className="flex flex-1 gap-px">
-              {segments.map((segment, index) => (
-                <Tooltip key={segment.key}>
-                  <TooltipTrigger asChild>
-                    <span
-                      className={cn(
-                        "h-3 flex-1 transition-all",
-                        index === 0 && "rounded-l-sm",
-                        index === segments.length - 1 && "rounded-r-sm",
-                        hoveredIndex === index &&
-                          "ring-2 ring-gray-900 ring-offset-1 relative z-10 rounded-sm",
-                        hasHover && hoveredIndex !== index && "opacity-30",
-                      )}
-                      style={{ backgroundColor: segment.color }}
-                    />
-                  </TooltipTrigger>
-                  <TooltipContent className="max-w-56">
-                    <p>{segment.label}</p>
-                  </TooltipContent>
-                </Tooltip>
-              ))}
-            </div>
-          </div>
-
-          {anchors && (
-            <div
-              className={cn(
-                "mt-1 flex justify-between text-[10px] text-gray-500 leading-tight",
-                graySegment && "ml-6",
-              )}
-            >
-              <span>{anchors.debut}</span>
-              <span>{anchors.fin}</span>
-            </div>
-          )}
-
-          <p className="mt-1 min-h-4 text-[11px] leading-snug">
-            {hoveredResult && hasHover ? (
-              <span className="text-gray-900">{hoveredResult.label}</span>
-            ) : caption ? (
-              <span className="text-gray-400">{caption}</span>
-            ) : null}
-          </p>
-        </div>
-      </TooltipProvider>
-    );
-  }
-
-  if (period !== "dernier_prel" && !categoryDetails.bilanAnnuel) {
+  const scale = getColorScale(category, period, colorblindMode);
+  if (!categoryDetails || !scale) {
     return null;
   }
 
-  const legendItems = getLegendItems(
-    period,
-    category,
-    pollutionStats,
-    colorblindMode,
-  );
+  const isBilan = period.startsWith("bilan_annuel");
+  const periodLabel = isBilan
+    ? `bilan ${period.replace("bilan_annuel_", "")}`
+    : "dernières analyses";
 
-  const legendContent = (
-    <div className="space-y-3 text-sm">
-      {legendItems.map((item) => (
-        <LegendItem key={item.color + item.label} {...item} />
-      ))}
-    </div>
-  );
+  const { gray, segments } = scale;
+  const annuels = categoryDetails.bilanAnnuel;
+  const anchors: { debut: string; fin: string } | null = isBilan
+    ? { debut: "0 %", fin: "100 %" }
+    : (COMPACT_ANCHORS[category] ?? null);
+  const caption: string | null =
+    isBilan && annuels ? `part des ${annuels.ratioLabelPlural}` : null;
 
-  // Phrase d'introduction propre au type de carte affiché (dernière analyse ou
-  // bilan annuel), à la suite de la description générale du polluant.
-  const topSentence =
-    period === "dernier_prel"
-      ? categoryDetails.derniereAnalyse.topLegend
-      : categoryDetails.bilanAnnuel?.topLegend;
+  const active =
+    [...(gray ? [gray] : []), ...segments].find((s) => s.key === activeKey) ??
+    null;
 
-  const descriptionBlock = (categoryDetails.description ||
-    topSentence ||
-    categoryDetails.lienExterne) && (
-    <>
-      {categoryDetails.description && <p>{categoryDetails.description}</p>}
-      {topSentence && <p className="whitespace-pre-line">{topSentence}</p>}
-      {categoryDetails.lienExterne && (
-        <a
-          href={categoryDetails.lienExterne}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-1 text-kaki hover:underline"
-        >
-          En savoir plus <ExternalLink size={12} />
-        </a>
-      )}
-    </>
-  );
+  // Zone de survol plus haute que le segment visible (py-1), pour qu'il soit
+  // facile à attraper malgré ses 12px de haut.
+  const hoverProps = (key: string) => ({
+    onMouseEnter: () => setActiveKey(key),
+    onMouseLeave: () => setActiveKey(null),
+    onClick: () => setActiveKey((current) => (current === key ? null : key)),
+  });
+  const segmentClass = (key: string) =>
+    cn(
+      "block h-3 transition-all",
+      active &&
+        (key === activeKey
+          ? "ring-2 ring-gray-900 ring-offset-1 relative z-10 rounded-sm"
+          : "opacity-30"),
+    );
 
   return (
-    <>
-      {descriptionBlock}
-      <div className="">{legendContent}</div>
+    <div className="w-72 bg-light rounded-md border border-greylight shadow-sm px-3 py-2 text-xs">
+      {/* En-tête sur une ligne : polluant tronqué si besoin, période toujours
+          visible à droite. */}
+      <div className="flex items-baseline gap-2">
+        <p
+          className="flex-1 min-w-0 truncate font-semibold text-gray-900"
+          title={categoryDetails.nomAffichage}
+        >
+          {categoryDetails.nomAffichage}
+        </p>
+        <span className="flex-shrink-0 text-[10px] font-medium uppercase tracking-wide text-gray-500">
+          {periodLabel}
+        </span>
+      </div>
 
-      <div className="space-y-2">
-        {displayMode === "communes" && (
-          <p className="text-sm text-gray-500">
-            Les tracés de la carte affichent les communes.
+      <div className="mt-1 flex items-center gap-2">
+        {gray && (
+          <span
+            className="w-4 py-1 flex-shrink-0 cursor-default"
+            {...hoverProps(gray.key)}
+          >
+            <span
+              className={cn("rounded-sm", segmentClass(gray.key))}
+              style={{ backgroundColor: gray.color }}
+            />
+          </span>
+        )}
+        <div className="flex flex-1 gap-px">
+          {segments.map((segment, index) => (
+            <span
+              key={segment.key}
+              className="flex-1 py-1 cursor-default"
+              {...hoverProps(segment.key)}
+            >
+              <span
+                className={cn(
+                  index === 0 && "rounded-l-sm",
+                  index === segments.length - 1 && "rounded-r-sm",
+                  segmentClass(segment.key),
+                )}
+                style={{ backgroundColor: segment.color }}
+              />
+            </span>
+          ))}
+        </div>
+      </div>
+
+      {anchors && (
+        <div
+          className={cn(
+            "flex justify-between gap-2 text-[10px] text-gray-500 leading-tight",
+            gray && "ml-6",
+          )}
+        >
+          <span>{anchors.debut}</span>
+          {caption && <span className="text-center">{caption}</span>}
+          <span>{anchors.fin}</span>
+        </div>
+      )}
+
+      <div className="mt-1.5 min-h-4 text-[11px] leading-snug">
+        {active ? (
+          <p className="truncate text-gray-900" title={active.label}>
+            {active.label}
           </p>
+        ) : (
+          <button
+            type="button"
+            onClick={onOpenDetails}
+            className="inline-flex items-center gap-0.5 text-kaki hover:underline"
+          >
+            Légende détaillée
+            <ChevronRight size={12} />
+          </button>
         )}
       </div>
-      <div className="flex items-center gap-3">
-        <Switch
-          id="colorblind-switch"
-          checked={colorblindMode}
-          onCheckedChange={setColorblindMode}
-        />
-        <label
-          htmlFor="colorblind-switch"
-          className="text-sm text-gray-500 cursor-pointer select-none"
-        >
-          Couleurs plus contrastées
-        </label>
-      </div>
-    </>
+    </div>
   );
 }

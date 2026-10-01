@@ -63,7 +63,7 @@ export default function PollutionColorScale({
             "ring-2 ring-gray-900 relative z-10",
             isLarge ? "ring-offset-2" : "ring-offset-1 rounded-sm",
           )
-        : hasActive && (isLarge ? "opacity-45" : "opacity-40"),
+        : hasActive && (isLarge ? "opacity-55" : "opacity-50"),
     );
 
   const markerElement = (key: string) =>

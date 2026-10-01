@@ -326,12 +326,17 @@ function CategoryRow({
           être imbriqués : le bouton de dépliage couvre toute la ligne via son
           pseudo-élément ::after, et le "i" passe au-dessus (relative z-10). */}
       <div className="relative flex items-center gap-3 px-3 py-3 transition-colors hover:bg-gray-50">
-        <PollutionColorScale
-          category={categoryId}
-          period="dernier_prel"
-          colorblindMode={colorblindMode}
-          activeKey={result.resultKey}
-        />
+        {/* Au-dessus du bouton de dépliage (comme le "i") pour que les
+            tooltips des segments soient survolables ; un clic déplie quand
+            même la ligne. */}
+        <span className="relative z-10 cursor-pointer" onClick={onToggle}>
+          <PollutionColorScale
+            category={categoryId}
+            period="dernier_prel"
+            colorblindMode={colorblindMode}
+            activeKey={result.resultKey}
+          />
+        </span>
         <span className="flex-1 min-w-0">
           <span className="flex items-center gap-1">
             <button
@@ -468,7 +473,7 @@ export default function DernieresAnalyses({
             colorblindMode={colorblindMode}
             activeKey={globalResult.resultKey}
             size="lg"
-            marker="Cette eau"
+            showMarker
           />
           <div className="mt-2 flex justify-between gap-4 text-[10px] leading-tight text-gray-500">
             <span>Aucun polluant quantifié</span>

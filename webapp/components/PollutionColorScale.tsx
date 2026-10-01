@@ -19,10 +19,10 @@ type PollutionColorScaleProps = {
    */
   size?: "sm" | "lg";
   /**
-   * Repère affiché au-dessus du niveau courant (ex. "Cette eau"), "lg"
-   * uniquement. Le conteneur réserve la hauteur nécessaire au-dessus.
+   * Flèche au-dessus du niveau courant, "lg" uniquement. Le conteneur
+   * réserve la hauteur nécessaire au-dessus.
    */
-  marker?: string;
+  showMarker?: boolean;
   className?: string;
 };
 
@@ -39,7 +39,7 @@ export default function PollutionColorScale({
   colorblindMode,
   activeKey,
   size = "sm",
-  marker,
+  showMarker: showMarkerProp = false,
   className,
 }: PollutionColorScaleProps) {
   const scale = getColorScale(category, period, colorblindMode);
@@ -52,7 +52,7 @@ export default function PollutionColorScale({
   const active = all.find((s) => s.key === activeKey) ?? null;
   const hasActive = active !== null;
   const isLarge = size === "lg";
-  const showMarker = isLarge && !!marker && hasActive;
+  const showMarker = isLarge && showMarkerProp && hasActive;
 
   const segmentClass = (key: string) =>
     cn(
@@ -70,11 +70,8 @@ export default function PollutionColorScale({
     showMarker && key === activeKey ? (
       <span
         aria-hidden
-        className="pointer-events-none absolute bottom-full left-1/2 mb-1.5 flex -translate-x-1/2 flex-col items-center gap-[3px] text-gray-900"
+        className="pointer-events-none absolute bottom-full left-1/2 mb-1.5 flex -translate-x-1/2 text-gray-900"
       >
-        <span className="whitespace-nowrap text-[10px] font-bold uppercase tracking-wide">
-          {marker}
-        </span>
         <svg width="11" height="6" viewBox="0 0 11 6" fill="none">
           <path d="M5.5 6 0 0h11z" fill="currentColor" />
         </svg>
@@ -87,7 +84,7 @@ export default function PollutionColorScale({
         className={cn(
           "flex items-center",
           isLarge ? "w-full gap-1.5" : "w-16 flex-shrink-0 gap-1",
-          showMarker && "pt-6",
+          showMarker && "pt-3",
           className,
         )}
         role="img"

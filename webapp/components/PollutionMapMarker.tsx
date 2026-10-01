@@ -1,36 +1,34 @@
 "use client";
 
-import { useEffect, JSX } from "react";
+import { useEffect, useRef } from "react";
 import { useMap, Marker } from "react-map-gl/maplibre";
 import { MapPin } from "lucide-react";
+import { frameZone, getMapInsets } from "@/lib/zoneFraming";
 
 type PollutionMapMarkerProps = {
   displayMode: "communes" | "udis";
   marker: {
     longitude: number;
     latitude: number;
-    content?: JSX.Element;
   } | null;
   setSelectedZoneCode: (code: string | null) => void;
+  rightPanelOpen: boolean;
 };
 
 export default function PollutionMapMarker({
   displayMode,
   marker,
   setSelectedZoneCode,
+  rightPanelOpen,
 }: PollutionMapMarkerProps) {
   const { map } = useMap();
 
-  // Center the map on the marker
+  // Lu via une ref : ouvrir/fermer les réglages ne doit pas relancer la
+  // recherche de zone ci-dessous (qui rouvrirait le panneau de zone).
+  const rightPanelOpenRef = useRef(rightPanelOpen);
   useEffect(() => {
-    if (marker && map) {
-      map.flyTo({
-        center: [marker.longitude, marker.latitude],
-        zoom: Math.max(map.getZoom(), 8), // Ensure minimum zoom level
-        duration: 1000,
-      });
-    }
-  }, [marker, map]);
+    rightPanelOpenRef.current = rightPanelOpen;
+  }, [rightPanelOpen]);
 
   useEffect(() => {
     if (!map || !marker) {
@@ -53,12 +51,19 @@ export default function PollutionMapMarker({
         layers: ["color-layer"],
       });
 
-      if (features && features.length > 0) {
-        setSelectedZoneCode(
-          displayMode === "communes"
-            ? features[0].properties["commune_code_insee"]
-            : features[0].properties["cdreseau"],
-        );
+      const code =
+        features?.[0]?.properties[
+          displayMode === "communes" ? "commune_code_insee" : "cdreseau"
+        ];
+      if (code !== undefined && code !== null) {
+        // Zone trouvée sous l'adresse : on la sélectionne et on cadre la carte
+        // dessus.
+        setSelectedZoneCode(String(code));
+        frameZone(map.getMap(), displayMode, String(code), {
+          insets: getMapInsets(rightPanelOpenRef.current),
+          anchor: [marker.longitude, marker.latitude],
+          allowZoomOut: true,
+        });
       } else {
         console.log("No features found at marker");
       }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, JSX, useEffect } from "react";
+import { useState, useEffect } from "react";
 import PollutionMapBaseLayer from "@/components/PollutionMapBase";
 import PollutionZoneDetailPanelV2 from "@/components/PollutionZoneDetailPanelV2";
 import PollutionMapControlsPanel from "@/components/PollutionMapControlsPanel";
@@ -39,7 +39,6 @@ export default function PollutionMap({
   const [marker, setMarker] = useState<{
     longitude: number;
     latitude: number;
-    content?: JSX.Element;
   } | null>(null);
 
   // isMobile is only used for non-layout-critical behavior (map gesture mode,
@@ -49,6 +48,9 @@ export default function PollutionMap({
   const [rightPanelOpen, setRightPanelOpen] = useState(false);
   const [colorblindMode, setColorblindMode] = useState(false);
   const [showCVMModal, setShowCVMModal] = useState(false);
+  // Texte de la barre de recherche : géré ici pour être vidé au changement de
+  // territoire (cf. MapTopRightControls).
+  const [searchText, setSearchText] = useState("");
 
   useEffect(() => {
     setIsMobile(window.innerWidth < 768);
@@ -83,13 +85,9 @@ export default function PollutionMap({
 
   const handleAddressSelect = async (result: FilterResult | null) => {
     if (result) {
-      const { center, zoom, address, postcode } = result;
+      const { center, zoom, postcode } = result;
       setMapState({ longitude: center[0], latitude: center[1], zoom });
-      setMarker({
-        longitude: center[0],
-        latitude: center[1],
-        content: <>{address}</>,
-      });
+      setMarker({ longitude: center[0], latitude: center[1] });
 
       // Detect if we're in a DROM or Metropole based on postcode, and set display mode
       // DROM postcodes: 971 (Guadeloupe), 972 (Martinique), 973 (Guyane), 974 (Réunion), 976 (Mayotte)
@@ -116,20 +114,19 @@ export default function PollutionMap({
               mapState={mapState}
               onMapStateChange={setMapState}
               marker={marker}
-              setMarker={setMarker}
               colorblindMode={colorblindMode}
               isMobile={isMobile}
+              rightPanelOpen={rightPanelOpen}
             />
           </div>
 
-          {!leftPanelOpen && (
-            <div className="absolute top-4 left-4 z-10">
-              <PollutionMapSearchBox
-                communeInseeCode={selectedZoneCode}
-                onAddressFilter={handleAddressSelect}
-              />
-            </div>
-          )}
+          <div className="absolute top-4 left-4 right-[76px] z-10 md:right-auto md:w-[380px]">
+            <PollutionMapSearchBox
+              onAddressFilter={handleAddressSelect}
+              filterString={searchText}
+              setFilterString={setSearchText}
+            />
+          </div>
 
           <MapTopRightControls
             rightPanelOpen={rightPanelOpen}
@@ -138,6 +135,7 @@ export default function PollutionMap({
             onZoneChange={() => {
               setMarker(null);
               setSelectedZoneCode(null);
+              setSearchText("");
             }}
           />
 
@@ -166,10 +164,7 @@ export default function PollutionMap({
                 selectedZoneCode={selectedZoneCode}
                 colorblindMode={colorblindMode}
                 parameterValues={parameterValues}
-                onClose={() => {
-                  setMarker(null);
-                  setSelectedZoneCode(null);
-                }}
+                onClose={() => setSelectedZoneCode(null)}
               />
             </div>
           </div>

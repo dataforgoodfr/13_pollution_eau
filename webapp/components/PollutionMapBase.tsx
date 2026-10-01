@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState, JSX } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import ReactMapGl, {
   MapLayerMouseEvent,
   ViewStateChangeEvent,
@@ -10,6 +10,7 @@ import maplibregl from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 import { Protocol } from "pmtiles";
 import { generateColorExpression, getZoneScaleKey } from "@/lib/colorMapping";
+import { frameZone, getMapInsets } from "@/lib/zoneFraming";
 import PollutionMapMarker from "@/components/PollutionMapMarker";
 import PollutionMapHoverTooltip, {
   type HoveredZone,
@@ -33,17 +34,11 @@ type PollutionMapBaseLayerProps = {
   marker: {
     longitude: number;
     latitude: number;
-    content?: JSX.Element;
   } | null;
-  setMarker: (
-    marker: {
-      longitude: number;
-      latitude: number;
-      content?: JSX.Element;
-    } | null,
-  ) => void;
   colorblindMode?: boolean;
   isMobile?: boolean;
+  /** Panneau des réglages ouvert : masque la droite de la carte. */
+  rightPanelOpen?: boolean;
 };
 
 export default function PollutionMapBaseLayer({
@@ -55,9 +50,9 @@ export default function PollutionMapBaseLayer({
   mapState,
   onMapStateChange,
   marker,
-  setMarker,
   colorblindMode = false,
   isMobile = false,
+  rightPanelOpen = false,
 }: PollutionMapBaseLayerProps) {
   useEffect(() => {
     // adds the support for PMTiles
@@ -145,15 +140,23 @@ export default function PollutionMapBaseLayer({
     setOverZone(false);
   }
 
+  // Clic sur une zone : on la sélectionne directement, sans repère (son
+  // contour suffit à la montrer, le repère est réservé à l'adresse
+  // recherchée), et on cadre la carte dessus.
   function onClick(event: MapLayerMouseEvent) {
-    if (event.features && event.features.length > 0) {
-      console.log("zoom level:", mapState.zoom);
-      console.log("Properties:", event.features[0].properties);
-      setMarker({
-        longitude: event.lngLat.lng,
-        latitude: event.lngLat.lat,
-      });
+    const code =
+      event.features?.[0]?.properties[
+        displayMode === "communes" ? "commune_code_insee" : "cdreseau"
+      ];
+    if (code === undefined || code === null) {
+      return;
     }
+    setSelectedZoneCode(String(code));
+    frameZone(event.target, displayMode, String(code), {
+      insets: getMapInsets(rightPanelOpen),
+      anchor: event.lngLat,
+      allowZoomOut: false,
+    });
   }
 
   function handleMapStateChange(e: ViewStateChangeEvent) {
@@ -295,6 +298,7 @@ export default function PollutionMapBaseLayer({
           displayMode={displayMode}
           marker={marker}
           setSelectedZoneCode={setSelectedZoneCode}
+          rightPanelOpen={rightPanelOpen}
         />
       ) : null}
       <PollutionMapHoverTooltip

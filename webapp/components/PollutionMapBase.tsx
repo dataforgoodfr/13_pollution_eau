@@ -3,7 +3,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import ReactMapGl, {
   MapLayerMouseEvent,
-  ViewStateChangeEvent,
   AttributionControl,
 } from "react-map-gl/maplibre";
 import maplibregl from "maplibre-gl";
@@ -11,14 +10,16 @@ import "maplibre-gl/dist/maplibre-gl.css";
 import { Protocol } from "pmtiles";
 import { generateColorExpression, getZoneScaleKey } from "@/lib/colorMapping";
 import { frameZone, getMapInsets } from "@/lib/zoneFraming";
-import PollutionMapMarker, {
-  type MarkerPosition,
-} from "@/components/PollutionMapMarker";
+import PollutionMapMarker from "@/components/PollutionMapMarker";
 import PollutionMapHoverTooltip, {
   type HoveredZone,
 } from "@/components/PollutionMapHoverTooltip";
 
-import { DEFAULT_MAP_STYLE, getDefaultLayers } from "@/app/config";
+import {
+  DEFAULT_MAP_STYLE,
+  getDefaultLayers,
+  MAPLIBRE_MAP,
+} from "@/app/config";
 import { frenchLocale } from "@/lib/mapLocale";
 
 type PollutionMapBaseLayerProps = {
@@ -27,13 +28,10 @@ type PollutionMapBaseLayerProps = {
   displayMode: "communes" | "udis";
   selectedZoneCode: string | null;
   setSelectedZoneCode: (code: string | null) => void;
-  mapState: { longitude: number; latitude: number; zoom: number };
-  onMapStateChange?: (coords: {
+  marker: {
     longitude: number;
     latitude: number;
-    zoom: number;
-  }) => void;
-  marker: MarkerPosition | null;
+  } | null;
   colorblindMode?: boolean;
   isMobile?: boolean;
   /** Panneau des réglages ouvert : masque la droite de la carte. */
@@ -46,8 +44,6 @@ export default function PollutionMapBaseLayer({
   displayMode,
   selectedZoneCode,
   setSelectedZoneCode,
-  mapState,
-  onMapStateChange,
   marker,
   colorblindMode = false,
   isMobile = false,
@@ -156,16 +152,6 @@ export default function PollutionMapBaseLayer({
       anchor: event.lngLat,
       allowZoomOut: false,
     });
-  }
-
-  function handleMapStateChange(e: ViewStateChangeEvent) {
-    if (e.viewState && onMapStateChange) {
-      onMapStateChange({
-        longitude: e.viewState.longitude,
-        latitude: e.viewState.latitude,
-        zoom: e.viewState.zoom,
-      });
-    }
   }
 
   const mapStyle = useMemo(() => {
@@ -280,13 +266,14 @@ export default function PollutionMapBaseLayer({
       id="map"
       style={{ width: "100%", height: "100%" }}
       mapStyle={mapStyle}
-      {...mapState}
+      // Non contrôlée (déplacée par map.jumpTo/flyTo) : en mode contrôlé,
+      // react-map-gl ignore un changement de position pendant un mouvement.
+      initialViewState={MAPLIBRE_MAP.initialViewState}
       mapLib={maplibregl}
       onClick={onClick}
       onMouseMove={onMouseMove}
       onMouseOut={onMouseOut}
       cursor={overZone ? "pointer" : undefined}
-      onMove={handleMapStateChange}
       interactiveLayerIds={["color-layer"]}
       attributionControl={false}
       cooperativeGestures={isMobile || isInIframe}

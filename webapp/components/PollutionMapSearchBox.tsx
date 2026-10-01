@@ -9,7 +9,6 @@ import { Building2, MapPin, Search } from "lucide-react";
 import { CommandEmpty } from "cmdk";
 import { X } from "lucide-react";
 import { scrollIframeToFullscreen } from "@/lib/iframe-scroll";
-import { ZONE_MAX_ZOOM } from "@/lib/zoneFraming";
 
 interface IGNQueryResult {
   type: string;
@@ -33,7 +32,6 @@ interface IGNQueryResponse {
 }
 export type FilterResult = {
   center: [number, number];
-  zoom: number;
   communeInseeCode: string;
   address: string;
   postcode: string;
@@ -119,7 +117,6 @@ export default function PollutionMapSearchBox({
     setFilterString(displayText);
     onAddressFilter({
       center: feature.geometry.coordinates,
-      zoom: ZONE_MAX_ZOOM,
       communeInseeCode: feature.properties.citycode,
       address: displayText,
       postcode: feature.properties.postcode,

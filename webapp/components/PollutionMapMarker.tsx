@@ -3,18 +3,14 @@
 import { useEffect, useRef } from "react";
 import { useMap, Marker } from "react-map-gl/maplibre";
 import { MapPin } from "lucide-react";
-import { frameZone, getMapInsets } from "@/lib/zoneFraming";
-
-/** Adresse recherchée, et zoom auquel y placer la carte. */
-export type MarkerPosition = {
-  longitude: number;
-  latitude: number;
-  zoom: number;
-};
+import { frameZone, getMapInsets, ZONE_MAX_ZOOM } from "@/lib/zoneFraming";
 
 type PollutionMapMarkerProps = {
   displayMode: "communes" | "udis";
-  marker: MarkerPosition | null;
+  marker: {
+    longitude: number;
+    latitude: number;
+  };
   setSelectedZoneCode: (code: string | null) => void;
   rightPanelOpen: boolean;
 };
@@ -34,25 +30,19 @@ export default function PollutionMapMarker({
     rightPanelOpenRef.current = rightPanelOpen;
   }, [rightPanelOpen]);
 
-  // Dernière adresse sur laquelle la carte a été placée : un changement de
-  // mode d'affichage relance la recherche de zone sans redéplacer la carte.
-  const jumpedMarkerRef = useRef<MarkerPosition | null>(null);
+  // Place la carte sur l'adresse, en interrompant l'éventuel mouvement en
+  // cours (inertie d'un geste, animation). Effet séparé de la recherche de
+  // zone ci-dessous : changer de mode d'affichage ne redéplace pas la carte.
+  useEffect(() => {
+    map?.jumpTo({
+      center: [marker.longitude, marker.latitude],
+      zoom: ZONE_MAX_ZOOM,
+    });
+  }, [map, marker]);
 
   useEffect(() => {
-    if (!map || !marker) {
-      setSelectedZoneCode(null);
+    if (!map) {
       return;
-    }
-
-    // Déplacement impératif (et non via mapState) : jumpTo interrompt
-    // l'éventuel mouvement en cours (inertie d'un geste, animation), alors que
-    // react-map-gl ignore un changement de mapState tant que la carte bouge.
-    if (jumpedMarkerRef.current !== marker) {
-      jumpedMarkerRef.current = marker;
-      map.jumpTo({
-        center: [marker.longitude, marker.latitude],
-        zoom: marker.zoom,
-      });
     }
 
     const idProperty =
@@ -108,10 +98,6 @@ export default function PollutionMapMarker({
       map.off("idle", frame);
     };
   }, [displayMode, map, marker, setSelectedZoneCode]);
-
-  if (!marker) {
-    return null;
-  }
 
   return (
     <Marker

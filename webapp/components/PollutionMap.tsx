@@ -2,12 +2,10 @@
 
 import { useState, useEffect } from "react";
 import PollutionMapBaseLayer from "@/components/PollutionMapBase";
-import type { MarkerPosition } from "@/components/PollutionMapMarker";
 import PollutionZoneDetailPanelV2 from "@/components/PollutionZoneDetailPanelV2";
 import PollutionMapControlsPanel from "@/components/PollutionMapControlsPanel";
 import PollutionMapSearchBox, { FilterResult } from "./PollutionMapSearchBox";
 import CVMInfoModal from "./CVMInfoModal";
-import { MAPLIBRE_MAP } from "@/app/config";
 import { MapProvider } from "react-map-gl/maplibre";
 import MapTopRightControls from "./MapTopRightControls";
 import PollutionMapLegend from "./PollutionMapLegend";
@@ -31,13 +29,11 @@ export default function PollutionMap({
   const [period, setPeriod] = useState("dernier_prel");
   const [category, setCategory] = useState(initialCategory || "tous");
   const [displayMode, setDisplayMode] = useState<"communes" | "udis">("udis");
-  const [mapState, setMapState] = useState<{
+  const [selectedZoneCode, setSelectedZoneCode] = useState<string | null>(null);
+  const [marker, setMarker] = useState<{
     longitude: number;
     latitude: number;
-    zoom: number;
-  }>(MAPLIBRE_MAP.initialViewState);
-  const [selectedZoneCode, setSelectedZoneCode] = useState<string | null>(null);
-  const [marker, setMarker] = useState<MarkerPosition | null>(null);
+  } | null>(null);
 
   // isMobile is only used for non-layout-critical behavior (map gesture mode,
   // legend's default expanded state). It's read after mount, so it starts
@@ -81,13 +77,11 @@ export default function PollutionMap({
     scrollIframeToFullscreen();
   }, [category, period, selectedZoneCode]);
 
-  const handleAddressSelect = async (result: FilterResult | null) => {
+  const handleAddressSelect = (result: FilterResult | null) => {
     if (result) {
-      const { center, zoom, postcode } = result;
-      // La carte est déplacée par PollutionMapMarker (jumpTo), pas via
-      // mapState : react-map-gl ignore un changement de mapState tant que la
-      // carte bouge (inertie d'un geste, animation en cours...).
-      setMarker({ longitude: center[0], latitude: center[1], zoom });
+      const { center, postcode } = result;
+      // La carte est déplacée par PollutionMapMarker (jumpTo).
+      setMarker({ longitude: center[0], latitude: center[1] });
 
       // Detect if we're in a DROM or Metropole based on postcode, and set display mode
       // DROM postcodes: 971 (Guadeloupe), 972 (Martinique), 973 (Guyane), 974 (Réunion), 976 (Mayotte)
@@ -111,8 +105,6 @@ export default function PollutionMap({
               displayMode={displayMode}
               selectedZoneCode={selectedZoneCode}
               setSelectedZoneCode={setSelectedZoneCode}
-              mapState={mapState}
-              onMapStateChange={setMapState}
               marker={marker}
               colorblindMode={colorblindMode}
               isMobile={isMobile}

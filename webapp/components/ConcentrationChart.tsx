@@ -13,6 +13,7 @@ type ConcentrationChartProps = {
   valeurSanitaire: number | null;
   /** Nom lisible de la substance mesurée, ex. "Somme des 20 PFAS". */
   label: string;
+  tronque?: boolean;
 };
 
 // Repère du SVG. Le graphique est dessiné à taille fixe puis mis à l'échelle
@@ -66,6 +67,7 @@ export default function ConcentrationChart({
   limiteQualite,
   valeurSanitaire,
   label,
+  tronque = false,
 }: ConcentrationChartProps) {
   const values = points
     .map((point) => point.valeur)
@@ -297,10 +299,8 @@ export default function ConcentrationChart({
       )}
 
       <p className="mt-1 text-[11px] text-gray-400 leading-relaxed">
-        {values.length} analyses, une par prélèvement, dans l’ordre
-        chronologique. Une valeur à <span className="font-numbers">0</span>{" "}
-        signifie que la substance n’a pas été quantifiée, c’est-à-dire qu’elle
-        est restée sous le seuil de détection du laboratoire.
+        {values.length} analyses{tronque ? " (les plus récentes)" : ""}, une par
+        prélèvement, dans l’ordre chronologique.
       </p>
     </div>
   );

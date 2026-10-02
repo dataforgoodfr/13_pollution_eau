@@ -4,21 +4,29 @@ import db from "@/app/lib/duckdb";
 // Paramètres pour lesquels une courbe d'évolution est proposée dans le panel
 // (cf. CONCENTRATION_PARAM_BY_CATEGORY côté composant). Whitelist explicite :
 // sans elle, la route exposerait un scan libre de int__resultats_udi.
-const ALLOWED_PARAMETRES = new Set(["SPFAS"]);
+const ALLOWED_PARAMETRES = new Set(["SPFAS", "PESTOT"]);
 
-// Au-delà, la courbe n'est plus lisible dans le panel. L'UDI la mieux fournie
-// compte aujourd'hui 105 prélèvements SPFAS.
+// Au-delà, la courbe n'est plus lisible dans le panel : on garde les points
+// les plus récents. Seules quelques zones très suivies (PESTOT) dépassent
+// cette limite.
 const MAX_POINTS = 500;
 
-// Série d'une UDI : le couple (cdreseau, referenceprel) est unique dans
-// int__resultats_udi pour un paramètre donné, une ligne = un point.
+// Un point = un prélèvement. Un même prélèvement peut porter plusieurs
+// résultats pour un paramètre (plusieurs analyses, ce qui arrive pour
+// PESTOT) : on garde la valeur max, comme les bilans annuels. On prend les
+// MAX_POINTS plus récents, remis ensuite dans l'ordre chronologique.
 const UDI_QUERY = `
-  SELECT referenceprel, datetimeprel, valtraduite
-  FROM int__resultats_udi
-  WHERE cdreseau = $1
-    AND cdparametresiseeaux = $2
+  SELECT * FROM (
+    SELECT referenceprel, MAX(datetimeprel) AS datetimeprel,
+      MAX(valtraduite) AS valtraduite
+    FROM int__resultats_udi
+    WHERE cdreseau = $1
+      AND cdparametresiseeaux = $2
+    GROUP BY referenceprel
+    ORDER BY datetimeprel DESC
+    LIMIT ${MAX_POINTS}
+  )
   ORDER BY datetimeprel
-  LIMIT ${MAX_POINTS}
 `;
 
 // Série d'une commune : on passe par le lien commune → UDI plutôt que par
@@ -27,25 +35,31 @@ const UDI_QUERY = `
 // - le lien est historisé par de_partition : sans filtre sur la partition la
 //   plus récente, d'anciens réseaux ressortent (même logique que
 //   fetchCommunesDesservies dans /api/zone-detail) ;
-// - DISTINCT : un prélèvement fait sur une installation amont est dupliqué sur
-//   chaque UDI avale, donc vu plusieurs fois quand la commune en est desservie
-//   par plusieurs (c'est ce que fait int__resultats_communes).
+// - GROUP BY referenceprel : un prélèvement fait sur une installation amont
+//   est dupliqué sur chaque UDI avale, donc vu plusieurs fois quand la
+//   commune en est desservie par plusieurs (c'est ce que fait
+//   int__resultats_communes).
 const COMMUNE_QUERY = `
-  SELECT DISTINCT r.referenceprel, r.datetimeprel, r.valtraduite
-  FROM int__resultats_udi AS r
-  WHERE r.cdparametresiseeaux = $2
-    AND r.cdreseau IN (
-      SELECT cdreseau
-      FROM int__lien_commune_cdreseau
-      WHERE inseecommune = $1
-        AND de_partition = (
-          SELECT max(de_partition)
-          FROM int__lien_commune_cdreseau
-          WHERE inseecommune = $1
-        )
-    )
-  ORDER BY r.datetimeprel
-  LIMIT ${MAX_POINTS}
+  SELECT * FROM (
+    SELECT r.referenceprel, MAX(r.datetimeprel) AS datetimeprel,
+      MAX(r.valtraduite) AS valtraduite
+    FROM int__resultats_udi AS r
+    WHERE r.cdparametresiseeaux = $2
+      AND r.cdreseau IN (
+        SELECT cdreseau
+        FROM int__lien_commune_cdreseau
+        WHERE inseecommune = $1
+          AND de_partition = (
+            SELECT max(de_partition)
+            FROM int__lien_commune_cdreseau
+            WHERE inseecommune = $1
+          )
+      )
+    GROUP BY r.referenceprel
+    ORDER BY datetimeprel DESC
+    LIMIT ${MAX_POINTS}
+  )
+  ORDER BY datetimeprel
 `;
 
 export async function GET(request: NextRequest) {
@@ -89,7 +103,10 @@ export async function GET(request: NextRequest) {
       valeur: row.valtraduite !== null ? Number(row.valtraduite) : null,
     }));
 
-    return NextResponse.json({ parametre, points });
+    // Limite atteinte : les prélèvements plus anciens ont été écartés.
+    const tronque = points.length === MAX_POINTS;
+
+    return NextResponse.json({ parametre, points, tronque });
   } catch (error) {
     console.error("Database Error:", error);
     return NextResponse.json(

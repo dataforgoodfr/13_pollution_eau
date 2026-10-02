@@ -15,16 +15,26 @@ import ConcentrationChart, {
 } from "@/components/ConcentrationChart";
 
 /**
- * Catégories pour lesquelles une courbe de concentration a du sens, et le
- * paramètre qui la porte. Une catégorie absente d'ici n'apparaît pas dans la
- * sous-partie « concentrations » : pour les pesticides notamment, il n'existe
- * pas de paramètre unique qui résume la famille.
+ * Catégories pour lesquelles une courbe de concentration a du sens, le
+ * paramètre qui la porte et une note facultative affichée sous la courbe.
+ * Une catégorie absente d'ici n'apparaît pas dans la sous-partie
+ * « concentrations ».
  *
- * Toute clé ajoutée ici doit l'être aussi dans ALLOWED_PARAMETRES
+ * Tout paramètre ajouté ici doit l'être aussi dans ALLOWED_PARAMETRES
  * (app/api/zone-concentrations/route.ts).
  */
-const CONCENTRATION_PARAM_BY_CATEGORY: Record<string, string> = {
-  pfas: "SPFAS",
+const CONCENTRATION_PARAM_BY_CATEGORY: Record<
+  string,
+  { parametre: string; note?: string }
+> = {
+  // PESTOT est le total publié par le contrôle sanitaire, avec les règles de
+  // calcul de chaque époque. L'onglet « Dernières analyses » le recalcule
+  // (TOTALPESTICIDE), d'où de possibles écarts sur le dernier point.
+  pesticide: {
+    parametre: "PESTOT",
+    note: "Ce total est repris tel quel du contrôle sanitaire (paramètre PESTOT) : il n'est pas recalculé ici.",
+  },
+  pfas: { parametre: "SPFAS" },
 };
 
 type EvolutionTemporelleProps = {
@@ -36,7 +46,10 @@ type EvolutionTemporelleProps = {
   onOpenAnalyses?: (filters?: AnalysesFilters) => void;
 };
 
-type SeriesState = Record<string, ConcentrationPoint[]>;
+type SeriesState = Record<
+  string,
+  { points: ConcentrationPoint[]; tronque: boolean }
+>;
 
 export default function EvolutionTemporelle({
   data,
@@ -59,7 +72,7 @@ export default function EvolutionTemporelle({
 
     Promise.all(
       Object.entries(CONCENTRATION_PARAM_BY_CATEGORY).map(
-        ([categoryId, parametre]) =>
+        ([categoryId, { parametre }]) =>
           fetch(
             `/api/zone-concentrations?type=${displayMode}&code=${encodeURIComponent(
               selectedZoneCode,
@@ -68,7 +81,13 @@ export default function EvolutionTemporelle({
             .then((res) => (res.ok ? res.json() : Promise.reject(res.status)))
             .then(
               (payload) =>
-                [categoryId, payload.points as ConcentrationPoint[]] as const,
+                [
+                  categoryId,
+                  {
+                    points: payload.points as ConcentrationPoint[],
+                    tronque: Boolean(payload.tronque),
+                  },
+                ] as const,
             ),
       ),
     )
@@ -121,7 +140,7 @@ export default function EvolutionTemporelle({
       <section>
         <h3 className="font-medium">Évolution des concentrations</h3>
         <p className="mt-0.5 mb-3 text-sm text-gray-500 leading-relaxed">
-          Concentration mesurée à chaque prélèvement, et non plus par année.
+          Concentration mesurée à chaque analyse.
         </p>
 
         {seriesError && (
@@ -135,7 +154,7 @@ export default function EvolutionTemporelle({
         {series && (
           <div className="space-y-2">
             {Object.entries(CONCENTRATION_PARAM_BY_CATEGORY).map(
-              ([categoryId, parametre]) => {
+              ([categoryId, { parametre, note }]) => {
                 const categoryDetails = getCategoryById(categoryId);
                 const paramRef = parameterValues[parametre];
                 if (!categoryDetails) return null;
@@ -155,12 +174,18 @@ export default function EvolutionTemporelle({
                         : ""}
                     </p>
                     <ConcentrationChart
-                      points={series[categoryId] ?? []}
+                      points={series[categoryId]?.points ?? []}
+                      tronque={series[categoryId]?.tronque ?? false}
                       unite={categoryDetails.unite}
                       limiteQualite={paramRef?.limite_qualite ?? null}
                       valeurSanitaire={paramRef?.valeur_sanitaire_1 ?? null}
                       label={getParameterName(parametre, parameterValues)}
                     />
+                    {note && (
+                      <p className="mt-1 text-[11px] text-gray-400 leading-relaxed">
+                        {note}
+                      </p>
+                    )}
                   </div>
                 );
               },

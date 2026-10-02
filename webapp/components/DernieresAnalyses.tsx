@@ -106,6 +106,24 @@ function buildSummarySentence(
   return `${sentence.charAt(0).toUpperCase()}${sentence.slice(1)}.`;
 }
 
+/**
+ * Phrase de synthèse du dernier prélèvement, toutes catégories de premier
+ * niveau confondues (regroupées par gravité). Reprise dans le texte qui
+ * accompagne le visuel de partage.
+ */
+export function getZoneSummarySentence(data: ZoneDetail): string | null {
+  const buckets = new Map<Severity, ICategory[]>();
+  TOP_LEVEL_CATEGORIES.forEach((item) => {
+    // La gravité ne dépend pas du mode daltonien, seulement la couleur.
+    const { severity } = getLastPrelResult(data, item.id, false);
+    if (!SEVERITY_CLAUSE[severity]) return;
+    const bucket = buckets.get(severity) || [];
+    bucket.push(item);
+    buckets.set(severity, bucket);
+  });
+  return buildSummarySentence(buckets);
+}
+
 type SubstanceGroup = {
   key: string;
   titre: string;
@@ -511,18 +529,8 @@ export default function DernieresAnalyses({
     setCategory(openTopLevel?.id === categoryId ? "tous" : categoryId);
   };
 
-  // Bloc résumé : regroupe les catégories de premier niveau par gravité.
-  const summaryBuckets = new Map<Severity, ICategory[]>();
-  TOP_LEVEL_CATEGORIES.forEach((item) => {
-    const { severity } = getLastPrelResult(data, item.id, colorblindMode);
-    if (!SEVERITY_CLAUSE[severity]) return;
-    const bucket = summaryBuckets.get(severity) || [];
-    bucket.push(item);
-    summaryBuckets.set(severity, bucket);
-  });
-
   const globalResult = getLastPrelResult(data, "tous", colorblindMode);
-  const summarySentence = buildSummarySentence(summaryBuckets);
+  const summarySentence = getZoneSummarySentence(data);
   return (
     <div className="space-y-4">
       {/* Résumé toutes catégories. Bloc purement informatif : il ne pilote pas
@@ -551,9 +559,7 @@ export default function DernieresAnalyses({
         </div>
 
         {summarySentence && (
-          <p className="mt-4 pt-2 text-sm">
-            {summarySentence}
-          </p>
+          <p className="mt-4 pt-2 text-sm">{summarySentence}</p>
         )}
       </section>
 

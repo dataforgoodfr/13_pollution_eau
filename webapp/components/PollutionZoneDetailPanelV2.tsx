@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { X } from "lucide-react";
+import { Send, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { ParameterValues } from "@/app/lib/data";
 import AnalysesModal, {
@@ -9,6 +9,7 @@ import AnalysesModal, {
 } from "@/components/AnalysesModal";
 import DernieresAnalyses from "@/components/DernieresAnalyses";
 import EvolutionTemporelle from "@/components/EvolutionTemporelle";
+import ShareZoneModal from "@/components/ShareZoneModal";
 import type { ZoneDetail } from "@/app/api/zone-detail/route";
 
 type PollutionZoneDetailPanelV2Props = {
@@ -43,6 +44,7 @@ export default function PollutionZoneDetailPanelV2({
   const [zoneData, setZoneData] = useState<ZoneDetail | null>(null);
   const [zoneDataError, setZoneDataError] = useState(false);
   const [showAnalysesModal, setShowAnalysesModal] = useState(false);
+  const [showShareModal, setShowShareModal] = useState(false);
   const [analysesFilters, setAnalysesFilters] = useState<
     AnalysesFilters | undefined
   >(undefined);
@@ -195,13 +197,22 @@ export default function PollutionZoneDetailPanelV2({
           />
         )}
 
+        {/* Partage limité aux UDI : une commune peut être desservie par
+            plusieurs réseaux, d'eaux différentes. */}
         {displayMode === "udis" && (
-          <button
-            onClick={() => openAnalyses()}
-            className="w-full text-center rounded-xl border border-gray-200 py-2 text-sm text-gray-600 hover:bg-gray-50 transition-colors"
-          >
-            Voir toutes les analyses de l&apos;UDI
-          </button>
+          <div className="space-y-1.5">
+            <button
+              onClick={() => setShowShareModal(true)}
+              className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-kaki py-2.5 text-sm font-medium text-white hover:bg-kaki/90 transition-colors"
+            >
+              <Send size={16} />
+              Partager ce résultat
+            </button>
+            <p className="text-center text-xs text-gray-500">
+              Une image prête à publier en story ou en post sur les réseaux
+              sociaux
+            </p>
+          </div>
         )}
 
         <p className="text-xs text-gray-500 leading-relaxed">
@@ -209,9 +220,25 @@ export default function PollutionZoneDetailPanelV2({
           réalisé par les Agences régionales de santé et publié en open data par
           le ministère de la Santé.
           {code &&
-            ` Ils concernent ${displayMode === "communes" ? "la commune identifiée avec le code INSEE" : "le réseau de distribution identifié avec le code "} ${code}.`}
-          {!isEvolution &&
-            " Déplier un polluant l’affiche sur la carte, ce qui permet de comparer cette zone avec les zones voisines."}
+            ` Ils concernent ${displayMode === "communes" ? "la commune identifiée avec le code INSEE" : "le réseau de distribution identifié avec le code"} ${code}.`}
+          {displayMode === "udis" && (
+            <>
+              {" "}
+              <button
+                onClick={() => openAnalyses()}
+                className="text-kaki hover:underline"
+              >
+                Voir toutes les analyses de ce réseau.
+              </button>
+            </>
+          )}
+          {!isEvolution && (
+            <>
+              <br />
+              Déplier un polluant l’affiche sur la carte, ce qui permet de
+              comparer cette zone avec les zones voisines.
+            </>
+          )}
         </p>
       </div>
 
@@ -222,6 +249,15 @@ export default function PollutionZoneDetailPanelV2({
           cdreseau={selectedZoneCode}
           nomreseaux={title}
           initialFilters={analysesFilters}
+        />
+      )}
+
+      {displayMode === "udis" && (
+        <ShareZoneModal
+          open={showShareModal}
+          onOpenChange={setShowShareModal}
+          data={zoneData}
+          colorblindMode={colorblindMode}
         />
       )}
     </div>

@@ -33,10 +33,10 @@ import {
 } from "@/components/ui/table";
 import { DataTableColumnHeader } from "@/components/ui/data-table-column-header";
 import { getCategoryById } from "@/lib/polluants";
+import { getThresholdColor } from "@/lib/parametres";
 
 export type AnalysesFilters = {
   categorie?: string | null;
-  severite?: string | null;
   parametre?: string | null;
   /** Date exacte du prélèvement, au format YYYY-MM-DD. */
   date?: string | null;
@@ -65,7 +65,7 @@ type AnalyseRow = {
   limite_indicative: number | null;
   valeur_sanitaire_1: number | null;
   valeur_sanitaire_2: number | null;
-  severite: string;
+  valeur_sanitaire_1_commentaire: string | null;
 };
 
 /** Unité d'affichage d'une catégorie, telle que définie dans lib/polluants.ts. */
@@ -112,34 +112,6 @@ export function getAnalysesCategorie(categoryId: string): string | undefined {
   return CATEGORY_ID_TO_ANALYSES_CATEGORIE[categoryId];
 }
 
-const SEVERITE_OPTIONS: Array<{
-  value: string;
-  label: string;
-  color: string;
-}> = [
-  {
-    value: "deconseille",
-    label: "Déconseillé (dépassement sanitaire)",
-    color: "#f03b20",
-  },
-  {
-    value: "non_conforme",
-    label: "Non conforme (limite de qualité)",
-    color: "#fe9929",
-  },
-  {
-    value: "vigilance",
-    label: "Vigilance (limite indicative)",
-    color: "#FDC70C",
-  },
-  { value: "quantifie", label: "Quantifié (conforme)", color: "#2ca25f" },
-  { value: "non_quantifie", label: "Non quantifié", color: "#999999" },
-];
-
-const SEVERITE_BY_VALUE = Object.fromEntries(
-  SEVERITE_OPTIONS.map((item) => [item.value, item]),
-);
-
 const ALL_VALUE = "__all__";
 
 const DEFAULT_SORTING: SortingState = [{ id: "datetimeprel", desc: true }];
@@ -154,21 +126,6 @@ function formatDate(value: string | null): string {
   const date = new Date(value.replace(" ", "T"));
   if (Number.isNaN(date.getTime())) return value;
   return date.toLocaleDateString("fr-FR");
-}
-
-function SeveriteBadge({ severite }: { severite: string }) {
-  const details = SEVERITE_BY_VALUE[severite];
-  if (!details)
-    return <span className="text-xs text-gray-500">{severite}</span>;
-  return (
-    <span className="inline-flex items-center gap-1.5 text-xs whitespace-nowrap">
-      <span
-        className="w-2.5 h-2.5 rounded-full flex-shrink-0 border border-black/10"
-        style={{ backgroundColor: details.color }}
-      />
-      {details.label}
-    </span>
-  );
 }
 
 const columns: ColumnDef<AnalyseRow>[] = [
@@ -207,11 +164,21 @@ const columns: ColumnDef<AnalyseRow>[] = [
     id: "valtraduite",
     accessorKey: "valtraduite",
     header: "Valeur",
-    cell: ({ row }) => (
-      <span className="font-numbers">
-        {formatValue(row.original.valtraduite)}
-      </span>
-    ),
+    cell: ({ row }) => {
+      // Mêmes couleurs que dans le panneau de zone (DernieresAnalyses), mais
+      // avec les seuils portés par la ligne : ceux en vigueur à la date du
+      // prélèvement (cf. int__resultats_udi).
+      const { valtraduite, categorie } = row.original;
+      const color =
+        valtraduite !== null
+          ? getThresholdColor(valtraduite, row.original, categorie ?? "")
+          : null;
+      return (
+        <span className="font-numbers" style={color ? { color } : undefined}>
+          {formatValue(valtraduite)}
+        </span>
+      );
+    },
   },
   {
     // Colonne unique pour les 3 colonnes chiffrées : une analyse et ses seuils
@@ -248,10 +215,15 @@ const columns: ColumnDef<AnalyseRow>[] = [
     ),
   },
   {
-    id: "severite",
-    accessorKey: "severite",
-    header: "Statut",
-    cell: ({ row }) => <SeveriteBadge severite={row.original.severite} />,
+    id: "valeur_sanitaire_1_commentaire",
+    accessorKey: "valeur_sanitaire_1_commentaire",
+    header: "Commentaire valeur sanitaire",
+    enableSorting: false,
+    cell: ({ row }) => (
+      <span className="block min-w-[200px] text-xs text-gray-500">
+        {row.original.valeur_sanitaire_1_commentaire || "—"}
+      </span>
+    ),
   },
 ];
 
@@ -270,9 +242,6 @@ export default function AnalysesModal({
 }: AnalysesModalProps) {
   const [categorie, setCategorie] = useState<string | null>(
     initialFilters?.categorie ?? null,
-  );
-  const [severite, setSeverite] = useState<string | null>(
-    initialFilters?.severite ?? null,
   );
   const [parametreInput, setParametreInput] = useState(
     initialFilters?.parametre ?? "",
@@ -294,7 +263,6 @@ export default function AnalysesModal({
   useEffect(() => {
     if (open) {
       setCategorie(initialFilters?.categorie ?? null);
-      setSeverite(initialFilters?.severite ?? null);
       setParametreInput(initialFilters?.parametre ?? "");
       setParametre(initialFilters?.parametre ?? "");
       setDate(initialFilters?.date ?? "");
@@ -324,7 +292,6 @@ export default function AnalysesModal({
         page: String(pageNum),
       });
       if (categorie) params.set("categorie", categorie);
-      if (severite) params.set("severite", severite);
       if (parametre) params.set("parametre", parametre);
       if (date) params.set("date", date);
       if (sort) {
@@ -351,7 +318,7 @@ export default function AnalysesModal({
           }
         });
     },
-    [cdreseau, categorie, severite, parametre, date, sorting],
+    [cdreseau, categorie, parametre, date, sorting],
   );
 
   // Recharge depuis la page 1 à chaque changement de zone/filtre/tri.
@@ -364,7 +331,7 @@ export default function AnalysesModal({
     setRows([]);
     fetchPage(1, false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [open, cdreseau, categorie, severite, parametre, date, sorting]);
+  }, [open, cdreseau, categorie, parametre, date, sorting]);
 
   const hasMore = rows.length < total;
 
@@ -439,25 +406,6 @@ export default function AnalysesModal({
             <SelectContent className="z-[80]">
               <SelectItem value={ALL_VALUE}>Toutes les catégories</SelectItem>
               {CATEGORIE_OPTIONS.map((item) => (
-                <SelectItem key={item.value} value={item.value}>
-                  {item.label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-
-          <Select
-            value={severite ?? ALL_VALUE}
-            onValueChange={(value) =>
-              setSeverite(value === ALL_VALUE ? null : value)
-            }
-          >
-            <SelectTrigger className="w-[240px]">
-              <SelectValue placeholder="Toutes les conformités" />
-            </SelectTrigger>
-            <SelectContent className="z-[80]">
-              <SelectItem value={ALL_VALUE}>Toutes les conformités</SelectItem>
-              {SEVERITE_OPTIONS.map((item) => (
                 <SelectItem key={item.value} value={item.value}>
                   {item.label}
                 </SelectItem>

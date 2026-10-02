@@ -340,6 +340,10 @@ models:
         description: "Unité de mesure pour la première valeur sanitaire"
         type: VARCHAR
 
+      - name: valeur_sanitaire_1_commentaire
+        description: "Commentaire sur la première valeur sanitaire (origine, organisme, année...)"
+        type: VARCHAR
+
       - name: valeur_sanitaire_2
         description: "Deuxième valeur sanitaire de référence"
         type: FLOAT

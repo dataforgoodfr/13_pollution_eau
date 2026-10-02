@@ -16,6 +16,7 @@ SELECT
     MAX(limite_indicative_unite) AS limite_indicative_unite,
     MAX(valeur_sanitaire_1) AS valeur_sanitaire_1,
     MAX(valeur_sanitaire_1_unite) AS valeur_sanitaire_1_unite,
+    MAX(valeur_sanitaire_1_commentaire) AS valeur_sanitaire_1_commentaire,
     MAX(valeur_sanitaire_2) AS valeur_sanitaire_2,
     MAX(valeur_sanitaire_2_unite) AS valeur_sanitaire_2_unite,
     MAX(web_label) AS web_label,

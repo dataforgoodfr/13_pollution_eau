@@ -1,26 +1,17 @@
 import { NextRequest, NextResponse } from "next/server";
 import db from "@/app/lib/duckdb";
 
-const SEVERITE_VALUES = [
-  "non_quantifie",
-  "quantifie",
-  "vigilance",
-  "non_conforme",
-  "deconseille",
-];
-
 const SORTABLE_COLUMNS: Record<string, string> = {
   datetimeprel: "datetimeprel",
   web_label: "web_label",
   categorie: "categorie",
   valtraduite: "valtraduite",
-  severite: "severite",
 };
 
 const PAGE_SIZE = 100;
 
 // Aucune colonne triable n'est unique (une même UDI a des centaines de résultats
-// partageant la même date, le même paramètre ou la même sévérité). Sans clé de
+// partageant la même date, le même paramètre ou la même catégorie). Sans clé de
 // départage, l'ordre des lignes ex aequo n'est pas garanti d'une requête à
 // l'autre : le scroll infini (LIMIT/OFFSET) afficherait alors des doublons et
 // sauterait d'autres lignes. On ajoute la clé unique de la table à chaque tri.
@@ -43,22 +34,15 @@ const BASE_CTE = `
       r.limite_indicative,
       r.valeur_sanitaire_1,
       r.valeur_sanitaire_2,
+      -- Le commentaire vient de la référence actuelle, alors que les seuils
+      -- de r sont ceux en vigueur à la date du prélèvement (reclassements
+      -- pertinent → non pertinent réécrits dans int__resultats_udi). On le
+      -- masque quand la classification de la ligne diffère de l'actuelle,
+      -- sinon il décrirait un statut qui n'était pas encore le sien.
       CASE
-        -- valtraduite absente dans la donnée source : la substance a été
-        -- recherchée sans résultat chiffré, on la traite comme non quantifiée
-        -- (sinon elle tomberait dans le ELSE 'quantifie').
-        WHEN r.valtraduite IS NULL OR r.valtraduite = 0 THEN 'non_quantifie'
-        WHEN
-          r.valeur_sanitaire_1 IS NOT NULL AND r.valtraduite > r.valeur_sanitaire_1
-          THEN 'deconseille'
-        WHEN
-          r.limite_qualite IS NOT NULL AND r.valtraduite > r.limite_qualite
-          THEN 'non_conforme'
-        WHEN
-          r.limite_indicative IS NOT NULL AND r.valtraduite > r.limite_indicative
-          THEN 'vigilance'
-        ELSE 'quantifie'
-      END AS severite
+        WHEN r.categorie_3 IS NOT DISTINCT FROM v.categorie_3
+          THEN v.valeur_sanitaire_1_commentaire
+      END AS valeur_sanitaire_1_commentaire
     FROM int__resultats_udi AS r
     LEFT JOIN int__valeurs_de_reference AS v
       ON r.cdparametresiseeaux = v.cdparametresiseeaux
@@ -81,7 +65,6 @@ const DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
 
 function buildFilters(searchParams: URLSearchParams, cdreseau: string) {
   const categorie = searchParams.get("categorie");
-  const severite = searchParams.get("severite");
   const parametre = searchParams.get("parametre");
   const date = searchParams.get("date");
 
@@ -99,11 +82,6 @@ function buildFilters(searchParams: URLSearchParams, cdreseau: string) {
       `strftime(datetimeprel, '%Y-%m-%d') = $${binders.length + 1}`,
     );
     binders.push((p, i) => p.bindVarchar(i, date));
-  }
-
-  if (severite && SEVERITE_VALUES.includes(severite)) {
-    conditions.push(`severite = $${binders.length + 1}`);
-    binders.push((p, i) => p.bindVarchar(i, severite));
   }
 
   if (parametre) {
@@ -187,7 +165,9 @@ export async function GET(request: NextRequest) {
         row.valeur_sanitaire_1 !== null ? Number(row.valeur_sanitaire_1) : null,
       valeur_sanitaire_2:
         row.valeur_sanitaire_2 !== null ? Number(row.valeur_sanitaire_2) : null,
-      severite: String(row.severite),
+      valeur_sanitaire_1_commentaire: row.valeur_sanitaire_1_commentaire
+        ? String(row.valeur_sanitaire_1_commentaire)
+        : null,
     }));
 
     return NextResponse.json({ rows, total });

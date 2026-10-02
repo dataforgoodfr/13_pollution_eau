@@ -8,6 +8,7 @@ import {
   type ColumnDef,
   type SortingState,
 } from "@tanstack/react-table";
+import { Download } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -126,6 +127,63 @@ function formatDate(value: string | null): string {
   const date = new Date(value.replace(" ", "T"));
   if (Number.isNaN(date.getTime())) return value;
   return date.toLocaleDateString("fr-FR");
+}
+
+// Séparateur ";" et virgule décimale : le format qu'Excel ouvre directement
+// avec des paramètres régionaux français.
+function csvField(value: string | number | null): string {
+  if (value === null) return "";
+  const text =
+    typeof value === "number" ? String(value).replace(".", ",") : value;
+  return /[;"\n\r]/.test(text) ? `"${text.replace(/"/g, '""')}"` : text;
+}
+
+const CSV_COLUMNS: Array<{
+  header: string;
+  value: (row: AnalyseRow) => string | number | null;
+}> = [
+  { header: "date_prelevement", value: (r) => r.datetimeprel },
+  { header: "reference_prelevement", value: (r) => r.referenceprel },
+  { header: "code_parametre", value: (r) => r.cdparametresiseeaux },
+  { header: "substance", value: (r) => r.web_label },
+  {
+    header: "categorie",
+    value: (r) => CATEGORIE_BY_VALUE[r.categorie ?? ""]?.label ?? r.categorie,
+  },
+  { header: "valeur", value: (r) => r.valtraduite },
+  {
+    header: "unite",
+    value: (r) => CATEGORIE_BY_VALUE[r.categorie ?? ""]?.unite ?? null,
+  },
+  { header: "limite_qualite", value: (r) => r.limite_qualite },
+  { header: "limite_indicative", value: (r) => r.limite_indicative },
+  { header: "valeur_sanitaire", value: (r) => r.valeur_sanitaire_1 },
+  {
+    header: "commentaire_valeur_sanitaire",
+    value: (r) => r.valeur_sanitaire_1_commentaire?.trim() ?? null,
+  },
+];
+
+function buildCsv(rows: AnalyseRow[]): string {
+  const lines = [
+    CSV_COLUMNS.map((col) => col.header).join(";"),
+    ...rows.map((row) =>
+      CSV_COLUMNS.map((col) => csvField(col.value(row))).join(";"),
+    ),
+  ];
+  // BOM : sans lui, Excel lit le fichier en Windows-1252 et casse les accents.
+  return `\uFEFF${lines.join("\r\n")}\r\n`;
+}
+
+function downloadFile(content: string, filename: string) {
+  const url = URL.createObjectURL(
+    new Blob([content], { type: "text/csv;charset=utf-8" }),
+  );
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = filename;
+  link.click();
+  URL.revokeObjectURL(url);
 }
 
 const columns: ColumnDef<AnalyseRow>[] = [
@@ -277,18 +335,12 @@ export default function AnalysesModal({
     return () => clearTimeout(handle);
   }, [parametreInput]);
 
-  const fetchPage = useCallback(
-    (pageNum: number, append: boolean) => {
-      if (!cdreseau) return;
-
-      const requestId = ++requestIdRef.current;
-      if (append) setLoadingMore(true);
-      else setLoadingInitial(true);
-      setError(false);
-
+  /** URL d'une page de résultats, avec les filtres et le tri courants. */
+  const pageUrl = useCallback(
+    (pageNum: number) => {
       const sort = sorting[0];
       const params = new URLSearchParams({
-        cdreseau,
+        cdreseau: cdreseau ?? "",
         page: String(pageNum),
       });
       if (categorie) params.set("categorie", categorie);
@@ -298,8 +350,21 @@ export default function AnalysesModal({
         params.set("sortBy", sort.id);
         params.set("sortDir", sort.desc ? "desc" : "asc");
       }
+      return `/api/udi-analyses?${params.toString()}`;
+    },
+    [cdreseau, categorie, parametre, date, sorting],
+  );
 
-      fetch(`/api/udi-analyses?${params.toString()}`)
+  const fetchPage = useCallback(
+    (pageNum: number, append: boolean) => {
+      if (!cdreseau) return;
+
+      const requestId = ++requestIdRef.current;
+      if (append) setLoadingMore(true);
+      else setLoadingInitial(true);
+      setError(false);
+
+      fetch(pageUrl(pageNum))
         .then((res) => (res.ok ? res.json() : Promise.reject(res.status)))
         .then((data) => {
           if (requestId !== requestIdRef.current) return;
@@ -318,7 +383,7 @@ export default function AnalysesModal({
           }
         });
     },
-    [cdreseau, categorie, parametre, date, sorting],
+    [cdreseau, pageUrl],
   );
 
   // Recharge depuis la page 1 à chaque changement de zone/filtre/tri.
@@ -334,6 +399,63 @@ export default function AnalysesModal({
   }, [open, cdreseau, categorie, parametre, date, sorting]);
 
   const hasMore = rows.length < total;
+
+  // Export CSV : l'API est paginée, on récupère donc toutes les pages (avec
+  // les filtres et le tri affichés) avant de générer le fichier côté client.
+  // `exportProgress` vaut null hors export, sinon la part déjà récupérée (0-1).
+  const [exportProgress, setExportProgress] = useState<number | null>(null);
+  const [exportError, setExportError] = useState(false);
+  const exportAbortRef = useRef<AbortController | null>(null);
+
+  // Fermer la modale ou changer de zone annule un export en cours.
+  useEffect(() => {
+    return () => exportAbortRef.current?.abort();
+  }, [open, cdreseau]);
+
+  const exportCsv = async () => {
+    if (!cdreseau || exportProgress !== null) return;
+
+    const controller = new AbortController();
+    exportAbortRef.current = controller;
+    setExportError(false);
+    setExportProgress(0);
+
+    const getPage = async (
+      pageNum: number,
+    ): Promise<{ rows: AnalyseRow[]; total: number }> => {
+      const res = await fetch(pageUrl(pageNum), { signal: controller.signal });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      return res.json();
+    };
+
+    try {
+      // Pages chargées une à une jusqu'à atteindre le total annoncé par l'API.
+      const allRows: AnalyseRow[] = [];
+      let pageNum = 1;
+      let exportTotal = Infinity;
+      while (allRows.length < exportTotal) {
+        const data = await getPage(pageNum);
+        if (data.rows.length === 0) break;
+        allRows.push(...data.rows);
+        exportTotal = data.total;
+        setExportProgress(allRows.length / exportTotal);
+        pageNum += 1;
+      }
+
+      const today = new Date().toISOString().slice(0, 10);
+      downloadFile(buildCsv(allRows), `analyses_${cdreseau}_${today}.csv`);
+    } catch (err) {
+      if (!controller.signal.aborted) {
+        console.error("Failed to export analyses:", err);
+        setExportError(true);
+      }
+    } finally {
+      if (exportAbortRef.current === controller) {
+        exportAbortRef.current = null;
+        setExportProgress(null);
+      }
+    }
+  };
 
   const scrollContainerRef = useRef<HTMLDivElement | null>(null);
   const observerRef = useRef<IntersectionObserver | null>(null);
@@ -438,6 +560,22 @@ export default function AnalysesModal({
           <span className="text-xs text-gray-500 ml-auto whitespace-nowrap">
             {resultCountLabel}
           </span>
+
+          <button
+            onClick={exportCsv}
+            disabled={exportProgress !== null || total === 0}
+            className="inline-flex items-center gap-1.5 rounded-md border border-gray-200 px-2.5 py-1.5 text-xs text-gray-600 hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            <Download className="w-3.5 h-3.5" />
+            {exportProgress !== null
+              ? `Export… ${Math.round(exportProgress * 100)} %`
+              : "Exporter en CSV"}
+          </button>
+          {exportError && (
+            <span className="text-xs text-red-600">
+              L&apos;export a échoué.
+            </span>
+          )}
         </div>
 
         {/*

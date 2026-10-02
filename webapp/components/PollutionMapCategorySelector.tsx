@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import {
   availableCategories,
@@ -7,15 +8,7 @@ import {
   getCategoryById,
 } from "@/lib/polluants";
 import { BILAN_YEARS, LATEST_BILAN_YEAR } from "@/lib/zoneDetail";
-import {
-  LayoutGrid,
-  Droplets,
-  Sprout,
-  Leaf,
-  Factory,
-  FlaskConical,
-  type LucideIcon,
-} from "lucide-react";
+import { ChevronDown } from "lucide-react";
 
 type PollutionMapCategorySelectorProps = {
   period: string;
@@ -84,6 +77,17 @@ export default function PollutionMapCategorySelector({
   // pas de choix de temporalité.
   const hasBilan = !!getCategoryById(category)?.bilanAnnuel;
 
+  // Accordéon de l'étape 3 : un seul groupe ouvert à la fois, par défaut celui
+  // qui contient la catégorie sélectionnée.
+  const activeGroupTitle =
+    selectedTopLevel?.groupes?.find((groupe) =>
+      groupe.options.some((option) => option.id === category),
+    )?.titre ?? null;
+  const [openGroup, setOpenGroup] = useState<string | null>(activeGroupTitle);
+  useEffect(() => {
+    if (activeGroupTitle) setOpenGroup(activeGroupTitle);
+  }, [activeGroupTitle]);
+
   return (
     <div className="space-y-6">
       {/* 1. Choix du polluant */}
@@ -118,14 +122,14 @@ export default function PollutionMapCategorySelector({
       <section>
         <SectionTitle step={2}>Temporalité</SectionTitle>
         {hasBilan && (
-          <div className="grid grid-cols-2 gap-1 rounded-xl bg-gray-100 p-1">
+          <div className="grid grid-cols-2 gap-2">
             <button
               onClick={() => setPeriod("dernier_prel")}
               className={cn(
-                "rounded-lg px-2 py-1.5 text-xs transition-colors",
+                "rounded-xl border p-2 text-xs transition-colors",
                 !isBilan
-                  ? "bg-white text-gray-900 font-medium shadow-sm"
-                  : "text-gray-600 hover:text-gray-900",
+                  ? "bg-kaki text-white border-kaki"
+                  : "bg-white text-gray-700 border-gray-300 hover:border-gray-400",
               )}
             >
               Dernières analyses
@@ -133,10 +137,10 @@ export default function PollutionMapCategorySelector({
             <button
               onClick={() => setPeriod(defaultBilanPeriod)}
               className={cn(
-                "rounded-lg px-2 py-1.5 text-xs transition-colors",
+                "rounded-xl border p-2 text-xs transition-colors",
                 isBilan
-                  ? "bg-white text-gray-900 font-medium shadow-sm"
-                  : "text-gray-600 hover:text-gray-900",
+                  ? "bg-kaki text-white border-kaki"
+                  : "bg-white text-gray-700 border-gray-300 hover:border-gray-400",
               )}
             >
               Bilans annuels
@@ -145,7 +149,8 @@ export default function PollutionMapCategorySelector({
         )}
         {!isBilan && lastUpdateDate && (
           <p className={cn("text-sm", hasBilan && "mt-2")}>
-            Dernière analyse disponible : {lastUpdateDate}
+            Dernière analyse disponible :{" "}
+            <span className="font-semibold">{lastUpdateDate}</span>
           </p>
         )}
         {isBilan && (
@@ -167,25 +172,46 @@ export default function PollutionMapCategorySelector({
       {selectedTopLevel?.groupes && (
         <section>
           <SectionTitle step={3}>Que souhaitez-vous savoir ?</SectionTitle>
-          <div className="space-y-4 rounded-xl bg-gray-50 p-3">
-            {selectedTopLevel.groupes.map((groupe) => (
-              <div key={groupe.titre}>
-                <p className="text-xs font-medium text-gray-600 mb-1.5">
-                  {groupe.titre}
-                </p>
-                <div className="flex flex-wrap gap-1.5">
-                  {groupe.options.map((option) => (
-                    <Chip
-                      key={option.id}
-                      active={category === option.id}
-                      onClick={() => setCategory(option.id)}
-                    >
-                      {option.label}
-                    </Chip>
-                  ))}
+          <div className="divide-y divide-gray-200 rounded-xl bg-gray-50">
+            {selectedTopLevel.groupes.map((groupe) => {
+              const isOpen = openGroup === groupe.titre;
+              const hasActiveOption = groupe.options.some(
+                (option) => option.id === category,
+              );
+              return (
+                <div key={groupe.titre}>
+                  <button
+                    onClick={() => setOpenGroup(isOpen ? null : groupe.titre)}
+                    aria-expanded={isOpen}
+                    className="flex w-full items-center justify-between gap-2 p-3 text-left text-xs font-medium text-gray-600 hover:text-gray-900"
+                  >
+                    <span className={cn(hasActiveOption && "text-kaki")}>
+                      {groupe.titre}
+                    </span>
+                    <ChevronDown
+                      size={16}
+                      className={cn(
+                        "flex-shrink-0 transition-transform",
+                        isOpen && "rotate-180",
+                      )}
+                    />
+                  </button>
+                  {isOpen && (
+                    <div className="flex flex-wrap gap-1.5 px-3 pb-3">
+                      {groupe.options.map((option) => (
+                        <Chip
+                          key={option.id}
+                          active={category === option.id}
+                          onClick={() => setCategory(option.id)}
+                        >
+                          {option.label}
+                        </Chip>
+                      ))}
+                    </div>
+                  )}
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </section>
       )}

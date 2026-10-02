@@ -8,7 +8,6 @@ type DonutChartProps = {
   title: string;
   slices: DonutSlice[];
   total: number;
-  formatTotal: (value: number) => string;
   formatValue: (value: number) => string;
 };
 
@@ -19,7 +18,6 @@ export default function DonutChart({
   title,
   slices,
   total,
-  formatTotal,
   formatValue,
 }: DonutChartProps) {
   if (total <= 0) {
@@ -30,24 +28,24 @@ export default function DonutChart({
 
   let offset = 0;
   const arcs = nonZeroSlices.map((slice) => {
-      const fraction = slice.value / total;
-      const dash = fraction * CIRCUMFERENCE;
-      const arc = (
-        <circle
-          key={slice.color + slice.label}
-          cx="21"
-          cy="21"
-          r={RADIUS}
-          fill="none"
-          stroke={slice.color}
-          strokeWidth="6"
-          strokeDasharray={`${dash} ${CIRCUMFERENCE - dash}`}
-          strokeDashoffset={-offset}
-        />
-      );
-      offset += dash;
-      return arc;
-    });
+    const fraction = slice.value / total;
+    const dash = fraction * CIRCUMFERENCE;
+    const arc = (
+      <circle
+        key={slice.color + slice.label}
+        cx="21"
+        cy="21"
+        r={RADIUS}
+        fill="none"
+        stroke={slice.color}
+        strokeWidth="6"
+        strokeDasharray={`${dash} ${CIRCUMFERENCE - dash}`}
+        strokeDashoffset={-offset}
+      />
+    );
+    offset += dash;
+    return arc;
+  });
 
   const ariaLabel = `${title} : ${nonZeroSlices
     .map(
@@ -58,6 +56,9 @@ export default function DonutChart({
 
   return (
     <div className="flex flex-col items-center gap-2">
+      <h4 className="w-full text-center text-base font-semibold leading-snug text-gray-900">
+        {title}
+      </h4>
       <svg
         viewBox="0 0 42 42"
         className="w-20 h-20 -rotate-90"
@@ -66,12 +67,6 @@ export default function DonutChart({
       >
         {arcs}
       </svg>
-      <div className="text-center">
-        <div className="text-sm font-semibold text-gray-900">
-          {formatTotal(total)}
-        </div>
-        <div className="text-sm text-gray-500">{title}</div>
-      </div>
       <ul className="w-full space-y-1">
         {nonZeroSlices.map((slice) => (
           <li

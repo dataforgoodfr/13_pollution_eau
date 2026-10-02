@@ -159,6 +159,8 @@ export const availableCategories: ICategory[] = [
   {
     id: "pfas",
     nomAffichage: "PFAS",
+    lienExterne:
+      "https://dansmoneau.fr/comprendre/comprendre-les-contaminants-chimiques-de-leau-potable/les-pfas/",
     disable: false,
     // "pfas" désigne ici la carte des 20 PFAS réglementés
     description:
@@ -259,6 +261,8 @@ export const availableCategories: ICategory[] = [
       {
         id: "tfa",
         nomAffichage: "TFA",
+        lienExterne:
+          "https://dansmoneau.fr/comprendre/comprendre-les-contaminants-chimiques-de-leau-potable/les-pfas/",
         disable: false,
         enfants: [],
         description:
@@ -365,6 +369,8 @@ export const availableCategories: ICategory[] = [
   {
     id: "pesticide",
     nomAffichage: "Pesticides",
+    lienExterne:
+      "https://dansmoneau.fr/comprendre/comprendre-les-contaminants-chimiques-de-leau-potable/les-pesticides/",
     disable: false,
     description:
       "Le terme “pesticides” regroupe ici les substances actives chimiques (herbicides, insecticides, fongicides etc.) contenues dans les produits phytosanitaires (utilisés en agriculture) ou biocides (utilisés à domicile ou dans les bâtiments) ainsi que les substances issues de leur dégradation, appelés métabolites.",
@@ -486,6 +492,8 @@ export const availableCategories: ICategory[] = [
       {
         id: "sub_active",
         nomAffichage: "Substances actives",
+        lienExterne:
+          "https://dansmoneau.fr/comprendre/comprendre-les-contaminants-chimiques-de-leau-potable/les-pesticides/",
         disable: false,
         enfants: [],
         description:
@@ -577,6 +585,8 @@ export const availableCategories: ICategory[] = [
       {
         id: "metabolite_p",
         nomAffichage: "Métabolites pertinents",
+        lienExterne:
+          "https://dansmoneau.fr/comprendre/comprendre-les-contaminants-chimiques-de-leau-potable/les-metabolites-de-pesticides/",
         disable: false,
         description:
           "Les métabolites sont des substances issues de la dégradation des pesticides dans l'environnement. Ils sont jugés pertinents “s'il y a lieu de considérer qu'il pourrait engendrer un risque sanitaire inacceptable pour le consommateur”.",
@@ -669,6 +679,8 @@ export const availableCategories: ICategory[] = [
       {
         id: "metabolite_np",
         nomAffichage: "Métabolites non pertinents",
+        lienExterne:
+          "https://dansmoneau.fr/comprendre/comprendre-les-contaminants-chimiques-de-leau-potable/les-metabolites-de-pesticides/",
         disable: false,
         description:
           "Les métabolites sont des substances issues de la dégradation des pesticides dans l'environnement. Les métabolites non pertinents, jugés sans risque sanitaire inacceptable pour le consommateur, doivent respecter une valeur “indicative” de 0.9 µg/L. Le dépassement de cette valeur n'est toutefois pas considéré comme une “non conformité”. Les métabolites non pertinents ne sont pas comptés dans le total pesticide réglementaire.",
@@ -757,6 +769,8 @@ export const availableCategories: ICategory[] = [
       {
         id: "metabolite_esa_metolachlore",
         nomAffichage: "ESA-métolachlore",
+        lienExterne:
+          "https://dansmoneau.fr/comprendre/comprendre-les-contaminants-chimiques-de-leau-potable/les-metabolites-de-pesticides/",
         disable: false,
         enfants: [],
         description:
@@ -852,6 +866,8 @@ export const availableCategories: ICategory[] = [
       {
         id: "metabolite_chlorothalonil_r471811",
         nomAffichage: "Chlorothalonil R471811",
+        lienExterne:
+          "https://dansmoneau.fr/comprendre/comprendre-les-contaminants-chimiques-de-leau-potable/les-metabolites-de-pesticides/",
         disable: false,
         enfants: [],
         description:
@@ -947,6 +963,8 @@ export const availableCategories: ICategory[] = [
       {
         id: "metabolite_chloridazone_desphenyl",
         nomAffichage: "Chloridazone desphényl",
+        lienExterne:
+          "https://dansmoneau.fr/comprendre/comprendre-les-contaminants-chimiques-de-leau-potable/les-metabolites-de-pesticides/",
         disable: false,
         enfants: [],
         description:
@@ -1037,6 +1055,8 @@ export const availableCategories: ICategory[] = [
       {
         id: "metabolite_chloridazone_methyl_desphenyl",
         nomAffichage: "Chloridazone methyl desphényl",
+        lienExterne:
+          "https://dansmoneau.fr/comprendre/comprendre-les-contaminants-chimiques-de-leau-potable/les-metabolites-de-pesticides/",
         disable: false,
         enfants: [],
         description:
@@ -1127,6 +1147,8 @@ export const availableCategories: ICategory[] = [
       {
         id: "metabolite_atrazine_desethyl",
         nomAffichage: "Atrazine déséthyl",
+        lienExterne:
+          "https://dansmoneau.fr/comprendre/comprendre-les-contaminants-chimiques-de-leau-potable/les-metabolites-de-pesticides/",
         disable: false,
         enfants: [],
         description:
@@ -1217,6 +1239,8 @@ export const availableCategories: ICategory[] = [
       {
         id: "pes_total_reg",
         nomAffichage: "Total pesticides réglementaire",
+        lienExterne:
+          "https://dansmoneau.fr/comprendre/comprendre-les-contaminants-chimiques-de-leau-potable/les-pesticides/",
         disable: false,
         enfants: [],
         description:
@@ -1309,6 +1333,8 @@ export const availableCategories: ICategory[] = [
       {
         id: "pes_total_ts",
         nomAffichage: "Total tous pesticides",
+        lienExterne:
+          "https://dansmoneau.fr/comprendre/comprendre-les-contaminants-chimiques-de-leau-potable/les-pesticides/",
         disable: false,
         enfants: [],
         description:
@@ -1403,6 +1429,8 @@ export const availableCategories: ICategory[] = [
   {
     id: "nitrate",
     nomAffichage: "Nitrates",
+    lienExterne:
+      "https://dansmoneau.fr/comprendre/comprendre-les-contaminants-chimiques-de-leau-potable/les-nitrates/",
     disable: false,
     enfants: [],
     description:
@@ -1491,6 +1519,8 @@ export const availableCategories: ICategory[] = [
   {
     id: "cvm",
     nomAffichage: "CVM",
+    lienExterne:
+      "https://dansmoneau.fr/comprendre/comprendre-les-contaminants-chimiques-de-leau-potable/les-cvm/",
     disable: false,
     enfants: [],
     description:
@@ -1651,6 +1681,8 @@ export const availableCategories: ICategory[] = [
   {
     id: "sub_indus_perchlorate",
     nomAffichage: "Perchlorate",
+    lienExterne:
+      "https://dansmoneau.fr/comprendre/comprendre-les-contaminants-chimiques-de-leau-potable/les-perchlorates/",
     disable: false,
     enfants: [],
     description:

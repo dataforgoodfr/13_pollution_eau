@@ -3,7 +3,7 @@
 import { ExternalLink, Info, X } from "lucide-react";
 import PollutionMapCategorySelector from "./PollutionMapCategorySelector";
 import DonutChart from "./DonutChart";
-import { getStatistic, getStatisticValue } from "@/lib/stats";
+import { getStatisticValue } from "@/lib/stats";
 import { getLegendItems, type LegendStatItem } from "@/lib/legendStats";
 import { getCategoryById } from "@/lib/polluants";
 import type { PollutionStats } from "@/app/lib/data";
@@ -70,6 +70,33 @@ function LegendItem({
   );
 }
 
+// Ex. "23 réseaux de distribution, desservant 450 000 habitants, ont distribué
+// au moins une fois dans l'année une eau non conforme (PFAS)."
+function getDepassementSentence(
+  count: number,
+  population: number,
+  ratioLabelPlural: string,
+  nomAffichage: string,
+): string {
+  // "analyses non conformes" -> "non conforme", "analyses > 0,5 µg/L" -> "> 0,5 µg/L"
+  const qualificatif = ratioLabelPlural
+    .replace(/^analyses /, "")
+    .replace(/conformes/g, "conforme");
+  const fin = `au moins une fois dans l'année une eau ${qualificatif} (${nomAffichage}).`;
+  if (count === 0) {
+    return `Aucun réseau de distribution n'a distribué ${fin}`;
+  }
+  const reseaux =
+    count === 1
+      ? "1 réseau de distribution"
+      : `${count.toLocaleString("fr-FR")} réseaux de distribution`;
+  const habitants =
+    population > 0
+      ? `, desservant ${formatPopulation(population)}${population >= 1_000_000 ? " d'habitants" : " habitants"},`
+      : "";
+  return `${reseaux}${habitants} ${count === 1 ? "a" : "ont"} distribué ${fin}`;
+}
+
 type PollutionMapControlsPanelProps = {
   period: string;
   setPeriod: (period: string) => void;
@@ -93,7 +120,6 @@ export default function PollutionMapControlsPanel({
   displayMode,
   onClose,
 }: PollutionMapControlsPanelProps) {
-  const totalUdis = getStatistic(pollutionStats, "total_udis");
   const lastUpdateValue = getStatisticValue(
     pollutionStats,
     "derniere_mise_a_jour",
@@ -130,6 +156,24 @@ export default function PollutionMapControlsPanel({
       color: item.color,
       value: item.population as number,
     }));
+  // Bilan annuel : réseaux / habitants ayant reçu au moins une fois dans
+  // l'année une eau au-delà du seuil (somme des tranches > 0%)
+  const depassementItems = legendItems.filter(
+    (item) => item.depassementAnnuel && item.count !== null,
+  );
+  const depassementSentence =
+    categoryDetails?.bilanAnnuel && depassementItems.length > 0
+      ? getDepassementSentence(
+          depassementItems.reduce((sum, item) => sum + item.count!, 0),
+          depassementItems.reduce(
+            (sum, item) => sum + (item.population ?? 0),
+            0,
+          ),
+          categoryDetails.bilanAnnuel.ratioLabelPlural,
+          categoryDetails.nomAffichage,
+        )
+      : null;
+
   const totalUdisInChart = udiSlices.reduce(
     (sum, slice) => sum + slice.value,
     0,
@@ -205,56 +249,33 @@ export default function PollutionMapControlsPanel({
           </div>
         </div>
 
-        {(totalUdis !== null || lastUpdateDate || totalUdisInChart > 0) && (
+        {totalUdisInChart > 0 && (
           <div className="border-t border-greylight pt-6">
             <h3 className="text-sm font-semibold text-greydark uppercase tracking-wide mb-3">
-              Quelques chiffres
+              Statistiques
             </h3>
-            <div className="grid grid-cols-2 gap-3">
-              {totalUdis !== null && (
+            <div className="grid grid-cols-1 gap-3">
+              <div className="rounded-xl border border-greylight p-3">
+                <DonutChart
+                  title="Nombre de réseaux de distribution concernés par chaque situation"
+                  slices={udiSlices}
+                  total={totalUdisInChart}
+                  formatValue={(n) => n.toLocaleString("fr-FR")}
+                />
+              </div>
+              {totalPopulation > 0 && (
                 <div className="rounded-xl border border-greylight p-3">
-                  <div className="text-xl font-semibold text-dark">
-                    {totalUdis.toLocaleString("fr-FR")}
-                  </div>
-                  <div className="text-sm text-greydark">
-                    réseaux de distribution suivis
-                  </div>
-                </div>
-              )}
-              {lastUpdateDate && (
-                <div className="rounded-xl border border-greylight p-3">
-                  <div className="text-xl font-semibold text-dark">
-                    {lastUpdateDate}
-                  </div>
-                  <div className="text-sm text-greydark">
-                    dernière analyse disponible
-                  </div>
+                  <DonutChart
+                    title="Nombre d’habitants concernés par chaque situation"
+                    slices={populationSlices}
+                    total={totalPopulation}
+                    formatValue={formatPopulation}
+                  />
                 </div>
               )}
             </div>
-            {totalUdisInChart > 0 && (
-              <div className="grid grid-cols-1 gap-3 mt-3">
-                <div className="rounded-xl border border-greylight p-3">
-                  <DonutChart
-                    title="réseaux de distribution"
-                    slices={udiSlices}
-                    total={totalUdisInChart}
-                    formatTotal={(n) => `${n.toLocaleString("fr-FR")}`}
-                    formatValue={(n) => n.toLocaleString("fr-FR")}
-                  />
-                </div>
-                {totalPopulation > 0 && (
-                  <div className="rounded-xl border border-greylight p-3">
-                    <DonutChart
-                      title="nombre d'habitants"
-                      slices={populationSlices}
-                      total={totalPopulation}
-                      formatTotal={(n) => `${formatPopulation(n)}`}
-                      formatValue={formatPopulation}
-                    />
-                  </div>
-                )}
-              </div>
+            {depassementSentence && (
+              <p className="mt-3 text-sm">{depassementSentence}</p>
             )}
           </div>
         )}

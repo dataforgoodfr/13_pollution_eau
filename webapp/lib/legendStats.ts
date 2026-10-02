@@ -9,12 +9,15 @@ export type LegendStatItem = {
   count: number | null;
   population: number | null;
   explication?: string;
+  // Bilan annuel : vrai pour les tranches où au moins une analyse de l'année
+  // dépasse le seuil (ratio > 0%)
+  depassementAnnuel?: boolean;
 };
 
 /**
  * Builds the legend rows (label, color, UDI count, population) for a given
  * period/category, reading the matching stats from `web__stats_udi`. Shared
- * between the legend and the "Quelques chiffres" donut charts so both stay
+ * between the legend and the "Statistiques" donut charts so both stay
  * in sync.
  */
 export function getLegendItems(
@@ -70,6 +73,7 @@ export function getLegendItems(
       color: colorblindMode ? item.couleurAlt : item.couleur,
       count: stat(statName),
       population: stat(`${statName}_population`),
+      depassementAnnuel: item.limite > 0,
     });
   });
 

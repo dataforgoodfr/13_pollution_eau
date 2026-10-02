@@ -44,7 +44,8 @@ interface DetailResultat {
   couleur: string;
   couleurAlt: string;
   severite: Severity;
-  explication?: string;
+  labelAdd?: string;
+  interpretation?: string;
 }
 
 interface RatioLimite {
@@ -142,7 +143,7 @@ export const availableCategories: ICategory[] = [
           couleur: "#fb6a4a",
           couleurAlt: "#dd1c77",
           severite: "deconseille_sensibles",
-          explication:
+          labelAdd:
             "L'eau devrait être déconseillée à la consommation pour les personnes sensibles (nourrissons, femmes enceintes ou allaitantes), en raison des concentrations en nitrates ou en perchlorate, d'après les recommandations du Ministère de la Santé ou du Haut Conseil de la Santé Publique.",
         },
         deconseille_population: {
@@ -150,7 +151,7 @@ export const availableCategories: ICategory[] = [
           couleur: "#980043",
           couleurAlt: "#49006a",
           severite: "deconseille_population",
-          explication:
+          labelAdd:
             "L'eau devrait être déconseillée à la consommation pour toute la population, en raison des concentrations en pesticides ou en PFAS, d'après les recommandations du Ministère de la Santé ou du Haut Conseil de la Santé Publique.",
         },
       },
@@ -187,26 +188,34 @@ export const availableCategories: ICategory[] = [
           couleur: "#fee391",
           couleurAlt: "#fec44f",
           severite: "quantifie",
+          interpretation:
+            "La somme des 20 PFAS est inférieure à la limite de qualité réglementaire de 0,1 µg/L et la somme des 4 PFAS est inférieure à la limite recommandée par le Haut Conseil de la Santé Publique. L’eau est conforme à la réglementation pour les PFAS.",
         },
         somme_20pfas_inf_0_1_et_4pfas_sup_0_02: {
           label: "Eau conforme mais dépassement de la limite HCSP",
           couleur: "#fec44f",
           couleurAlt: "#fe9929",
           severite: "vigilance",
+          interpretation:
+            "La somme des 20 PFAS est inférieure à la limite de qualité réglementaire de 0,1 µg/L. L’eau est donc conforme à la réglementation pour les PFAS. Toutefois, la somme des 4 PFAS est supérieure à la limite recommandée par le Haut Conseil de la Santé Publique, indiquant que des mesures doivent être prises rapidement pour rétablir la qualité de l’eau.  ",
         },
         somme_20pfas_sup_0_1: {
           label: "Eau non conforme",
           couleur: "#fe9929",
           couleurAlt: "#d95f0e",
           severite: "non_conforme",
+          interpretation:
+            "La qualité de l’eau est non conforme à la réglementation car la somme des 20 PFAS dépasse la limite de qualité réglementaire de 0,1 µg/L. Des mesures doivent être prises rapidement pour rétablir la qualité de l’eau.",
         },
         sup_valeur_sanitaire: {
           label: "Eau non conforme et déconseillée à la consommation",
           couleur: "#980043",
           couleurAlt: "#49006a",
           severite: "deconseille_population",
-          explication:
+          labelAdd:
             "La concentration d'un ou plusieurs PFAS dépasse la limite sanitaire.",
+          interpretation:
+            "La qualité de l’eau est non conforme à la réglementation car la somme des 20 PFAS dépasse la limite de qualité réglementaire de 0.1 µg/L. De plus, La concentration d'un ou plusieurs PFAS dépasse la limite sanitaire. L’eau doit être interdite à la consommation pour l’ensemble de la population.",
         },
       },
     },
@@ -408,7 +417,7 @@ export const availableCategories: ICategory[] = [
           couleur: "#980043",
           couleurAlt: "#49006a",
           severite: "deconseille_population",
-          explication:
+          labelAdd:
             "L'eau est déconseillée à la consommation d'après les recommandations du Haut Conseil de la Santé Publique.",
         },
       },
@@ -533,7 +542,7 @@ export const availableCategories: ICategory[] = [
               couleur: "#980043",
               couleurAlt: "#49006a",
               severite: "deconseille_population",
-              explication:
+              labelAdd:
                 "L'eau est déconseillée à la consommation d'après les recommandations du Haut Conseil de la Santé Publique.",
             },
           },
@@ -625,7 +634,7 @@ export const availableCategories: ICategory[] = [
               couleur: "#980043",
               couleurAlt: "#49006a",
               severite: "deconseille_population",
-              explication:
+              labelAdd:
                 "L'eau est déconseillée à la consommation d'après les recommandations du Haut Conseil de la Santé Publique.",
             },
           },
@@ -815,7 +824,7 @@ export const availableCategories: ICategory[] = [
               couleur: "#d95f0e",
               couleurAlt: "#993404",
               severite: "vigilance",
-              explication:
+              labelAdd:
                 "La valeur de 3 µg/L, utilisée en Allemagne comme valeur de gestion, indique une contamination élevée.",
             },
           },
@@ -912,7 +921,7 @@ export const availableCategories: ICategory[] = [
               couleur: "#d95f0e",
               couleurAlt: "#993404",
               severite: "vigilance",
-              explication:
+              labelAdd:
                 "La valeur de 3 µg/L, utilisée en Allemagne comme valeur de gestion, indique une contamination élevée.",
             },
           },
@@ -1004,7 +1013,7 @@ export const availableCategories: ICategory[] = [
               couleur: "#980043",
               couleurAlt: "#49006a",
               severite: "deconseille_population",
-              explication:
+              labelAdd:
                 "L'eau est déconseillée à la consommation d'après les recommandations du Haut Conseil de la Santé Publique.",
             },
           },
@@ -1096,7 +1105,7 @@ export const availableCategories: ICategory[] = [
               couleur: "#980043",
               couleurAlt: "#49006a",
               severite: "deconseille_population",
-              explication:
+              labelAdd:
                 "L'eau est déconseillée à la consommation d'après les recommandations du Haut Conseil de la Santé Publique.",
             },
           },
@@ -1188,7 +1197,7 @@ export const availableCategories: ICategory[] = [
               couleur: "#980043",
               couleurAlt: "#49006a",
               severite: "deconseille_population",
-              explication:
+              labelAdd:
                 "L'eau est déconseillée à la consommation d'après les recommandations du Haut Conseil de la Santé Publique.",
             },
           },

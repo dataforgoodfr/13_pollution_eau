@@ -73,7 +73,7 @@ export default function ConcentrationChart({
 
   if (values.length === 0) {
     return (
-      <p className="text-sm text-gray-600">
+      <p className="text-sm">
         Aucune mesure disponible pour {label.toLowerCase()} sur cette zone.
       </p>
     );
@@ -82,7 +82,7 @@ export default function ConcentrationChart({
   if (values.length === 1) {
     const only = points.find((point) => point.valeur !== null)!;
     return (
-      <p className="text-sm text-gray-600 leading-relaxed">
+      <p className="text-sm">
         Une seule analyse, le {formatDate(only.date)} :{" "}
         <span className="font-numbers">{formatValue(only.valeur!)}</span>{" "}
         {unite || ""}

@@ -71,7 +71,7 @@ export default function AnnualRatioHistogram({
   return (
     <div className="rounded-xl border border-gray-200 bg-white p-3">
       <p className="font-medium">{categoryDetails.nomAffichage}</p>
-      <p className="text-sm text-gray-500 leading-snug">{summary}</p>
+      <p className="text-sm text-greydark leading-snug">{summary}</p>
 
       {hasAnyData && (
         <div className="mt-3" role="img" aria-label={ariaLabel}>
@@ -165,7 +165,7 @@ export default function AnnualRatioHistogram({
       )}
 
       {supValeurSanitaire.length > 0 && (
-        <p className="mt-2 text-xs text-gray-600 leading-relaxed">
+        <p className="mt-2 text-sm">
           {supValeurSanitaire
             .map(
               ({ year, nb }) => `${nb} analyse${nb > 1 ? "s" : ""} en ${year}`,
@@ -183,7 +183,7 @@ export default function AnnualRatioHistogram({
       {onOpenAnalyses && (
         <button
           onClick={onOpenAnalyses}
-          className="mt-2 text-sm text-custom-drom hover:underline"
+          className="mt-2 text-sm text-kaki hover:underline"
         >
           Voir les analyses
         </button>

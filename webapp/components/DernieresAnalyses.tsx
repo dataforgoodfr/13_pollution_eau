@@ -13,7 +13,6 @@ import {
   formatValue,
   getParameterColor,
   getParameterName,
-  groupPesticideParametres,
 } from "@/lib/parametres";
 import { getLastPrelResult } from "@/lib/zoneDetail";
 import type { ZoneDetail } from "@/app/api/zone-detail/route";
@@ -88,12 +87,11 @@ function joinNames(categories: ICategory[]): string {
 /**
  * Phrase expliquant la couleur « tous polluants », construite à partir des
  * catégories regroupées par gravité. Sans catégorie à citer (rien de
- * quantifié, ou rien de recherché), on retombe sur l'explication générique de
- * la catégorie "tous".
+ * quantifié, ou rien de recherché), pas de phrase : le titre du bloc résumé
+ * suffit.
  */
 function buildSummarySentence(
   buckets: Map<Severity, ICategory[]>,
-  fallback: string | null,
 ): string | null {
   const clauses = SEVERITY_ORDER.flatMap((severity) => {
     const bucket = buckets.get(severity);
@@ -102,10 +100,102 @@ function buildSummarySentence(
     return [clause(joinNames(bucket))];
   });
 
-  if (clauses.length === 0) return fallback;
+  if (clauses.length === 0) return null;
 
   const sentence = clauses.join(" ; ");
   return `${sentence.charAt(0).toUpperCase()}${sentence.slice(1)}.`;
+}
+
+type SubstanceGroup = {
+  key: string;
+  titre: string;
+  params: Array<{ code: string; value: number }>;
+};
+
+// Ordre d'affichage imposé du détail pesticides sous la phrase de synthèse.
+const PESTICIDE_GROUP_DEFS: Array<{ key: string; titre: string }> = [
+  { key: "sub_active", titre: "Substances actives" },
+  { key: "metabolite_p", titre: "Métabolites pertinents" },
+  {
+    key: "total_reg",
+    titre: "Somme des substances actives et métabolites pertinents",
+  },
+  { key: "metabolite_np", titre: "Métabolites non pertinents" },
+  { key: "total_ts", titre: "Somme de tous les pesticides" },
+];
+
+/**
+ * Classe les substances quantifiées d'une catégorie "pesticide" (dernier
+ * prélèvement) en sous-groupes, dans l'ordre attendu pour le détail affiché
+ * sous la phrase de synthèse. `TOTALPESTICIDE` / `TOTALPESTICIDEALL` sont les
+ * deux sommes recalculées par `int__resultats_pesticide_udi_dernier.sql`.
+ */
+function groupPesticideParametres(
+  parametres: Array<{ code: string; value: number }>,
+  parameterValues: ParameterValues,
+): SubstanceGroup[] {
+  const buckets: Record<string, Array<{ code: string; value: number }>> = {
+    sub_active: [],
+    metabolite_p: [],
+    total_reg: [],
+    metabolite_np: [],
+    total_ts: [],
+    autres: [],
+  };
+
+  parametres.forEach(({ code, value }) => {
+    if (code === "TOTALPESTICIDE") {
+      buckets.total_reg.push({ code, value });
+      return;
+    }
+    if (code === "TOTALPESTICIDEALL") {
+      buckets.total_ts.push({ code, value });
+      return;
+    }
+    const param = parameterValues[code];
+    if (param?.categorie_2 === "sub_active") {
+      buckets.sub_active.push({ code, value });
+    } else if (param?.categorie_2 === "metabolite") {
+      if (
+        param.categorie_3 === "pertinent" ||
+        param.categorie_3 === "pertinent_par_defaut"
+      ) {
+        buckets.metabolite_p.push({ code, value });
+      } else if (param.categorie_3 === "non_pertinent") {
+        buckets.metabolite_np.push({ code, value });
+      } else {
+        buckets.autres.push({ code, value });
+      }
+    } else {
+      buckets.autres.push({ code, value });
+    }
+  });
+
+  return [
+    ...PESTICIDE_GROUP_DEFS.map((def) => ({
+      ...def,
+      params: buckets[def.key],
+    })),
+    { key: "autres", titre: "Autres", params: buckets.autres },
+  ].filter((group) => group.params.length > 0);
+}
+
+// Sommes calculées par `int__resultats_pfas_*_dernier.sql`, affichées après
+// les substances (somme des 20 puis somme des 4).
+const PFAS_SOMMES = ["SPFAS", "SUM_4_PFAS"];
+
+/** Sépare les PFAS quantifiés (par concentration décroissante) des deux sommes. */
+function groupPfasParametres(
+  parametres: Array<{ code: string; value: number }>,
+): SubstanceGroup[] {
+  const substances = parametres.filter((p) => !PFAS_SOMMES.includes(p.code));
+  const sommes = PFAS_SOMMES.flatMap((code) =>
+    parametres.filter((p) => p.code === code),
+  );
+  return [
+    { key: "quantifiees", titre: "Substances quantifiées", params: substances },
+    { key: "sommes", titre: "Sommes", params: sommes },
+  ].filter((group) => group.params.length > 0);
 }
 
 /** Liste verticale de substances quantifiées, groupée sous un titre (pesticides, PFAS…). */
@@ -136,18 +226,12 @@ function SubstanceList({
             categoryId,
           );
           return (
-            <li
-              key={code}
-              className="flex justify-between items-start gap-2 text-sm"
-            >
-              <span
-                className="font-light flex-1"
-                style={color ? { color } : undefined}
-              >
+            <li key={code} className="flex justify-between items-start gap-2">
+              <span className="flex-1" style={color ? { color } : undefined}>
                 {getParameterName(code, parameterValues)}
               </span>
               <span
-                className="font-light whitespace-nowrap font-numbers"
+                className="whitespace-nowrap font-numbers"
                 style={color ? { color } : undefined}
               >
                 {formatValue(value)} {unite || ""}
@@ -177,11 +261,7 @@ function CategoryContent({
   const result = getLastPrelResult(data, categoryDetails.id, colorblindMode);
 
   if (!result.date) {
-    return (
-      <p className="text-sm text-gray-600">
-        Pas d&apos;analyse effectuée dans les 12 derniers mois
-      </p>
-    );
+    return <p>Pas d&apos;analyse effectuée dans les 12 derniers mois</p>;
   }
 
   const dateLabel = new Date(result.date).toLocaleDateString("fr-FR");
@@ -192,17 +272,22 @@ function CategoryContent({
   const detailLink = onOpenAnalyses ? (
     <button
       onClick={() => onOpenAnalyses(result.date!.slice(0, 10))}
-      className="text-custom-drom hover:underline whitespace-nowrap"
+      className="text-kaki hover:underline whitespace-nowrap"
     >
       Voir les résultats détaillés.
     </button>
+  ) : null;
+
+  // Interprétation du résultat (facultative), toujours en fin de bloc.
+  const interpretation = result.interpretation ? (
+    <p className="mt-3 whitespace-pre-line">{result.interpretation}</p>
   ) : null;
 
   if (isSingleSubstance) {
     const substance = quantifies[0];
     return (
       <>
-        <p className="text-sm text-gray-600 leading-relaxed">
+        <p>
           Lors de la dernière analyse en date du {dateLabel},{" "}
           {substance ? (
             <>
@@ -215,12 +300,8 @@ function CategoryContent({
           )}
           .
         </p>
-        {result.explication && (
-          <p className="mt-3 text-sm text-gray-600 leading-relaxed whitespace-pre-line">
-            {result.explication}
-          </p>
-        )}
-        {detailLink && <p className="mt-3 text-sm">{detailLink}</p>}
+        {detailLink && <p className="mt-3">{detailLink}</p>}
+        {interpretation}
       </>
     );
   }
@@ -232,19 +313,21 @@ function CategoryContent({
   // pesticides), jamais énuméré inline dans la phrase elle-même.
   const substanceGroups = isPesticide
     ? groupPesticideParametres(quantifies, parameterValues)
-    : quantifies.length > 0
-      ? [
-          {
-            key: "quantifiees",
-            titre: "Substances quantifiées",
-            params: quantifies,
-          },
-        ]
-      : [];
+    : categoryDetails.id === "pfas"
+      ? groupPfasParametres(quantifies)
+      : quantifies.length > 0
+        ? [
+            {
+              key: "quantifiees",
+              titre: "Substances quantifiées",
+              params: quantifies,
+            },
+          ]
+        : [];
 
   return (
     <>
-      <p className="text-sm text-gray-600 leading-relaxed">
+      <p>
         Lors de la dernière analyse en date du {dateLabel},{" "}
         {nbParametres > 1
           ? `${nbParametres} substances ont été recherchées`
@@ -262,29 +345,18 @@ function CategoryContent({
           " et aucune substance n'a été quantifiée"
         )}
       </p>
-      {quantifies.length === 0 && detailLink && (
-        <p className="mt-3 text-sm">{detailLink}</p>
-      )}
-      {result.explication && (
-        <p className="mt-3 text-sm text-gray-600 leading-relaxed whitespace-pre-line">
-          {result.explication}
-        </p>
-      )}
-      {substanceGroups.length > 0 && (
-        <>
-          {substanceGroups.map((group) => (
-            <SubstanceList
-              key={group.key}
-              title={group.titre}
-              parametres={group.params}
-              categoryId={categoryDetails.id}
-              unite={categoryDetails.unite}
-              parameterValues={parameterValues}
-            />
-          ))}
-          {detailLink && <p className="mt-3 text-sm">{detailLink}</p>}
-        </>
-      )}
+      {substanceGroups.map((group) => (
+        <SubstanceList
+          key={group.key}
+          title={group.titre}
+          parametres={group.params}
+          categoryId={categoryDetails.id}
+          unite={categoryDetails.unite}
+          parameterValues={parameterValues}
+        />
+      ))}
+      {detailLink && <p className="mt-3">{detailLink}</p>}
+      {interpretation}
     </>
   );
 }
@@ -371,7 +443,7 @@ function CategoryRow({
             )}
           </span>
           <span
-            className="block truncate text-gray-500 leading-snug text-sm"
+            className="block truncate text-greydark leading-snug text-sm"
             title={result.label}
           >
             {result.label}
@@ -387,7 +459,7 @@ function CategoryRow({
       </div>
 
       {isOpen && (
-        <div className="border-t border-gray-100 bg-white px-3 py-3">
+        <div className="border-t border-gray-100 bg-white px-3 py-3 text-sm">
           <CategoryContent
             categoryDetails={categoryDetails}
             data={data}
@@ -450,10 +522,7 @@ export default function DernieresAnalyses({
   });
 
   const globalResult = getLastPrelResult(data, "tous", colorblindMode);
-  const summarySentence = buildSummarySentence(
-    summaryBuckets,
-    globalResult.explication,
-  );
+  const summarySentence = buildSummarySentence(summaryBuckets);
   return (
     <div className="space-y-4">
       {/* Résumé toutes catégories. Bloc purement informatif : il ne pilote pas
@@ -476,13 +545,13 @@ export default function DernieresAnalyses({
             showMarker
           />
           <div className="mt-2 flex justify-between gap-4 text-[10px] leading-tight text-gray-500">
-            <span>Aucun polluant quantifié</span>
-            <span className="text-right">Eau déconseillée à tous</span>
+            <span>Aucun polluant</span>
+            <span className="text-right">Eau déconseillée</span>
           </div>
         </div>
 
         {summarySentence && (
-          <p className="mt-4 pt-3 border-t border-gray-200 text-[13px] leading-relaxed text-gray-700">
+          <p className="mt-4 pt-2 text-sm">
             {summarySentence}
           </p>
         )}

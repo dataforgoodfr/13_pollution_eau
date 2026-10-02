@@ -31,8 +31,8 @@ function formatPopulation(value: number): string {
 function LegendItem({
   color,
   label,
-  explication,
-}: Pick<LegendStatItem, "color" | "label" | "explication">) {
+  labelAdd,
+}: Pick<LegendStatItem, "color" | "label" | "labelAdd">) {
   return (
     <div className="flex items-center gap-3">
       <div
@@ -43,7 +43,7 @@ function LegendItem({
       ></div>
       <div className="flex-1">
         <span>{label}</span>
-        {explication && (
+        {labelAdd && (
           <Popover>
             <PopoverTrigger
               aria-label="En savoir plus sur cette situation"
@@ -57,7 +57,7 @@ function LegendItem({
               collisionPadding={8}
               className="z-[70] w-72 max-w-[calc(100vw-2rem)] p-3 text-sm leading-snug text-gray-700"
             >
-              {explication.split("\n").map((line, index) => (
+              {labelAdd.split("\n").map((line, index) => (
                 <p key={index} className={index > 0 ? "mt-2" : undefined}>
                   {line}
                 </p>

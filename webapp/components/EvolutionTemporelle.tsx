@@ -94,8 +94,7 @@ export default function EvolutionTemporelle({
       <section>
         <h3 className="font-medium">Évolution des taux de conformité</h3>
         <p className="mt-0.5 mb-3 text-sm text-gray-500 leading-relaxed">
-          Part des analyses non conformes chaque année, depuis 2020. Chaque
-          année est jugée avec la réglementation en vigueur à l’époque.
+          Part des analyses non conformes chaque année, depuis 2020.
         </p>
         <div className="space-y-2">
           {TOP_LEVEL_CATEGORIES.filter((item) => item.bilanAnnuel).map(
@@ -149,7 +148,7 @@ export default function EvolutionTemporelle({
                     <p className="font-medium">
                       {categoryDetails.nomAffichage}
                     </p>
-                    <p className="mb-2 text-sm text-gray-500 leading-snug">
+                    <p className="mb-2 text-sm text-greydark leading-snug">
                       {getParameterName(parametre, parameterValues)}
                       {categoryDetails.unite
                         ? ` (en ${categoryDetails.unite})`

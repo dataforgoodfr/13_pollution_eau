@@ -8,7 +8,7 @@ export type LegendStatItem = {
   color: string;
   count: number | null;
   population: number | null;
-  explication?: string;
+  labelAdd?: string;
   // Bilan annuel : vrai pour les tranches où au moins une analyse de l'année
   // dépasse le seuil (ratio > 0%)
   depassementAnnuel?: boolean;
@@ -43,7 +43,7 @@ export function getLegendItems(
           color: colorblindMode ? value.couleurAlt : value.couleur,
           count: stat(statName),
           population: stat(`${statName}_population`),
-          explication: value.explication,
+          labelAdd: value.labelAdd,
         };
       },
     );

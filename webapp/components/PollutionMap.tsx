@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import PollutionMapBaseLayer from "@/components/PollutionMapBase";
 import PollutionZoneDetailPanelV2 from "@/components/PollutionZoneDetailPanelV2";
 import PollutionMapControlsPanel from "@/components/PollutionMapControlsPanel";
@@ -11,7 +11,7 @@ import MapTopRightControls from "./MapTopRightControls";
 import PollutionMapLegend from "./PollutionMapLegend";
 import { clsx } from "clsx";
 import type { PollutionStats, ParameterValues } from "@/app/lib/data";
-import { scrollIframeToFullscreen } from "@/lib/iframe-scroll";
+import { getZoneFromUrl, notifyParentZone } from "@/lib/parentFrame";
 import EmbedBanner from "./EmbedBanner";
 import { getCategoryById } from "@/lib/polluants";
 
@@ -20,11 +20,14 @@ export default function PollutionMap({
   parameterValues,
   showBanner = false,
   initialCategory,
+  cooperativeGestures = false,
 }: {
   pollutionStats: PollutionStats;
   parameterValues: ParameterValues;
   showBanner?: boolean;
   initialCategory?: string;
+  /** Cf. PollutionMapBase. */
+  cooperativeGestures?: boolean;
 }) {
   const [period, setPeriod] = useState("dernier_prel");
   const [category, setCategory] = useState(initialCategory || "tous");
@@ -48,7 +51,30 @@ export default function PollutionMap({
 
   useEffect(() => {
     setIsMobile(window.innerWidth < 768);
+    // Zone à ouvrir passée dans l'URL (?udi= / ?commune=). Lue après le
+    // montage (et non côté serveur) pour garder les pages d'intégration
+    // statiques et mises en cache.
+    const zone = getZoneFromUrl(window.location.search);
+    if (zone) {
+      setDisplayMode(zone.displayMode);
+      setSelectedZoneCode(zone.code);
+    }
   }, []);
+
+  // Tient le site parent informé de la zone ouverte, pour qu'il l'inscrive
+  // dans son URL (cf. lib/parentFrame). Seulement aux changements : au
+  // montage, aucune zone n'est encore ouverte (même si l'URL en porte une).
+  const notifiedZoneRef = useRef<string | null>(null);
+  useEffect(() => {
+    const zone = selectedZoneCode
+      ? { displayMode, code: selectedZoneCode }
+      : null;
+    const key = zone && `${zone.displayMode}:${zone.code}`;
+    if (key !== notifiedZoneRef.current) {
+      notifiedZoneRef.current = key;
+      notifyParentZone(zone);
+    }
+  }, [displayMode, selectedZoneCode]);
 
   const toggleRightPanel = () => setRightPanelOpen((open) => !open);
 
@@ -72,10 +98,6 @@ export default function PollutionMap({
       }
     }
   }, [category]);
-
-  useEffect(() => {
-    scrollIframeToFullscreen();
-  }, [category, period, selectedZoneCode]);
 
   const handleAddressSelect = (result: FilterResult | null) => {
     if (result) {
@@ -108,6 +130,7 @@ export default function PollutionMap({
               marker={marker}
               colorblindMode={colorblindMode}
               isMobile={isMobile}
+              cooperativeGestures={cooperativeGestures}
               rightPanelOpen={rightPanelOpen}
             />
           </div>

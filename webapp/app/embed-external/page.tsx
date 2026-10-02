@@ -21,6 +21,7 @@ export default async function EmbedExternal({
           parameterValues={parameterValues}
           showBanner={true}
           initialCategory={category}
+          cooperativeGestures={true}
         />
       </main>
     </div>

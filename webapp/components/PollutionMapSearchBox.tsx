@@ -8,7 +8,6 @@ import { Building2, MapPin, Search } from "lucide-react";
 
 import { CommandEmpty } from "cmdk";
 import { X } from "lucide-react";
-import { scrollIframeToFullscreen } from "@/lib/iframe-scroll";
 
 interface IGNQueryResult {
   type: string;
@@ -149,7 +148,6 @@ export default function PollutionMapSearchBox({
               placeholder="Votre adresse ou commune"
               onChange={HandleFilterChange}
               onFocus={() => {
-                scrollIframeToFullscreen();
                 if (filterString?.length >= 3) {
                   setDropDownOpen(true);
                 }

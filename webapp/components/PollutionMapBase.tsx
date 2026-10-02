@@ -34,6 +34,7 @@ type PollutionMapBaseLayerProps = {
   } | null;
   colorblindMode?: boolean;
   isMobile?: boolean;
+  cooperativeGestures?: boolean;
   /** Panneau des réglages ouvert : masque la droite de la carte. */
   rightPanelOpen?: boolean;
 };
@@ -47,6 +48,7 @@ export default function PollutionMapBaseLayer({
   marker,
   colorblindMode = false,
   isMobile = false,
+  cooperativeGestures = false,
   rightPanelOpen = false,
 }: PollutionMapBaseLayerProps) {
   useEffect(() => {
@@ -258,9 +260,6 @@ export default function PollutionMapBaseLayer({
     colorblindMode,
   ]);
 
-  const isInIframe =
-    typeof window !== "undefined" && window.self !== window.top;
-
   return (
     <ReactMapGl
       id="map"
@@ -276,7 +275,7 @@ export default function PollutionMapBaseLayer({
       cursor={overZone ? "pointer" : undefined}
       interactiveLayerIds={["color-layer"]}
       attributionControl={false}
-      cooperativeGestures={isMobile || isInIframe}
+      cooperativeGestures={isMobile || cooperativeGestures}
       locale={frenchLocale}
     >
       {marker ? (

@@ -24,12 +24,10 @@ Examples:
 
 from typing import List, Literal
 
-from pipelines.tasks.client.commune_client import CommuneClient
 from pipelines.tasks.client.core.duckdb_client import DuckDBClient
 from pipelines.tasks.client.datagouv_client import DataGouvClient
 from pipelines.tasks.client.opendatasoft_client import OpenDataSoftClient
 from pipelines.tasks.client.uploaded_geojson_client import UploadedGeoJSONClient
-from pipelines.tasks.config.config_insee import get_insee_config
 from pipelines.tasks.config.config_uploaded_geojson import uploaded_geojson_config
 from pipelines.utils.logger import get_logger
 
@@ -67,8 +65,6 @@ def execute(
     # pour l'instant, les Commune et UDI a seulement la donnee de 2024.
     # il y a pas besoin d'update les deux tables si nous voulons utiliser custom_year pour update seulement edc
     if refresh_table == "all" or refresh_table == "commune":
-        insee_client = CommuneClient(get_insee_config(), duckdb_client)
-        insee_client.process_datasets()
         opendatasoft = OpenDataSoftClient(duckdb_client)
         opendatasoft.process_datasets()
     if refresh_table == "all" or refresh_table == "atlasante":

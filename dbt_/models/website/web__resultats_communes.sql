@@ -38,23 +38,22 @@ categories AS (
     ]) AS categorie
 ),
 
-cog_communes AS (
+communes AS (
     SELECT
-        com AS commune_code_insee,
-        libelle AS commune_nom
-    FROM {{ ref("stg_communes__cog") }}
-    WHERE typecom = 'COM'
+        com_code AS commune_code_insee,
+        com_name AS commune_nom
+    FROM {{ ref("int__commune_geom") }}
 ),
 
 -- Cross join to ensure all combinations exist
 communes_periodes_categories AS (
     SELECT
-        cog.commune_code_insee,
-        cog.commune_nom,
+        c.commune_code_insee,
+        c.commune_nom,
         p.periode,
         categories.categorie
     FROM
-        cog_communes AS cog
+        communes AS c
     CROSS JOIN
         periodes AS p
     CROSS JOIN

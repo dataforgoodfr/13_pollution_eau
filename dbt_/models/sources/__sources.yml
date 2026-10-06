@@ -19,4 +19,6 @@ sources:
     tables:
       # - name: atlasante_udi_2023
       # - name: atlasante_udi_corse
-      - name: atlasante_udi_2024
+      # - name: atlasante_udi_2024
+      - name: atlasante_udi_2025
+      - name: atlasante_udi_corse_2024

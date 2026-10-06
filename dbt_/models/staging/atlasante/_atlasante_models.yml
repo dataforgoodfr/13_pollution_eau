@@ -48,3 +48,27 @@ models:
         type: GEOMETRY
       - name: ingestion_date
         type: DATE
+  - name: stg_atlasante_udi_2025
+    description: "Unités de distribution (UDI) de la France métropolitaine hors Corse (millésime 2025)"
+    columns:
+      - name: code_udi
+        type: VARCHAR
+      - name: geom
+        type: GEOMETRY
+      - name: ingestion_date
+        type: DATE
+  - name: stg_atlasante_udi_corse_2024
+    description: "Unités de distribution (UDI) de la Corse (millésime 2024)"
+    columns:
+      - name: code_udi
+        type: VARCHAR
+      - name: nom_udi
+        type: VARCHAR
+      - name: etat
+        type: VARCHAR
+      - name: usage_udi
+        type: VARCHAR
+      - name: geom
+        type: GEOMETRY
+      - name: ingestion_date
+        type: DATE

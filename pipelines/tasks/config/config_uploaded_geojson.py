@@ -42,13 +42,31 @@ uploaded_geojson_config = {
         #     "table_name": "atlasante_udi_corse",
         #     "local_file_name": "udi_corse.json",
         # },
+        # {
+        #     # GeoJSON des UDIs de Atlasante issu des infofactures pour l'année 2024.
+        #     # S'obtient de la même manière que pour l'année 2023 (cf. commentaire dans le premier bloc).
+        #     # Concernant la couverture géographique, il s'agit de la métropole + Corse.
+        #     "path": "atlasante/udi_infofactures_2024.json",
+        #     "table_name": "atlasante_udi_2024",
+        #     "local_file_name": "udi_infofactures_2024.json",
+        # },
         {
-            # GeoJSON des UDIs de Atlasante issu des infofactures pour l'année 2024.
-            # S'obtient de la même manière que pour l'année 2023 (cf. commentaire dans le premier bloc).
-            # Concernant la couverture géographique, il s'agit de la métropole + Corse.
-            "path": "atlasante/udi_infofactures_2024.json",
-            "table_name": "atlasante_udi_2024",
-            "local_file_name": "udi_infofactures_2024.json",
-        }
+            # UDIs de la métropole (hors Corse) pour l'année 2025, issues des infofactures (DGS).
+            # Pour l'obtenir: https://telechargement.atlasante.fr/download/f28ea03e-706a-43e4-97f4-b801f5b67a66
+            # Puis extraire le fichier "dgs_metropole_udi_2025_j.json" du zip téléchargé et l'uploader tel quel
+            # Attention : contrairement au millésime 2024, la Corse n'est pas incluse (cf. bloc suivant)
+            # et le seul attribut disponible est code_udi.
+            "path": "atlasante/dgs_metropole_udi_2025_j.json",
+            "table_name": "atlasante_udi_2025",
+            "local_file_name": "dgs_metropole_udi_2025_j.json",
+        },
+        {
+            # UDIs de la Corse pour l'année 2024 (ARS Corse).
+            # Pour l'obtenir: https://telechargement.atlasante.fr/download/f3ff41b2-c3ad-41eb-ad97-6b5d9bf15de4
+            # Puis extraire le fichier "ars_r94_udi_2024_z.json" du zip téléchargé et l'uploader tel quel
+            "path": "atlasante/ars_r94_udi_2024_z.json",
+            "table_name": "atlasante_udi_corse_2024",
+            "local_file_name": "ars_r94_udi_2024_z.json",
+        },
     ],
 }

@@ -630,7 +630,7 @@ export const availableCategories: ICategory[] = [
               severite: "non_conforme",
             },
             sup_valeur_sanitaire: {
-              label: "Eau déconseillée à la consommation",
+              label: "Eau non conforme déconseillée à la consommation",
               couleur: "#980043",
               couleurAlt: "#49006a",
               severite: "deconseille_population",
@@ -977,7 +977,7 @@ export const availableCategories: ICategory[] = [
         disable: false,
         enfants: [],
         description:
-          "Le chloridazone desphényl est un métabolite de la chloridazone, herbicide utilisé sur les betteraves des années 1960 jusqu'à son interdiction fin 2020. L'Anses le juge “pertinent”. La limite de qualité réglementaire de 0,1 µg/L s’applique.",
+          "Le chloridazone desphényl est un métabolite de la chloridazone, herbicide utilisé sur les betteraves des années 1960 jusqu'à son interdiction fin 2020. L'Anses le juge “pertinent”. La limite de qualité réglementaire de 0,1 µg/L s’applique. Une valeur sanitaire maximale (Vmax) de 11 µg/L a été établie en 2024 par l’Anses. Si cette valeur est dépassée, l’eau ne doit pas être consommée.",
         unite: "µg/L",
         derniereAnalyse: {
           topLegend:
@@ -1009,12 +1009,10 @@ export const availableCategories: ICategory[] = [
             },
             sup_valeur_sanitaire: {
               label:
-                "> 11 µg/L (valeur sanitaire Vmax) — eau devant être déconseillée à la consommation",
+                "> 11 µg/L — eau non conforme et ne devant pas être consommée",
               couleur: "#980043",
               couleurAlt: "#49006a",
               severite: "deconseille_population",
-              labelAdd:
-                "L'eau est déconseillée à la consommation d'après les recommandations du Haut Conseil de la Santé Publique.",
             },
           },
         },
@@ -1069,7 +1067,7 @@ export const availableCategories: ICategory[] = [
         disable: false,
         enfants: [],
         description:
-          "Le chloridazone méthyl-desphényl est un métabolite de la chloridazone, herbicide utilisé sur les betteraves des années 1960 jusqu'à son interdiction fin 2020. L'Anses le juge “pertinent”. La limite de qualité réglementaire de 0,1 µg/L s’applique.",
+          "Le chloridazone méthyl-desphényl est un métabolite de la chloridazone, herbicide utilisé sur les betteraves des années 1960 jusqu'à son interdiction fin 2020. L'Anses le juge “pertinent”. La limite de qualité réglementaire de 0,1 µg/L s’applique. Une valeur sanitaire maximale (Vmax) de 110 µg/L a été établie en 2024 par l’Anses. Si cette valeur est dépassée, l’eau ne doit pas être consommée.",
         unite: "µg/L",
         derniereAnalyse: {
           topLegend:
@@ -1101,12 +1099,10 @@ export const availableCategories: ICategory[] = [
             },
             sup_valeur_sanitaire: {
               label:
-                "> 110 µg/L (valeur sanitaire Vmax) — eau devant être déconseillée à la consommation",
+                "> 110 µg/L — eau non conforme et ne devant pas être consommée",
               couleur: "#980043",
               couleurAlt: "#49006a",
               severite: "deconseille_population",
-              labelAdd:
-                "L'eau est déconseillée à la consommation d'après les recommandations du Haut Conseil de la Santé Publique.",
             },
           },
         },
@@ -1161,7 +1157,7 @@ export const availableCategories: ICategory[] = [
         disable: false,
         enfants: [],
         description:
-          "L'atrazine déséthyl est un métabolite de l'atrazine, herbicide très utilisé sur le maïs et le blé des années 1960 jusqu'à son interdiction en 2003. Il est considéré “pertinent par défaut”, sa pertinence n'ayant jamais été évaluée par l'Anses. La limite de qualité réglementaire de 0,1 µg/L s’applique.",
+          "L'atrazine déséthyl est un métabolite de l'atrazine, herbicide très utilisé sur le maïs et le blé des années 1960 jusqu'à son interdiction en 2003. Il est considéré “pertinent par défaut”, sa pertinence n'ayant jamais été évaluée par l'Anses. La limite de qualité réglementaire de 0,1 µg/L s’applique. Une valeur sanitaire maximale (Vmax) de 60 µg/L a été établie en 2016 par l’Anses. Si cette valeur est dépassée, l’eau ne doit pas être consommée.",
         unite: "µg/L",
         derniereAnalyse: {
           topLegend:
@@ -1193,12 +1189,10 @@ export const availableCategories: ICategory[] = [
             },
             sup_valeur_sanitaire: {
               label:
-                "> 60 µg/L (valeur sanitaire Vmax) — eau devant être déconseillée à la consommation",
+                "> 60 µg/L — eau non conforme et ne devant pas être consommée",
               couleur: "#980043",
               couleurAlt: "#49006a",
               severite: "deconseille_population",
-              labelAdd:
-                "L'eau est déconseillée à la consommation d'après les recommandations du Haut Conseil de la Santé Publique.",
             },
           },
         },
@@ -1257,7 +1251,7 @@ export const availableCategories: ICategory[] = [
         unite: "µg/L",
         derniereAnalyse: {
           topLegend:
-            "Cette carte montre la somme des concentrations des substances actives et  métabolites pertinents (aussi appelé total pesticides réglementaires) mesurées lors des dernières analyses disponibles. Lorsque la limite de qualité de 0,5 µg/L est dépassée pour le total pesticides réglementaire, l’eau est declarée non conforme. Les métabolites non pertinents ne sont pas pris en compte dans ce total.",
+            "Cette carte montre la somme des concentrations des substances actives et  métabolites pertinents mesurées lors des dernières analyses disponibles. Lorsque la limite de qualité de 0,5 µg/L est dépassée pour le total pesticides réglementaire, l’eau est declarée non conforme.",
           resultats: {
             non_recherche: {
               label: "Non recherché dans les 12 derniers mois",
@@ -1336,7 +1330,7 @@ export const availableCategories: ICategory[] = [
           ratioLabelSingular: "analyse non conforme",
           ratioLabelPlural: "analyses non conformes",
           topLegend:
-            "Cette carte montre le pourcentage d’analyses de pesticides réalisées dans l’année pour lesquelles le total pesticides réglementaire (somme des substances actives et métabolites pertinents) dépasse la limite de qualité de 0,5 µg/L (eau non conforme). Les métabolites non pertinents ne sont pas pris en compte dans ce total.",
+            "Cette carte montre le pourcentage d’analyses de pesticides réalisées dans l’année pour lesquelles le total pesticides réglementaire (somme des substances actives et métabolites pertinents) dépasse la limite de qualité de 0,5 µg/L (eau non conforme).",
         },
       },
       {

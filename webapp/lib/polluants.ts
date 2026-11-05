@@ -163,8 +163,7 @@ export const availableCategories: ICategory[] = [
           nonConforme: true,
         },
         deconseille_sensibles: {
-          label:
-            "Eau déconseillée à la consommation pour les personnes sensibles",
+          label: "Eau déconseillée aux personnes sensibles",
           couleur: "#fb6a4a",
           couleurAlt: "#dd1c77",
           severite: "deconseille_sensibles",
@@ -172,14 +171,13 @@ export const availableCategories: ICategory[] = [
             "L'eau devrait être déconseillée à la consommation pour les personnes sensibles (nourrissons, femmes enceintes ou allaitantes), en raison des concentrations en nitrates ou en perchlorate, d'après les recommandations du Ministère de la Santé ou du Haut Conseil de la Santé Publique.",
         },
         deconseille_population: {
-          label:
-            "Eau non conforme et devant être interdite à la consommation pour toute la population",
+          label: "Eau non conforme et devant être interdite",
           couleur: "#980043",
           couleurAlt: "#49006a",
           severite: "deconseille_population",
           nonConforme: true,
           labelAdd:
-            "L'eau devrait être interdite à la consommation pour toute la population, car la concentration d'au moins un pesticide ou PFAS dépasse sa limite sanitaire.",
+            "L'eau devrait être interdite à la consommation pour toute la population car la concentration d'au moins un pesticide ou PFAS dépasse sa limite sanitaire.",
         },
       },
     },
@@ -196,7 +194,7 @@ export const availableCategories: ICategory[] = [
     unite: "µg/L",
     derniereAnalyse: {
       topLegend:
-        "Cette carte montre les concentrations pour les 20 PFAS réglementés; mesurées lors des dernières analyses disponibles. Les concentrations sont comparées avec 3 types de limites:\n- la limite de qualité réglementaire de 0.1 µg/L pour la somme de 20 PFAS\n- la limite recommandée par le Haut Conseil de la Santé Publique (HCSP) de 0.02 µg/L pour la somme de 4 PFAS\n- des valeurs sanitaires établies par les autorités sanitaires pour chaque PFAS",
+        "Cette carte montre les concentrations pour les 20 PFAS réglementés mesurées lors des dernières analyses disponibles. Les concentrations sont comparées avec 3 types de limites:\n- la limite de qualité réglementaire de 0.1 µg/L pour la somme des 20 PFAS réglementés\n- la limite recommandée par le Haut Conseil de la Santé Publique (HCSP) de 0.02 µg/L pour la somme de 4 PFAS\n- des valeurs sanitaires établies par les autorités sanitaires pour chaque PFAS",
       resultats: {
         non_recherche: {
           label: "Non recherché dans les 12 derniers mois",
@@ -219,10 +217,12 @@ export const availableCategories: ICategory[] = [
             "La somme des 20 PFAS est inférieure à la limite de qualité réglementaire de 0,1 µg/L et la somme des 4 PFAS est inférieure à la limite recommandée par le Haut Conseil de la Santé Publique. L’eau est conforme à la réglementation pour les PFAS.",
         },
         somme_20pfas_inf_0_1_et_4pfas_sup_0_02: {
-          label: "Eau conforme mais dépassement de la limite HCSP",
+          label: "Eau conforme mais dépassement d’un seuil d’alerte",
           couleur: "#fec44f",
           couleurAlt: "#fe9929",
           severite: "vigilance",
+          labelAdd:
+            "La somme des 4 (PFAS PFOA, PFOS, PFNA, PFHxS) dépasse la limite recommandé par le Haut Conseil de la Santé Publique (HCSP).",
           interpretation:
             "La somme des 20 PFAS est inférieure à la limite de qualité réglementaire de 0,1 µg/L. L’eau est donc conforme à la réglementation pour les PFAS. Toutefois, la somme des 4 PFAS est supérieure à la limite recommandée par le Haut Conseil de la Santé Publique, indiquant que des mesures doivent être prises rapidement pour rétablir la qualité de l’eau.  ",
         },
@@ -236,13 +236,13 @@ export const availableCategories: ICategory[] = [
             "La qualité de l’eau est non conforme à la réglementation car la somme des 20 PFAS dépasse la limite de qualité réglementaire de 0,1 µg/L. Des mesures doivent être prises rapidement pour rétablir la qualité de l’eau.",
         },
         sup_valeur_sanitaire: {
-          label: "Eau non conforme et déconseillée à la consommation",
+          label: "Eau non conforme et devant être interdite",
           couleur: "#980043",
           couleurAlt: "#49006a",
           severite: "deconseille_population",
           nonConforme: true,
           labelAdd:
-            "La concentration d'un ou plusieurs PFAS dépasse la limite sanitaire.",
+            "L'eau devrait être interdite à la consommation pour toute la population car la concentration d'un ou plusieurs PFAS dépasse la limite sanitaire.",
           interpretation:
             "La qualité de l’eau est non conforme à la réglementation car la somme des 20 PFAS dépasse la limite de qualité réglementaire de 0.1 µg/L. De plus, La concentration d'un ou plusieurs PFAS dépasse la limite sanitaire. L’eau doit être interdite à la consommation pour l’ensemble de la population.",
         },
@@ -282,16 +282,16 @@ export const availableCategories: ICategory[] = [
       ratioLabelSingular: "analyse non conforme",
       ratioLabelPlural: "analyses non conformes",
       topLegend:
-        "Cette carte montre le pourcentage des analyses des 20 PFAS réalisées dans l’année non conformes à la réglementation (supérieures à la limite de qualité de 0.1 µg/L pour la somme de 20 PFAS). ",
+        "Cette carte montre le pourcentage des analyses des 20 PFAS réglementés réalisées dans l’année non conformes à la réglementation (supérieures à la limite de qualité de 0.1 µg/L pour la somme de 20 PFAS réglementés). ",
       valeurSanitaireLabel: "une limite sanitaire",
     },
     groupes: [
       {
-        titre: "Connaître la conformité de l'eau à la réglementation pour…",
+        titre: "La conformité de l'eau à la réglementation pour…",
         options: [{ id: "pfas", label: "20 PFAS réglementés" }],
       },
       {
-        titre: "Connaître la concentration en TFA",
+        titre: "La concentration en TFA",
         options: [{ id: "tfa", label: "TFA" }],
       },
     ],
@@ -304,7 +304,7 @@ export const availableCategories: ICategory[] = [
         disable: false,
         enfants: [],
         description:
-          "Le TFA (acide trifluoroacétique) est un PFAS à chaîne très courte, issu notamment de la dégradation d'autres PFAS et de certains pesticides. Il ne fait pas partie des 20 PFAS réglementés.",
+          "Le TFA est un petit PFAS issu de la dégradation d’autres PFAS, notamment de gaz fluorés ou de certains pesticides. Il est extrêmement persistant dans l’environnement et sa concentration dans les milieux est en augmentation ces dernières années. Les connaissances sur sa toxicité sont encore parcellaires mais on sait qu’il peut avoir des effets néfastes sur la sphère reproductive, le système immunitaire et la thyroïde. Il ne fait pas partie des 20 PFAS réglementés. Son suivi dans l’eau potable deviendra obligatoire à partir de 2027. Il n’existe pas encore de limite réglementaire ou sanitaire en France.",
         unite: "µg/L",
         derniereAnalyse: {
           topLegend:
@@ -502,7 +502,7 @@ export const availableCategories: ICategory[] = [
     },
     groupes: [
       {
-        titre: "Connaître la conformité de l'eau à la réglementation pour…",
+        titre: "La conformité de l'eau à la réglementation pour…",
         options: [
           { id: "pesticide", label: "Pesticides réglementés" },
           { id: "sub_active", label: "Substances actives uniquement" },
@@ -511,17 +511,16 @@ export const availableCategories: ICategory[] = [
         ],
       },
       {
-        titre:
-          "Connaître la concentration totale des pesticides présents dans l'eau",
+        titre: "La concentration totale en pesticides dans l'eau",
         options: [{ id: "pes_total_ts", label: "Total tous pesticides" }],
       },
       {
-        titre: "Connaître la concentration des métabolites non pertinents",
+        titre: "La concentration en métabolites non pertinents",
         options: [{ id: "metabolite_np", label: "Métabolites non pertinents" }],
       },
       {
         titre:
-          "Visualiser les concentrations des 5 molécules les plus fréquemment retrouvées",
+          "Les concentrations des 5 molécules les plus fréquemment retrouvées",
         options: [
           { id: "metabolite_esa_metolachlore", label: "ESA-métolachlore" },
           { id: "metabolite_chlorothalonil_r471811", label: "R471811" },
@@ -754,7 +753,7 @@ export const availableCategories: ICategory[] = [
           "https://dansmoneau.fr/comprendre/comprendre-les-contaminants-chimiques-de-leau-potable/les-metabolites-de-pesticides/",
         disable: false,
         description:
-          "Les métabolites sont des substances issues de la dégradation des pesticides dans l'environnement. Les métabolites non pertinents, jugés sans risque sanitaire inacceptable pour le consommateur, doivent respecter une valeur “indicative” de 0.9 µg/L. Le dépassement de cette valeur n'est toutefois pas considéré comme une “non conformité”. Les métabolites non pertinents ne sont pas comptés dans le total pesticide réglementaire.",
+          "Les métabolites sont des substances issues de la dégradation des pesticides dans l'environnement. Les métabolites non pertinents, jugés sans risque sanitaire pour le consommateur, doivent respecter une valeur “indicative” de 0.9 µg/L. Le dépassement de cette valeur n'est toutefois pas considéré comme une “non conformité”. Les métabolites non pertinents ne sont pas comptés dans le total pesticide réglementaire.",
         unite: "µg/L",
         derniereAnalyse: {
           topLegend:
@@ -1628,6 +1627,8 @@ export const availableCategories: ICategory[] = [
         },
         cvm_sup_0_5: {
           label: "> 0.5 µg/L — eau non conforme",
+          labelAdd:
+            "L’eau peut être interdite à la consommation au cas par cas.",
           couleur: "#fe9929",
           couleurAlt: "#d95f0e",
           severite: "non_conforme",

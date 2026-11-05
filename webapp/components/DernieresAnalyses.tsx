@@ -621,7 +621,7 @@ export default function DernieresAnalyses({
           />
           <div className="mt-2 flex justify-between gap-4 text-[10px] leading-tight text-gray-500">
             <span>Aucun polluant</span>
-            <span className="text-right">Eau déconseillée</span>
+            <span className="text-right">Eau interdite</span>
           </div>
         </div>
 

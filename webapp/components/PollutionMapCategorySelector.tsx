@@ -171,7 +171,7 @@ export default function PollutionMapCategorySelector({
       {/* 3. Affinage par sous-catégorie (pesticides) */}
       {selectedTopLevel?.groupes && (
         <section>
-          <SectionTitle step={3}>Que souhaitez-vous savoir ?</SectionTitle>
+          <SectionTitle step={3}>Que souhaitez-vous voir ?</SectionTitle>
           <div className="divide-y divide-gray-200 rounded-xl bg-gray-50">
             {selectedTopLevel.groupes.map((groupe) => {
               const isOpen = openGroup === groupe.titre;

@@ -19,12 +19,12 @@ interface PollutionMapLegendProps {
 // résument en deux mots le sens de la première et de la dernière couleur, les
 // libellés complets s'affichant au survol des segments.
 const COMPACT_ANCHORS: Record<string, { debut: string; fin: string }> = {
-  tous: { debut: "Non quantifié", fin: "Eau déconseillée" },
-  pfas: { debut: "Non quantifié", fin: "Limite sanitaire dépassée" },
+  tous: { debut: "Non quantifié", fin: "Eau interdite" },
+  pfas: { debut: "Non quantifié", fin: "Eau interdite" },
   tfa: { debut: "Non quantifié", fin: "> 60 µg/L" },
-  pesticide: { debut: "Non quantifié", fin: "Eau déconseillée" },
-  sub_active: { debut: "Non quantifié", fin: "Eau déconseillée" },
-  metabolite_p: { debut: "Non quantifié", fin: "Eau déconseillée" },
+  pesticide: { debut: "Non quantifié", fin: "Eau interdite" },
+  sub_active: { debut: "Non quantifié", fin: "Eau interdite" },
+  metabolite_p: { debut: "Non quantifié", fin: "Eau interdite" },
   metabolite_np: { debut: "Non quantifié", fin: "> 0,9 µg/L" },
   metabolite_esa_metolachlore: { debut: "Non quantifié", fin: "> 3 µg/L" },
   metabolite_chlorothalonil_r471811: {
@@ -33,15 +33,15 @@ const COMPACT_ANCHORS: Record<string, { debut: string; fin: string }> = {
   },
   metabolite_chloridazone_desphenyl: {
     debut: "Non quantifié",
-    fin: "Eau déconseillée",
+    fin: "Eau interdite",
   },
   metabolite_chloridazone_methyl_desphenyl: {
     debut: "Non quantifié",
-    fin: "Eau déconseillée",
+    fin: "Eau interdite",
   },
   metabolite_atrazine_desethyl: {
     debut: "Non quantifié",
-    fin: "Eau déconseillée",
+    fin: "Eau interdite",
   },
   pes_total_reg: { debut: "≤ 0,5 µg/L", fin: "> 5 µg/L" },
   pes_total_ts: { debut: "≤ 0,5 µg/L", fin: "> 5 µg/L" },

@@ -57,6 +57,11 @@ interface DetailResultat {
    * résumé : « L'eau devrait être déconseillée <deconseilleA> en raison… ».
    */
   deconseilleA?: string;
+  /**
+   * Hachures superposées à la couleur, sur la carte et dans les légendes, pour
+   * distinguer ce résultat d'un autre de couleur proche.
+   */
+  hachures?: boolean;
   labelAdd?: string;
   interpretation?: string;
 }
@@ -167,13 +172,14 @@ export const availableCategories: ICategory[] = [
             "L'eau devrait être déconseillée à la consommation pour les personnes sensibles (nourrissons, femmes enceintes ou allaitantes), en raison des concentrations en nitrates ou en perchlorate, d'après les recommandations du Ministère de la Santé ou du Haut Conseil de la Santé Publique.",
         },
         deconseille_population: {
-          label: "Eau déconseillée à la consommation pour toute la population",
+          label:
+            "Eau non conforme et devant être interdite à la consommation pour toute la population",
           couleur: "#980043",
           couleurAlt: "#49006a",
           severite: "deconseille_population",
           nonConforme: true,
           labelAdd:
-            "L'eau devrait être déconseillée à la consommation pour toute la population, en raison des concentrations en pesticides ou en PFAS, d'après les recommandations du Ministère de la Santé ou du Haut Conseil de la Santé Publique.",
+            "L'eau devrait être interdite à la consommation pour toute la population, car la concentration d'au moins un pesticide ou PFAS dépasse sa limite sanitaire.",
         },
       },
     },
@@ -436,14 +442,24 @@ export const availableCategories: ICategory[] = [
           severite: "non_conforme",
           nonConforme: true,
         },
+        sup_seuil_hcsp: {
+          label: "Eau non conforme et dépassant un seuil d'alerte",
+          couleur: "#fe9929",
+          couleurAlt: "#d95f0e",
+          hachures: true,
+          severite: "non_conforme",
+          nonConforme: true,
+          labelAdd:
+            "La concentration d'un ou plusieurs pesticides dépasse le seuil de précaution recommandé par le Haut Conseil de la Santé Publique (HCSP) en l’absence de valeur sanitaire disponible.",
+        },
         sup_valeur_sanitaire: {
-          label: "Eau non conforme et déconseillée à la consommation",
+          label: "Eau non conforme et devant être interdite",
           couleur: "#980043",
           couleurAlt: "#49006a",
           severite: "deconseille_population",
           nonConforme: true,
           labelAdd:
-            "L'eau est déconseillée à la consommation d'après les recommandations du Haut Conseil de la Santé Publique.",
+            "L'eau devrait être interdite à la consommation pour toute la population car la concentration d'un ou plusieurs pesticides dépasse une limite sanitaire.",
         },
       },
     },
@@ -482,8 +498,7 @@ export const availableCategories: ICategory[] = [
       ratioLabelPlural: "analyses non conformes",
       topLegend:
         "Cette carte montre le pourcentage des analyses de pesticides réalisées dans l’année non conformes à la réglementation (supérieures à 0,1 µg/L pour une substance active ou un métabolite pertinent, et/ou à 0,5 µg/L pour le total pesticides réglementaire).",
-      valeurSanitaireLabel:
-        "la limite devant entraîner des restrictions de consommation",
+      valeurSanitaireLabel: "une limite sanitaire",
     },
     groupes: [
       {
@@ -563,14 +578,24 @@ export const availableCategories: ICategory[] = [
               severite: "non_conforme",
               nonConforme: true,
             },
+            sup_seuil_hcsp: {
+              label: "Eau non conforme et dépassant un seuil d'alerte",
+              couleur: "#fe9929",
+              couleurAlt: "#d95f0e",
+              hachures: true,
+              severite: "non_conforme",
+              nonConforme: true,
+              labelAdd:
+                "La concentration d'une ou plusieurs substances actives dépasse le seuil de précaution recommandé par le Haut Conseil de la Santé Publique (HCSP) en l’absence de valeur sanitaire disponible.",
+            },
             sup_valeur_sanitaire: {
-              label: "Eau non conforme et déconseillée à la consommation",
+              label: "Eau non conforme et devant être interdite",
               couleur: "#980043",
               couleurAlt: "#49006a",
               severite: "deconseille_population",
               nonConforme: true,
               labelAdd:
-                "L'eau est déconseillée à la consommation d'après les recommandations du Haut Conseil de la Santé Publique.",
+                "L'eau devrait être interdite à la consommation pour toute la population car la concentration d'une ou plusieurs substances actives dépasse une limite sanitaire.",
             },
           },
         },
@@ -614,8 +639,7 @@ export const availableCategories: ICategory[] = [
           ratioLabelPlural: "analyses non conformes",
           topLegend:
             "Cette carte montre le pourcentage des analyses de substances actives réalisées dans l’année non conformes à la réglementation (supérieures à 0,1 µg/L pour au moins une substance active).",
-          valeurSanitaireLabel:
-            "la limite devant entraîner des restrictions de consommation",
+          valeurSanitaireLabel: "une limite sanitaire",
         },
       },
       {
@@ -657,14 +681,24 @@ export const availableCategories: ICategory[] = [
               severite: "non_conforme",
               nonConforme: true,
             },
+            sup_seuil_hcsp: {
+              label: "Eau non conforme et dépassant un seuil d'alerte",
+              couleur: "#fe9929",
+              couleurAlt: "#d95f0e",
+              hachures: true,
+              severite: "non_conforme",
+              nonConforme: true,
+              labelAdd:
+                "La concentration d'un ou plusieurs métabolites pertinents dépasse le seuil de précaution recommandé par le Haut Conseil de la Santé Publique (HCSP) en l’absence de valeur sanitaire disponible.",
+            },
             sup_valeur_sanitaire: {
-              label: "Eau non conforme déconseillée à la consommation",
+              label: "Eau non conforme et devant être interdite",
               couleur: "#980043",
               couleurAlt: "#49006a",
               severite: "deconseille_population",
               nonConforme: true,
               labelAdd:
-                "L'eau est déconseillée à la consommation d'après les recommandations du Haut Conseil de la Santé Publique.",
+                "L'eau devrait être interdite à la consommation pour toute la population car la concentration d'un ou plusieurs métabolites pertinents dépasse une limite sanitaire.",
             },
           },
         },
@@ -708,8 +742,7 @@ export const availableCategories: ICategory[] = [
           ratioLabelPlural: "analyses non conformes",
           topLegend:
             "Cette carte montre le pourcentage des analyses de métabolites pertinents réalisées dans l’année non conformes à la réglementation (supérieures à 0,1 µg/L pour au moins un métabolite pertinent).",
-          valeurSanitaireLabel:
-            "la limite devant entraîner des restrictions de consommation",
+          valeurSanitaireLabel: "une limite sanitaire",
         },
         enfants: [],
       },

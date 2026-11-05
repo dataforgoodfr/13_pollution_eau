@@ -88,6 +88,7 @@ models:
                 - "non_quantifie"
                 - "inf_limites"
                 - "sup_limite_qualite"
+                - "sup_seuil_hcsp"
                 - "sup_valeur_sanitaire"
       - name: parametres_detectes
         description: "JSON contenant les paramètres détectés (valtraduite > 0) avec leurs valeurs correspondantes."
@@ -182,6 +183,7 @@ models:
                 - "non_quantifie"
                 - "inf_limites"
                 - "sup_limite_qualite"
+                - "sup_seuil_hcsp"
                 - "sup_valeur_sanitaire"
       - name: parametres_detectes
         description: "JSON contenant les paramètres détectés (valtraduite > 0) avec leurs valeurs correspondantes."

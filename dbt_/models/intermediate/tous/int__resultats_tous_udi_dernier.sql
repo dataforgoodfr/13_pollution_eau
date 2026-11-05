@@ -28,7 +28,8 @@ SELECT
         WHEN BOOL_OR(resultat IN (
             'cvm_sup_0_5',
             'somme_20pfas_sup_0_1',
-            'sup_limite_qualite'
+            'sup_limite_qualite',
+            'sup_seuil_hcsp'
         )) THEN 'sup_limite_qualite'
 
         WHEN BOOL_OR(resultat IN (

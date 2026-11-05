@@ -1,5 +1,6 @@
 import { forwardRef } from "react";
 import { getColorScale } from "@/lib/colorMapping";
+import { swatchStyle } from "@/lib/hatchPattern";
 
 export type HoveredZone = {
   /** Code INSEE (communes) ou cdreseau (UDI). */
@@ -56,7 +57,7 @@ const PollutionMapHoverTooltip = forwardRef<
             <p className="mt-0.5 flex items-start gap-1.5 leading-snug text-gray-700">
               <span
                 className="mt-[3px] h-2.5 w-2.5 flex-shrink-0 rounded-full"
-                style={{ backgroundColor: segment.color }}
+                style={swatchStyle(segment.color, segment.hachures)}
               />
               <span>{segment.label}</span>
             </p>

@@ -5,6 +5,7 @@ import { getCategoryById } from "@/lib/polluants";
 import { cn } from "@/lib/utils";
 import { ChevronRight } from "lucide-react";
 import { getColorScale } from "@/lib/colorMapping";
+import { swatchStyle } from "@/lib/hatchPattern";
 
 interface PollutionMapLegendProps {
   period: string;
@@ -148,7 +149,7 @@ export default function PollutionMapLegend({
                   index === segments.length - 1 && "rounded-r-sm",
                   segmentClass(segment.key),
                 )}
-                style={{ backgroundColor: segment.color }}
+                style={swatchStyle(segment.color, segment.hachures)}
               />
             </span>
           ))}

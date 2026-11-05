@@ -8,7 +8,8 @@ sub_active_prels AS (
         cdparametresiseeaux,
         valtraduite,
         limite_qualite,
-        valeur_sanitaire_1
+        valeur_sanitaire_1,
+        valeur_sanitaire_1_type
     FROM
         {{ ref('int__resultats_udi') }}
     WHERE
@@ -33,8 +34,14 @@ SELECT
     COUNT(
         DISTINCT
         CASE
+            -- Vraies valeurs sanitaires uniquement : la valeur recommandée par
+            -- le HCSP en l'absence de valeur sanitaire est un seuil d'alerte
+            -- (son dépassement reste compté dans nb_depassements, car elle est
+            -- supérieure à la limite de qualité).
             WHEN
-                valtraduite IS NOT NULL AND valtraduite > valeur_sanitaire_1
+                valtraduite IS NOT NULL
+                AND valtraduite > valeur_sanitaire_1
+                AND valeur_sanitaire_1_type IS DISTINCT FROM 'hcsp'
                 THEN referenceprel
         END
     ) AS nb_sup_valeur_sanitaire,

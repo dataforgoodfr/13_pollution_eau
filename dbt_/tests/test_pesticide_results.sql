@@ -40,10 +40,10 @@ WHERE
     )
     OR
     (
-        -- DTERB = 0.158 > valeur_sanitaire_1 = 0.142
-        cdreseau = '007006251'
-        AND date_dernier_prel = TIMESTAMP '2026-03-20 12:10:00'
-        AND resultat != 'sup_valeur_sanitaire'
+        -- FNUR = 0.168 > valeur_sanitaire_1 = 0.142 (valeur HCSP)
+        cdreseau = '060000548'
+        AND date_dernier_prel = TIMESTAMP '2026-08-10 11:02:00'
+        AND resultat != 'sup_seuil_hcsp'
     )
 -- annuel udi
 UNION ALL

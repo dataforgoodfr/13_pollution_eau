@@ -46,6 +46,13 @@ WHERE
         AND date_dernier_prel = TIMESTAMP '2025-09-23 13:10:00'
         AND resultat != 'non_quantifie'
     )
+    OR
+    (
+        -- TERBMDE = 0.175 > valeur_sanitaire_1 = 0.142 (valeur HCSP)
+        cdreseau = '051003199'
+        AND date_dernier_prel = TIMESTAMP '2026-01-05 10:58:00'
+        AND resultat != 'sup_seuil_hcsp'
+    )
 UNION ALL
 -- bilan annuel
 SELECT

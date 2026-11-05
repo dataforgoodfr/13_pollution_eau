@@ -1,4 +1,5 @@
 import { getColorScale } from "@/lib/colorMapping";
+import { swatchStyle } from "@/lib/hatchPattern";
 import { cn } from "@/lib/utils";
 import {
   Tooltip,
@@ -123,7 +124,7 @@ export default function PollutionColorScale({
                       (isLarge ? "rounded-r-full" : "rounded-r-sm"),
                     segmentClass(segment.key),
                   )}
-                  style={{ backgroundColor: segment.color }}
+                  style={swatchStyle(segment.color, segment.hachures)}
                 >
                   {markerElement(segment.key)}
                 </span>

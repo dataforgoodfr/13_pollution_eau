@@ -6,6 +6,7 @@ import type { PollutionStats } from "@/app/lib/data";
 export type LegendStatItem = {
   label: string;
   color: string;
+  hachures?: boolean;
   count: number | null;
   population: number | null;
   labelAdd?: string;
@@ -41,6 +42,7 @@ export function getLegendItems(
         return {
           label: value.label,
           color: colorblindMode ? value.couleurAlt : value.couleur,
+          hachures: value.hachures,
           count: stat(statName),
           population: stat(`${statName}_population`),
           labelAdd: value.labelAdd,

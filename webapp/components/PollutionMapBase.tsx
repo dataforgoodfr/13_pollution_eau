@@ -8,7 +8,16 @@ import ReactMapGl, {
 import maplibregl from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 import { Protocol } from "pmtiles";
-import { generateColorExpression, getZoneScaleKey } from "@/lib/colorMapping";
+import {
+  generateColorExpression,
+  generateHatchFilter,
+  getZoneScaleKey,
+} from "@/lib/colorMapping";
+import {
+  addHatchImage,
+  HATCH_IMAGE_ID,
+  HATCH_MIN_ZOOM,
+} from "@/lib/hatchPattern";
 import { frameZone, getMapInsets } from "@/lib/zoneFraming";
 import PollutionMapMarker from "@/components/PollutionMapMarker";
 import PollutionMapHoverTooltip, {
@@ -163,6 +172,8 @@ export default function PollutionMapBaseLayer({
     const idProperty =
       displayMode === "communes" ? "commune_code_insee" : "cdreseau";
 
+    const hatchFilter = generateHatchFilter(category, period);
+
     const dynamicLayers: maplibregl.LayerSpecification[] = [
       {
         id: "color-layer",
@@ -183,6 +194,21 @@ export default function PollutionMapBaseLayer({
           ],
         },
       },
+      // Hachures superposées à la couleur pour les résultats qui en ont
+      // (cf. `hachures` dans polluants.ts).
+      ...(hatchFilter
+        ? [
+            {
+              id: "hatch-layer",
+              type: "fill",
+              source: source,
+              "source-layer": sourceLayer,
+              filter: hatchFilter,
+              minzoom: HATCH_MIN_ZOOM,
+              paint: { "fill-pattern": HATCH_IMAGE_ID },
+            } satisfies maplibregl.LayerSpecification,
+          ]
+        : []),
       // Limites entre zones : liseré blanc discret, qui sépare les zones sans
       // concurrencer leurs couleurs.
       {
@@ -269,6 +295,15 @@ export default function PollutionMapBaseLayer({
       // react-map-gl ignore un changement de position pendant un mouvement.
       initialViewState={MAPLIBRE_MAP.initialViewState}
       mapLib={maplibregl}
+      onLoad={(event) => {
+        const map = event.target;
+        addHatchImage(map);
+        // Un changement de style peut faire perdre l'image : on la remet à la
+        // demande.
+        map.on("styleimagemissing", (e) => {
+          if (e.id === HATCH_IMAGE_ID) addHatchImage(map);
+        });
+      }}
       onClick={onClick}
       onMouseMove={onMouseMove}
       onMouseOut={onMouseOut}

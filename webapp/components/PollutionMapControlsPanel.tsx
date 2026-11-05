@@ -6,6 +6,7 @@ import DonutChart from "./DonutChart";
 import { getStatisticValue } from "@/lib/stats";
 import { getLegendItems, type LegendStatItem } from "@/lib/legendStats";
 import { getCategoryById } from "@/lib/polluants";
+import { swatchStyle } from "@/lib/hatchPattern";
 import type { PollutionStats } from "@/app/lib/data";
 import {
   Popover,
@@ -30,16 +31,15 @@ function formatPopulation(value: number): string {
 
 function LegendItem({
   color,
+  hachures,
   label,
   labelAdd,
-}: Pick<LegendStatItem, "color" | "label" | "labelAdd">) {
+}: Pick<LegendStatItem, "color" | "hachures" | "label" | "labelAdd">) {
   return (
     <div className="flex items-center gap-3">
       <div
         className="w-6 h-3 rounded-sm flex-shrink-0"
-        style={{
-          backgroundColor: color || undefined,
-        }}
+        style={swatchStyle(color, hachures)}
       ></div>
       <div className="flex-1">
         <span>{label}</span>

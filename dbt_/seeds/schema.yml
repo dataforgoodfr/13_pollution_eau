@@ -7,6 +7,11 @@ seeds:
       delimiter: ","
       full_refresh: true
     description: "Table de référence fournie par Générations Futures"
+    tests:
+      # Toute valeur sanitaire 1 doit avoir sa nature renseignée : c'est elle
+      # qui distingue une vraie limite sanitaire du seuil d'alerte HCSP.
+      - dbt_utils.expression_is_true:
+          expression: "valeur_sanitaire_1 IS NULL OR valeur_sanitaire_1_type IS NOT NULL"
     columns:
       - name: cdparametresiseeaux
         description: "Code SISE-Eaux (Système d'Information des services Santé-Environnement Eaux) du paramètre"
@@ -65,6 +70,16 @@ seeds:
         description: "Unité de la valeur sanitaire 1"
       - name: valeur_sanitaire_1_commentaire
         description: "Commentaire sur la valeur sanitaire 1"
+      - name: valeur_sanitaire_1_type
+        description: >
+          Nature de la valeur sanitaire 1 (vide si pas de valeur sanitaire 1) :
+          vmax (Vmax établie par l'Anses), vsi (valeur sanitaire indicative de l'Anses),
+          vst (valeur sanitaire transitoire), hcsp (valeur recommandée par le HCSP en
+          l'absence de Vmax ou VST, considérée comme un seuil d'alerte et non comme
+          une vraie limite sanitaire), autre.
+        tests:
+          - accepted_values:
+              values: ["vmax", "vsi", "vst", "hcsp", "autre"]
       - name: valeur_sanitaire_2
         description: "Deuxième valeur sanitaire"
         tests:

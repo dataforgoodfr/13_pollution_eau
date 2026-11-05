@@ -27,9 +27,10 @@ WHERE
     )
     OR
     (
-        cdreseau = '077000064'
-        AND date_dernier_prel = TIMESTAMP '2025-11-06 09:39:00'
-        AND resultat != 'sup_valeur_sanitaire'
+        -- FNUR = 0.168 > valeur_sanitaire_1 = 0.142 (valeur HCSP)
+        cdreseau = '060000548'
+        AND date_dernier_prel = TIMESTAMP '2026-08-10 11:02:00'
+        AND resultat != 'sup_seuil_hcsp'
     )
 -- annuel udi
 UNION ALL
@@ -65,12 +66,14 @@ WHERE
     )
     OR
     (
+        -- CYSUL = 0.160 > valeur_sanitaire_1 = 0.142 : valeur HCSP, compté en
+        -- dépassement de la limite de qualité mais pas de la valeur sanitaire
         cdreseau = '021000861'
         AND annee = 2025
         AND (
             nb_prelevements != 5
             OR nb_depassements != 1
-            OR nb_sup_valeur_sanitaire != 1
+            OR nb_sup_valeur_sanitaire != 0
             OR ratio_limite_qualite != 0.20
         )
     )

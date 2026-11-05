@@ -8,6 +8,7 @@ last_pvl AS (
         limite_qualite,
         limite_indicative,
         valeur_sanitaire_1,
+        valeur_sanitaire_1_type,
         datetimeprel,
         DENSE_RANK()
             OVER (
@@ -40,6 +41,7 @@ aggregated AS (
         MAX(limite_qualite) AS limite_qualite,
         MAX(limite_indicative) AS limite_indicative,
         MAX(valeur_sanitaire_1) AS valeur_sanitaire_1,
+        MAX(valeur_sanitaire_1_type) AS valeur_sanitaire_1_type,
         MAX(datetimeprel) AS datetimeprel
     FROM last_pvl
     WHERE row_number = 1
@@ -54,9 +56,24 @@ SELECT
     COUNT(DISTINCT cdparametresiseeaux) AS nb_parametres,
     CASE
         WHEN BOOL_AND(valtraduite IS NULL OR valtraduite = 0) THEN 'non_quantifie'
+        -- Dépassement d'une vraie valeur sanitaire (Vmax Anses, VST...) :
+        -- l'eau doit être interdite à la consommation.
         WHEN
-            BOOL_OR(valtraduite IS NOT NULL AND valtraduite > valeur_sanitaire_1)
+            BOOL_OR(
+                valtraduite IS NOT NULL
+                AND valtraduite > valeur_sanitaire_1
+                AND valeur_sanitaire_1_type IS DISTINCT FROM 'hcsp'
+            )
             THEN 'sup_valeur_sanitaire'
+        -- Dépassement de la valeur recommandée par le HCSP en l'absence de
+        -- valeur sanitaire : seuil d'alerte, pas une limite sanitaire.
+        WHEN
+            BOOL_OR(
+                valtraduite IS NOT NULL
+                AND valtraduite > valeur_sanitaire_1
+                AND valeur_sanitaire_1_type = 'hcsp'
+            )
+            THEN 'sup_seuil_hcsp'
         WHEN
             BOOL_OR(valtraduite IS NOT NULL AND valtraduite > limite_qualite)
             THEN 'sup_limite_qualite'

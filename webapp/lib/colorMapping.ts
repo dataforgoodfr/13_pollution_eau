@@ -4,6 +4,7 @@ import { getPropertyName } from "./property";
 import type {
   DataDrivenPropertyValueSpecification,
   ColorSpecification,
+  FilterSpecification,
 } from "maplibre-gl";
 
 export interface ScaleSegment {
@@ -11,6 +12,7 @@ export interface ScaleSegment {
   key: string;
   label: string;
   color: string;
+  hachures?: boolean;
 }
 
 export interface ColorScale {
@@ -63,6 +65,7 @@ export function getColorScale(
         key,
         label: detail.label,
         color: colorblindMode ? detail.couleurAlt : detail.couleur,
+        hachures: detail.hachures,
       };
       if (key === "non_recherche") {
         gray = segment;
@@ -115,6 +118,29 @@ export function getZoneScaleKey(
   }
 
   return null;
+}
+
+/**
+ * Filtre MapLibre des zones à hachurer (résultats avec `hachures: true`),
+ * ou null s'il n'y en a pas pour cette sélection. Les hachures ne concernent
+ * que le dernier prélèvement.
+ */
+export function generateHatchFilter(
+  category: string,
+  period: string,
+): FilterSpecification | null {
+  const categoryDetails = getCategoryById(category);
+  if (!categoryDetails || !period.startsWith("dernier_prel")) {
+    return null;
+  }
+  const keys = Object.entries(categoryDetails.derniereAnalyse.resultats)
+    .filter(([, detail]) => detail.hachures)
+    .map(([key]) => key);
+  if (!keys.length) {
+    return null;
+  }
+  const resultatProp = getPropertyName(period, category, "resultat");
+  return ["in", ["get", resultatProp], ["literal", keys]];
 }
 
 /**

@@ -37,7 +37,7 @@ aggregated_results AS (
         referenceprel,
         inseecommune,
         COUNT(DISTINCT cdparametresiseeaux)
-        FILTER (WHERE cdparametresiseeaux != 'TFA') AS nb_parametres,
+        FILTER (WHERE cdparametresiseeaux NOT IN ('TFA', 'SPFAS')) AS nb_parametres,
         MAX(datetimeprel) AS datetimeprel,
         -- La somme des 20 PFAS est disponible comme un paramètre (SPFAS)
         MAX(

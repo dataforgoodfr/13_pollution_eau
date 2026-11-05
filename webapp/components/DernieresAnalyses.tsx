@@ -257,6 +257,14 @@ function groupPesticideParametres(
 // les substances (somme des 20 puis somme des 4).
 const PFAS_SOMMES = ["SPFAS", "SUM_4_PFAS"];
 
+// Sommes (PFAS et pesticides) : affichées dans le détail, mais exclues du
+// décompte des substances quantifiées.
+const CODES_SOMMES = new Set([
+  ...PFAS_SOMMES,
+  "TOTALPESTICIDE",
+  "TOTALPESTICIDEALL",
+]);
+
 /** Sépare les PFAS quantifiés (par concentration décroissante) des deux sommes. */
 function groupPfasParametres(
   parametres: Array<{ code: string; value: number }>,
@@ -358,21 +366,25 @@ function CategoryContent({
 
   if (isSingleSubstance) {
     const substance = quantifies[0];
+    const { article, pluriel } = getForms(categoryDetails);
     return (
       <>
-        <p>
-          Lors de la dernière analyse en date du {dateLabel},{" "}
-          {substance ? (
-            <>
-              la substance a été quantifiée (
-              {getParameterName(substance.code, parameterValues)}{" "}
-              {formatValue(substance.value)} {categoryDetails.unite || ""})
-            </>
-          ) : (
-            "la substance n'a pas été quantifiée"
-          )}
-          .
-        </p>
+        {substance ? (
+          <>
+            <p>Dernière analyse disponible le {dateLabel}</p>
+            <p>
+              {getParameterName(substance.code, parameterValues)} :{" "}
+              <span className="font-numbers">
+                {formatValue(substance.value)} {categoryDetails.unite || ""}
+              </span>
+            </p>
+          </>
+        ) : (
+          <p>
+            Lors de la dernière analyse disponible du {dateLabel}, {article}{" "}
+            {pluriel ? "n'ont pas été quantifiés" : "n'a pas été quantifié"}.
+          </p>
+        )}
         {detailLink && <p className="mt-3">{detailLink}</p>}
         {interpretation}
       </>
@@ -380,6 +392,9 @@ function CategoryContent({
   }
 
   const nbParametres = result.nbParametres ?? 0;
+  const nbQuantifiees = quantifies.filter(
+    ({ code }) => !CODES_SOMMES.has(code),
+  ).length;
 
   // Catégories à plusieurs substances : le détail des quantifiées est
   // toujours affiché en listes verticales sous la phrase (comme pour les
@@ -401,22 +416,19 @@ function CategoryContent({
   return (
     <>
       <p>
-        Lors de la dernière analyse en date du {dateLabel},{" "}
+        Lors de la dernière analyse disponible du {dateLabel},{" "}
         {nbParametres > 1
           ? `${nbParametres} substances ont été recherchées`
           : nbParametres === 1
             ? "1 substance a été recherchée"
-            : "aucune substance n'a été recherchée"}
-        {quantifies.length > 0 ? (
-          <>
-            {" et "}
-            {quantifies.length > 1
-              ? `${quantifies.length} substances ont été quantifiées.`
-              : "1 substance a été quantifiée."}
-          </>
-        ) : (
-          " et aucune substance n'a été quantifiée"
-        )}
+            : "aucune substance n'a été recherchée"}{" "}
+        et{" "}
+        {nbQuantifiees > 1
+          ? `${nbQuantifiees} substances ont été quantifiées`
+          : nbQuantifiees === 1
+            ? "1 substance a été quantifiée"
+            : "aucune substance n'a été quantifiée"}
+        .
       </p>
       {substanceGroups.map((group) => (
         <SubstanceList

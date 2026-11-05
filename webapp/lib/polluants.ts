@@ -44,6 +44,19 @@ interface DetailResultat {
   couleur: string;
   couleurAlt: string;
   severite: Severity;
+  /**
+   * Dépassement d'une limite réglementaire. Indépendant de `severite` : un
+   * résultat peut être non conforme et déconseillé (nitrates > 50 mg/L), ou
+   * déconseillé sans être non conforme (perchlorates, sans limite
+   * réglementaire).
+   */
+  nonConforme?: boolean;
+  /**
+   * Public à qui l'eau est déconseillée, quand ce n'est pas toute la
+   * population (gravité `deconseille_sensibles`). S'insère tel quel dans le
+   * résumé : « L'eau devrait être déconseillée <deconseilleA> en raison… ».
+   */
+  deconseilleA?: string;
   labelAdd?: string;
   interpretation?: string;
 }
@@ -99,6 +112,12 @@ export interface ICategory {
   unite?: string;
   derniereAnalyse: DerniereAnalyse;
   bilanAnnuel?: BilanAnnuel;
+  /**
+   * Phrase du résumé quand la catégorie est quantifiée, à la place de « … ont
+   * été quantifiés, sans dépasser les limites réglementaires ». Pour les
+   * catégories sans limite réglementaire (perchlorates).
+   */
+  phraseQuantifie?: string;
 }
 
 export const availableCategories: ICategory[] = [
@@ -136,6 +155,7 @@ export const availableCategories: ICategory[] = [
           couleur: "#fe9929",
           couleurAlt: "#d95f0e",
           severite: "non_conforme",
+          nonConforme: true,
         },
         deconseille_sensibles: {
           label:
@@ -151,6 +171,7 @@ export const availableCategories: ICategory[] = [
           couleur: "#980043",
           couleurAlt: "#49006a",
           severite: "deconseille_population",
+          nonConforme: true,
           labelAdd:
             "L'eau devrait être déconseillée à la consommation pour toute la population, en raison des concentrations en pesticides ou en PFAS, d'après les recommandations du Ministère de la Santé ou du Haut Conseil de la Santé Publique.",
         },
@@ -204,6 +225,7 @@ export const availableCategories: ICategory[] = [
           couleur: "#fe9929",
           couleurAlt: "#d95f0e",
           severite: "non_conforme",
+          nonConforme: true,
           interpretation:
             "La qualité de l’eau est non conforme à la réglementation car la somme des 20 PFAS dépasse la limite de qualité réglementaire de 0,1 µg/L. Des mesures doivent être prises rapidement pour rétablir la qualité de l’eau.",
         },
@@ -212,6 +234,7 @@ export const availableCategories: ICategory[] = [
           couleur: "#980043",
           couleurAlt: "#49006a",
           severite: "deconseille_population",
+          nonConforme: true,
           labelAdd:
             "La concentration d'un ou plusieurs PFAS dépasse la limite sanitaire.",
           interpretation:
@@ -411,12 +434,14 @@ export const availableCategories: ICategory[] = [
           couleur: "#fe9929",
           couleurAlt: "#d95f0e",
           severite: "non_conforme",
+          nonConforme: true,
         },
         sup_valeur_sanitaire: {
           label: "Eau non conforme et déconseillée à la consommation",
           couleur: "#980043",
           couleurAlt: "#49006a",
           severite: "deconseille_population",
+          nonConforme: true,
           labelAdd:
             "L'eau est déconseillée à la consommation d'après les recommandations du Haut Conseil de la Santé Publique.",
         },
@@ -536,12 +561,14 @@ export const availableCategories: ICategory[] = [
               couleur: "#fe9929",
               couleurAlt: "#d95f0e",
               severite: "non_conforme",
+              nonConforme: true,
             },
             sup_valeur_sanitaire: {
               label: "Eau non conforme et déconseillée à la consommation",
               couleur: "#980043",
               couleurAlt: "#49006a",
               severite: "deconseille_population",
+              nonConforme: true,
               labelAdd:
                 "L'eau est déconseillée à la consommation d'après les recommandations du Haut Conseil de la Santé Publique.",
             },
@@ -628,12 +655,14 @@ export const availableCategories: ICategory[] = [
               couleur: "#fe9929",
               couleurAlt: "#d95f0e",
               severite: "non_conforme",
+              nonConforme: true,
             },
             sup_valeur_sanitaire: {
               label: "Eau non conforme déconseillée à la consommation",
               couleur: "#980043",
               couleurAlt: "#49006a",
               severite: "deconseille_population",
+              nonConforme: true,
               labelAdd:
                 "L'eau est déconseillée à la consommation d'après les recommandations du Haut Conseil de la Santé Publique.",
             },
@@ -1006,6 +1035,7 @@ export const availableCategories: ICategory[] = [
               couleur: "#fe9929",
               couleurAlt: "#d95f0e",
               severite: "non_conforme",
+              nonConforme: true,
             },
             sup_valeur_sanitaire: {
               label:
@@ -1013,6 +1043,7 @@ export const availableCategories: ICategory[] = [
               couleur: "#980043",
               couleurAlt: "#49006a",
               severite: "deconseille_population",
+              nonConforme: true,
             },
           },
         },
@@ -1096,6 +1127,7 @@ export const availableCategories: ICategory[] = [
               couleur: "#fe9929",
               couleurAlt: "#d95f0e",
               severite: "non_conforme",
+              nonConforme: true,
             },
             sup_valeur_sanitaire: {
               label:
@@ -1103,6 +1135,7 @@ export const availableCategories: ICategory[] = [
               couleur: "#980043",
               couleurAlt: "#49006a",
               severite: "deconseille_population",
+              nonConforme: true,
             },
           },
         },
@@ -1186,6 +1219,7 @@ export const availableCategories: ICategory[] = [
               couleur: "#fe9929",
               couleurAlt: "#d95f0e",
               severite: "non_conforme",
+              nonConforme: true,
             },
             sup_valeur_sanitaire: {
               label:
@@ -1193,6 +1227,7 @@ export const availableCategories: ICategory[] = [
               couleur: "#980043",
               couleurAlt: "#49006a",
               severite: "deconseille_population",
+              nonConforme: true,
             },
           },
         },
@@ -1270,24 +1305,28 @@ export const availableCategories: ICategory[] = [
               couleur: "#fe9929",
               couleurAlt: "#fe9929",
               severite: "non_conforme",
+              nonConforme: true,
             },
             sup_1: {
               label: "> 1 et ≤ 3 µg/L — eau non conforme",
               couleur: "#d95f0e",
               couleurAlt: "#d95f0e",
               severite: "non_conforme",
+              nonConforme: true,
             },
             sup_3: {
               label: "> 3 et ≤ 5 µg/L — eau non conforme",
               couleur: "#993404",
               couleurAlt: "#993404",
               severite: "non_conforme",
+              nonConforme: true,
             },
             sup_5: {
               label: "> 5 µg/L — eau non conforme",
               couleur: "#662506",
               couleurAlt: "#662506",
               severite: "non_conforme",
+              nonConforme: true,
             },
           },
         },
@@ -1479,6 +1518,9 @@ export const availableCategories: ICategory[] = [
           couleur: "#fb6a4a",
           couleurAlt: "#dd1c77",
           severite: "deconseille_sensibles",
+          deconseilleA:
+            "aux femmes enceintes et nourrissons de moins de 6 mois",
+          nonConforme: true,
         },
       },
     },
@@ -1556,6 +1598,7 @@ export const availableCategories: ICategory[] = [
           couleur: "#fe9929",
           couleurAlt: "#d95f0e",
           severite: "non_conforme",
+          nonConforme: true,
         },
       },
     },
@@ -1684,6 +1727,8 @@ export const availableCategories: ICategory[] = [
   {
     id: "sub_indus_perchlorate",
     nomAffichage: "Perchlorate",
+    phraseQuantifie:
+      "Des perchlorates ont été quantifiés, sous le seuil d'alerte de 4 µg/L.",
     lienExterne:
       "https://dansmoneau.fr/comprendre/comprendre-les-contaminants-chimiques-de-leau-potable/les-perchlorates/",
     disable: false,
@@ -1719,6 +1764,7 @@ export const availableCategories: ICategory[] = [
           couleur: "#fcae91",
           couleurAlt: "#df65b0",
           severite: "deconseille_sensibles",
+          deconseilleA: "aux nourrissons de moins de 6 mois",
         },
         sup_valeur_sanitaire_2: {
           label:
@@ -1726,6 +1772,8 @@ export const availableCategories: ICategory[] = [
           couleur: "#fb6a4a",
           couleurAlt: "#dd1c77",
           severite: "deconseille_sensibles",
+          deconseilleA:
+            "aux femmes enceintes et nourrissons de moins de 6 mois",
         },
       },
     },

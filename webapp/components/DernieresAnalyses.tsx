@@ -37,91 +37,146 @@ const SINGLE_SUBSTANCE_CATEGORIES = new Set([
 ]);
 
 /**
- * Morceau de phrase décrivant une gravité, complété par la liste des
- * catégories concernées. Les catégories sont toujours placées après « pour »
- * pour éviter tout problème d'accord (« le CVM », « les pesticides »…).
- * `null` = gravité qui n'apparaît pas dans la phrase de résumé.
+ * Nom d'une catégorie tel qu'il s'insère dans une phrase (« teneur trop élevée
+ * en PFAS »). L'article et le partitif s'en déduisent : « les / des » au
+ * pluriel (par défaut), « le / du » au singulier (« du CVM a été quantifié »).
+ * Sans entrée ici, on reprend `nomAffichage` en minuscules, au pluriel.
  */
-const SEVERITY_CLAUSE: Record<Severity, ((noms: string) => string) | null> = {
-  deconseille_population: (noms) =>
-    `l'eau devrait être déconseillée à la consommation pour toute la population, en raison des concentrations mesurées pour ${noms}`,
-  deconseille_sensibles: (noms) =>
-    `l'eau devrait être déconseillée aux personnes sensibles (nourrissons, femmes enceintes…), en raison des concentrations mesurées pour ${noms}`,
-  non_conforme: (noms) =>
-    `les limites réglementaires sont dépassées pour ${noms}`,
-  vigilance: (noms) =>
-    `des concentrations élevées, sans non-conformité, ont été mesurées pour ${noms}`,
-  quantifie: (noms) =>
-    `des polluants ont été quantifiés pour ${noms}, sous les limites réglementaires`,
-  non_quantifie: null,
-  non_recherche: null,
+const NOM_DANS_PHRASE: Record<string, { nom: string; pluriel?: false }> = {
+  pfas: { nom: "PFAS" },
+  pesticide: { nom: "pesticides" },
+  nitrate: { nom: "nitrates" },
+  cvm: { nom: "CVM", pluriel: false },
+  sub_indus_perchlorate: { nom: "perchlorates" },
 };
 
-const SEVERITY_ORDER: Severity[] = [
-  "deconseille_population",
-  "deconseille_sensibles",
-  "non_conforme",
-  "vigilance",
-  "quantifie",
-];
+function getForms(item: ICategory) {
+  const { nom, pluriel = true } = NOM_DANS_PHRASE[item.id] ?? {
+    nom: item.nomAffichage.toLowerCase(),
+  };
+  return {
+    nom,
+    pluriel,
+    article: `${pluriel ? "les" : "le"} ${nom}`,
+    partitif: `${pluriel ? "des" : "du"} ${nom}`,
+  };
+}
 
-/** Nom de la catégorie tel qu'il s'insère dans une phrase (avec son article). */
-const CATEGORY_DANS_PHRASE: Record<string, string> = {
-  pfas: "les PFAS",
-  pesticide: "les pesticides",
-  nitrate: "les nitrates",
-  cvm: "le CVM",
-  sub_indus: "les substances industrielles",
-  sub_indus_perchlorate: "le perchlorate",
-  "metaux-lourds": "les métaux lourds",
+type CategorySeverity = {
+  item: ICategory;
+  severity: Severity;
+  nonConforme: boolean;
+  deconseilleA: string | null;
 };
 
-function joinNames(categories: ICategory[]): string {
-  const noms = categories.map(
-    (item) => CATEGORY_DANS_PHRASE[item.id] ?? `les ${item.nomAffichage}`,
-  );
+function joinList(noms: string[]): string {
   if (noms.length <= 1) return noms.join("");
   return `${noms.slice(0, -1).join(", ")} et ${noms[noms.length - 1]}`;
 }
 
-/**
- * Phrase expliquant la couleur « tous polluants », construite à partir des
- * catégories regroupées par gravité. Sans catégorie à citer (rien de
- * quantifié, ou rien de recherché), pas de phrase : le titre du bloc résumé
- * suffit.
- */
-function buildSummarySentence(
-  buckets: Map<Severity, ICategory[]>,
-): string | null {
-  const clauses = SEVERITY_ORDER.flatMap((severity) => {
-    const bucket = buckets.get(severity);
-    const clause = SEVERITY_CLAUSE[severity];
-    if (!bucket?.length || !clause) return [];
-    return [clause(joinNames(bucket))];
-  });
+function capitalize(text: string): string {
+  return `${text.charAt(0).toUpperCase()}${text.slice(1)}`;
+}
 
-  if (clauses.length === 0) return null;
-
-  const sentence = clauses.join(" ; ");
-  return `${sentence.charAt(0).toUpperCase()}${sentence.slice(1)}.`;
+/** « en PFAS et en pesticides » */
+function joinEn(entries: CategorySeverity[]): string {
+  return joinList(entries.map(({ item }) => `en ${getForms(item).nom}`));
 }
 
 /**
- * Phrase de synthèse du dernier prélèvement, toutes catégories de premier
- * niveau confondues (regroupées par gravité). Reprise dans le texte qui
- * accompagne le visuel de partage.
+ * Phrases expliquant la couleur « tous polluants », de la plus grave à la
+ * moins grave. La non-conformité est lue sur chaque résultat (`nonConforme`),
+ * indépendamment de la gravité : une catégorie déconseillée peut donc aussi
+ * être citée comme non conforme. Sans catégorie à citer (rien de quantifié,
+ * ou rien de recherché), pas de phrase : le titre du bloc résumé suffit.
  */
-export function getZoneSummarySentence(data: ZoneDetail): string | null {
-  const buckets = new Map<Severity, ICategory[]>();
-  TOP_LEVEL_CATEGORIES.forEach((item) => {
-    // La gravité ne dépend pas du mode daltonien, seulement la couleur.
-    const { severity } = getLastPrelResult(data, item.id, false);
-    if (!SEVERITY_CLAUSE[severity]) return;
-    const bucket = buckets.get(severity) || [];
-    bucket.push(item);
-    buckets.set(severity, bucket);
+function buildSummarySentences(entries: CategorySeverity[]): string[] {
+  const bySeverity = (severity: Severity) =>
+    entries.filter((entry) => entry.severity === severity);
+
+  const sentences: string[] = [];
+
+  const population = bySeverity("deconseille_population");
+  if (population.length) {
+    sentences.push(
+      `L'eau devrait être interdite à la consommation pour toute la population, en raison d'une teneur trop élevée ${joinEn(population)}.`,
+    );
+  }
+
+  // Une phrase par public concerné (« aux nourrissons de moins de 6 mois »…),
+  // dans l'ordre des catégories.
+  const sensiblesParPublic = new Map<string, CategorySeverity[]>();
+  bySeverity("deconseille_sensibles").forEach((entry) => {
+    const publics = entry.deconseilleA ?? "aux personnes sensibles";
+    sensiblesParPublic.set(publics, [
+      ...(sensiblesParPublic.get(publics) ?? []),
+      entry,
+    ]);
   });
-  return buildSummarySentence(buckets);
+  sensiblesParPublic.forEach((group, publics) => {
+    sentences.push(
+      `L'eau devrait être déconseillée ${publics} en raison d'une teneur trop élevée ${joinEn(group)}.`,
+    );
+  });
+
+  const nonConformes = entries.filter((entry) => entry.nonConforme);
+  if (nonConformes.length) {
+    sentences.push(
+      `L'eau est non conforme à la réglementation pour ${joinList(nonConformes.map(({ item }) => getForms(item).article))}.`,
+    );
+  }
+
+  const vigilance = bySeverity("vigilance");
+  if (vigilance.length) {
+    sentences.push(
+      `Les concentrations ${joinEn(vigilance)} sont conformes à la réglementation mais dépassent un seuil d'alerte.`,
+    );
+  }
+
+  const quantifies = bySeverity("quantifie");
+  const quantifiesSansPhrase = quantifies.filter(
+    ({ item }) => !item.phraseQuantifie,
+  );
+  if (quantifiesSansPhrase.length) {
+    const pluriel =
+      quantifiesSansPhrase.length > 1 ||
+      getForms(quantifiesSansPhrase[0].item).pluriel;
+    const sujet = joinList(
+      quantifiesSansPhrase.map(({ item }) => getForms(item).partitif),
+    );
+    sentences.push(
+      `${capitalize(sujet)} ${pluriel ? "ont été quantifiés" : "a été quantifié"}, sans dépasser les limites réglementaires.`,
+    );
+  }
+  quantifies.forEach(({ item }) => {
+    if (item.phraseQuantifie) sentences.push(item.phraseQuantifie);
+  });
+
+  return sentences;
+}
+
+/**
+ * Phrases de synthèse du dernier prélèvement, toutes catégories de premier
+ * niveau confondues : une phrase par stade de gravité, de la plus grave à la
+ * moins grave. Affichées une par ligne dans le bloc résumé.
+ */
+export function getZoneSummarySentences(data: ZoneDetail): string[] {
+  const entries = TOP_LEVEL_CATEGORIES.map((item) => {
+    // La gravité ne dépend pas du mode daltonien, seulement la couleur.
+    const { severity, nonConforme, deconseilleA } = getLastPrelResult(
+      data,
+      item.id,
+      false,
+    );
+    return { item, severity, nonConforme, deconseilleA };
+  });
+  return buildSummarySentences(entries);
+}
+
+/** Les mêmes phrases en un seul paragraphe, pour le texte de partage. */
+export function getZoneSummarySentence(data: ZoneDetail): string | null {
+  const sentences = getZoneSummarySentences(data);
+  return sentences.length ? sentences.join(" ") : null;
 }
 
 type SubstanceGroup = {
@@ -530,7 +585,7 @@ export default function DernieresAnalyses({
   };
 
   const globalResult = getLastPrelResult(data, "tous", colorblindMode);
-  const summarySentence = getZoneSummarySentence(data);
+  const summarySentences = getZoneSummarySentences(data);
   return (
     <div className="space-y-4">
       {/* Résumé toutes catégories. Bloc purement informatif : il ne pilote pas
@@ -558,8 +613,12 @@ export default function DernieresAnalyses({
           </div>
         </div>
 
-        {summarySentence && (
-          <p className="mt-4 pt-2 text-sm">{summarySentence}</p>
+        {summarySentences.length > 0 && (
+          <div className="mt-4 space-y-1.5 pt-2 text-sm">
+            {summarySentences.map((sentence) => (
+              <p key={sentence}>{sentence}</p>
+            ))}
+          </div>
         )}
       </section>
 

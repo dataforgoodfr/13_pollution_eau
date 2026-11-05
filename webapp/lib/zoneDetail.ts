@@ -36,6 +36,8 @@ const ERROR_LABEL = "Résultat manquant";
 export type LastPrelResult = {
   resultKey: string;
   severity: Severity;
+  nonConforme: boolean;
+  deconseilleA: string | null;
   color: string;
   label: string;
   interpretation: string | null;
@@ -57,6 +59,8 @@ export function getLastPrelResult(
   return {
     resultKey,
     severity: detail?.severite ?? "non_recherche",
+    nonConforme: detail?.nonConforme ?? false,
+    deconseilleA: detail?.deconseilleA ?? null,
     color: detail?.[colorblindMode ? "couleurAlt" : "couleur"] || ERROR_COLOR,
     label: detail?.label || ERROR_LABEL,
     interpretation: detail?.interpretation || null,

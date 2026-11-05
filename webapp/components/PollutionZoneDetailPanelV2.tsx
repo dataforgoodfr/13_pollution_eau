@@ -3,6 +3,11 @@
 import { useEffect, useState } from "react";
 import { Send, X } from "lucide-react";
 import { cn } from "@/lib/utils";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import type { ParameterValues } from "@/app/lib/data";
 import AnalysesModal, {
   type AnalysesFilters,
@@ -29,6 +34,8 @@ type PollutionZoneDetailPanelV2Props = {
  * (via setPeriod / setCategory) ; "evolution" la laisse strictement intacte.
  */
 type PanelTab = "dernier" | "evolution";
+
+const MAX_COMMUNES_AFFICHEES = 5;
 
 export default function PollutionZoneDetailPanelV2({
   setPeriod,
@@ -117,6 +124,10 @@ export default function PollutionZoneDetailPanelV2({
   const isEvolution = tab === "evolution";
   const { nom: title, code, population } = zoneData.zone;
   const communesDesservies = zoneData.zone.communesDesservies ?? [];
+  const nbCommunesMasquees = Math.max(
+    0,
+    communesDesservies.length - MAX_COMMUNES_AFFICHEES,
+  );
 
   return (
     <div className="h-full flex flex-col relative bg-kaki overflow-hidden">
@@ -135,9 +146,34 @@ export default function PollutionZoneDetailPanelV2({
           )}
           {communesDesservies.length > 0 && (
             <div>
-              Communes desservies : {communesDesservies.slice(0, 6).join(", ")}
-              {communesDesservies.length > 6 &&
-                ` et ${communesDesservies.length - 6} autres`}
+              Communes desservies :{" "}
+              {communesDesservies.slice(0, MAX_COMMUNES_AFFICHEES).join(", ")}
+              {nbCommunesMasquees > 0 && (
+                <>
+                  {" et "}
+                  <Popover>
+                    <PopoverTrigger className="underline underline-offset-2 hover:text-white focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-white rounded-sm">
+                      {nbCommunesMasquees}{" "}
+                      {nbCommunesMasquees > 1 ? "autres" : "autre"}
+                    </PopoverTrigger>
+                    <PopoverContent
+                      side="bottom"
+                      align="start"
+                      collisionPadding={8}
+                      className="z-[70] w-72 max-w-[calc(100vw-2rem)] p-3 text-sm leading-snug text-gray-700"
+                    >
+                      <div className="mb-1.5 text-xs font-medium text-gray-500">
+                        {communesDesservies.length} communes desservies
+                      </div>
+                      <ul className="max-h-64 overflow-y-auto space-y-0.5">
+                        {communesDesservies.map((commune) => (
+                          <li key={commune}>{commune}</li>
+                        ))}
+                      </ul>
+                    </PopoverContent>
+                  </Popover>
+                </>
+              )}
             </div>
           )}
         </div>

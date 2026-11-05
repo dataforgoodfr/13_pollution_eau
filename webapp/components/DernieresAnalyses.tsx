@@ -1,6 +1,6 @@
 "use client";
 
-import { ChevronDown, Info } from "lucide-react";
+import { ChevronDown, ExternalLink, Info } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
   findTopLevelCategory,
@@ -340,15 +340,40 @@ function CategoryContent({
   onOpenAnalyses?: (date?: string) => void;
 }) {
   const result = getLastPrelResult(data, categoryDetails.id, colorblindMode);
+  const quantifies = result.parametres;
+
+  // Interprétation du résultat (facultative), toujours en fin de bloc.
+  const interpretation = result.interpretation ? (
+    <p className="mt-3 whitespace-pre-line">
+      {result.interpretation}
+      {categoryDetails.lienExterne && (
+        <>
+          <br />
+          <a
+            href={categoryDetails.lienExterne}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1 text-kaki hover:underline"
+          >
+            En savoir plus <ExternalLink size={12} />
+          </a>
+        </>
+      )}
+    </p>
+  ) : null;
 
   if (!result.date) {
-    return <p>Pas d&apos;analyse effectuée dans les 12 derniers mois</p>;
+    return (
+      <>
+        <p>Pas d&apos;analyse effectuée dans les 12 derniers mois.</p>
+        {interpretation}
+      </>
+    );
   }
 
   const dateLabel = new Date(result.date).toLocaleDateString("fr-FR");
   const isSingleSubstance = SINGLE_SUBSTANCE_CATEGORIES.has(categoryDetails.id);
   const isPesticide = categoryDetails.id === "pesticide";
-  const quantifies = result.parametres;
 
   const detailLink = onOpenAnalyses ? (
     <button
@@ -357,11 +382,6 @@ function CategoryContent({
     >
       Voir les résultats détaillés.
     </button>
-  ) : null;
-
-  // Interprétation du résultat (facultative), toujours en fin de bloc.
-  const interpretation = result.interpretation ? (
-    <p className="mt-3 whitespace-pre-line">{result.interpretation}</p>
   ) : null;
 
   if (isSingleSubstance) {

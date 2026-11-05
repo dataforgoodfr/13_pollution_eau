@@ -125,6 +125,10 @@ export interface ICategory {
   phraseQuantifie?: string;
 }
 
+// Interprétation commune aux trois tranches de nitrates entre 10 et 50 mg/L.
+const INTERPRETATION_NITRATES_CONFORME =
+  "Les teneurs retrouvées indiquent une contamination de l’eau liée à des activités humaines tout en restant inférieures à la limite de qualité réglementaire de 50 mg/L. L’eau est conforme à la réglementation pour le paramètre nitrates.";
+
 export const availableCategories: ICategory[] = [
   {
     id: "tous",
@@ -201,6 +205,8 @@ export const availableCategories: ICategory[] = [
           couleur: "#cccccc",
           couleurAlt: "#f7f7f7",
           severite: "non_recherche",
+          interpretation:
+            "La fréquence réglementaire d’analyse des PFAS dans l’eau potable est fixée pour les plus petits réseaux à une analyse tous les 5 voire tous les 10 ans, ce qui peut expliquer l’absence d’analyse au cours des 12 derniers mois si des analyses antérieures existent.\nSi aucune analyse n’a jamais été faite dans le cadre du contrôle sanitaire, il est attendu à ce qu’une première analyse soit réalisée rapidement. L’obligation de rechercher les 20 PFAS réglementés dans le cadre du contrôle sanitaire de l’eau est entrée en vigueur en janvier 2026.\nD’autres analyses ont pu être faites dans le cadre de campagne exploratoire; dans ces cas, les résultats ne sont pas disponibles sur cette carte. Vous pouvez consulter le site internet de votre Agence Régionale de Santé pour vérifier si des analyses ont déjà été réalisées pour votre réseau.",
         },
         non_quantifie: {
           label: "Eau conforme, sans aucun PFAS",
@@ -224,7 +230,7 @@ export const availableCategories: ICategory[] = [
           labelAdd:
             "La somme des 4 (PFAS PFOA, PFOS, PFNA, PFHxS) dépasse la limite recommandé par le Haut Conseil de la Santé Publique (HCSP).",
           interpretation:
-            "La somme des 20 PFAS est inférieure à la limite de qualité réglementaire de 0,1 µg/L. L’eau est donc conforme à la réglementation pour les PFAS. Toutefois, la somme des 4 PFAS est supérieure à la limite recommandée par le Haut Conseil de la Santé Publique, indiquant que des mesures doivent être prises rapidement pour rétablir la qualité de l’eau.  ",
+            "La somme des 20 PFAS est inférieure à la limite de qualité réglementaire de 0,1 µg/L. L’eau est donc conforme à la réglementation pour les PFAS.\nToutefois, la somme des 4 PFAS est supérieure à la limite recommandée par le Haut Conseil de la Santé Publique. Si ce dépassement est confirmé par plusieurs analyses, des mesures devraient être prises rapidement pour rétablir la qualité de l’eau.",
         },
         somme_20pfas_sup_0_1: {
           label: "Eau non conforme",
@@ -233,7 +239,7 @@ export const availableCategories: ICategory[] = [
           severite: "non_conforme",
           nonConforme: true,
           interpretation:
-            "La qualité de l’eau est non conforme à la réglementation car la somme des 20 PFAS dépasse la limite de qualité réglementaire de 0,1 µg/L. Des mesures doivent être prises rapidement pour rétablir la qualité de l’eau.",
+            "La qualité de l’eau est non conforme à la réglementation car la somme des 20 PFAS dépasse la limite de qualité réglementaire de 0,1 µg/L. Si ce dépassement est confirmé par plusieurs analyses, des mesures doivent être prises rapidement pour rétablir la qualité de l’eau. Au cas par cas, les autorités peuvent prononcer des interdictions de consommer l’eau.",
         },
         sup_valeur_sanitaire: {
           label: "Eau non conforme et devant être interdite",
@@ -422,6 +428,8 @@ export const availableCategories: ICategory[] = [
           couleur: "#cccccc",
           couleurAlt: "#f7f7f7",
           severite: "non_recherche",
+          interpretation:
+            "La fréquence réglementaire d’analyse des pesticides dans l’eau potable est fixée pour les plus petits réseaux à une analyse tous les 5 voire tous les 10 ans, ce qui peut expliquer l’absence d’analyse au cours des 12 derniers mois.",
         },
         non_quantifie: {
           label: "Eau conforme, sans aucun pesticide",
@@ -434,6 +442,8 @@ export const availableCategories: ICategory[] = [
           couleur: "#fee391",
           couleurAlt: "#fec44f",
           severite: "quantifie",
+          interpretation:
+            "Les concentrations en substances actives pesticides et métabolites pertinents sont toutes inférieures aux limites de qualité réglementaires : l’eau est conforme à la réglementation pour le paramètre pesticide. Les métabolites non pertinents ne sont pas soumis à ces limites ; au-delà de la limite indicative de 0,9 µg/L, ils indiquent toutefois une dégradation de la qualité de l’eau.",
         },
         sup_limite_qualite: {
           label: "Eau non conforme",
@@ -441,6 +451,8 @@ export const availableCategories: ICategory[] = [
           couleurAlt: "#d95f0e",
           severite: "non_conforme",
           nonConforme: true,
+          interpretation:
+            "La qualité de l’eau est non conforme à la réglementation : au moins une limite de qualité réglementaire est dépassée (0,1 µg/L pour chaque substance active ou métabolite pertinent, 0,5 µg/L pour le total pesticide). Les métabolites non pertinents ne sont pas soumis à ces limites ; au-delà de la limite indicative de 0,9 µg/L, ils indiquent toutefois une dégradation de la qualité de l’eau.\nSi la situation persiste, une dérogation préfectorale doit être accordée pour autoriser la distribution d’une eau non conforme aux limites de qualité, et des mesures doivent être prises pour rétablir la qualité de l’eau au plus vite.\nSelon les autorités sanitaires, boire cette eau ne présente pas de risque pour la santé car aucune valeur sanitaire n’est dépassée.",
         },
         sup_seuil_hcsp: {
           label: "Eau non conforme et dépassant un seuil d'alerte",
@@ -451,6 +463,8 @@ export const availableCategories: ICategory[] = [
           nonConforme: true,
           labelAdd:
             "La concentration d'un ou plusieurs pesticides dépasse le seuil de précaution recommandé par le Haut Conseil de la Santé Publique (HCSP) en l’absence de valeur sanitaire disponible.",
+          interpretation:
+            "La qualité de l’eau est non conforme à la réglementation : au moins une limite de qualité réglementaire est dépassée (0,1 µg/L pour chaque substance active ou métabolite pertinent, 0,5 µg/L pour le total pesticide). Les métabolites non pertinents ne sont pas soumis à ces limites ; au-delà de la limite indicative de 0,9 µg/L, ils indiquent toutefois une dégradation de la qualité de l’eau. Si la situation persiste, une dérogation préfectorale doit être accordée pour autoriser la distribution d’une eau non conforme aux limites de qualité, et des mesures doivent être prises pour rétablir la qualité de l’eau au plus vite.\nDe plus, au moins un pesticide dépasse le seuil de précaution recommandé par le Haut Conseil de la Santé Publique (HCSP) en l’absence de valeur sanitaire disponible. Si la situation persiste, l’eau devrait être déconseillée à la consommation selon le HCSP.",
         },
         sup_valeur_sanitaire: {
           label: "Eau non conforme et devant être interdite",
@@ -460,6 +474,8 @@ export const availableCategories: ICategory[] = [
           nonConforme: true,
           labelAdd:
             "L'eau devrait être interdite à la consommation pour toute la population car la concentration d'un ou plusieurs pesticides dépasse une limite sanitaire.",
+          interpretation:
+            "La qualité de l’eau est non conforme à la réglementation : au moins une limite de qualité réglementaire est dépassée (0,1 µg/L pour chaque substance active ou métabolite pertinent, 0,5 µg/L pour le total pesticide). Les métabolites non pertinents ne sont pas soumis à ces limites ; au-delà de la limite indicative de 0,9 µg/L, ils indiquent toutefois une dégradation de la qualité de l’eau.\nDe plus, au moins un pesticide dépasse une valeur sanitaire. L’eau doit être interdite à la consommation.",
         },
       },
     },
@@ -1519,30 +1535,37 @@ export const availableCategories: ICategory[] = [
           couleur: "#cccccc",
           couleurAlt: "#f7f7f7",
           severite: "non_recherche",
+          interpretation:
+            "La fréquence minimale d’analyse des nitrates dans l’eau potable est fixée par la réglementation à 3 analyses par an pour les plus petits réseaux. Vous pouvez contacter votre Agence Régionale de Santé pour demander des explications sur cette absence d’analyse.",
         },
         non_quantifie: {
           label: "Absence ou ≤ 10 mg/L",
           couleur: "#74c476",
           couleurAlt: "#c7e9c0",
           severite: "non_quantifie",
+          interpretation:
+            "Les nitrates peuvent être naturellement présents dans les eaux, en faible quantité. Une concentration inférieure à 10 mg/L indique l’absence de pollution liée aux engrais ou autres activités humaines.",
         },
         no3_inf_25: {
           label: "Entre 10 et 25 mg/L",
           couleur: "#fee391",
           couleurAlt: "#fec44f",
           severite: "quantifie",
+          interpretation: INTERPRETATION_NITRATES_CONFORME,
         },
         no3_inf_40: {
           label: "Entre 25 et 40 mg/L",
           couleur: "#fec44f",
           couleurAlt: "#fe9929",
           severite: "quantifie",
+          interpretation: INTERPRETATION_NITRATES_CONFORME,
         },
         inf_valeur_sanitaire: {
           label: "Entre 40 et 50 mg/L",
           couleur: "#fdae6b",
           couleurAlt: "#d95f0e",
           severite: "quantifie",
+          interpretation: INTERPRETATION_NITRATES_CONFORME,
         },
         sup_valeur_sanitaire: {
           label:
@@ -1553,6 +1576,8 @@ export const availableCategories: ICategory[] = [
           deconseilleA:
             "aux femmes enceintes et nourrissons de moins de 6 mois",
           nonConforme: true,
+          interpretation:
+            "La qualité de l’eau est non conforme à la réglementation car les nitrates dépassent la limite de qualité réglementaire de 50 mg/L. L’eau doit être déconseillée à la consommation pour les femmes enceintes et les nourrissons afin de prévenir les risques de formation de « méthémoglobine » chez le bébé, une forme d’hémoglobine incapable de transporter correctement l’oxygène.",
         },
       },
     },
@@ -1624,6 +1649,8 @@ export const availableCategories: ICategory[] = [
           couleur: "#fee391",
           couleurAlt: "#fec44f",
           severite: "quantifie",
+          interpretation:
+            "La concentration en CVM est inférieure à la limite de qualité réglementaire de 0,5 µg/L. L’eau est conforme à la réglementation pour le paramètre CVM.",
         },
         cvm_sup_0_5: {
           label: "> 0.5 µg/L — eau non conforme",
@@ -1633,6 +1660,8 @@ export const availableCategories: ICategory[] = [
           couleurAlt: "#d95f0e",
           severite: "non_conforme",
           nonConforme: true,
+          interpretation:
+            "La qualité de l’eau est non conforme à la réglementation car le CVM dépasse la limite de qualité réglementaire de 0,5 µg/L dans certaines zones de votre réseau.\nVous pouvez contacter votre mairie afin de vérifier si votre logement est concerné par cette non-conformité.\nPour les zones concernées, si le dépassement de la limite de 0,5 µg/L est confirmé par au moins 2 analyses et que les mesures correctives sont inopérantes ou inefficaces, l’eau doit être interdite à la consommation.",
         },
       },
     },
@@ -1791,6 +1820,8 @@ export const availableCategories: ICategory[] = [
           couleur: "#fee391",
           couleurAlt: "#fec44f",
           severite: "quantifie",
+          interpretation:
+            "La concentration en perchlorates est inférieure au seuil sanitaire recommandé par l’Agence nationale de sécurité sanitaire (Anses).",
         },
         sup_valeur_sanitaire: {
           label:
@@ -1799,6 +1830,8 @@ export const availableCategories: ICategory[] = [
           couleurAlt: "#df65b0",
           severite: "deconseille_sensibles",
           deconseilleA: "aux nourrissons de moins de 6 mois",
+          interpretation:
+            "La concentration en perchlorates dépasse le seuil sanitaire recommandé par l’Agence nationale de sécurité sanitaire (Anses) pour les nourrissons de moins de 6 mois. Le ministère de la Santé recommande de ne pas utiliser cette eau pour la préparation des biberons des nourrissons de moins de 6 mois.",
         },
         sup_valeur_sanitaire_2: {
           label:
@@ -1808,6 +1841,8 @@ export const availableCategories: ICategory[] = [
           severite: "deconseille_sensibles",
           deconseilleA:
             "aux femmes enceintes et nourrissons de moins de 6 mois",
+          interpretation:
+            "La concentration en perchlorates dépasse le seuil sanitaire recommandé par l’Agence nationale de sécurité sanitaire (Anses) pour les nourrissons de moins de 6 mois et les femmes enceintes ou allaitantes. Le ministère de la Santé recommande aux femmes enceintes et allaitantes de ne pas consommer cette eau et de ne pas l’utiliser pour la préparation des biberons des nourrissons de moins de 6 mois.",
         },
       },
     },

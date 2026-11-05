@@ -405,11 +405,11 @@ export const availableCategories: ICategory[] = [
       "https://dansmoneau.fr/comprendre/comprendre-les-contaminants-chimiques-de-leau-potable/les-pesticides/",
     disable: false,
     description:
-      "Le terme “pesticides” regroupe ici les substances actives chimiques (herbicides, insecticides, fongicides etc.) contenues dans les produits phytosanitaires (utilisés en agriculture) ou biocides (utilisés à domicile ou dans les bâtiments) ainsi que les substances issues de leur dégradation, appelés métabolites.",
+      "Le terme “pesticides” regroupe ici les substances actives chimiques (herbicides, insecticides, fongicides etc.) contenues dans les produits phytosanitaires (utilisés en agriculture) ou biocides (utilisés à domicile ou dans les bâtiments) ainsi que les substances issues de leur dégradation, appelés métabolites. Les métabolites sont considérés pertinents s’ils sont susceptibles d’avoir un risque pour la santé. Les autres sont dits non pertinents et ne sont pas pris en compte dans les limites de qualité réglementaires.",
     unite: "µg/L",
     derniereAnalyse: {
       topLegend:
-        "Cette carte montre la conformité de l’eau pour l’ensemble des pesticides réglementés (substances actives et métabolites pertinents), d’après les dernières analyses disponibles. Cette carte est une agrégation des 3 cartes “substances actives”, métabolites pertinents” et “total pesticide réglementaire”.\n\nLa réglementation distingue les métabolites pertinents (susceptibles d’avoir un risque pour la santé) et les métabolites non pertinents. Seuls les métabolites pertinents sont pris en compte pour établir la conformité de l’eau.\n\nSi au moins une de ces 2 limites de qualité est dépassée, l'eau est déclarée “non conforme”.\n- 0,1 µg/L pour chaque substance active et métabolites pertinents\n- 0,5 µg/L pour la somme des substance actives et métabolites pertinents (paramètre “total pesticide réglementaire”)",
+        "Cette carte montre la conformité de l’eau pour l’ensemble des pesticides réglementés (substances actives et métabolites pertinents), d’après les dernières analyses disponibles. Cette carte est une agrégation des 3 cartes “substances actives”, métabolites pertinents” et “total pesticide réglementaire”.\n\nSi au moins une de ces 2 limites de qualité est dépassée, l'eau est déclarée “non conforme”.\n- 0,1 µg/L pour chaque substance active et métabolites pertinents\n- 0,5 µg/L pour la somme des substance actives et métabolites pertinents (paramètre “total pesticide réglementaire”)",
       resultats: {
         non_recherche: {
           label: "Non recherché dans les 12 derniers mois",

@@ -25,3 +25,14 @@ Les modèles référencés par l'analyse doivent être matérialisés dans la ba
 ```bash
 dbt run --select +<nom_du_modele_ref>
 ```
+
+## Exporter une analyse en CSV
+
+`dbt compile` écrit le SQL compilé dans `target/`, qu'on exécute ensuite avec DuckDB :
+
+```bash
+cd dbt_
+dbt compile --select parametres_non_references
+duckdb ../database/data.duckdb --readonly \
+  -c "COPY ($(cat target/compiled/dbt_/analyses/parametres_non_references.sql)) TO 'parametres_non_references.csv' (HEADER)"
+```

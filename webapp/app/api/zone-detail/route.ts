@@ -33,10 +33,17 @@ export type ZoneDetail = {
     population?: number | null;
     /** UDI uniquement. */
     communesDesservies?: string[];
+    /** Commune uniquement. */
+    reseauxDesservis?: ReseauDesservi[];
   };
   dernierPrel: Partial<Record<string, DernierPrelEntry>>;
   /** Par catégorie, puis par année ("2024"). */
   bilans: Partial<Record<string, Partial<Record<string, AnnualEntry>>>>;
+};
+
+export type ReseauDesservi = {
+  code: string;
+  nom: string | null;
 };
 
 const BILAN_ANNUEL_PREFIX = "bilan_annuel_";
@@ -122,6 +129,37 @@ async function fetchCommunesDesservies(
     .filter((name) => name !== "");
 }
 
+/**
+ * Réseaux (UDI) alimentant une commune. Même logique d'historisation que
+ * fetchCommunesDesservies : seule la partition la plus récente de la commune
+ * est retenue.
+ */
+async function fetchReseauxDesservis(
+  connection: Connection,
+  inseecommune: string,
+): Promise<ReseauDesservi[]> {
+  const prepared = await connection.prepare(
+    `SELECT cdreseau, any_value(nomreseaux) AS nomreseaux
+     FROM int__lien_commune_cdreseau
+     WHERE inseecommune = $1
+       AND cdreseau IS NOT NULL
+       AND de_partition = (
+         SELECT max(de_partition)
+         FROM int__lien_commune_cdreseau
+         WHERE inseecommune = $1
+       )
+     GROUP BY cdreseau
+     ORDER BY cdreseau`,
+  );
+  prepared.bindVarchar(1, inseecommune);
+  const result = await prepared.runAndReadAll();
+
+  return result.getRowObjects().map((row) => ({
+    code: String(row.cdreseau),
+    nom: toStringOrNull(row.nomreseaux) || null,
+  }));
+}
+
 async function fetchZoneDetail(
   type: ZoneType,
   code: string,
@@ -155,6 +193,11 @@ async function fetchZoneDetail(
     if (type === "udis") {
       data.zone.population = toNumberOrNull(rows[0].population) || null;
       data.zone.communesDesservies = await fetchCommunesDesservies(
+        connection,
+        code,
+      );
+    } else {
+      data.zone.reseauxDesservis = await fetchReseauxDesservis(
         connection,
         code,
       );

@@ -15,7 +15,7 @@ import AnalysesModal, {
 import DernieresAnalyses from "@/components/DernieresAnalyses";
 import EvolutionTemporelle from "@/components/EvolutionTemporelle";
 import ShareZoneModal from "@/components/ShareZoneModal";
-import type { ZoneDetail } from "@/app/api/zone-detail/route";
+import type { ReseauDesservi, ZoneDetail } from "@/app/api/zone-detail/route";
 
 type PollutionZoneDetailPanelV2Props = {
   setPeriod: (period: string) => void;
@@ -35,7 +35,55 @@ type PollutionZoneDetailPanelV2Props = {
  */
 type PanelTab = "dernier" | "evolution";
 
-const MAX_COMMUNES_AFFICHEES = 5;
+const MAX_ELEMENTS_AFFICHES = 5;
+
+/**
+ * Liste courte affichée en en-tête du panel (communes d'une UDI, réseaux d'une
+ * commune) : les premiers éléments en clair, le reste dans un popover.
+ */
+function ListeTronquee({
+  label,
+  items,
+  popoverTitle,
+}: {
+  label: string;
+  items: string[];
+  popoverTitle: string;
+}) {
+  if (items.length === 0) return null;
+  const nbMasques = Math.max(0, items.length - MAX_ELEMENTS_AFFICHES);
+  return (
+    <div>
+      {label} : {items.slice(0, MAX_ELEMENTS_AFFICHES).join(", ")}
+      {nbMasques > 0 && (
+        <>
+          {" et "}
+          <Popover>
+            <PopoverTrigger className="underline underline-offset-2 hover:text-white focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-white rounded-sm">
+              {nbMasques} {nbMasques > 1 ? "autres" : "autre"}
+            </PopoverTrigger>
+            <PopoverContent
+              side="bottom"
+              align="start"
+              collisionPadding={8}
+              className="z-[70] w-72 max-w-[calc(100vw-2rem)] p-3 text-sm leading-snug text-gray-700"
+            >
+              <div className="mb-1.5 text-xs font-medium text-gray-500">
+                {popoverTitle}
+              </div>
+              <ul className="max-h-64 overflow-y-auto space-y-0.5">
+                {/* Clé par index : deux réseaux peuvent porter le même nom. */}
+                {items.map((item, i) => (
+                  <li key={i}>{item}</li>
+                ))}
+              </ul>
+            </PopoverContent>
+          </Popover>
+        </>
+      )}
+    </div>
+  );
+}
 
 export default function PollutionZoneDetailPanelV2({
   setPeriod,
@@ -55,8 +103,14 @@ export default function PollutionZoneDetailPanelV2({
   const [analysesFilters, setAnalysesFilters] = useState<
     AnalysesFilters | undefined
   >(undefined);
+  // Réseau affiché dans la modale d'analyses : la zone elle-même pour une UDI,
+  // l'un des réseaux qui la desservent pour une commune.
+  const [analysesReseau, setAnalysesReseau] = useState<ReseauDesservi | null>(
+    null,
+  );
 
-  const openAnalyses = (filters?: AnalysesFilters) => {
+  const openAnalyses = (reseau: ReseauDesservi, filters?: AnalysesFilters) => {
+    setAnalysesReseau(reseau);
     setAnalysesFilters(filters);
     setShowAnalysesModal(true);
   };
@@ -124,10 +178,12 @@ export default function PollutionZoneDetailPanelV2({
   const isEvolution = tab === "evolution";
   const { nom: title, code, population } = zoneData.zone;
   const communesDesservies = zoneData.zone.communesDesservies ?? [];
-  const nbCommunesMasquees = Math.max(
-    0,
-    communesDesservies.length - MAX_COMMUNES_AFFICHEES,
-  );
+  const reseauxDesservis = zoneData.zone.reseauxDesservis ?? [];
+  const zoneReseau: ReseauDesservi = { code, nom: title };
+  const openZoneAnalyses =
+    displayMode === "udis"
+      ? (filters?: AnalysesFilters) => openAnalyses(zoneReseau, filters)
+      : undefined;
 
   return (
     <div className="h-full flex flex-col relative bg-kaki overflow-hidden">
@@ -144,38 +200,20 @@ export default function PollutionZoneDetailPanelV2({
               Ce réseau alimente {population.toLocaleString("fr-FR")} personnes.
             </div>
           )}
-          {communesDesservies.length > 0 && (
-            <div>
-              Communes desservies :{" "}
-              {communesDesservies.slice(0, MAX_COMMUNES_AFFICHEES).join(", ")}
-              {nbCommunesMasquees > 0 && (
-                <>
-                  {" et "}
-                  <Popover>
-                    <PopoverTrigger className="underline underline-offset-2 hover:text-white focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-white rounded-sm">
-                      {nbCommunesMasquees}{" "}
-                      {nbCommunesMasquees > 1 ? "autres" : "autre"}
-                    </PopoverTrigger>
-                    <PopoverContent
-                      side="bottom"
-                      align="start"
-                      collisionPadding={8}
-                      className="z-[70] w-72 max-w-[calc(100vw-2rem)] p-3 text-sm leading-snug text-gray-700"
-                    >
-                      <div className="mb-1.5 text-xs font-medium text-gray-500">
-                        {communesDesservies.length} communes desservies
-                      </div>
-                      <ul className="max-h-64 overflow-y-auto space-y-0.5">
-                        {communesDesservies.map((commune) => (
-                          <li key={commune}>{commune}</li>
-                        ))}
-                      </ul>
-                    </PopoverContent>
-                  </Popover>
-                </>
-              )}
-            </div>
-          )}
+          <ListeTronquee
+            label="Communes desservies"
+            items={communesDesservies}
+            popoverTitle={`${communesDesservies.length} communes desservies`}
+          />
+          <ListeTronquee
+            label={
+              reseauxDesservis.length > 1
+                ? "Réseaux de distribution"
+                : "Réseau de distribution"
+            }
+            items={reseauxDesservis.map((r) => r.nom || r.code)}
+            popoverTitle={`${reseauxDesservis.length} réseaux de distribution`}
+          />
         </div>
       </div>
 
@@ -219,7 +257,7 @@ export default function PollutionZoneDetailPanelV2({
             selectedZoneCode={selectedZoneCode}
             colorblindMode={colorblindMode}
             parameterValues={parameterValues}
-            onOpenAnalyses={displayMode === "udis" ? openAnalyses : undefined}
+            onOpenAnalyses={openZoneAnalyses}
           />
         ) : (
           <DernieresAnalyses
@@ -229,7 +267,7 @@ export default function PollutionZoneDetailPanelV2({
             parameterValues={parameterValues}
             category={category}
             setCategory={setCategory}
-            onOpenAnalyses={displayMode === "udis" ? openAnalyses : undefined}
+            onOpenAnalyses={openZoneAnalyses}
           />
         )}
 
@@ -261,11 +299,37 @@ export default function PollutionZoneDetailPanelV2({
             <>
               {" "}
               <button
-                onClick={() => openAnalyses()}
+                onClick={() => openAnalyses(zoneReseau)}
                 className="text-kaki hover:underline"
               >
                 Voir toutes les analyses de ce réseau.
               </button>
+            </>
+          )}
+          {displayMode === "communes" && reseauxDesservis.length > 0 && (
+            <>
+              <br />
+              Le tracé des réseaux de distribution n’étant pas disponible, nous
+              ne pouvons pas les afficher sur la carte : les résultats de cette
+              commune agrègent ceux{" "}
+              {reseauxDesservis.length > 1
+                ? `des ${reseauxDesservis.length} réseaux qui la desservent`
+                : "du réseau qui la dessert"}
+              . Voir toutes les analyses de{" "}
+              {reseauxDesservis.length > 1 ? "chaque réseau" : "ce réseau"} :{" "}
+              {reseauxDesservis.map((reseau, i) => (
+                <span key={reseau.code}>
+                  {i > 0 && ", "}
+                  <button
+                    onClick={() => openAnalyses(reseau)}
+                    title={reseau.nom ?? undefined}
+                    className="text-kaki hover:underline"
+                  >
+                    {reseau.code}
+                  </button>
+                </span>
+              ))}
+              .
             </>
           )}
           {!isEvolution && (
@@ -278,15 +342,13 @@ export default function PollutionZoneDetailPanelV2({
         </p>
       </div>
 
-      {displayMode === "udis" && (
-        <AnalysesModal
-          open={showAnalysesModal}
-          onOpenChange={setShowAnalysesModal}
-          cdreseau={selectedZoneCode}
-          nomreseaux={title}
-          initialFilters={analysesFilters}
-        />
-      )}
+      <AnalysesModal
+        open={showAnalysesModal}
+        onOpenChange={setShowAnalysesModal}
+        cdreseau={analysesReseau?.code ?? null}
+        nomreseaux={analysesReseau?.nom}
+        initialFilters={analysesFilters}
+      />
 
       {displayMode === "udis" && (
         <ShareZoneModal

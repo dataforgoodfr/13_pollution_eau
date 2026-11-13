@@ -344,22 +344,27 @@ function CategoryContent({
 
   // Interprétation du résultat (facultative), toujours en fin de bloc.
   const interpretation = result.interpretation ? (
-    <p className="mt-3 whitespace-pre-line">
-      {result.interpretation}
-      {categoryDetails.lienExterne && (
-        <>
-          <br />
-          <a
-            href={categoryDetails.lienExterne}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-1 text-kaki hover:underline"
-          >
-            En savoir plus <ExternalLink size={12} />
-          </a>
-        </>
-      )}
-    </p>
+    <div className="mt-3 rounded-lg bg-gray-50 px-3 py-2.5">
+      <p className="mb-1 text-xs font-medium text-gray-500">
+        Interprétation des résultats
+      </p>
+      <p className="whitespace-pre-line leading-relaxed text-gray-700">
+        {result.interpretation}
+        {categoryDetails.lienExterne && (
+          <>
+            <br />
+            <a
+              href={categoryDetails.lienExterne}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1 text-kaki hover:underline"
+            >
+              En savoir plus <ExternalLink size={12} />
+            </a>
+          </>
+        )}
+      </p>
+    </div>
   ) : null;
 
   if (!result.date) {

@@ -15,6 +15,9 @@ WITH latest_pfas_results AS (
     FROM {{ ref('int__resultats_udi') }}
     WHERE
         categorie = 'pfas'
+        -- Le TFA ne fait pas partie de la liste des 20 PFAS : il a sa propre
+        -- catégorie ('tfa', cf. modèles pfas/tfa/)
+        AND cdparametresiseeaux != 'TFA'
         AND
         -- On garde les prélèvements de moins d'un an à partir du dernier prélèvement
         datetimeprel >= DATE_TRUNC('day', (
@@ -26,18 +29,12 @@ WITH latest_pfas_results AS (
 -- Ce modèle porte sur la liste réglementaire des 20 PFAS (21 codes
 -- cdparametresiseeaux, PFOS apparaissant sous deux codes : PFOS et ASPFOS),
 -- dont la somme est fournie par le paramètre SPFAS.
--- Le TFA a lui aussi categorie_1 = 'pfas' dans le
--- seed mais ne fait PAS partie de ces 20 PFAS : il a sa propre catégorie
--- ('tfa', cf. modèles pfas/tfa/). Idéalement il serait exclu entièrement de
--- ce modèle, mais on souhaite continuer à l'afficher dans parametres_detectes
--- lorsqu'il est quantifié. Il est donc conservé dans latest_pfas_results
--- mais exclu de tous les calculs qui déterminent le resultat.
 aggregated_results AS (
     SELECT
         referenceprel,
         cdreseau,
         COUNT(DISTINCT cdparametresiseeaux)
-        FILTER (WHERE cdparametresiseeaux NOT IN ('TFA', 'SPFAS')) AS nb_parametres,
+        FILTER (WHERE cdparametresiseeaux != 'SPFAS') AS nb_parametres,
         MAX(datetimeprel) AS datetimeprel,
         -- La somme des 20 PFAS est disponible comme un paramètre (SPFAS)
         MAX(
@@ -69,8 +66,7 @@ aggregated_results AS (
         COUNT(
             DISTINCT CASE
                 WHEN
-                    cdparametresiseeaux != 'TFA'
-                    AND valeur_sanitaire_1 IS NOT NULL
+                    valeur_sanitaire_1 IS NOT NULL
                     AND valtraduite IS NOT NULL
                     AND valtraduite > valeur_sanitaire_1
                     THEN cdparametresiseeaux
@@ -79,8 +75,7 @@ aggregated_results AS (
         COUNT(
             DISTINCT CASE
                 WHEN
-                    cdparametresiseeaux != 'TFA'
-                    AND valtraduite != 0
+                    valtraduite != 0
                     THEN cdparametresiseeaux
             END
         ) AS nb_quantified_params,

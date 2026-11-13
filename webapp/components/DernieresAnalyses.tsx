@@ -343,6 +343,52 @@ function SubstanceList({
   );
 }
 
+/**
+ * Encart TFA affiché sous les PFAS. Le TFA a sa propre catégorie (carte
+ * « tfa »), avec un dernier prélèvement qui peut dater d'un autre jour que
+ * celui des 20 PFAS : on le lit donc dans `dernierPrel.tfa`.
+ */
+function TfaEncart({
+  data,
+  parameterValues,
+}: {
+  data: ZoneDetail;
+  parameterValues: ParameterValues;
+}) {
+  const entry = data.dernierPrel.tfa;
+  const valeur = entry?.parametresDetectes.TFA;
+  const dateLabel = entry?.date
+    ? new Date(entry.date).toLocaleDateString("fr-FR")
+    : null;
+  const nom = getParameterName("TFA", parameterValues);
+
+  return (
+    <div className="mt-3 rounded-lg border border-gray-200 px-3 py-2.5">
+      <p className="mb-1 text-xs font-medium text-gray-500">{nom}</p>
+      {!dateLabel ? (
+        <p className="leading-relaxed text-gray-700">
+          Le TFA n&apos;a pas été recherché au cours des 12 derniers mois dans
+          le cadre du contrôle sanitaire. Son suivi deviendra obligatoire à
+          partir du 1er janvier 2027.
+        </p>
+      ) : valeur ? (
+        <>
+          <p>Dernière analyse disponible le {dateLabel}</p>
+          <p>
+            {nom} :{" "}
+            <span className="font-numbers">{formatValue(valeur)} µg/L</span>
+          </p>
+        </>
+      ) : (
+        <p>
+          Lors de la dernière analyse disponible du {dateLabel}, le TFA n&apos;a
+          pas été quantifié.
+        </p>
+      )}
+    </div>
+  );
+}
+
 /** Contenu déplié d'une catégorie : le dernier prélèvement connu. */
 function CategoryContent({
   categoryDetails,
@@ -358,7 +404,11 @@ function CategoryContent({
   onOpenAnalyses?: (date?: string) => void;
 }) {
   const result = getLastPrelResult(data, categoryDetails.id, colorblindMode);
+  const isPfas = categoryDetails.id === "pfas";
   const quantifies = result.parametres;
+  const tfaEncart = isPfas ? (
+    <TfaEncart data={data} parameterValues={parameterValues} />
+  ) : null;
 
   // Interprétation du résultat (facultative), toujours en fin de bloc.
   const interpretation = result.interpretation ? (
@@ -389,6 +439,7 @@ function CategoryContent({
     return (
       <>
         <p>Pas d&apos;analyse effectuée dans les 12 derniers mois.</p>
+        {tfaEncart}
         {interpretation}
       </>
     );
@@ -444,7 +495,7 @@ function CategoryContent({
   // pesticides), jamais énuméré inline dans la phrase elle-même.
   const substanceGroups = isPesticide
     ? groupPesticideParametres(quantifies, parameterValues)
-    : categoryDetails.id === "pfas"
+    : isPfas
       ? groupPfasParametres(quantifies)
       : quantifies.length > 0
         ? [
@@ -484,6 +535,7 @@ function CategoryContent({
         />
       ))}
       {detailLink && <p className="mt-3">{detailLink}</p>}
+      {tfaEncart}
       {interpretation}
     </>
   );

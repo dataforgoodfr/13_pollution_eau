@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import db from "@/app/lib/duckdb";
+import { BASE_CTE } from "@/app/lib/udiAnalyses";
 
 const SORTABLE_COLUMNS: Record<string, string> = {
   datetimeprel: "datetimeprel",
@@ -17,49 +18,18 @@ const PAGE_SIZE = 100;
 // sauterait d'autres lignes. On ajoute la clé unique de la table à chaque tri.
 const TIE_BREAKER = "referenceprel, cdparametresiseeaux, referenceanl";
 
-const BASE_CTE = `
-  WITH base AS (
-    SELECT
-      r.referenceprel,
-      r.referenceanl,
-      r.datetimeprel,
-      r.de_partition,
-      r.cdparametresiseeaux,
-      v.web_label,
-      r.categorie,
-      r.categorie_2,
-      r.categorie_3,
-      r.valtraduite,
-      r.limite_qualite,
-      r.limite_indicative,
-      r.valeur_sanitaire_1,
-      r.valeur_sanitaire_2,
-      -- Le commentaire vient de la référence actuelle, alors que les seuils
-      -- de r sont ceux en vigueur à la date du prélèvement (reclassements
-      -- pertinent → non pertinent réécrits dans int__resultats_udi). On le
-      -- masque quand la classification de la ligne diffère de l'actuelle,
-      -- sinon il décrirait un statut qui n'était pas encore le sien.
-      CASE
-        WHEN r.categorie_3 IS NOT DISTINCT FROM v.categorie_3
-          THEN v.valeur_sanitaire_1_commentaire
-      END AS valeur_sanitaire_1_commentaire
-    FROM int__resultats_udi AS r
-    LEFT JOIN int__valeurs_de_reference AS v
-      ON r.cdparametresiseeaux = v.cdparametresiseeaux
-    WHERE
-      r.cdreseau = $1
-      -- PESTOT est un total de pesticides recalculé par le labo, pas un
-      -- paramètre individuellement recherché : exclu partout ailleurs dans
-      -- les modèles pesticide (cf. int__resultats_pesticide_udi_dernier.sql),
-      -- on l'exclut ici aussi pour ne pas le lister parmi les analyses.
-      AND r.cdparametresiseeaux != 'PESTOT'
-  )
-`;
-
 type Connection = Awaited<ReturnType<typeof db.connect>>;
 type Prepared = Awaited<ReturnType<Connection["prepare"]>>;
 
 type Binder = (prepared: Prepared, index: number) => void;
+
+function toStringOrNull(value: unknown): string | null {
+  return value ? String(value) : null;
+}
+
+function toNumberOrNull(value: unknown): number | null {
+  return value === null || value === undefined ? null : Number(value);
+}
 
 const DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
 
@@ -148,26 +118,15 @@ export async function GET(request: NextRequest) {
 
     const rows = dataResult.getRowObjects().map((row) => ({
       referenceprel: String(row.referenceprel),
-      referenceanl: row.referenceanl ? String(row.referenceanl) : null,
       datetimeprel: row.datetimeprel ? row.datetimeprel.toString() : null,
-      de_partition: Number(row.de_partition),
       cdparametresiseeaux: String(row.cdparametresiseeaux),
-      web_label: row.web_label ? String(row.web_label) : null,
-      categorie: row.categorie ? String(row.categorie) : null,
-      categorie_2: row.categorie_2 ? String(row.categorie_2) : null,
-      categorie_3: row.categorie_3 ? String(row.categorie_3) : null,
-      valtraduite: row.valtraduite !== null ? Number(row.valtraduite) : null,
-      limite_qualite:
-        row.limite_qualite !== null ? Number(row.limite_qualite) : null,
-      limite_indicative:
-        row.limite_indicative !== null ? Number(row.limite_indicative) : null,
-      valeur_sanitaire_1:
-        row.valeur_sanitaire_1 !== null ? Number(row.valeur_sanitaire_1) : null,
-      valeur_sanitaire_2:
-        row.valeur_sanitaire_2 !== null ? Number(row.valeur_sanitaire_2) : null,
-      valeur_sanitaire_1_commentaire: row.valeur_sanitaire_1_commentaire
-        ? String(row.valeur_sanitaire_1_commentaire)
-        : null,
+      web_label: toStringOrNull(row.web_label),
+      categorie: toStringOrNull(row.categorie),
+      categorie_3: toStringOrNull(row.categorie_3),
+      valtraduite: toNumberOrNull(row.valtraduite),
+      limite_qualite: toNumberOrNull(row.limite_qualite),
+      limite_indicative: toNumberOrNull(row.limite_indicative),
+      valeur_sanitaire_1: toNumberOrNull(row.valeur_sanitaire_1),
     }));
 
     return NextResponse.json({ rows, total });

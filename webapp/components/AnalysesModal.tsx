@@ -33,6 +33,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { DataTableColumnHeader } from "@/components/ui/data-table-column-header";
+import AnalysesDatePicker from "@/components/AnalysesDatePicker";
 import { getCategoryById } from "@/lib/polluants";
 import { getThresholdColor } from "@/lib/parametres";
 
@@ -53,20 +54,16 @@ type AnalysesModalProps = {
 
 type AnalyseRow = {
   referenceprel: string;
-  referenceanl: string | null;
   datetimeprel: string | null;
-  de_partition: number;
   cdparametresiseeaux: string;
   web_label: string | null;
   categorie: string | null;
-  categorie_2: string | null;
   categorie_3: string | null;
   valtraduite: number | null;
+  // Seuils en vigueur à la date du prélèvement : servent à colorer la valeur.
   limite_qualite: number | null;
   limite_indicative: number | null;
   valeur_sanitaire_1: number | null;
-  valeur_sanitaire_2: number | null;
-  valeur_sanitaire_1_commentaire: string | null;
 };
 
 /** Unité d'affichage d'une catégorie, telle que définie dans lib/polluants.ts. */
@@ -94,6 +91,14 @@ const CATEGORIE_OPTIONS = [
 const CATEGORIE_BY_VALUE = Object.fromEntries(
   CATEGORIE_OPTIONS.map((item) => [item.value, item]),
 );
+
+function categorieLabel(row: AnalyseRow): string | null {
+  return CATEGORIE_BY_VALUE[row.categorie ?? ""]?.label ?? row.categorie;
+}
+
+function categorieUnite(row: AnalyseRow): string | null {
+  return CATEGORIE_BY_VALUE[row.categorie ?? ""]?.unite || null;
+}
 
 /**
  * Correspondance entre l'id de catégorie de lib/polluants.ts et la valeur
@@ -146,22 +151,11 @@ const CSV_COLUMNS: Array<{
   { header: "reference_prelevement", value: (r) => r.referenceprel },
   { header: "code_parametre", value: (r) => r.cdparametresiseeaux },
   { header: "substance", value: (r) => r.web_label },
-  {
-    header: "categorie",
-    value: (r) => CATEGORIE_BY_VALUE[r.categorie ?? ""]?.label ?? r.categorie,
-  },
+  { header: "categorie", value: categorieLabel },
   { header: "valeur", value: (r) => r.valtraduite },
-  {
-    header: "unite",
-    value: (r) => CATEGORIE_BY_VALUE[r.categorie ?? ""]?.unite ?? null,
-  },
+  { header: "unite", value: categorieUnite },
   { header: "limite_qualite", value: (r) => r.limite_qualite },
   { header: "limite_indicative", value: (r) => r.limite_indicative },
-  { header: "valeur_sanitaire", value: (r) => r.valeur_sanitaire_1 },
-  {
-    header: "commentaire_valeur_sanitaire",
-    value: (r) => r.valeur_sanitaire_1_commentaire?.trim() ?? null,
-  },
 ];
 
 function buildCsv(rows: AnalyseRow[]): string {
@@ -212,10 +206,7 @@ const columns: ColumnDef<AnalyseRow>[] = [
     accessorKey: "categorie",
     header: "Catégorie",
     cell: ({ row }) => (
-      <span className="text-gray-600">
-        {CATEGORIE_BY_VALUE[row.original.categorie ?? ""]?.label ||
-          row.original.categorie}
-      </span>
+      <span className="text-gray-600">{categorieLabel(row.original)}</span>
     ),
   },
   {
@@ -239,14 +230,14 @@ const columns: ColumnDef<AnalyseRow>[] = [
     },
   },
   {
-    // Colonne unique pour les 3 colonnes chiffrées : une analyse et ses seuils
+    // Colonne unique pour la valeur et la limite : une analyse et ses seuils
     // sont toujours exprimés dans la même unité.
     id: "unite",
     header: "Unité",
     enableSorting: false,
     cell: ({ row }) => (
       <span className="text-gray-500 whitespace-nowrap">
-        {CATEGORIE_BY_VALUE[row.original.categorie ?? ""]?.unite || "—"}
+        {categorieUnite(row.original) ?? "—"}
       </span>
     ),
   },
@@ -261,35 +252,9 @@ const columns: ColumnDef<AnalyseRow>[] = [
       </span>
     ),
   },
-  {
-    id: "valeur_sanitaire_1",
-    accessorKey: "valeur_sanitaire_1",
-    header: "Valeur sanitaire",
-    enableSorting: false,
-    cell: ({ row }) => (
-      <span className="font-numbers text-gray-500">
-        {formatValue(row.original.valeur_sanitaire_1)}
-      </span>
-    ),
-  },
-  {
-    id: "valeur_sanitaire_1_commentaire",
-    accessorKey: "valeur_sanitaire_1_commentaire",
-    header: "Commentaire valeur sanitaire",
-    enableSorting: false,
-    cell: ({ row }) => (
-      <span className="block min-w-[200px] text-xs text-gray-500">
-        {row.original.valeur_sanitaire_1_commentaire || "—"}
-      </span>
-    ),
-  },
 ];
 
-const RIGHT_ALIGNED_COLUMNS = new Set([
-  "valtraduite",
-  "limite_qualite",
-  "valeur_sanitaire_1",
-]);
+const RIGHT_ALIGNED_COLUMNS = new Set(["valtraduite", "limite_qualite"]);
 
 export default function AnalysesModal({
   open,
@@ -535,27 +500,23 @@ export default function AnalysesModal({
             </SelectContent>
           </Select>
 
+          {cdreseau && (
+            <AnalysesDatePicker
+              cdreseau={cdreseau}
+              value={date}
+              onChange={setDate}
+              formatCategorie={(value) =>
+                CATEGORIE_BY_VALUE[value]?.label ?? value
+              }
+            />
+          )}
+
           <Input
             className="w-[220px]"
             placeholder="Rechercher une substance..."
             value={parametreInput}
             onChange={(e) => setParametreInput(e.target.value)}
           />
-
-          <Input
-            type="date"
-            className="w-[160px]"
-            value={date}
-            onChange={(e) => setDate(e.target.value)}
-          />
-          {date && (
-            <button
-              onClick={() => setDate("")}
-              className="text-xs text-gray-500 hover:underline"
-            >
-              Effacer la date
-            </button>
-          )}
 
           <span className="text-xs text-gray-500 ml-auto whitespace-nowrap">
             {resultCountLabel}

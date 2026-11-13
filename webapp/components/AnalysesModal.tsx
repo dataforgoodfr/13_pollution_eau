@@ -77,14 +77,12 @@ const CATEGORIE_OPTIONS = [
   { value: "nitrate", label: "Nitrates", unite: uniteOf("nitrate") },
   { value: "pfas", label: "PFAS", unite: uniteOf("pfas") },
   { value: "cvm", label: "CVM", unite: uniteOf("cvm") },
-  // Ces deux catégories n'ont pas d'entrée active dans lib/polluants.ts (elles y
-  // sont commentées) : unité reprise de int__valeurs_de_reference, où tous leurs
-  // paramètres sont en µg/L.
-  { value: "metaux_lourds", label: "Métaux lourds", unite: "µg/L" },
+  // substances_indus ne contient plus que le perchlorate : le 1,4-dioxane et
+  // les métaux lourds sont exclus en amont (cf. app/lib/udiAnalyses.ts).
   {
     value: "substances_indus",
-    label: "Substances industrielles",
-    unite: "µg/L",
+    label: "Perchlorate",
+    unite: uniteOf("sub_indus_perchlorate"),
   },
 ];
 

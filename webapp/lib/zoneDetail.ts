@@ -30,6 +30,28 @@ function sortParametres(
     .sort((a, b) => b.value - a.value);
 }
 
+/**
+ * Sommes présentes dans `parametresDetectes`, à côté des substances :
+ * recalculées par les modèles dbt (dernier prélèvement) ou reprises du
+ * contrôle sanitaire (PESTOT, bilans annuels). Exclues de tout décompte de
+ * substances quantifiées.
+ */
+export const CODES_SOMMES = new Set([
+  "SPFAS",
+  "SUM_4_PFAS",
+  "TOTALPESTICIDE",
+  "TOTALPESTICIDEALL",
+  "PESTOT",
+]);
+
+/** Nombre de substances quantifiées, sommes exclues. */
+export function countSubstancesQuantifiees(
+  parametres: ParametresDetectes | undefined,
+): number {
+  return Object.keys(parametres ?? {}).filter((code) => !CODES_SOMMES.has(code))
+    .length;
+}
+
 const ERROR_COLOR = "#333333";
 const ERROR_LABEL = "Résultat manquant";
 

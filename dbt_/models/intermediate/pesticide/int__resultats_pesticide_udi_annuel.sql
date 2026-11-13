@@ -9,7 +9,11 @@ pesticide_prels AS (
         valtraduite,
         limite_qualite,
         valeur_sanitaire_1,
-        valeur_sanitaire_1_type
+        valeur_sanitaire_1_type,
+        -- Valeur maximale de la substance dans l'année, pour parametres_detectes
+        MAX(valtraduite) OVER (
+            PARTITION BY cdreseau, de_partition, cdparametresiseeaux
+        ) AS valeur_max_annee
     FROM
         {{ ref('int__resultats_udi') }}
     WHERE
@@ -56,11 +60,26 @@ SELECT
         /
         COUNT(DISTINCT referenceprel)::float
     ) AS ratio_limite_qualite,
-    TO_JSON({
-        'PESTOT': MAX(
-            CASE WHEN cdparametresiseeaux = 'PESTOT' THEN valtraduite ELSE 0 END
+    -- Substances quantifiées dans l'année (valeur max), plus le total PESTOT
+    TO_JSON(MAP_CONCAT(
+        MAP_FROM_ENTRIES(COALESCE(
+            LIST(
+                DISTINCT { 'key': cdparametresiseeaux, 'value': valeur_max_annee }
+            ) FILTER (WHERE valtraduite > 0 AND cdparametresiseeaux != 'PESTOT'),
+            []
+        )),
+        MAP(
+            ['PESTOT'],
+            [
+                MAX(
+                    CASE
+                        WHEN cdparametresiseeaux = 'PESTOT' THEN valtraduite
+                        ELSE 0
+                    END
+                )
+            ]
         )
-    }) AS parametres_detectes,
+    )) AS parametres_detectes,
     MAX(datetimeprel) AS date_dernier_prel
 
 FROM pesticide_prels

@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import {
   findTopLevelCategory,
   getCategoryById,
+  getForms,
   TOP_LEVEL_CATEGORIES,
 } from "@/lib/polluants";
 import type { ICategory, Severity } from "@/lib/polluants";
@@ -14,7 +15,7 @@ import {
   getParameterColor,
   getParameterName,
 } from "@/lib/parametres";
-import { getLastPrelResult } from "@/lib/zoneDetail";
+import { CODES_SOMMES, getLastPrelResult } from "@/lib/zoneDetail";
 import type { ZoneDetail } from "@/app/api/zone-detail/route";
 import {
   getAnalysesCategorie,
@@ -35,32 +36,6 @@ const SINGLE_SUBSTANCE_CATEGORIES = new Set([
   "cvm",
   "sub_indus_perchlorate",
 ]);
-
-/**
- * Nom d'une catégorie tel qu'il s'insère dans une phrase (« teneur trop élevée
- * en PFAS »). L'article et le partitif s'en déduisent : « les / des » au
- * pluriel (par défaut), « le / du » au singulier (« du CVM a été quantifié »).
- * Sans entrée ici, on reprend `nomAffichage` en minuscules, au pluriel.
- */
-const NOM_DANS_PHRASE: Record<string, { nom: string; pluriel?: false }> = {
-  pfas: { nom: "PFAS" },
-  pesticide: { nom: "pesticides" },
-  nitrate: { nom: "nitrates" },
-  cvm: { nom: "CVM", pluriel: false },
-  sub_indus_perchlorate: { nom: "perchlorates" },
-};
-
-function getForms(item: ICategory) {
-  const { nom, pluriel = true } = NOM_DANS_PHRASE[item.id] ?? {
-    nom: item.nomAffichage.toLowerCase(),
-  };
-  return {
-    nom,
-    pluriel,
-    article: `${pluriel ? "les" : "le"} ${nom}`,
-    partitif: `${pluriel ? "des" : "du"} ${nom}`,
-  };
-}
 
 type CategorySeverity = {
   item: ICategory;
@@ -256,14 +231,6 @@ function groupPesticideParametres(
 // Sommes calculées par `int__resultats_pfas_*_dernier.sql`, affichées après
 // les substances (somme des 20 puis somme des 4).
 const PFAS_SOMMES = ["SPFAS", "SUM_4_PFAS"];
-
-// Sommes (PFAS et pesticides) : affichées dans le détail, mais exclues du
-// décompte des substances quantifiées.
-const CODES_SOMMES = new Set([
-  ...PFAS_SOMMES,
-  "TOTALPESTICIDE",
-  "TOTALPESTICIDEALL",
-]);
 
 /** Sépare les PFAS quantifiés (par concentration décroissante) des deux sommes. */
 function groupPfasParametres(

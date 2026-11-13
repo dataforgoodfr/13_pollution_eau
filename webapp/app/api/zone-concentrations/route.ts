@@ -4,7 +4,14 @@ import db from "@/app/lib/duckdb";
 // Paramètres pour lesquels une courbe d'évolution est proposée dans le panel
 // (cf. CONCENTRATION_PARAM_BY_CATEGORY côté composant). Whitelist explicite :
 // sans elle, la route exposerait un scan libre de int__resultats_udi.
-const ALLOWED_PARAMETRES = new Set(["SPFAS", "PESTOT"]);
+const ALLOWED_PARAMETRES = new Set([
+  "SPFAS",
+  "PESTOT",
+  "NO3",
+  "CLVYL",
+  "PCLAT",
+  "KEPONE",
+]);
 
 // Au-delà, la courbe n'est plus lisible dans le panel : on garde les points
 // les plus récents. Seules quelques zones très suivies (PESTOT) dépassent

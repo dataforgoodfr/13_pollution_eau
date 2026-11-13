@@ -90,6 +90,8 @@ interface BilanAnnuel {
   ratioLimites: RatioLimite[];
   ratioLabelSingular: string;
   ratioLabelPlural: string;
+  /** Analyses sous le seuil, par défaut « analyses conformes ». */
+  ratioComplementLabelPlural?: string;
   valeurSanitaireLabel?: string;
 }
 
@@ -123,6 +125,11 @@ export interface ICategory {
    * catégories sans limite réglementaire (perchlorates).
    */
   phraseQuantifie?: string;
+  /**
+   * Nom tel qu'il s'insère dans une phrase (« teneur trop élevée en PFAS »),
+   * cf. `getForms`. Par défaut `nomAffichage` en minuscules, au pluriel.
+   */
+  nomDansPhrase?: { nom: string; pluriel?: false };
 }
 
 // Interprétation commune aux trois tranches de nitrates entre 10 et 50 mg/L.
@@ -189,6 +196,7 @@ export const availableCategories: ICategory[] = [
   {
     id: "pfas",
     nomAffichage: "PFAS",
+    nomDansPhrase: { nom: "PFAS" },
     lienExterne:
       "https://dansmoneau.fr/comprendre/comprendre-les-contaminants-chimiques-de-leau-potable/les-pfas/",
     disable: false,
@@ -1621,6 +1629,7 @@ export const availableCategories: ICategory[] = [
   {
     id: "cvm",
     nomAffichage: "CVM",
+    nomDansPhrase: { nom: "CVM", pluriel: false },
     lienExterne:
       "https://dansmoneau.fr/comprendre/comprendre-les-contaminants-chimiques-de-leau-potable/les-cvm/",
     disable: false,
@@ -1790,6 +1799,7 @@ export const availableCategories: ICategory[] = [
   {
     id: "sub_indus_perchlorate",
     nomAffichage: "Perchlorate",
+    nomDansPhrase: { nom: "perchlorates" },
     phraseQuantifie:
       "Des perchlorates ont été quantifiés, sous le seuil d'alerte de 4 µg/L.",
     lienExterne:
@@ -1879,6 +1889,7 @@ export const availableCategories: ICategory[] = [
       ],
       ratioLabelSingular: "analyse > 4 µg/L",
       ratioLabelPlural: "analyses > 4 µg/L",
+      ratioComplementLabelPlural: "analyses ≤ 4 µg/L",
       topLegend:
         "Cette carte montre le pourcentage des analyses de perchlorates réalisées dans l’année supérieures à 4 µg/L, seuil au-delà duquel l'eau est déconseillée aux nourrissons de moins de 6 mois. A noter que le dépassement de 4 µg/L, qui n'est pas une limite de qualité réglementaire, n'est pas considéré comme une “non conformité”.",
     },
@@ -2137,3 +2148,19 @@ export const getAllEnabledCategories = (
 
   return result;
 };
+
+/**
+ * Formes d'une catégorie pour les phrases, à partir de `nomDansPhrase` :
+ * « les / des » au pluriel, « le / du » au singulier (« du CVM a été quantifié »).
+ */
+export function getForms(item: ICategory) {
+  const { nom, pluriel = true } = item.nomDansPhrase ?? {
+    nom: item.nomAffichage.toLowerCase(),
+  };
+  return {
+    nom,
+    pluriel,
+    article: `${pluriel ? "les" : "le"} ${nom}`,
+    partitif: `${pluriel ? "des" : "du"} ${nom}`,
+  };
+}

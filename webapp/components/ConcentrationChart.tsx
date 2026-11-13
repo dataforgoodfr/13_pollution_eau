@@ -1,5 +1,12 @@
 import { formatValue } from "@/lib/parametres";
 
+export type SeuilNom = { label: string; article: "un" | "une" };
+
+const SEUIL_NOM_DEFAUT: SeuilNom = {
+  label: "limite de qualité",
+  article: "une",
+};
+
 export type ConcentrationPoint = {
   referenceprel: string;
   date: string | null;
@@ -9,10 +16,15 @@ export type ConcentrationPoint = {
 type ConcentrationChartProps = {
   points: ConcentrationPoint[];
   unite?: string;
-  limiteQualite: number | null;
+  /** Seuil de non-conformité du bilan annuel (points orange). */
+  seuil: number | null;
+  /** Nom de ce seuil, par défaut « une limite de qualité ». */
+  seuilNom?: SeuilNom;
   valeurSanitaire: number | null;
   /** Nom lisible de la substance mesurée, ex. "Somme des 20 PFAS". */
   label: string;
+  /** Catégorie avec son article, pour les phrases : « les pesticides ». */
+  categorieNom: string;
   tronque?: boolean;
 };
 
@@ -45,13 +57,12 @@ function formatDate(date: string | null): string {
 
 function pointColor(
   valeur: number,
-  limiteQualite: number | null,
+  seuil: number | null,
   valeurSanitaire: number | null,
 ): string {
   if (valeurSanitaire !== null && valeur > valeurSanitaire)
     return COLOR_DECONSEILLE;
-  if (limiteQualite !== null && valeur > limiteQualite)
-    return COLOR_NON_CONFORME;
+  if (seuil !== null && valeur > seuil) return COLOR_NON_CONFORME;
   return COLOR_LINE;
 }
 
@@ -64,9 +75,11 @@ function pointColor(
 export default function ConcentrationChart({
   points,
   unite,
-  limiteQualite,
+  seuil,
+  seuilNom = SEUIL_NOM_DEFAUT,
   valeurSanitaire,
   label,
+  categorieNom,
   tronque = false,
 }: ConcentrationChartProps) {
   const values = points
@@ -85,32 +98,31 @@ export default function ConcentrationChart({
     const only = points.find((point) => point.valeur !== null)!;
     return (
       <p className="text-sm">
-        Une seule analyse, le {formatDate(only.date)} :{" "}
+        Une seule analyse (du {formatDate(only.date)}) est disponible pour{" "}
+        {categorieNom} ({label} ={" "}
         <span className="font-numbers">{formatValue(only.valeur!)}</span>{" "}
         {unite || ""}
-        {limiteQualite !== null && (
+        {seuil !== null && (
           <>
             {" "}
-            (limite de qualité :{" "}
-            <span className="font-numbers">
-              {formatValue(limiteQualite)}
-            </span>{" "}
-            {unite || ""})
+            pour {seuilNom.article} {seuilNom.label} de{" "}
+            <span className="font-numbers">{formatValue(seuil)}</span>{" "}
+            {unite || ""}
           </>
         )}
-        . Une seule mesure ne permet pas de tracer une évolution.
+        ).
+        <br />
+        Une seule mesure ne permet pas de tracer une évolution.
       </p>
     );
   }
 
   const maxValue = Math.max(...values);
-  // On garde la limite de qualité dans le cadre même quand aucune mesure ne
-  // s'en approche : sans elle, une série entièrement conforme paraîtrait
+  // On garde le seuil dans le cadre même quand aucune mesure ne s'en
+  // approche : sans lui, une série entièrement conforme paraîtrait
   // alarmante, l'échelle étant collée aux valeurs mesurées.
   const yMax =
-    limiteQualite !== null
-      ? Math.max(maxValue, limiteQualite * 1.3)
-      : maxValue * 1.1 || 1;
+    seuil !== null ? Math.max(maxValue, seuil * 1.3) : maxValue * 1.1 || 1;
 
   const x = (index: number) =>
     PAD_LEFT + (index * PLOT_WIDTH) / (values.length - 1);
@@ -135,15 +147,13 @@ export default function ConcentrationChart({
   });
 
   const nbDepassements =
-    limiteQualite !== null
-      ? values.filter((valeur) => valeur > limiteQualite).length
-      : 0;
+    seuil !== null ? values.filter((valeur) => valeur > seuil).length : 0;
 
   const thresholds = [
     {
-      value: limiteQualite,
+      value: seuil,
       color: COLOR_NON_CONFORME,
-      label: `limite de qualité (${formatValue(limiteQualite ?? 0)} ${unite || ""})`,
+      label: `${seuilNom.label} (${formatValue(seuil ?? 0)} ${unite || ""})`,
     },
     {
       value: valeurSanitaire,
@@ -166,8 +176,8 @@ export default function ConcentrationChart({
   )} au ${formatDate(plotted[plotted.length - 1].date)}, de ${formatValue(
     Math.min(...values),
   )} à ${formatValue(maxValue)} ${unite || ""}${
-    limiteQualite !== null
-      ? `, dont ${nbDepassements} au-dessus de la limite de qualité de ${formatValue(limiteQualite)} ${unite || ""}`
+    seuil !== null
+      ? `, dont ${nbDepassements} au-dessus du seuil (${seuilNom.label}) de ${formatValue(seuil)} ${unite || ""}`
       : ""
   }.`;
 
@@ -249,7 +259,7 @@ export default function ConcentrationChart({
               cx={x(point.index)}
               cy={y(point.valeur)}
               r="2"
-              fill={pointColor(point.valeur, limiteQualite, valeurSanitaire)}
+              fill={pointColor(point.valeur, seuil, valeurSanitaire)}
             >
               <title>
                 {formatDate(point.date)} : {formatValue(point.valeur)}{" "}
@@ -299,8 +309,9 @@ export default function ConcentrationChart({
       )}
 
       <p className="mt-1 text-[11px] text-gray-400 leading-relaxed">
-        {values.length} analyses{tronque ? " (les plus récentes)" : ""}, une par
-        prélèvement, dans l’ordre chronologique.
+        {tronque
+          ? `Les ${values.length} analyses les plus récentes, depuis 2020`
+          : `${values.length} analyses réalisées depuis 2020`}
       </p>
     </div>
   );

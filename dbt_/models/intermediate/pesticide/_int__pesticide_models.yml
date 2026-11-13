@@ -46,7 +46,7 @@ models:
               min_value: 0
               max_value: 1
       - name: parametres_detectes
-        description: "JSON contenant des paramètres détectés"
+        description: "JSON des pesticides quantifiés (valtraduite > 0) au moins une fois dans l'année, avec leur valeur maximale, plus le total publié (PESTOT). Le site en compte les clés, hors PESTOT, pour le nombre de substances quantifiées par an."
         type: JSON
       - name: date_dernier_prel
         description: "Date du dernier prélèvement de l'année"
@@ -147,7 +147,7 @@ models:
               min_value: 0
               max_value: 1
       - name: parametres_detectes
-        description: "JSON contenant des paramètres détectés"
+        description: "JSON des pesticides quantifiés (valtraduite > 0) au moins une fois dans l'année, avec leur valeur maximale, plus le total publié (PESTOT). Le site en compte les clés, hors PESTOT, pour le nombre de substances quantifiées par an."
         type: JSON
       - name: date_dernier_prel
         description: "Date du dernier prélèvement de l'année"

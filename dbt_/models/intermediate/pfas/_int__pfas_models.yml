@@ -49,7 +49,7 @@ models:
         tests:
           - not_null
       - name: parametres_detectes
-        description: "JSON contenant des paramètres détectés"
+        description: "JSON des PFAS quantifiés (valtraduite > 0) au moins une fois dans l'année, avec leur valeur maximale, hors TFA, plus les sommes des 20 PFAS (SPFAS) et des 4 PFAS (SUM_4_PFAS). Le site en compte les clés, hors sommes, pour le nombre de substances quantifiées par an."
         type: JSON
       - name: date_dernier_prel
         description: "Date du dernier prélèvement de l'année"
@@ -152,7 +152,7 @@ models:
         tests:
           - not_null
       - name: parametres_detectes
-        description: "JSON contenant des paramètres détectés"
+        description: "JSON des PFAS quantifiés (valtraduite > 0) au moins une fois dans l'année, avec leur valeur maximale, hors TFA, plus les sommes des 20 PFAS (SPFAS) et des 4 PFAS (SUM_4_PFAS). Le site en compte les clés, hors sommes, pour le nombre de substances quantifiées par an."
         type: JSON
       - name: date_dernier_prel
         description: "Date du dernier prélèvement de l'année"

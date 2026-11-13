@@ -22,7 +22,7 @@ import type { UdiShape } from "@/app/api/udi-shape/route";
 import { getCategoryById, TOP_LEVEL_CATEGORIES } from "@/lib/polluants";
 import type { Severity } from "@/lib/polluants";
 import { formatValue } from "@/lib/parametres";
-import { getLastPrelResult } from "@/lib/zoneDetail";
+import { CODES_SOMMES, getLastPrelResult } from "@/lib/zoneDetail";
 import { loadShareFonts, svgElementToPngBlob } from "@/lib/shareImage";
 
 const SITE_URL = "https://dansmoneau.fr";
@@ -68,14 +68,6 @@ const CHIFFRE_TEXTES: Record<
     nonRecherche: "Le perchlorate n'a pas été recherché",
   },
 };
-
-/** Sommes recalculées par les modèles dbt : à exclure du décompte de substances. */
-const CODES_SOMMES = new Set([
-  "TOTALPESTICIDE",
-  "TOTALPESTICIDEALL",
-  "SPFAS",
-  "SUM_4_PFAS",
-]);
 
 const SEVERITY_RANK: Severity[] = [
   "non_recherche",

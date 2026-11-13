@@ -8,7 +8,12 @@ pfas_prels AS (
         cdparametresiseeaux,
         limite_qualite,
         valeur_sanitaire_1,
-        valtraduite
+        valtraduite,
+        -- Valeur maximale de la substance dans l'année, pour parametres_detectes
+        -- (calculée avant le HAVING plus bas : peut venir d'un prélèvement écarté)
+        MAX(valtraduite) OVER (
+            PARTITION BY cdreseau, de_partition, cdparametresiseeaux
+        ) AS valeur_max_annee
     FROM
         {{ ref('int__resultats_udi') }}
     WHERE
@@ -66,7 +71,13 @@ pfas_results_udi_agg AS (
                 ELSE 0
             END
         ) AS has_pfas_above_vs,
-        MAX(datetimeprel) AS max_datetimeprel
+        MAX(datetimeprel) AS max_datetimeprel,
+        -- Listées ici pour ne garder que les prélèvements retenus par le HAVING
+        COALESCE(
+            LIST({ 'key': cdparametresiseeaux, 'value': valeur_max_annee })
+            FILTER (WHERE valtraduite > 0 AND cdparametresiseeaux != 'SPFAS'),
+            []
+        ) AS substances_quantifiees
     FROM pfas_prels
     GROUP BY referenceprel, cdreseau, annee
     -- On drop les très rares cas où il n'y a pas la somme des 20 PFAS
@@ -85,10 +96,15 @@ SELECT
         COUNT(DISTINCT referenceprel)
     ), 2) AS ratio_limite_qualite,
     SUM(has_pfas_above_vs) AS nb_sup_valeur_sanitaire,
-    TO_JSON({
-        'SPFAS': MAX(sum_20_pfas),
-        'SUM_4_PFAS': MAX(sum_4_pfas)
-    }) AS parametres_detectes,
+    -- Substances quantifiées dans l'année (valeur max), plus les deux sommes
+    TO_JSON(MAP_CONCAT(
+        MAP_FROM_ENTRIES(LIST_DISTINCT(FLATTEN(LIST(substances_quantifiees)))),
+        MAP(
+            ['SPFAS', 'SUM_4_PFAS'],
+            -- Même type que les valeurs des substances (requis par MAP_CONCAT)
+            [MAX(sum_20_pfas), MAX(sum_4_pfas)::DECIMAL(18, 3)]
+        )
+    )) AS parametres_detectes,
     MAX(max_datetimeprel) AS date_dernier_prel
 
 FROM pfas_results_udi_agg

@@ -297,8 +297,8 @@ function SubstanceList({
 
   return (
     <div className="mt-3">
-      <p className="font-medium mb-1.5 text-xs">{title}</p>
-      <ul className="space-y-1 border-l-2 border-gray-200 pl-2">
+      <p className="mb-1.5 text-xs font-medium text-gray-500">{title}</p>
+      <ul className="divide-y divide-gray-100 rounded-lg border border-gray-100">
         {parametres.map(({ code, value }) => {
           const color = getParameterColor(
             code,
@@ -307,15 +307,33 @@ function SubstanceList({
             categoryId,
           );
           return (
-            <li key={code} className="flex justify-between items-start gap-2">
-              <span className="flex-1" style={color ? { color } : undefined}>
+            <li
+              key={code}
+              className="flex items-baseline justify-between gap-3 px-2.5 py-1.5"
+            >
+              <span className="flex-1 min-w-0 text-gray-700">
                 {getParameterName(code, parameterValues)}
               </span>
               <span
-                className="whitespace-nowrap font-numbers"
+                className="flex items-baseline gap-1.5 whitespace-nowrap font-numbers tabular-nums"
                 style={color ? { color } : undefined}
               >
-                {formatValue(value)} {unite || ""}
+                {color && (
+                  <span
+                    aria-hidden
+                    title="Dépasse un seuil"
+                    className="inline-block h-2 w-2 self-center rounded-full"
+                    style={{ backgroundColor: color }}
+                  />
+                )}
+                <span className={cn(color && "font-medium")}>
+                  {formatValue(value)}
+                </span>
+                {unite && (
+                  <span className={cn("text-xs", !color && "text-gray-400")}>
+                    {unite}
+                  </span>
+                )}
               </span>
             </li>
           );

@@ -4,6 +4,7 @@ import { forwardRef, type ReactNode } from "react";
 import type { UdiShape } from "@/app/api/udi-shape/route";
 import { getColorScale } from "@/lib/colorMapping";
 import { LOGO_DANS_MON_EAU } from "@/lib/logoDansMonEau";
+import { LOGO_GENERATIONS_FUTURES } from "@/lib/logoGenerationsFutures";
 import {
   measureText,
   readableTextColor,
@@ -22,6 +23,7 @@ import {
 
 export type ShareFormat = "story" | "post";
 export type ShareMode = "verdict" | "chiffre";
+export type ShareTheme = "vert" | "pale" | "blanc" | "degrade";
 
 export type ShareCategoryRow = {
   nom: string;
@@ -68,10 +70,87 @@ const CARD_PAD = 48;
 const CARD_INNER = CONTENT_WIDTH - 2 * CARD_PAD;
 
 // Charte dansmoneau.fr
-const BG = "#0b534b";
+const KAKI = "#0b534b";
 const ACCENT = "#8dbe5a";
+const PALE = "#d6e2f5";
 const INK = "#0f172a";
 const MUTED = "#475569";
+
+/**
+ * Couleurs de tout ce qui est hors de la carte blanche, selon le fond choisi.
+ * La carte, elle, ne change pas (seul un contour est ajouté sur fond blanc).
+ */
+type SharePalette = {
+  /** Nom affiché dans le sélecteur de la modale. */
+  label: string;
+  /** Pastille du sélecteur (valeur CSS `background`). */
+  swatch: string;
+  /** Fond uni, ou dégradé (cf. `<defs>` du SVG). */
+  background: string;
+  gradient?: { stops: string[]; glow: string };
+  /** Ondulation décorative en bas du visuel (absente sur fond blanc). */
+  wave?: { color: string; opacity: number };
+  kicker: string;
+  title: string;
+  subtitle: { color: string; opacity: number };
+  logo: string;
+  shapeStroke: string;
+  cardStroke?: string;
+  cta: { fill: string; text: string };
+};
+
+export const SHARE_THEMES: Record<ShareTheme, SharePalette> = {
+  vert: {
+    label: "Vert",
+    swatch: KAKI,
+    background: KAKI,
+    wave: { color: "#ffffff", opacity: 0.05 },
+    kicker: ACCENT,
+    title: "#ffffff",
+    subtitle: { color: "#ffffff", opacity: 0.8 },
+    logo: "#ffffff",
+    shapeStroke: "#ffffff",
+    cta: { fill: ACCENT, text: KAKI },
+  },
+  pale: {
+    label: "Bleu pâle",
+    swatch: PALE,
+    background: PALE,
+    wave: { color: "#ffffff", opacity: 0.45 },
+    kicker: "#4a7f24",
+    title: KAKI,
+    subtitle: { color: INK, opacity: 0.7 },
+    logo: KAKI,
+    shapeStroke: "#ffffff",
+    cta: { fill: KAKI, text: "#ffffff" },
+  },
+  blanc: {
+    label: "Blanc",
+    swatch: "#ffffff",
+    background: "#ffffff",
+    kicker: "#4a7f24",
+    title: KAKI,
+    subtitle: { color: INK, opacity: 0.7 },
+    logo: KAKI,
+    shapeStroke: KAKI,
+    cardStroke: PALE,
+    cta: { fill: KAKI, text: "#ffffff" },
+  },
+  // De la forêt (charte) vers un bleu d'eau, avec un halo vert en haut.
+  degrade: {
+    label: "Dégradé",
+    swatch: `linear-gradient(160deg, ${KAKI}, #12706a 50%, #1f5f9a)`,
+    background: "url(#share-bg-gradient)",
+    gradient: { stops: [KAKI, "#12706a", "#1f5f9a"], glow: ACCENT },
+    wave: { color: "#ffffff", opacity: 0.07 },
+    kicker: ACCENT,
+    title: "#ffffff",
+    subtitle: { color: "#ffffff", opacity: 0.85 },
+    logo: "#ffffff",
+    shapeStroke: "#ffffff",
+    cta: { fill: ACCENT, text: KAKI },
+  },
+};
 
 type TextBlockProps = {
   lines: string[];
@@ -126,15 +205,17 @@ type ShareCardProps = {
   data: ShareCardData;
   format: ShareFormat;
   mode: ShareMode;
+  theme: ShareTheme;
   colorblindMode: boolean;
   className?: string;
 };
 
 const ShareCard = forwardRef<SVGSVGElement, ShareCardProps>(function ShareCard(
-  { data, format, mode, colorblindMode, className },
+  { data, format, mode, theme, colorblindMode, className },
   ref,
 ) {
   const { height, safeTop, safeBottom } = FORMATS[format];
+  const palette = SHARE_THEMES[theme];
   const isStory = format === "story";
   const elements: ReactNode[] = [];
   let y = 0;
@@ -146,6 +227,51 @@ const ShareCard = forwardRef<SVGSVGElement, ShareCardProps>(function ShareCard(
     ? CONTENT_WIDTH - besideSize - 40
     : CONTENT_WIDTH;
 
+  // Logos Dans Mon Eau et Générations Futures, séparés d'un filet.
+  const logoHeight = isStory ? 46 : 38;
+  const dmeScale = logoHeight / LOGO_DANS_MON_EAU.height;
+  const dmeWidth = LOGO_DANS_MON_EAU.width * dmeScale;
+  // Le logo Générations Futures, plus compact, est un peu agrandi pour que
+  // les deux aient le même poids visuel.
+  const gfHeight = logoHeight * 1.25;
+  const gfScale = gfHeight / LOGO_GENERATIONS_FUTURES.height;
+  const logoGap = isStory ? 32 : 26;
+  const gfX = PAD + dmeWidth + 2 * logoGap;
+  const logoRowHeight = gfHeight;
+  elements.push(
+    <g
+      key="logo-dme"
+      fill={palette.logo}
+      transform={`translate(${PAD} ${(logoRowHeight - logoHeight) / 2}) scale(${dmeScale})`}
+    >
+      {LOGO_DANS_MON_EAU.paths.map((d, i) => (
+        <path key={i} d={d} />
+      ))}
+    </g>,
+    <line
+      key="logo-sep"
+      x1={PAD + dmeWidth + logoGap}
+      x2={PAD + dmeWidth + logoGap}
+      y1={0}
+      y2={logoRowHeight}
+      stroke={palette.logo}
+      strokeOpacity={0.4}
+      strokeWidth={2}
+    />,
+    <g
+      key="logo-gf"
+      fill={palette.logo}
+      transform={`translate(${gfX} 0) scale(${gfScale})`}
+    >
+      {LOGO_GENERATIONS_FUTURES.paths.map((d, i) => (
+        <path key={i} d={d} />
+      ))}
+    </g>,
+  );
+  y += logoRowHeight + (isStory ? 44 : 32);
+  // Le tracé du post (à droite du titre) commence sous la ligne des logos.
+  const belowLogo = y;
+
   const kicker = "L'EAU DE MON ROBINET";
   const kickerSize = isStory ? 34 : 30;
   elements.push(
@@ -156,29 +282,11 @@ const ShareCard = forwardRef<SVGSVGElement, ShareCardProps>(function ShareCard(
       y={y}
       size={kickerSize}
       weight={700}
-      fill={ACCENT}
+      fill={palette.kicker}
       letterSpacing={3}
     />,
   );
-
-  // Logo en haut à droite, centré sur la ligne du surtitre.
-  const logoHeight = isStory ? 44 : 38;
-  const logoScale = logoHeight / LOGO_DANS_MON_EAU.height;
-  const logoWidth = LOGO_DANS_MON_EAU.width * logoScale;
-  elements.push(
-    <g
-      key="logo"
-      fill="#ffffff"
-      transform={`translate(${WIDTH - PAD - logoWidth} ${(kickerSize - logoHeight) / 2}) scale(${logoScale})`}
-    >
-      {LOGO_DANS_MON_EAU.paths.map((d, i) => (
-        <path key={i} d={d} />
-      ))}
-    </g>,
-  );
   y += kickerSize + 18;
-  // Le tracé du post (à droite du titre) commence sous la ligne du logo.
-  const belowLogo = y;
 
   const titleSize = isStory ? 84 : 64;
   const titleLines = wrapText(data.title, headerWidth, titleSize, 700, 2);
@@ -190,7 +298,7 @@ const ShareCard = forwardRef<SVGSVGElement, ShareCardProps>(function ShareCard(
       y={y}
       size={titleSize}
       weight={700}
-      fill="#ffffff"
+      fill={palette.title}
       lineHeight={1.08}
     />,
   );
@@ -212,8 +320,8 @@ const ShareCard = forwardRef<SVGSVGElement, ShareCardProps>(function ShareCard(
       y={y}
       size={subtitleSize}
       weight={400}
-      fill="#ffffff"
-      opacity={0.8}
+      fill={palette.subtitle.color}
+      opacity={palette.subtitle.opacity}
     />,
   );
   y += textBlockHeight(subtitleLines, subtitleSize);
@@ -232,7 +340,7 @@ const ShareCard = forwardRef<SVGSVGElement, ShareCardProps>(function ShareCard(
         d={shapeToSvgPath(data.shape, box)}
         fill={data.shapeColor}
         fillRule="evenodd"
-        stroke="#ffffff"
+        stroke={palette.shapeStroke}
         strokeWidth={5}
         strokeLinejoin="round"
       />,
@@ -519,15 +627,23 @@ const ShareCard = forwardRef<SVGSVGElement, ShareCardProps>(function ShareCard(
       y={y}
       size={sourceSize}
       weight={400}
-      fill="#ffffff"
-      opacity={0.75}
+      fill={palette.subtitle.color}
+      opacity={palette.subtitle.opacity * 0.92}
     />,
   ];
   y += textBlockHeight(sourceLines, sourceSize) + 28;
 
-  const ctaSize = isStory ? 38 : 34;
-  const ctaText = "Et votre eau ? dansmoneau.fr";
-  const ctaWidth = measureText(ctaText, ctaSize, 700) + 72;
+  const ctaText = "Vérifiez votre eau sur DansMonEau.fr";
+  const ctaPadX = 36;
+  // Réduit la taille si le texte ne tient pas sur la largeur utile.
+  let ctaSize = isStory ? 38 : 34;
+  while (
+    ctaSize > 24 &&
+    measureText(ctaText, ctaSize, 700) + 2 * ctaPadX > CONTENT_WIDTH
+  ) {
+    ctaSize -= 1;
+  }
+  const ctaWidth = measureText(ctaText, ctaSize, 700) + 2 * ctaPadX;
   const ctaHeight = ctaSize + 44;
   footer.push(
     <rect
@@ -537,57 +653,28 @@ const ShareCard = forwardRef<SVGSVGElement, ShareCardProps>(function ShareCard(
       width={ctaWidth}
       height={ctaHeight}
       rx={ctaHeight / 2}
-      fill={ACCENT}
+      fill={palette.cta.fill}
     />,
     <TextBlock
       key="cta-text"
       lines={[ctaText]}
-      x={PAD + 36}
+      x={PAD + ctaPadX}
       y={y + 22}
       size={ctaSize}
       weight={700}
-      fill={BG}
+      fill={palette.cta.text}
     />,
   );
   const footerHeight = y + ctaHeight;
 
   // --- Assemblage -----------------------------------------------------------
-  // En story, le tracé prend la place qui reste entre l'en-tête et la carte
-  // (dans une limite raisonnable), pour que le pied ne passe jamais sous la
-  // zone recouverte par Instagram. Trop peu de place : pas de tracé.
+  // Le tracé de l'UDI n'apparaît que sur le post (à droite du titre).
   const gap = isStory ? 48 : 40;
   const footerGap = isStory ? 44 : 36;
   const available = height - safeTop - safeBottom;
-  const fixedHeight =
-    headerHeight + gap + cardHeight + footerGap + footerHeight;
-  let shapeHeight = 0;
-  if (isStory && data.shape) {
-    shapeHeight = Math.min(440, available - fixedHeight - gap);
-    if (shapeHeight < 160) shapeHeight = 0;
-  }
-  const shapeTop = headerHeight + gap;
-  const cardTop = shapeTop + (shapeHeight > 0 ? shapeHeight + gap : 0);
+  const cardTop = headerHeight + gap;
   const footerTop = cardTop + cardHeight + footerGap;
   const totalHeight = footerTop + footerHeight;
-
-  if (shapeHeight > 0 && data.shape) {
-    elements.push(
-      <path
-        key="shape"
-        d={shapeToSvgPath(data.shape, {
-          x: PAD,
-          y: shapeTop,
-          width: CONTENT_WIDTH,
-          height: shapeHeight,
-        })}
-        fill={data.shapeColor}
-        fillRule="evenodd"
-        stroke="#ffffff"
-        strokeWidth={6}
-        strokeLinejoin="round"
-      />,
-    );
-  }
 
   // Centre verticalement l'ensemble dans la zone visible du format.
   const offset = safeTop + Math.max(0, (available - totalHeight) / 2);
@@ -600,13 +687,45 @@ const ShareCard = forwardRef<SVGSVGElement, ShareCardProps>(function ShareCard(
       className={className}
       fontFamily={`${SHARE_FONT_FAMILY}, sans-serif`}
     >
-      <rect width={WIDTH} height={height} fill={BG} />
+      {palette.gradient && (
+        <defs>
+          <linearGradient id="share-bg-gradient" x1="0" y1="0" x2="0.35" y2="1">
+            {palette.gradient.stops.map((color, i, stops) => (
+              <stop key={i} offset={i / (stops.length - 1)} stopColor={color} />
+            ))}
+          </linearGradient>
+          <radialGradient
+            id="share-bg-glow"
+            cx="0.9"
+            cy="0.05"
+            r="0.6"
+            gradientTransform={`translate(0.9 0.05) scale(1 ${WIDTH / height}) translate(-0.9 -0.05)`}
+          >
+            <stop
+              offset="0"
+              stopColor={palette.gradient.glow}
+              stopOpacity={0.4}
+            />
+            <stop
+              offset="1"
+              stopColor={palette.gradient.glow}
+              stopOpacity={0}
+            />
+          </radialGradient>
+        </defs>
+      )}
+      <rect width={WIDTH} height={height} fill={palette.background} />
+      {palette.gradient && (
+        <rect width={WIDTH} height={height} fill="url(#share-bg-glow)" />
+      )}
       {/* Ondulation discrète en fond, rappel de l'eau. */}
-      <path
-        d={`M0 ${height * 0.82} C ${WIDTH * 0.3} ${height * 0.76}, ${WIDTH * 0.6} ${height * 0.9}, ${WIDTH} ${height * 0.83} L ${WIDTH} ${height} L 0 ${height} Z`}
-        fill="#ffffff"
-        opacity={0.05}
-      />
+      {palette.wave && (
+        <path
+          d={`M0 ${height * 0.82} C ${WIDTH * 0.3} ${height * 0.76}, ${WIDTH * 0.6} ${height * 0.9}, ${WIDTH} ${height * 0.83} L ${WIDTH} ${height} L 0 ${height} Z`}
+          fill={palette.wave.color}
+          opacity={palette.wave.opacity}
+        />
+      )}
       {/* Raleway a des chiffres elzéviriens par défaut : on force les chiffres
           alignés, plus lisibles pour le grand chiffre. */}
       <g
@@ -622,6 +741,8 @@ const ShareCard = forwardRef<SVGSVGElement, ShareCardProps>(function ShareCard(
             height={cardHeight}
             rx={36}
             fill="#ffffff"
+            stroke={palette.cardStroke ?? "none"}
+            strokeWidth={palette.cardStroke ? 4 : 0}
           />
           {card}
         </g>

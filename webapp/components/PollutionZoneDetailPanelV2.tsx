@@ -271,16 +271,16 @@ export default function PollutionZoneDetailPanelV2({
           />
         )}
 
-        {/* Partage limité aux UDI : une commune peut être desservie par
-            plusieurs réseaux, d'eaux différentes. */}
-        {displayMode === "udis" && (
+        {/* Partage limité aux UDI (une commune peut être desservie par
+            plusieurs réseaux, d'eaux différentes) et aux dernières analyses. */}
+        {displayMode === "udis" && !isEvolution && (
           <div className="space-y-1.5">
             <button
               onClick={() => setShowShareModal(true)}
               className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-kaki py-2.5 text-sm font-medium text-white hover:bg-kaki/90 transition-colors"
             >
               <Send size={16} />
-              Partager ce résultat
+              Partagez des résultats
             </button>
             <p className="text-center text-xs text-gray-500">
               Une image prête à publier en story ou en post sur les réseaux

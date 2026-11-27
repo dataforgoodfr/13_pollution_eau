@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Check, Copy, Download, Send } from "lucide-react";
+import { Check, Copy, Download, Share, Share2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
   Dialog,
@@ -11,10 +11,12 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import ShareCard, {
+  SHARE_THEMES,
   type ShareCardData,
   type ShareChiffre,
   type ShareFormat,
   type ShareMode,
+  type ShareTheme,
 } from "@/components/ShareCard";
 import { getZoneSummarySentence } from "@/components/DernieresAnalyses";
 import type { ZoneDetail } from "@/app/api/zone-detail/route";
@@ -191,6 +193,7 @@ export default function ShareZoneModal({
 
   const [format, setFormat] = useState<ShareFormat>("story");
   const [mode, setMode] = useState<ShareMode>("verdict");
+  const [theme, setTheme] = useState<ShareTheme>("vert");
   const [chiffreCategory, setChiffreCategory] = useState(() =>
     defaultChiffreCategory(data),
   );
@@ -206,6 +209,9 @@ export default function ShareZoneModal({
   const [pngError, setPngError] = useState(false);
   const [copied, setCopied] = useState(false);
   const [canShareFiles, setCanShareFiles] = useState(false);
+  // Icône de partage native : carré + flèche chez Apple, trois points reliés
+  // ailleurs (Android, Windows…).
+  const [appleShareIcon, setAppleShareIcon] = useState(false);
   const svgRef = useRef<SVGSVGElement>(null);
 
   // Réinitialise les choix quand on change d'UDI.
@@ -229,6 +235,8 @@ export default function ShareZoneModal({
     } catch {
       setCanShareFiles(false);
     }
+    // Les iPad récents se présentent comme un Mac.
+    setAppleShareIcon(/iPhone|iPad|iPod|Macintosh/.test(navigator.userAgent));
   }, [open]);
 
   useEffect(() => {
@@ -303,7 +311,7 @@ export default function ShareZoneModal({
 
   const filename = `dansmoneau-${slugify(title)}-${format}.png`;
   const ready = fontsReady && shape !== undefined;
-  const renderKey = `${format}|${mode}|${chiffreCategory}|${title}|${colorblindMode}|${ready}`;
+  const renderKey = `${format}|${mode}|${theme}|${chiffreCategory}|${title}|${colorblindMode}|${ready}`;
 
   // Le PNG est généré dès que le visuel change, et non au clic : Safari
   // n'autorise `navigator.share` que dans la foulée immédiate d'un clic.
@@ -399,16 +407,17 @@ export default function ShareZoneModal({
         </DialogHeader>
 
         <div className="grid gap-5 md:grid-cols-[1fr_280px]">
-          <div className="flex items-center justify-center rounded-xl bg-gray-100 p-3">
+          <div className="flex items-center justify-center bg-gray-100 rounded-xl">
             {ready ? (
               <ShareCard
                 ref={svgRef}
                 data={cardData}
                 format={format}
                 mode={mode}
+                theme={theme}
                 colorblindMode={colorblindMode}
                 className={cn(
-                  "w-auto max-w-full rounded-lg shadow-md",
+                  "w-auto max-w-full rounded-xl shadow-[0_10px_30px_-8px_rgba(15,23,42,0.25)] ring-1 ring-slate-900/10",
                   format === "story"
                     ? "h-[46vh] md:h-[66vh] aspect-[9/16]"
                     : "h-[40vh] md:h-[52vh] aspect-[4/5]",
@@ -428,6 +437,29 @@ export default function ShareZoneModal({
                 { value: "story", label: "Story" },
                 { value: "post", label: "Post" },
               ])}
+            </div>
+
+            <div className="space-y-1.5">
+              <p className="font-medium">Fond</p>
+              <div className="flex gap-2" role="radiogroup" aria-label="Fond">
+                {(Object.keys(SHARE_THEMES) as ShareTheme[]).map((key) => (
+                  <button
+                    key={key}
+                    role="radio"
+                    aria-checked={theme === key}
+                    aria-label={SHARE_THEMES[key].label}
+                    title={SHARE_THEMES[key].label}
+                    onClick={() => setTheme(key)}
+                    style={{ background: SHARE_THEMES[key].swatch }}
+                    className={cn(
+                      "h-8 w-8 rounded-full border border-gray-300 transition-shadow",
+                      theme === key
+                        ? "ring-2 ring-kaki ring-offset-2"
+                        : "hover:ring-2 hover:ring-gray-300 hover:ring-offset-2",
+                    )}
+                  />
+                ))}
+              </div>
             </div>
 
             <div className="space-y-1.5">
@@ -486,7 +518,7 @@ export default function ShareZoneModal({
                   disabled={!png}
                   className="w-full inline-flex items-center justify-center gap-2 rounded-full bg-kaki px-4 py-2.5 font-medium text-white transition-colors hover:bg-kaki/90 disabled:opacity-50"
                 >
-                  <Send size={16} />
+                  {appleShareIcon ? <Share size={16} /> : <Share2 size={16} />}
                   Partager
                 </button>
               )}
@@ -525,12 +557,6 @@ export default function ShareZoneModal({
                 {caption}
               </p>
             </div>
-
-            <p className="text-xs text-gray-500 leading-relaxed">
-              L&apos;image indique le nom et le contour de votre réseau
-              d&apos;eau : elle donne une idée de l&apos;endroit où vous
-              habitez.
-            </p>
           </div>
         </div>
       </DialogContent>

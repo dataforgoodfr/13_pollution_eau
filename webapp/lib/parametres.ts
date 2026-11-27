@@ -45,7 +45,7 @@ export function getThresholdColor(
     thresholds.valeur_sanitaire_1 !== null &&
     value > thresholds.valeur_sanitaire_1
   ) {
-    return "#f03b20";
+    return "#980043";
   }
   if (thresholds.limite_qualite !== null && value > thresholds.limite_qualite) {
     return "#fe9929";

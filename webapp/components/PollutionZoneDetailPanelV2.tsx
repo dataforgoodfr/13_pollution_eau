@@ -32,6 +32,8 @@ type PollutionZoneDetailPanelV2Props = {
  * Onglet affiché dans le panel. C'est un état local : contrairement à
  * `period`, il ne pilote pas la carte. Seul l'onglet "dernier" la synchronise
  * (via setPeriod / setCategory) ; "evolution" la laisse strictement intacte.
+ * Il est conservé d'une zone à l'autre tant que le panel reste ouvert, avec la
+ * catégorie dépliée de l'onglet "evolution".
  */
 type PanelTab = "dernier" | "evolution";
 
@@ -96,6 +98,9 @@ export default function PollutionZoneDetailPanelV2({
   onClose,
 }: PollutionZoneDetailPanelV2Props) {
   const [tab, setTab] = useState<PanelTab>("dernier");
+  const [evolutionOpenCategory, setEvolutionOpenCategory] = useState<
+    string | null
+  >(null);
   const [zoneData, setZoneData] = useState<ZoneDetail | null>(null);
   const [zoneDataError, setZoneDataError] = useState(false);
   const [showAnalysesModal, setShowAnalysesModal] = useState(false);
@@ -119,13 +124,14 @@ export default function PollutionZoneDetailPanelV2({
     if (!selectedZoneCode) {
       setZoneData(null);
       setZoneDataError(false);
+      setTab("dernier");
+      setEvolutionOpenCategory(null);
       return;
     }
 
     let cancelled = false;
     setZoneData(null);
     setZoneDataError(false);
-    setTab("dernier");
 
     fetch(
       `/api/zone-detail?type=${displayMode}&code=${encodeURIComponent(selectedZoneCode)}`,
@@ -258,6 +264,8 @@ export default function PollutionZoneDetailPanelV2({
             colorblindMode={colorblindMode}
             parameterValues={parameterValues}
             onOpenAnalyses={openZoneAnalyses}
+            openCategory={evolutionOpenCategory}
+            setOpenCategory={setEvolutionOpenCategory}
           />
         ) : (
           <DernieresAnalyses

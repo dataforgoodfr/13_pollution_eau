@@ -109,6 +109,13 @@ type EvolutionTemporelleProps = {
   colorblindMode: boolean;
   parameterValues: ParameterValues;
   onOpenAnalyses?: (filters?: AnalysesFilters) => void;
+  /**
+   * Catégorie dépliée, tenue par le panel pour être conservée quand on passe
+   * d'une zone à l'autre (et pendant le chargement de la nouvelle zone, où cet
+   * onglet n'est pas monté).
+   */
+  openCategory: string | null;
+  setOpenCategory: (categoryId: string | null) => void;
 };
 
 /** Une section du contenu déplié : un sous-titre, puis son contenu. */
@@ -359,13 +366,9 @@ export default function EvolutionTemporelle({
   colorblindMode,
   parameterValues,
   onOpenAnalyses,
+  openCategory,
+  setOpenCategory,
 }: EvolutionTemporelleProps) {
-  const [openCategory, setOpenCategory] = useState<string | null>(null);
-
-  useEffect(() => {
-    setOpenCategory(null);
-  }, [displayMode, selectedZoneCode]);
-
   return (
     <div className="space-y-2">
       {TOP_LEVEL_CATEGORIES.map((item) => {

@@ -378,6 +378,27 @@ function TfaEncart({
   );
 }
 
+function CvmAvertissement() {
+  return (
+    <div className="mt-3 space-y-2 rounded-lg border border-gray-200 px-3 py-2.5 leading-relaxed text-gray-700">
+      <p className="text-xs font-medium text-gray-500">
+        Des données CVM incomplètes
+      </p>
+      <p>
+        Pour le CVM, seul environ ¼ des non-conformités relevées par les ARS
+        lors du contrôle sanitaire est publié en open data par le ministère de
+        la Santé. Un réseau affiché comme conforme peut donc en réalité dépasser
+        la limite de qualité.
+      </p>
+      <p>
+        La contamination étant très localisée (quelques tronçons d&apos;un
+        réseau), renseignez-vous auprès de votre mairie pour savoir si votre
+        logement est concerné.
+      </p>
+    </div>
+  );
+}
+
 /** Contenu déplié d'une catégorie : le dernier prélèvement connu. */
 function CategoryContent({
   categoryDetails,
@@ -398,6 +419,8 @@ function CategoryContent({
   const tfaEncart = isPfas ? (
     <TfaEncart data={data} parameterValues={parameterValues} />
   ) : null;
+  const cvmAvertissement =
+    categoryDetails.id === "cvm" ? <CvmAvertissement /> : null;
 
   // Interprétation du résultat (facultative), toujours en fin de bloc. Pour
   // les pesticides, la phrase sur les métabolites non pertinents n'est
@@ -440,6 +463,7 @@ function CategoryContent({
         <p>Pas d&apos;analyse effectuée dans les 12 derniers mois.</p>
         {tfaEncart}
         {interpretation}
+        {cvmAvertissement}
       </>
     );
   }
@@ -480,6 +504,7 @@ function CategoryContent({
         )}
         {detailLink && <p className="mt-3">{detailLink}</p>}
         {interpretation}
+        {cvmAvertissement}
       </>
     );
   }

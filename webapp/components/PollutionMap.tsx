@@ -5,7 +5,6 @@ import PollutionMapBaseLayer from "@/components/PollutionMapBase";
 import PollutionZoneDetailPanelV2 from "@/components/PollutionZoneDetailPanelV2";
 import PollutionMapControlsPanel from "@/components/PollutionMapControlsPanel";
 import PollutionMapSearchBox, { FilterResult } from "./PollutionMapSearchBox";
-import CVMInfoModal from "./CVMInfoModal";
 import { MapProvider } from "react-map-gl/maplibre";
 import MapTopRightControls from "./MapTopRightControls";
 import PollutionMapLegend from "./PollutionMapLegend";
@@ -44,7 +43,6 @@ export default function PollutionMap({
   const [isMobile, setIsMobile] = useState(false);
   const [rightPanelOpen, setRightPanelOpen] = useState(false);
   const [colorblindMode, setColorblindMode] = useState(false);
-  const [showCVMModal, setShowCVMModal] = useState(false);
   // Texte de la barre de recherche : géré ici pour être vidé au changement de
   // territoire (cf. MapTopRightControls).
   const [searchText, setSearchText] = useState("");
@@ -88,16 +86,6 @@ export default function PollutionMap({
   };
 
   const leftPanelOpen = selectedZoneCode !== null;
-
-  // Show CVM modal when category changes to "cvm"
-  useEffect(() => {
-    if (category === "cvm") {
-      const cvmModalShown = sessionStorage.getItem("cvmModalShown");
-      if (!cvmModalShown) {
-        setShowCVMModal(true);
-      }
-    }
-  }, [category]);
 
   const handleAddressSelect = (result: FilterResult | null) => {
     if (result) {
@@ -205,8 +193,6 @@ export default function PollutionMap({
               />
             </div>
           </div>
-
-          <CVMInfoModal open={showCVMModal} onOpenChange={setShowCVMModal} />
         </MapProvider>
       </div>
     </div>

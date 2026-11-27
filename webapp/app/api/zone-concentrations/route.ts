@@ -1,6 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import db from "@/app/lib/duckdb";
 
+// Total tous pesticides : absent de la base, recalculé à la volée (cf.
+// TOTAL_TS_UDI_QUERY).
+const TOTAL_TOUS_PESTICIDES = "TOTALPESTICIDEALL";
+
 // Paramètres pour lesquels une courbe d'évolution est proposée dans le panel
 // (cf. CONCENTRATION_PARAM_BY_CATEGORY côté composant). Whitelist explicite :
 // sans elle, la route exposerait un scan libre de int__resultats_udi.
@@ -11,6 +15,7 @@ const ALLOWED_PARAMETRES = new Set([
   "CLVYL",
   "PCLAT",
   "KEPONE",
+  TOTAL_TOUS_PESTICIDES,
 ]);
 
 // Au-delà, la courbe n'est plus lisible dans le panel : on garde les points
@@ -69,6 +74,57 @@ const COMMUNE_QUERY = `
   ORDER BY datetimeprel
 `;
 
+// Total tous pesticides (substances actives + tous les métabolites, pertinents
+// ou non), calculé comme celui du dernier prélèvement affiché dans « Dernières
+// analyses » (total_pesticide_all de int__resultats_pesticide_udi_dernier.sql),
+// pour que le dernier point de la courbe soit le même chiffre :
+// - un point par date de prélèvement (et non par referenceprel) : le modèle
+//   dbt fusionne les prélèvements faits au même instant ;
+// - valeur max de chaque paramètre à cette date (plusieurs analyses d'un même
+//   prélèvement), puis somme ;
+// - PESTOT exclu, c'est lui-même un total ;
+// - nb_parametres : nombre de paramètres recherchés à cette date, compté comme
+//   le « N substances ont été recherchées » du dernier prélèvement (codes SISE
+//   distincts), pour la bande de barres sous la courbe.
+// Pour une commune, les UDI de la commune sont fusionnées de la même façon,
+// comme le fait int__resultats_pesticide_commune_dernier.sql.
+const totalTsQuery = (zoneFilter: string) => `
+  SELECT * FROM (
+    SELECT MIN(referenceprel) AS referenceprel, datetimeprel,
+      SUM(valtraduite) AS valtraduite,
+      COUNT(*) AS nb_parametres
+    FROM (
+      SELECT datetimeprel, cdparametresiseeaux,
+        MIN(referenceprel) AS referenceprel,
+        MAX(valtraduite) AS valtraduite
+      FROM int__resultats_udi
+      WHERE ${zoneFilter}
+        AND categorie = 'pesticide'
+        AND categorie_2 IN ('sub_active', 'metabolite')
+        AND cdparametresiseeaux != 'PESTOT'
+        AND valtraduite IS NOT NULL
+      GROUP BY datetimeprel, cdparametresiseeaux
+    )
+    GROUP BY datetimeprel
+    ORDER BY datetimeprel DESC
+    LIMIT ${MAX_POINTS}
+  )
+  ORDER BY datetimeprel
+`;
+
+const TOTAL_TS_UDI_QUERY = totalTsQuery("cdreseau = $1");
+
+const TOTAL_TS_COMMUNE_QUERY = totalTsQuery(`cdreseau IN (
+        SELECT cdreseau
+        FROM int__lien_commune_cdreseau
+        WHERE inseecommune = $1
+          AND de_partition = (
+            SELECT max(de_partition)
+            FROM int__lien_commune_cdreseau
+            WHERE inseecommune = $1
+          )
+      )`);
+
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const type = searchParams.get("type");
@@ -97,17 +153,27 @@ export async function GET(request: NextRequest) {
     // si la dépendance est mise à jour vers une version qui corrige ce bug.
     await connection.run("SET disabled_optimizers='top_n'");
 
-    const prepared = await connection.prepare(
-      type === "udis" ? UDI_QUERY : COMMUNE_QUERY,
-    );
+    const isTotalTs = parametre === TOTAL_TOUS_PESTICIDES;
+    const query = isTotalTs
+      ? type === "udis"
+        ? TOTAL_TS_UDI_QUERY
+        : TOTAL_TS_COMMUNE_QUERY
+      : type === "udis"
+        ? UDI_QUERY
+        : COMMUNE_QUERY;
+    const prepared = await connection.prepare(query);
     prepared.bindVarchar(1, code);
-    prepared.bindVarchar(2, parametre);
+    if (!isTotalTs) prepared.bindVarchar(2, parametre);
     const result = await prepared.runAndReadAll();
 
     const points = result.getRowObjects().map((row) => ({
       referenceprel: String(row.referenceprel),
       date: row.datetimeprel ? row.datetimeprel.toString() : null,
       valeur: row.valtraduite !== null ? Number(row.valtraduite) : null,
+      // Seulement pour le total tous pesticides.
+      ...(row.nb_parametres != null
+        ? { nbRecherches: Number(row.nb_parametres) }
+        : {}),
     }));
 
     // Limite atteinte : les prélèvements plus anciens ont été écartés.

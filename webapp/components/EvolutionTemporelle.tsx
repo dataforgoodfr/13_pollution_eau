@@ -40,7 +40,8 @@ type SeuilConfig = {
  * de qualité, et une note facultative affichée sous la courbe.
  * Une catégorie absente d'ici n'a pas de section « concentrations ».
  *
- * Tout paramètre ajouté ici doit l'être aussi dans ALLOWED_PARAMETRES
+ * Tout paramètre ajouté ici (ou dans une section à part, comme
+ * TOTAL_TOUS_PESTICIDES) doit l'être aussi dans ALLOWED_PARAMETRES
  * (app/api/zone-concentrations/route.ts).
  */
 const CONCENTRATION_PARAM_BY_CATEGORY: Record<
@@ -52,7 +53,7 @@ const CONCENTRATION_PARAM_BY_CATEGORY: Record<
   // (TOTALPESTICIDE), d'où de possibles écarts sur le dernier point.
   pesticide: {
     parametre: "PESTOT",
-    note: "Ce total est repris tel quel du contrôle sanitaire (paramètre PESTOT) : il n'est pas recalculé ici.",
+    note: "Ce total est celui publié par le contrôle sanitaire (paramètre PESTOT) : la somme des substances actives et des métabolites pertinents recherchés, selon les règles de calcul en vigueur à chaque époque. Il est repris tel quel, sans être recalculé : il peut donc différer légèrement du total réglementaire affiché dans l’onglet « Dernières analyses », que nous recalculons.",
   },
   pfas: { parametre: "SPFAS" },
   // 50 mg/L : limite de qualité réglementaire, rangée en valeur sanitaire
@@ -84,6 +85,18 @@ const CONCENTRATION_PARAM_BY_CATEGORY: Record<
 const CHLORDECONE_ZONE_PREFIXES = ["971", "972"];
 
 /**
+ * Courbe du total tous pesticides, affichée sous celle de PESTOT. Ce total
+ * n'a pas de limite réglementaire (il compte les métabolites non pertinents) :
+ * la limite du total réglementaire n'y est tracée que comme repère.
+ */
+const TOTAL_TOUS_PESTICIDES = {
+  parametre: "TOTALPESTICIDEALL",
+  repere: { valeur: 0.5, label: "repère : limite du total réglementaire" },
+  bandeRecherches: true,
+  note: "Pour chaque prélèvement, ce total est la somme de tous les pesticides mesurés : substances actives et métabolites, pertinents ou non, comme dans l’onglet « Dernières analyses ». Il dépend donc des substances recherchées, dont le nombre varie d’un prélèvement à l’autre (barres grises) : une variation de la courbe peut venir d’une différence dans le nombre de substances recherchées plutôt que d’une réelle variation de la concentration. La ligne à 0,5 µg/L, limite de qualité du total réglementaire, n’est qu’un repère : elle ne s’applique pas à ce total.",
+};
+
+/**
  * Catégories à plusieurs substances dont les bilans annuels listent les
  * substances quantifiées : seules à avoir l'évolution de leur nombre.
  */
@@ -111,16 +124,18 @@ function Section({ title, children }: { title?: string; children: ReactNode }) {
 }
 
 /**
- * Courbe de concentration d'une catégorie. Chargée seulement quand la ligne
- * de l'accordéon est dépliée : une requête par catégorie consultée, plutôt
- * que toutes à l'ouverture de l'onglet.
+ * Une courbe de concentration, sous le sous-titre « Évolution des
+ * concentrations ». Chargée seulement quand la ligne de l'accordéon est
+ * dépliée : une requête par courbe consultée, plutôt que toutes à
+ * l'ouverture de l'onglet.
  */
-function ConcentrationSection({
+function ConcentrationCourbe({
   categoryDetails,
   parametre,
-  title = "Évolution des concentrations",
   categorieNom = getForms(categoryDetails).article,
   seuil,
+  repere,
+  bandeRecherches = false,
   note,
   displayMode,
   selectedZoneCode,
@@ -128,10 +143,12 @@ function ConcentrationSection({
 }: {
   categoryDetails: ICategory;
   parametre: string;
-  title?: string;
   /** Pour la phrase « une seule analyse », par défaut celui de la catégorie. */
   categorieNom?: string;
   seuil?: SeuilConfig;
+  repere?: { valeur: number; label: string };
+  /** Bande du nombre de substances recherchées sous la courbe. */
+  bandeRecherches?: boolean;
   note?: string;
   displayMode: "communes" | "udis";
   selectedZoneCode: string;
@@ -184,7 +201,7 @@ function ConcentrationSection({
   const paramName = getParameterName(parametre, parameterValues);
 
   return (
-    <Section title={title}>
+    <div>
       <p className="mb-2 text-sm text-greydark leading-snug">
         {paramName}
         {categoryDetails.unite ? ` (en ${categoryDetails.unite})` : ""}
@@ -194,7 +211,17 @@ function ConcentrationSection({
           Impossible de charger les concentrations pour cette zone.
         </p>
       ) : !serie ? (
-        <ConcentrationChartSkeleton legend={seuilValeur !== null} />
+        <ConcentrationChartSkeleton
+          legendLines={
+            [
+              seuilValeur,
+              valeurSanitaire,
+              repere,
+              bandeRecherches || null,
+            ].filter((item) => item !== null && item !== undefined).length
+          }
+          bandeRecherches={bandeRecherches}
+        />
       ) : (
         <ConcentrationChart
           points={serie.points}
@@ -205,12 +232,14 @@ function ConcentrationSection({
           valeurSanitaire={valeurSanitaire}
           label={paramName}
           categorieNom={categorieNom}
+          repere={repere}
+          bandeRecherches={bandeRecherches}
         />
       )}
       {note && !error && (
         <p className="mt-1 text-[11px] text-gray-400 leading-relaxed">{note}</p>
       )}
-    </Section>
+    </div>
   );
 }
 
@@ -233,6 +262,7 @@ function CategoryEvolutionContent({
   onOpenAnalyses?: () => void;
 }) {
   const concentration = CONCENTRATION_PARAM_BY_CATEGORY[categoryDetails.id];
+  const showTotalTousPesticides = categoryDetails.id === "pesticide";
   const showChlordecone =
     categoryDetails.id === "pesticide" &&
     CHLORDECONE_ZONE_PREFIXES.some((prefix) =>
@@ -251,28 +281,44 @@ function CategoryEvolutionContent({
         </Section>
       )}
 
-      {concentration && (
-        <ConcentrationSection
-          categoryDetails={categoryDetails}
-          parametre={concentration.parametre}
-          seuil={concentration.seuil}
-          note={concentration.note}
-          displayMode={displayMode}
-          selectedZoneCode={selectedZoneCode}
-          parameterValues={parameterValues}
-        />
-      )}
-
-      {showChlordecone && (
-        <ConcentrationSection
-          categoryDetails={categoryDetails}
-          parametre="KEPONE"
-          title="Évolution de la chlordécone"
-          categorieNom="la chlordécone"
-          displayMode={displayMode}
-          selectedZoneCode={selectedZoneCode}
-          parameterValues={parameterValues}
-        />
+      {(concentration || showTotalTousPesticides || showChlordecone) && (
+        <Section title="Évolution des concentrations">
+          <div className="space-y-5">
+            {concentration && (
+              <ConcentrationCourbe
+                categoryDetails={categoryDetails}
+                parametre={concentration.parametre}
+                seuil={concentration.seuil}
+                note={concentration.note}
+                displayMode={displayMode}
+                selectedZoneCode={selectedZoneCode}
+                parameterValues={parameterValues}
+              />
+            )}
+            {showTotalTousPesticides && (
+              <ConcentrationCourbe
+                categoryDetails={categoryDetails}
+                parametre={TOTAL_TOUS_PESTICIDES.parametre}
+                repere={TOTAL_TOUS_PESTICIDES.repere}
+                bandeRecherches={TOTAL_TOUS_PESTICIDES.bandeRecherches}
+                note={TOTAL_TOUS_PESTICIDES.note}
+                displayMode={displayMode}
+                selectedZoneCode={selectedZoneCode}
+                parameterValues={parameterValues}
+              />
+            )}
+            {showChlordecone && (
+              <ConcentrationCourbe
+                categoryDetails={categoryDetails}
+                parametre="KEPONE"
+                categorieNom="la chlordécone"
+                displayMode={displayMode}
+                selectedZoneCode={selectedZoneCode}
+                parameterValues={parameterValues}
+              />
+            )}
+          </div>
+        </Section>
       )}
 
       {CATEGORIES_SUBSTANCES_QUANTIFIEES.has(categoryDetails.id) && (

@@ -11,12 +11,14 @@ export type ConcentrationPoint = {
   referenceprel: string;
   date: string | null;
   valeur: number | null;
+  /** Nombre de substances recherchées lors du prélèvement (total pesticides). */
+  nbRecherches?: number;
 };
 
 type ConcentrationChartProps = {
   points: ConcentrationPoint[];
   unite?: string;
-  /** Seuil de non-conformité du bilan annuel (points orange). */
+  /** Seuil de non-conformité du bilan annuel (ligne orange). */
   seuil: number | null;
   /** Nom de ce seuil, par défaut « une limite de qualité ». */
   seuilNom?: SeuilNom;
@@ -26,6 +28,16 @@ type ConcentrationChartProps = {
   /** Catégorie avec son article, pour les phrases : « les pesticides ». */
   categorieNom: string;
   tronque?: boolean;
+  /**
+   * Ligne de repère, sans valeur réglementaire : tracée et gardée dans le
+   * cadre comme un seuil, en gris.
+   */
+  repere?: { valeur: number; label: string };
+  /**
+   * Bande de barres sous la courbe : le nombre de substances recherchées à
+   * chaque prélèvement (champ nbRecherches des points), sur le même axe X.
+   */
+  bandeRecherches?: boolean;
 };
 
 // Repère du SVG. Le graphique est dessiné à taille fixe puis mis à l'échelle
@@ -40,12 +52,22 @@ const PAD_BOTTOM = 22;
 const PLOT_WIDTH = WIDTH - PAD_LEFT - PAD_RIGHT;
 const PLOT_HEIGHT = HEIGHT - PAD_TOP - PAD_BOTTOM;
 
+// Bande des substances recherchées, glissée entre l'axe X et les années.
+// Volontairement basse et sans axe : elle donne un ordre de grandeur, pas une
+// seconde échelle à lire contre la première.
+const BAND_GAP = 5;
+const BAND_HEIGHT = 24;
+const BAND_TOP = PAD_TOP + PLOT_HEIGHT + BAND_GAP;
+const HEIGHT_WITH_BAND = HEIGHT + BAND_GAP + BAND_HEIGHT;
+
 // Au-delà, les marqueurs se chevauchent : on ne garde que la ligne.
 const MAX_MARKERS = 40;
 
 const COLOR_LINE = "#22394e";
 const COLOR_NON_CONFORME = "#fe9929";
 const COLOR_DECONSEILLE = "#f03b20";
+const COLOR_REPERE = "#6b7280";
+const COLOR_BAND = "#d1d5db";
 
 function formatDate(date: string | null): string {
   // DuckDB rend "2024-02-02 09:21:00" : l'espace n'est pas un séparateur ISO,
@@ -55,38 +77,36 @@ function formatDate(date: string | null): string {
     : "date inconnue";
 }
 
-function pointColor(
-  valeur: number,
-  seuil: number | null,
-  valeurSanitaire: number | null,
-): string {
-  if (valeurSanitaire !== null && valeur > valeurSanitaire)
-    return COLOR_DECONSEILLE;
-  if (seuil !== null && valeur > seuil) return COLOR_NON_CONFORME;
-  return COLOR_LINE;
-}
-
 /**
  * Emplacement réservé pendant le chargement de la série : mêmes proportions
  * que le graphique, avec la légende des seuils et la ligne de décompte, pour
  * que rien ne bouge à l'arrivée des données.
  */
 export function ConcentrationChartSkeleton({
-  legend = false,
+  legendLines = 0,
+  bandeRecherches = false,
 }: {
-  /** Réserver la ligne de légende des seuils (présente dès qu'il y a un seuil). */
-  legend?: boolean;
+  /** Nombre de lignes de légende à réserver (une par seuil, repère ou bande). */
+  legendLines?: number;
+  /** Réserver la hauteur de la bande des substances recherchées. */
+  bandeRecherches?: boolean;
 }) {
   return (
     <div role="status" aria-live="polite">
       <span className="sr-only">Chargement des concentrations...</span>
       <div
         className="w-full rounded bg-gray-100 animate-pulse"
-        style={{ aspectRatio: `${WIDTH} / ${HEIGHT}` }}
+        style={{
+          aspectRatio: `${WIDTH} / ${bandeRecherches ? HEIGHT_WITH_BAND : HEIGHT}`,
+        }}
       />
-      {legend && (
-        <div className="mt-1 flex h-[17px] items-center">
-          <div className="h-2 w-40 rounded bg-gray-100 animate-pulse" />
+      {legendLines > 0 && (
+        <div className="mt-1 flex flex-col gap-0.5">
+          {Array.from({ length: legendLines }, (_, i) => (
+            <div key={i} className="flex h-[17px] items-center">
+              <div className="h-2 w-40 rounded bg-gray-100 animate-pulse" />
+            </div>
+          ))}
         </div>
       )}
       <div className="mt-1 flex h-[18px] items-center">
@@ -111,6 +131,8 @@ export default function ConcentrationChart({
   label,
   categorieNom,
   tronque = false,
+  repere,
+  bandeRecherches = false,
 }: ConcentrationChartProps) {
   const values = points
     .map((point) => point.valeur)
@@ -151,8 +173,10 @@ export default function ConcentrationChart({
   // On garde le seuil dans le cadre même quand aucune mesure ne s'en
   // approche : sans lui, une série entièrement conforme paraîtrait
   // alarmante, l'échelle étant collée aux valeurs mesurées.
+  // Même chose pour le repère, faute de seuil.
+  const cadre = seuil ?? repere?.valeur ?? null;
   const yMax =
-    seuil !== null ? Math.max(maxValue, seuil * 1.3) : maxValue * 1.1 || 1;
+    cadre !== null ? Math.max(maxValue, cadre * 1.3) : maxValue * 1.1 || 1;
 
   const x = (index: number) =>
     PAD_LEFT + (index * PLOT_WIDTH) / (values.length - 1);
@@ -166,6 +190,21 @@ export default function ConcentrationChart({
   const polyline = plotted
     .map((point) => `${x(point.index)},${y(point.valeur)}`)
     .join(" ");
+
+  const nbRecherches = plotted
+    .map((point) => point.nbRecherches)
+    .filter((nb): nb is number => nb !== undefined);
+  const showBand = bandeRecherches && nbRecherches.length > 0;
+  const maxRecherches = showBand ? Math.max(...nbRecherches, 1) : 1;
+  const svgHeight = showBand ? HEIGHT_WITH_BAND : HEIGHT;
+  // Largeur d'une barre : un peu moins que l'écart entre deux prélèvements,
+  // bornée pour rester visible sur 500 points et discrète sur 3.
+  const barWidth = Math.max(
+    0.6,
+    Math.min((PLOT_WIDTH / (values.length - 1)) * 0.7, 6),
+  );
+  const recherchesLabel = (nb: number) =>
+    `${nb} substance${nb > 1 ? "s" : ""} recherchée${nb > 1 ? "s" : ""}`;
 
   // Une graduation d'année au premier prélèvement de chaque année.
   const yearTicks: Array<{ year: string; index: number }> = [];
@@ -190,6 +229,11 @@ export default function ConcentrationChart({
       color: COLOR_DECONSEILLE,
       label: `limite sanitaire (${formatValue(valeurSanitaire ?? 0)} ${unite || ""})`,
     },
+    {
+      value: repere?.valeur ?? null,
+      color: COLOR_REPERE,
+      label: `${repere?.label} (${formatValue(repere?.valeur ?? 0)} ${unite || ""})`,
+    },
   ].filter(
     (threshold): threshold is { value: number; color: string; label: string } =>
       threshold.value !== null && threshold.value <= yMax,
@@ -209,12 +253,16 @@ export default function ConcentrationChart({
     seuil !== null
       ? `, dont ${nbDepassements} au-dessus du seuil (${seuilNom.label}) de ${formatValue(seuil)} ${unite || ""}`
       : ""
+  }${
+    showBand
+      ? `, entre ${Math.min(...nbRecherches)} et ${Math.max(...nbRecherches)} substances recherchées par prélèvement`
+      : ""
   }.`;
 
   return (
     <div>
       <svg
-        viewBox={`0 0 ${WIDTH} ${HEIGHT}`}
+        viewBox={`0 0 ${WIDTH} ${svgHeight}`}
         className="w-full h-auto"
         role="img"
         aria-label={ariaLabel}
@@ -289,21 +337,62 @@ export default function ConcentrationChart({
               cx={x(point.index)}
               cy={y(point.valeur)}
               r="2"
-              fill={pointColor(point.valeur, seuil, valeurSanitaire)}
+              // Couleur de la courbe, même au-dessus d'un seuil : les
+              // dépassements se lisent par rapport aux lignes de seuil.
+              fill={COLOR_LINE}
             >
               <title>
                 {formatDate(point.date)} : {formatValue(point.valeur)}{" "}
                 {unite || ""}
+                {point.nbRecherches !== undefined &&
+                  `, ${recherchesLabel(point.nbRecherches)}`}
               </title>
             </circle>
           ))}
+
+        {/* Substances recherchées, une barre par prélèvement */}
+        {showBand && (
+          <g>
+            <text
+              x={PAD_LEFT - 5}
+              y={BAND_TOP + 6}
+              textAnchor="end"
+              fontSize="8"
+              fill="#9ca3af"
+            >
+              {maxRecherches}
+            </text>
+            {plotted.map(
+              (point) =>
+                point.nbRecherches !== undefined && (
+                  <rect
+                    key={point.referenceprel}
+                    x={x(point.index) - barWidth / 2}
+                    y={
+                      BAND_TOP +
+                      BAND_HEIGHT -
+                      (point.nbRecherches / maxRecherches) * BAND_HEIGHT
+                    }
+                    width={barWidth}
+                    height={(point.nbRecherches / maxRecherches) * BAND_HEIGHT}
+                    fill={COLOR_BAND}
+                  >
+                    <title>
+                      {formatDate(point.date)} : {formatValue(point.valeur)}{" "}
+                      {unite || ""}, {recherchesLabel(point.nbRecherches)}
+                    </title>
+                  </rect>
+                ),
+            )}
+          </g>
+        )}
 
         {/* Graduations d'années */}
         {yearTicks.map((tick) => (
           <text
             key={tick.year}
             x={x(tick.index)}
-            y={HEIGHT - 8}
+            y={svgHeight - 8}
             textAnchor={tick.index === 0 ? "start" : "middle"}
             fontSize="8"
             fill="#9ca3af"
@@ -313,8 +402,8 @@ export default function ConcentrationChart({
         ))}
       </svg>
 
-      {thresholds.length > 0 && (
-        <ul className="mt-1 flex flex-wrap gap-x-3 gap-y-0.5 text-[11px]">
+      {(thresholds.length > 0 || showBand) && (
+        <ul className="mt-1 flex flex-col gap-0.5 text-[11px]">
           {thresholds.map((threshold) => (
             <li
               key={threshold.label}
@@ -335,6 +424,14 @@ export default function ConcentrationChart({
               {threshold.label}
             </li>
           ))}
+          {showBand && (
+            <li className="flex items-center gap-1.5 text-gray-500">
+              <svg width="8" height="8" aria-hidden="true">
+                <rect width="8" height="8" fill={COLOR_BAND} />
+              </svg>
+              substances recherchées par prélèvement
+            </li>
+          )}
         </ul>
       )}
 

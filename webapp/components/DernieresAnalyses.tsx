@@ -228,6 +228,28 @@ function groupPesticideParametres(
   ].filter((group) => group.params.length > 0);
 }
 
+/**
+ * Phrase d'interprétation si au moins un métabolite non pertinent dépasse sa
+ * limite indicative (0,9 µg/L) au dernier prélèvement, `null` sinon. Même
+ * règle (strictement supérieur) que `int__resultats_metabolite_np_*`.
+ */
+function getMetabolitesNonPertinentsSentence(
+  parametres: Array<{ code: string; value: number }>,
+  parameterValues: ParameterValues,
+): string | null {
+  const depassement = parametres.some(({ code, value }) => {
+    const param = parameterValues[code];
+    return (
+      param?.categorie_3 === "non_pertinent" &&
+      param.limite_indicative != null &&
+      value > param.limite_indicative
+    );
+  });
+  return depassement
+    ? "De plus, au moins un métabolite non pertinent dépasse la limite indicative de 0,9 µg/L. Les métabolites non pertinents ne sont pas soumis aux limites de qualité réglementaires, mais ce dépassement indique une dégradation de la qualité de l’eau."
+    : null;
+}
+
 // Sommes calculées par `int__resultats_pfas_*_dernier.sql`, affichées après
 // les substances (somme des 20 puis somme des 4).
 const PFAS_SOMMES = ["SPFAS", "SUM_4_PFAS"];
@@ -377,14 +399,24 @@ function CategoryContent({
     <TfaEncart data={data} parameterValues={parameterValues} />
   ) : null;
 
-  // Interprétation du résultat (facultative), toujours en fin de bloc.
-  const interpretation = result.interpretation ? (
+  // Interprétation du résultat (facultative), toujours en fin de bloc. Pour
+  // les pesticides, la phrase sur les métabolites non pertinents n'est
+  // ajoutée que s'il y en a de quantifiés.
+  const interpretationText = [
+    result.interpretation,
+    categoryDetails.id === "pesticide"
+      ? getMetabolitesNonPertinentsSentence(quantifies, parameterValues)
+      : null,
+  ]
+    .filter(Boolean)
+    .join("\n");
+  const interpretation = interpretationText ? (
     <div className="mt-3 rounded-lg bg-gray-50 px-3 py-2.5">
       <p className="mb-1 text-xs font-medium text-gray-500">
         Interprétation des résultats
       </p>
       <p className="whitespace-pre-line leading-relaxed text-gray-700">
-        {result.interpretation}
+        {interpretationText}
         {categoryDetails.lienExterne && (
           <>
             <br />

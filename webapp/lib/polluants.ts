@@ -451,7 +451,7 @@ export const availableCategories: ICategory[] = [
           couleurAlt: "#fec44f",
           severite: "quantifie",
           interpretation:
-            "Les concentrations en substances actives pesticides et métabolites pertinents sont toutes inférieures aux limites de qualité réglementaires : l’eau est conforme à la réglementation pour le paramètre pesticide. \nLes métabolites non pertinents ne sont pas soumis à ces limites. Une concentration en métabolites non pertinents supérieure à la limite indicative de 0,9 µg/L indique toutefois une dégradation de la qualité de l’eau.",
+            "Les concentrations en substances actives pesticides et métabolites pertinents sont toutes inférieures aux limites de qualité réglementaires : l’eau est conforme à la réglementation pour le paramètre pesticide.",
         },
         sup_limite_qualite: {
           label: "Eau non conforme",
@@ -460,7 +460,7 @@ export const availableCategories: ICategory[] = [
           severite: "non_conforme",
           nonConforme: true,
           interpretation:
-            "La qualité de l’eau est non conforme à la réglementation car au moins une limite de qualité réglementaire est dépassée (0,1 µg/L pour chaque substance active ou métabolite pertinent et/ou 0,5 µg/L pour le total pesticide réglementaire). \n Si la situation persiste, une dérogation préfectorale doit être délivrée pour autoriser la distribution d’une eau non conforme, et des mesures doivent être prises pour rétablir la qualité de l’eau au plus vite. Selon les autorités sanitaires, boire cette eau ne présente pas de risque pour la santé car aucune valeur sanitaire n’est dépassée. \n Les métabolites non pertinents ne sont pas soumis à ces limites. Une concentration en métabolites non pertinents supérieure à la limite indicative de 0,9 µg/L indique toutefois une dégradation de la qualité de l’eau.",
+            "La qualité de l’eau est non conforme à la réglementation car au moins une limite de qualité réglementaire est dépassée (0,1 µg/L pour chaque substance active ou métabolite pertinent et/ou 0,5 µg/L pour le total pesticide réglementaire). \n Si la situation persiste, une dérogation préfectorale doit être délivrée pour autoriser la distribution d’une eau non conforme, et des mesures doivent être prises pour rétablir la qualité de l’eau au plus vite. Selon les autorités sanitaires, boire cette eau ne présente pas de risque pour la santé car aucune valeur sanitaire n’est dépassée.",
         },
         sup_seuil_hcsp: {
           label: "Eau non conforme et dépassant un seuil d'alerte",
@@ -472,7 +472,7 @@ export const availableCategories: ICategory[] = [
           labelAdd:
             "La concentration d'un ou plusieurs pesticides dépasse le seuil de précaution recommandé par le Haut Conseil de la Santé Publique (HCSP) en l’absence de valeur sanitaire disponible.",
           interpretation:
-            "La qualité de l’eau est non conforme à la réglementation car au moins une limite de qualité réglementaire est dépassée (0,1 µg/L pour chaque substance active ou métabolite pertinent et/ou 0,5 µg/L pour le total pesticide réglementaire). \n Si la situation persiste, une dérogation préfectorale doit être délivrée pour autoriser la distribution d’une eau non conforme, et des mesures doivent être prises pour rétablir la qualité de l’eau au plus vite. \n De plus, au moins un pesticide dépasse le seuil de précaution recommandé par le Haut Conseil de la Santé Publique (HCSP) en l’absence de valeur sanitaire disponible. Si la situation persiste, l’eau devrait être déconseillée à la consommation selon le HCSP. \n Les métabolites non pertinents ne sont pas soumis à ces limites. Une concentration en métabolites non pertinents supérieure à la limite indicative de 0,9 µg/L indique toutefois une dégradation de la qualité de l’eau.",
+            "La qualité de l’eau est non conforme à la réglementation car au moins une limite de qualité réglementaire est dépassée (0,1 µg/L pour chaque substance active ou métabolite pertinent et/ou 0,5 µg/L pour le total pesticide réglementaire). \n Si la situation persiste, une dérogation préfectorale doit être délivrée pour autoriser la distribution d’une eau non conforme, et des mesures doivent être prises pour rétablir la qualité de l’eau au plus vite. \n De plus, au moins un pesticide dépasse le seuil de précaution recommandé par le Haut Conseil de la Santé Publique (HCSP) en l’absence de valeur sanitaire disponible. Si la situation persiste, l’eau devrait être déconseillée à la consommation selon le HCSP.",
         },
         sup_valeur_sanitaire: {
           label: "Eau non conforme et devant être interdite",
@@ -483,7 +483,7 @@ export const availableCategories: ICategory[] = [
           labelAdd:
             "L'eau devrait être interdite à la consommation pour toute la population car la concentration d'un ou plusieurs pesticides dépasse une limite sanitaire.",
           interpretation:
-            "La qualité de l’eau est non conforme à la réglementation car au moins une limite de qualité réglementaire est dépassée (0,1 µg/L pour chaque substance active ou métabolite pertinent et/ou 0,5 µg/L pour le total pesticide réglementaire). \n De plus, au moins un pesticide dépasse une valeur sanitaire. L’eau doit être interdite à la consommation. \n Les métabolites non pertinents ne sont pas soumis à ces limites. Une concentration en métabolites non pertinents supérieure à la limite indicative de 0,9 µg/L indique toutefois une dégradation de la qualité de l’eau.",
+            "La qualité de l’eau est non conforme à la réglementation car au moins une limite de qualité réglementaire est dépassée (0,1 µg/L pour chaque substance active ou métabolite pertinent et/ou 0,5 µg/L pour le total pesticide réglementaire). \n De plus, au moins un pesticide dépasse une valeur sanitaire. L’eau doit être interdite à la consommation.",
         },
       },
     },

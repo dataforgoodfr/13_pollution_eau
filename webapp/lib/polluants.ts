@@ -130,6 +130,12 @@ export interface ICategory {
    * cf. `getForms`. Par défaut `nomAffichage` en minuscules, au pluriel.
    */
   nomDansPhrase?: { nom: string; pluriel?: false };
+  /**
+   * Texte affiché dans les réglages de la carte (« Ce qu'affiche la carte »),
+   * sous la phrase d'introduction du type de carte (`topLegend`). Contrairement
+   * à `description`, il n'apparaît pas dans la bulle « i » du panel de zone.
+   */
+  descriptionBelowTopSentence?: string;
 }
 
 // Interprétation commune aux trois tranches de nitrates entre 10 et 50 mg/L.
@@ -1635,7 +1641,9 @@ export const availableCategories: ICategory[] = [
     disable: false,
     enfants: [],
     description:
-      "Le CVM, ou Chlorure de Vinyl Monomère, est une substance chimique gazeuse utilisée dans la fabrication des canalisations en PVC (polychlorure de vinyle). Les conduites en PVC datant d'avant 1980 sont susceptibles de contenir des résidus de CVM et d'en relarguer dans l'eau. Souvent, seules quelques rues d’un réseau sont concernées par la contamination au CVM.",
+      "Le CVM (chlorure de vinyle monomère) est un gaz utilisé pour fabriquer le PVC des canalisations. Les conduites en PVC posées avant 1980 peuvent contenir des résidus de CVM et en relarguer dans l’eau, souvent dans quelques rues seulement d’un réseau.",
+    descriptionBelowTopSentence:
+      "Le ministère de la Santé ne publie qu’environ ¼ des non-conformités au CVM recensées par les ARS. Ces données sont donc largement incomplètes et à lire avec prudence : un réseau affiché comme conforme peut en réalité dépasser la limite réglementaire.",
     unite: "µg/L",
     derniereAnalyse: {
       topLegend:

@@ -55,13 +55,9 @@ function LegendItem({
               side="bottom"
               align="start"
               collisionPadding={8}
-              className="z-[70] w-72 max-w-[calc(100vw-2rem)] p-3 text-sm leading-snug text-gray-700"
+              className="z-[70] w-72 max-w-[calc(100vw-2rem)] p-3 text-sm leading-snug text-gray-700 whitespace-pre-line"
             >
-              {labelAdd.split("\n").map((line, index) => (
-                <p key={index} className={index > 0 ? "mt-2" : undefined}>
-                  {line}
-                </p>
-              ))}
+              {labelAdd}
             </PopoverContent>
           </Popover>
         )}
@@ -210,8 +206,15 @@ export default function PollutionMapControlsPanel({
             Ce qu&apos;affiche la carte
           </h3>
 
-          {categoryDetails?.description && <p>{categoryDetails.description}</p>}
+          {categoryDetails?.description && (
+            <p className="whitespace-pre-line">{categoryDetails.description}</p>
+          )}
           {topSentence && <p className="whitespace-pre-line">{topSentence}</p>}
+          {categoryDetails?.descriptionBelowTopSentence && (
+            <p className="whitespace-pre-line">
+              {categoryDetails.descriptionBelowTopSentence}
+            </p>
+          )}
           {categoryDetails?.lienExterne && (
             <a
               href={categoryDetails.lienExterne}

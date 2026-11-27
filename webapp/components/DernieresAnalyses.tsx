@@ -609,7 +609,7 @@ function CategoryRow({
                   side="bottom"
                   align="start"
                   collisionPadding={8}
-                  className="z-[70] w-72 max-w-[calc(100vw-2rem)] p-3 text-sm leading-snug text-gray-700"
+                  className="z-[70] w-72 max-w-[calc(100vw-2rem)] p-3 text-sm leading-snug text-gray-700 whitespace-pre-line"
                 >
                   {categoryDetails.description}
                 </PopoverContent>

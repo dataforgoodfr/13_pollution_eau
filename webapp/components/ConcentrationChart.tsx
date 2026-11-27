@@ -67,6 +67,36 @@ function pointColor(
 }
 
 /**
+ * Emplacement réservé pendant le chargement de la série : mêmes proportions
+ * que le graphique, avec la légende des seuils et la ligne de décompte, pour
+ * que rien ne bouge à l'arrivée des données.
+ */
+export function ConcentrationChartSkeleton({
+  legend = false,
+}: {
+  /** Réserver la ligne de légende des seuils (présente dès qu'il y a un seuil). */
+  legend?: boolean;
+}) {
+  return (
+    <div role="status" aria-live="polite">
+      <span className="sr-only">Chargement des concentrations...</span>
+      <div
+        className="w-full rounded bg-gray-100 animate-pulse"
+        style={{ aspectRatio: `${WIDTH} / ${HEIGHT}` }}
+      />
+      {legend && (
+        <div className="mt-1 flex h-[17px] items-center">
+          <div className="h-2 w-40 rounded bg-gray-100 animate-pulse" />
+        </div>
+      )}
+      <div className="mt-1 flex h-[18px] items-center">
+        <div className="h-2 w-32 rounded bg-gray-100 animate-pulse" />
+      </div>
+    </div>
+  );
+}
+
+/**
  * Évolution des concentrations mesurées, un point par prélèvement. L'axe X est
  * à pas constant (un cran par prélèvement, dans l'ordre chronologique) et non
  * proportionnel au temps : les prélèvements sont très inégalement répartis, et

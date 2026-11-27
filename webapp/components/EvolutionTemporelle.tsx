@@ -18,6 +18,7 @@ import {
 import AnnualRatioHistogram from "@/components/AnnualRatioHistogram";
 import SubstancesQuantifieesChart from "@/components/SubstancesQuantifieesChart";
 import ConcentrationChart, {
+  ConcentrationChartSkeleton,
   type ConcentrationPoint,
   type SeuilNom,
 } from "@/components/ConcentrationChart";
@@ -97,12 +98,12 @@ type EvolutionTemporelleProps = {
   onOpenAnalyses?: (filters?: AnalysesFilters) => void;
 };
 
-/** Une section du contenu déplié : petit titre gris, puis son contenu. */
+/** Une section du contenu déplié : un sous-titre, puis son contenu. */
 function Section({ title, children }: { title?: string; children: ReactNode }) {
   return (
     <section className="py-3 first:pt-0 last:pb-0">
       {title && (
-        <p className="mb-2 text-xs font-medium text-gray-500">{title}</p>
+        <h3 className="mb-2 text-sm font-semibold text-gray-900">{title}</h3>
       )}
       {children}
     </section>
@@ -173,6 +174,7 @@ function ConcentrationSection({
 
   const paramRef = parameterValues[parametre];
   const seuilChamp = seuil?.champ ?? "limite_qualite";
+  const seuilValeur = paramRef?.[seuilChamp] ?? null;
   // Quand le seuil du bilan est la valeur sanitaire, elle n'est pas tracée
   // une seconde fois comme « limite sanitaire ».
   const valeurSanitaire =
@@ -192,25 +194,21 @@ function ConcentrationSection({
           Impossible de charger les concentrations pour cette zone.
         </p>
       ) : !serie ? (
-        <p className="text-sm text-gray-500">Chargement...</p>
+        <ConcentrationChartSkeleton legend={seuilValeur !== null} />
       ) : (
-        <>
-          <ConcentrationChart
-            points={serie.points}
-            tronque={serie.tronque}
-            unite={categoryDetails.unite}
-            seuil={paramRef?.[seuilChamp] ?? null}
-            seuilNom={seuil?.nom}
-            valeurSanitaire={valeurSanitaire}
-            label={paramName}
-            categorieNom={categorieNom}
-          />
-          {note && (
-            <p className="mt-1 text-[11px] text-gray-400 leading-relaxed">
-              {note}
-            </p>
-          )}
-        </>
+        <ConcentrationChart
+          points={serie.points}
+          tronque={serie.tronque}
+          unite={categoryDetails.unite}
+          seuil={seuilValeur}
+          seuilNom={seuil?.nom}
+          valeurSanitaire={valeurSanitaire}
+          label={paramName}
+          categorieNom={categorieNom}
+        />
+      )}
+      {note && !error && (
+        <p className="mt-1 text-[11px] text-gray-400 leading-relaxed">{note}</p>
       )}
     </Section>
   );

@@ -1,5 +1,6 @@
 -- Vérifie qu'au moins 98% des UDI actuelles (dernière année de UDI_COM, hors
--- DOM) ont un tracé dans int__udi_geom.
+-- DOM sans tracés UDI : seule La Réunion en a parmi les DOM) ont un tracé
+-- dans int__udi_geom.
 -- Couverture constatée : 98,8% avec le millésime Atlasante 2024, 99,2% avec
 -- le référentiel 2025 (métropole) + 2024 (Corse).
 --
@@ -15,7 +16,7 @@ udi_actuelles AS (
     FROM {{ ref('stg_edc__communes') }} AS c
     INNER JOIN derniere_partition AS p
         ON c.de_partition = p.de_partition
-    WHERE LEFT(c.cdreseau, 3) NOT IN ('971', '972', '973', '974', '975', '976')
+    WHERE LEFT(c.cdreseau, 3) NOT IN ('971', '972', '973', '975', '976')
 )
 
 SELECT

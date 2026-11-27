@@ -1,5 +1,6 @@
--- Vérifie que chaque département (hors DOM) a au moins 70% de ses UDI
--- actuelles couvertes par un tracé dans int__udi_geom.
+-- Vérifie que chaque département (hors DOM sans tracés UDI : seule La Réunion
+-- en a parmi les DOM) a au moins 70% de ses UDI actuelles couvertes par un
+-- tracé dans int__udi_geom.
 -- Permet de détecter une région entière absente d'une source : le millésime
 -- Atlasante 2025 (DGS métropole) ne contient pas la Corse, qui doit être
 -- complétée par la source de l'ARS Corse.
@@ -17,7 +18,7 @@ udi_actuelles AS (
     FROM {{ ref('stg_edc__communes') }} AS c
     INNER JOIN derniere_partition AS p
         ON c.de_partition = p.de_partition
-    WHERE LEFT(c.cdreseau, 3) NOT IN ('971', '972', '973', '974', '975', '976')
+    WHERE LEFT(c.cdreseau, 3) NOT IN ('971', '972', '973', '975', '976')
 )
 
 SELECT

@@ -7,6 +7,7 @@ import { Tooltip } from "@radix-ui/react-tooltip";
 import { useMap } from "react-map-gl/maplibre";
 import { cn } from "@/lib/utils";
 import { MAPLIBRE_MAP } from "@/app/config";
+import type { DisplayMode } from "@/lib/parentFrame";
 
 const ZONE_METROPOLE = 1;
 const ZONE_GUADELOUPE = 2;
@@ -18,6 +19,7 @@ const ZONE_GUYANE = 6;
 type ZoneConfig = {
   center: [number, number];
   zoom: number;
+  displayMode: DisplayMode;
 };
 
 export const ZONE_CONFIGS: { [key: number]: ZoneConfig } = {
@@ -27,26 +29,32 @@ export const ZONE_CONFIGS: { [key: number]: ZoneConfig } = {
       MAPLIBRE_MAP.initialViewState.latitude,
     ],
     zoom: MAPLIBRE_MAP.initialViewState.zoom,
+    displayMode: "udis",
   },
   [ZONE_GUADELOUPE]: {
     center: [-61.5, 16.2],
     zoom: 9,
+    displayMode: "communes",
   },
   [ZONE_MARTINIQUE]: {
     center: [-61, 14.7],
     zoom: 9,
+    displayMode: "communes",
   },
   [ZONE_MAYOTTE]: {
     center: [45, -12.75],
     zoom: 9,
+    displayMode: "communes",
   },
   [ZONE_LAREUNION]: {
     center: [55.5, -21.2],
     zoom: 8,
+    displayMode: "udis",
   },
   [ZONE_GUYANE]: {
     center: [-52.7, 4.3],
     zoom: 6,
+    displayMode: "communes",
   },
 };
 
@@ -54,7 +62,7 @@ export default function MapZoneSelector({
   setDisplayMode,
   onZoneChange,
 }: {
-  setDisplayMode: (mode: "communes" | "udis") => void;
+  setDisplayMode: (mode: DisplayMode) => void;
   onZoneChange: () => void;
 }) {
   const { map } = useMap();
@@ -62,20 +70,16 @@ export default function MapZoneSelector({
     const numZone: number = parseInt(
       e.currentTarget.getAttribute("value") || "0",
     );
+    const zone = ZONE_CONFIGS[numZone];
     map?.jumpTo({
-      center: ZONE_CONFIGS[numZone].center,
-      zoom: ZONE_CONFIGS[numZone].zoom,
+      center: zone.center,
+      zoom: zone.zoom,
     });
     setSelectedZone(numZone);
 
     onZoneChange();
 
-    // Set display mode: UDI for Metropole, Communes for DOMs
-    if (numZone === ZONE_METROPOLE) {
-      setDisplayMode("udis");
-    } else {
-      setDisplayMode("communes");
-    }
+    setDisplayMode(zone.displayMode);
   };
   const [selectedZone, setSelectedZone] = useState<number>(ZONE_METROPOLE);
 

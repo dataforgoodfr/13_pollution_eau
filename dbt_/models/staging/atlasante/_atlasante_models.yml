@@ -72,3 +72,26 @@ models:
         type: GEOMETRY
       - name: ingestion_date
         type: DATE
+  - name: stg_atlasante_udi_reunion_2025
+    description: "Unités de distribution (UDI) de La Réunion (millésime 2025, ARS La Réunion)"
+    columns:
+      - name: code_udi
+        description: "Code UDI au format cdreseau (attribut cn_udi de la source, ex. 974000001)"
+        type: VARCHAR
+        tests:
+          - not_null
+          - unique
+      - name: nom_udi
+        type: VARCHAR
+      - name: nom_uge
+        type: VARCHAR
+      - name: population
+        type: INTEGER
+      - name: nature_eau
+        type: VARCHAR
+      - name: epci
+        type: VARCHAR
+      - name: geom
+        type: GEOMETRY
+      - name: ingestion_date
+        type: DATE

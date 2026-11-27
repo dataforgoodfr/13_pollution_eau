@@ -480,7 +480,7 @@ models:
         type: JSON
 
   - name: int__udi_geom
-    description: "Union des tracés des UDIs de France et de Corse"
+    description: "Union des tracés des UDIs de France métropolitaine, de Corse et de La Réunion"
     columns:
       - name: code_udi
         description: "Code de l'unité de distribution (UDI)"

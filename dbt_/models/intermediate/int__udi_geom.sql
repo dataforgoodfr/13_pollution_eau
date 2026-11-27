@@ -7,6 +7,8 @@
 -- Référentiel des tracés UDI :
 -- - métropole hors Corse : millésime 2025 (la Corse n'y figure pas)
 -- - Corse : millésime 2024 de l'ARS Corse
+-- - La Réunion : millésime 2025 de l'ARS La Réunion
+-- Les autres DROM n'ont pas de tracés UDI : le site les affiche par commune.
 WITH combined_data AS (
     SELECT
         code_udi,
@@ -21,6 +23,14 @@ WITH combined_data AS (
         geom
     FROM {{ ref("stg_atlasante_udi_corse_2024") }}
     WHERE LEFT(code_udi, 3) IN ('02A', '02B')
+
+    UNION ALL
+
+    SELECT
+        code_udi,
+        geom
+    FROM {{ ref("stg_atlasante_udi_reunion_2025") }}
+    WHERE LEFT(code_udi, 3) = '974'
 ),
 
 cleaned_data AS (

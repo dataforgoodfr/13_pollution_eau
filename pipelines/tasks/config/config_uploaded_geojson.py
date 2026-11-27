@@ -68,5 +68,15 @@ uploaded_geojson_config = {
             "table_name": "atlasante_udi_corse_2024",
             "local_file_name": "ars_r94_udi_2024_z.json",
         },
+        {
+            # UDIs de La Réunion pour l'année 2025 (ARS La Réunion).
+            # Pour l'obtenir: https://catalogue.atlasante.fr/geonetwork/srv/fre/catalog.search#/metadata/9c1d4dd5-9522-464e-bdfa-fd26c2cc6f4a
+            # Puis télécharger en GeoJSON / WGS84 (EPSG 4326), extraire le fichier "ars_r974_udi_2025_z.json"
+            # du zip téléchargé et l'uploader tel quel.
+            # Le code UDI (au format cdreseau, ex. 974000001) est dans l'attribut cn_udi.
+            "path": "atlasante/ars_r974_udi_2025_z.json",
+            "table_name": "atlasante_udi_reunion_2025",
+            "local_file_name": "ars_r974_udi_2025_z.json",
+        },
     ],
 }
